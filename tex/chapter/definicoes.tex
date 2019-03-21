@@ -1,0 +1,50 @@
+Some definitions and results that are used throughout the text are given in this chapter.
+
+\section{Disk}
+
+A circle (or circumference) is a set of points in $\R^2$ that have constant euclidean distance, also known as radius, to another point, also referred to as the center of the circle. A unit circle is a circle with radius equal to $1$.
+A disk is the set of points of a circle plus its interior
+
+\begin{definicao}
+Let $q \in \R^2$, a unit disk centered at $q$ is the set of points that satisfy \autoref{equation:disk_eq}
+
+\begin{equation}\label{equation:disk_eq}
+    (x-q_x)^2 + (y-q_y)^2 \le 1
+\end{equation}
+\end{definicao}
+
+
+\section{Ellipse}
+An ellipse is the set of all points which have the sum of the distances to two focal points constant. Several equations and parametrizations can be derived from this definition, here they are gonna separated in two cases, the axis parallel and the non axis parallel case.
+
+The axis of an ellipse is the line that passes through its two focal points. An ellipse is considered axis parallel, if its axis is parallel to the $x$-axis.
+
+\subsection{Axis parallel}
+
+An axis parallel ellipse centered at $(0,0)$ can be described by two shape parameters: $a \in \R_{>0}$ the semi-major, $b \in \R_{>0}$ the semi-minor. Its equation is given by \ref{equation:pellipse}
+
+\begin{equation}\label{equation:pellipse}
+    \dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} = 1
+\end{equation}
+
+\begin{figure}[H]
+\centering
+
+    \caption{View of the ellipses parameters}
+    \input{tex/figures/ellipse_definition.tex}
+    \fautor
+    \label{fig:3ellipses_intersect}
+\end{figure}
+
+
+\begin{definicao}
+An axis-parallel ellipse centered at $(c_x, c_y) \in \R^2$, with shape parameters $(a,b) \in \R^2_{>0}$ is said to cover a point $p=(p_x,p_y)$ if the \autoref{equation:cover_ellipse} is satisfied.
+
+\begin{equation}\label{equation:cover_ellipse}
+    \dfrac{(p_x-c_x)^2}{a^2} + \dfrac{(p_y-c_y)^2}{b^2} \le 1
+\end{equation}
+\end{definicao}
+
+In other words, a point is considered covered by an ellipse if it lies inside, or in the border of the region determined by it.
+
+No equivalent disk-circle wording exists for ellipses, this could be a source of ambiguity in the text, that is why a note for the reader was judged to be necessary. Throughout this work an ellipse will represent the set of points that satisfy \autoref{equation:pellipse}. In some places, though, with prior clarification, we will denote as an ellipse, the set of points that satisfy \autoref{equation:cover_ellipse}. For example, when we define $\Pp \cap E$ as the set of points in $\Pp$ that are covered by $E$, we are implicityly calling $E$ the set of points that satisfy \autoref{equation:cover_ellipse}.
