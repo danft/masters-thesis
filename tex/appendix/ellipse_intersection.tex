@@ -43,30 +43,16 @@ Which is a second degree polynomial, therefore, $E_1$ and $E_2$ intersect if, an
 
 \subsection{Determining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$}
 
-Let us assume that $E_1$ and $E_2$, each one with shape parameters $(a,b) \in \R^2_{>0}$, intersect at $p_1$ and $p_2$. Then, to determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the angles of intersection of $p_1$ and $p_2$ on $E_1$. For that, let us first define another way that ellipses can be represented
+Let us assume that $E_1$ and $E_2$, each one with shape parameters $(a,b) \in \R^2_{>0}$, intersect at $p_1$ and $p_2$. Then, to determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the angles of intersection of $p_1$ and $p_2$ on $E_1$. For that, we will use the curve defined in \autoref{eq:parametric_ellipse} because it is easier to work with angles here.
 
-\begin{definicao}
-Let $E(q)$ be an ellipse with shape parameters $(a,b)\in \R^2_{>0}$, centered at $q \in \R^2$. Then, $E(q)$ is the set of points that are the image of curve $\gamma : [0, 2\pi] \mapsto \R^2$ given by
-
-\begin{equation}\label{eq:parametric_ellipse}
-\gamma(t) = \left\{
-\begin{array}{l}
-x(t)= a\cos{t} + q_x\\
-y(t)=b\sin{t} + q_y
-\end{array}
-\right.
-\end{equation}
-
-\end{definicao}
-
-From \autoref{eq:parametric_ellipse}, we can get that
+Given a point $(x,y)$, to find the angle it makes with the major axis, from \autoref{eq:parametric_ellipse}, we can get that
 
 \begin{align*}
 \dfrac{y-q_y}{x-q_x} = \dfrac{b}{a}\tan{t}\\
 t=\arctan\left(\dfrac{a}{b} \dfrac{y-q_y}{x-q_x}\right)
 \end{align*}
 
-However, as the image of $\arctan$ is $[-\frac{\pi}{2}, \frac{\pi}{2}]$, we need to check the sign of $x-q_x$ to determine the angle in $[0, 2\pi]$. After that, we can get the two angles that represent the intersection points on $E_1$.
+As the image of $\arctan$ is $[-\frac{\pi}{2}, \frac{\pi}{2}]$, we need to check the sign of $x-q_x$ to determine the angle in $[0, 2\pi]$. After that, we can get the two angles that represent the intersection points $p_1$ and $p_2$ on $E_1$.
 
 To find out which one of the angles are $\Gamma_+(1,2)$, we need to go further and determine the derivative of $\gamma(t)$ which is going to be used to determine the vectors tangent to the ellipses at the intersection points.
 
@@ -104,8 +90,8 @@ First, let us state some facts that can also be seen in \autoref{fig:ellipse_gam
 
 \begin{itemize}
     \item $E_1 \cap E_2$ is convex and bounded by two arcs, one from each ellipse.
-    \item Starting at any of the intersection points, one of the $E_1 \cap E_2$ arcs will be clockwise-oriented and the other counter-clockwise-oriented.
-    \item The counter-clockwise-oriented arc starting at $\Gamma_+(1,2)$ is from $E_1$.
+    \item Starting at any of the intersection points, one of the $E_1 \cap E_2$ arcs will be clockwise-oriented and the other, counter-clockwise-oriented.
+    \item The counter-clockwise-oriented arc starting at $\Gamma_+(1,2)$ is from the ellipse $E_1$.
 \end{itemize}
 
 
