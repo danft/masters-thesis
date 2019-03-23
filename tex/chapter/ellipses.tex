@@ -12,7 +12,7 @@ Axis-parallel ellipses are defined as the set of points that satisfy \autoref{eq
 
 Firstly, the case with only one ellipse is considered, an instance of the problem is denoted as $MCE(\Pp, a, b)$ where $\Pp$ is a set of points and $(a,b) \in \R_{>0}^2$, is a pair of real numbers called the shape parameters of an ellipse. 
 In the general case every point has weights, but without loss of generality (later explained), this detail will be ignored and the weights are assumed to be unitary.
-The notation used here is similar to the one introduced on \autoref{chapter:pmclp}, the ellipse with an undefined center is referred to as $E$. To denote the ellipse with center set to be at point $q$, $E(q)$ is used. Also, the set of points covered by $E(q)$ is denoted by $E(q) \cap \Pp$, which indirectly defines $E(q)$ to be the set of points that satisfy \autoref{equation:cover_ellipse}, in other words $E(q)$ is the coverage region defined by the ellipse with shape parameters $(a,b)$, located at center $q$. Hence, the problem can be defined as follows
+The notation used here is similar to the one introduced on \autoref{chapter:pmclp}, the ellipse with an undefined center is referred to as $E$. To denote the ellipse with center set to be at point $q$, $E(q)$ is used. Also, the set of points covered by $E(q)$ is denoted by $E(q) \cap \Pp$, which indirectly defines $E(q)$ to be the set of points that satisfy \autoref{equation:cover_pellipse}, in other words $E(q)$ is the coverage region defined by the ellipse with shape parameters $(a,b)$, located at center $q$. Hence, the problem can be defined as follows
 
 \begin{definicao}
 Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
@@ -60,8 +60,7 @@ As stated in \autoref{lema:disk}, $MCE_1$ runs in $\bigO(n^2\log{n})$. The numbe
 Also, it can be seen that the unitary weights assumption can be easily removed through replacing the way the answer is updated: 
 the weights of the covered points should be added to the answer instead of the number of covered points, this could be done by keeping an extra variable along with every possible set of points an ellipse can cover that is returned by $MCE_1$.
 
-It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the positive weights constraint.
-
+It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the positive weights constraint. Also, if two ellipses have their centers with euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
 
 
 
