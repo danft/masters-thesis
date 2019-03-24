@@ -31,7 +31,7 @@ The elliptical norm takes a $2$ by $2$ positive definite matrix as its parameter
 
 It is easy to see that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the euclidean norm.
 
-Determining the distance between two points, given a norm function is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is $||p-q||_{elliptical}$.
+Determining the distance between two points, given a norm function is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{elliptical}$.
 
 \section{Disk}
 
@@ -44,15 +44,15 @@ A disk is the set of points of a circle plus its interior, let $c \in \R^2$, a u
 
 \section{Ellipse}
 
-The ellipse is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation that describes any conic section is given as follows
+The ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation that describes any conic section is given as follows
 
 \begin{equation}\label{equation:quadratic_form}
 Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
 \end{equation}
 
-Any ellipse, rotated or axis-parallel, can be described by \autoref{equation:quadratic_form}. To distinguish an ellipse from the other conic sections the condition $4AC - B^2>0$ can be verified \cite{ayoub}.
+Any ellipse, rotated or axis-parallel, can be described by \autoref{equation:quadratic_form}. To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ can be verified \cite{ayoub}.
 
-Then, assuming the center of an ellipse is $c \in \R^2$, then \autoref{equation:quadratic_form} can be rewritten as a quadratic form as follows
+Assuming the center of an ellipse is $c \in \R^2$, then \autoref{equation:quadratic_form} can be rewritten as a quadratic form as follows
 
 \begin{equation}
 (p-c)^{T}Q(p-c) = 1
@@ -91,7 +91,7 @@ Finally, an ellipse is said to be axis-parallel if its major-axis (see \autoref{
 
 \subsection{Axis-parallel}
 
-An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{the only non-zero terms are in the main diagonal}. This can be understood as a scaling transformation applied to the euclidean norm.
+An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal}. This can be understood as a scaling transformation applied to the euclidean norm.
 Defining the matrix $Q$ as
 
 \[
