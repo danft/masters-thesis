@@ -2,7 +2,7 @@ Some definitions and results that are used throughout the text are given in this
 
 \section{Norm}
 
-A norm is a function that maps every vector from a vector space onto a non-negative number satisfying some conditions. Here it is defined for the vector space $\R^2$ as follows
+A norm is a function that maps every vector from a vector space onto a non-negative real number satisfying some conditions. Here it is defined for the vector space $\R^2$ as follows
 
 \begin{definicao}
 Let $\xi : \R^2 \mapsto [0, \infty]$, $\xi$ is said to be a norm function of $\R^2$ if for any $p, q \in \R^2$ and $a \in \R$,
@@ -36,7 +36,7 @@ Determining the distance between two points, given a norm function is done by ca
 \section{Disk}
 
 A circle (or circumference) is a set of points in $\R^2$ that have constant euclidean distance, also known as radius, to another point, also referred to as the center of the circle. A unit circle is a circle with radius equal to $1$.
-A disk is the set of points of a circle plus its interior, let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy \autoref{eq:disk}.
+A disk is the set of points bounded by a circle, in other words let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy \autoref{eq:disk}.
 
 \begin{equation}\label{eq:disk}
 ||p-c||_2^2 \le 1
@@ -44,13 +44,13 @@ A disk is the set of points of a circle plus its interior, let $c \in \R^2$, a u
 
 \section{Ellipse}
 
-The ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation that describes any conic section is given as follows
+The ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation which describes any conic section is given as follows
 
 \begin{equation}\label{equation:quadratic_form}
 Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
 \end{equation}
 
-Any ellipse, rotated or axis-parallel, can be described by \autoref{equation:quadratic_form}. To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ can be verified \cite{ayoub}.
+To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ can be verified \cite{ayoub}.
 
 Assuming the center of an ellipse is $c \in \R^2$, then \autoref{equation:quadratic_form} can be rewritten as a quadratic form as follows
 
@@ -68,7 +68,7 @@ Q=
 	\end{array} } \right).
 \]
 
-This makes us arrive at the following definition of the ellipse
+Note that asking $Q$ to be positive definite is the same as asking $4AC-B^2$ to be positive. This makes us arrive at the following definition of the ellipse
 
 \begin{definicao}\label{def:ellipse}
     Let $c\in \R^2$ be the center of an ellipse and $Q$ be a $2$ by $2$ positive definite matrix, an ellipse is the set of every point $p \in \R^2$ that have $||p-c||_{elliptical}^2 = (p-c)^{T}Q(p-c) = 1$. Also, a point $p$ is considered covered by an ellipse if $||p-c||_{elliptical}^2 = (p-c)^{T}Q(p-c) \le 1$.
