@@ -1,42 +1,32 @@
 Some definitions and results that are used throughout the text are given in this chapter.
 
-\section{Norm}
+\section{Elliptical and euclidean norm functions}
 
-A norm is a function that maps every vector from a vector space onto a non-negative real number satisfying some conditions. Here it is defined for the vector space $\R^2$ as follows
-
-\begin{definicao}
-Let $\xi : \R^2 \mapsto [0, \infty]$, $\xi$ is said to be a norm function of $\R^2$ if for any $p, q \in \R^2$ and $a \in \R$,
-
-\begin{enumerate}
-    \item $\xi(p + q) \le \xi(p) + \xi(q)$
-    \item $\xi(ap) = |a|\xi(p)$
-    \item if $\xi(p)=0$, then $p=0$
-\end{enumerate}
-
-\end{definicao}
-
-\subsection{Elliptical and euclidean norm functions}
+A norm in $\R^2$ is a function that maps every vector onto a non-negative real number satisfying homogeneity and the triangle inequality. 
 
 Let $u \in \R^2$ be a vector, the euclidean norm of $u$ is defined as
 
 \begin{equation}\label{eq:norm2}
-||u||_2 = \sqrt{u^{T}u}
+||u||_2 = \sqrt{u^{T}u},
 \end{equation}
 
-The elliptical norm takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the euclidean norm. Let $u \in \R^2$ be a vector and $Q$ be a $2$ by $2$ positive definite matrix, the elliptical norm of $u$ is defined as 
+\noindent the elliptical norm, also known as weighted norm, takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the euclidean norm. Let $u \in \R^2$ be a vector, the elliptical norm of $u$ is defined as 
 
 \begin{equation}
-||u||_{elliptical} = \sqrt{u^{T}Qu}
+||u||_{Q} = \sqrt{u^{T}Qu},
 \end{equation}
+
+\noindent where $Q$ is a $2$ by $2$ positive definite matrix.
 
 It is easy to see that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the euclidean norm.
 
-Determining the distance between two points, given a norm function is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{elliptical}$.
+Determining the distance between two points, given a norm function is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{Q}$.
 
 \section{Disk}
 
 A circle (or circumference) is a set of points in $\R^2$ that have constant euclidean distance, also known as radius, to another point, also referred to as the center of the circle. A unit circle is a circle with radius equal to $1$.
-A disk is the set of points bounded by a circle, in other words let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy \autoref{eq:disk}.
+
+A disk is the set of points bounded by a circle. In other words let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy \autoref{eq:disk}.
 
 \begin{equation}\label{eq:disk}
 ||p-c||_2^2 \le 1
@@ -44,21 +34,23 @@ A disk is the set of points bounded by a circle, in other words let $c \in \R^2$
 
 \section{Ellipse}
 
-The ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation which describes any conic section is given as follows
+An ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation which describes any conic section is given as follows
 
 \begin{equation}\label{equation:quadratic_form}
-Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
+Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0,
 \end{equation}
 
-To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ can be verified \cite{ayoub}.
+\noindent where $A,B,C,D,E,F \in \R$ are fixed and $x, y \in \R$.
+
+To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ must be verified \cite{ayoub}.
 
 Assuming the center of an ellipse is $c \in \R^2$, then \autoref{equation:quadratic_form} can be rewritten as a quadratic form as follows
 
 \begin{equation}
-(p-c)^{T}Q(p-c) = 1
+(p-c)^{T}Q(p-c) = 1,
 \end{equation}
 
-with $p \in \R^2$ and $Q$ being a $2$ by $2$ positive definite matrix which carries the parameters of the ellipse. From \autoref{equation:quadratic_form}, $Q$ can be defined as follows
+\noindent with $p \in \R^2$ and $Q$ being a $2$ by $2$ positive definite matrix which carries the parameters of the ellipse. From \autoref{equation:quadratic_form}, $Q$ can be defined as follows
 
 \[
 Q=
@@ -68,10 +60,10 @@ Q=
 	\end{array} } \right).
 \]
 
-Note that asking $Q$ to be positive definite is the same as asking $4AC-B^2$ to be positive. This makes us arrive at the following definition of the ellipse
+Note that asking $Q$ to be positive definite is the same as asking $4AC-B^2$ to be positive. This makes us arrive at the following definition of the ellipse,
 
 \begin{definicao}\label{def:ellipse}
-    Let $c\in \R^2$ be the center of an ellipse and $Q$ be a $2$ by $2$ positive definite matrix, an ellipse is the set of every point $p \in \R^2$ that have $||p-c||_{elliptical}^2 = (p-c)^{T}Q(p-c) = 1$. Also, a point $p$ is considered covered by an ellipse if $||p-c||_{elliptical}^2 = (p-c)^{T}Q(p-c) \le 1$.
+    Let $c\in \R^2$ be the center of an ellipse and $Q$ be a $2$ by $2$ positive definite matrix. An ellipse is the set of every point $p \in \R^2$ that have $||p-c||_{Q}^2 = (p-c)^{T}Q(p-c) = 1$. Also, a point $p$ is considered covered by an ellipse if $||p-c||_{Q}^2 = (p-c)^{T}Q(p-c) \le 1$.
 \end{definicao}
 
 An alternative way to define an ellipse, which can be seen as just a property derived from the definition above, is to begin its construction with two points called foci and a constant $R \in \R$, with $R$ being greater than the euclidean distance between the two foci points (see \autoref{fig:ellipse_with_foci}). The ellipse is, then, defined as the set of points whose distance to the foci is equal to $R$. In other words, let $f_1, f_2 \in \R^2$ be the two foci points, the ellipse is the set of every point $p \in \R^2$, such that $||p-f_1||_2 + ||p-f_2||_2 = R$. It can be shown that this definition is equivalent to \autoref{def:ellipse}, with the coverage of a point $p$ being equivalent to $||p-f_1||_2 + ||p-f_2||_2 \le R$.
@@ -85,13 +77,14 @@ An alternative way to define an ellipse, which can be seen as just a property de
     \label{fig:ellipse_with_foci}
 \end{figure}
 
-Also, in \autoref{fig:ellipse_with_foci}, the distance $a = ||p_a - c||_2$ is called the semi-major, and the distance $b = ||p_b-c||_2$ is called the semi-minor. These two values are also referred to as the shape parameters of an ellipse. Let $d = ||c-f_1||_2$, then it is easy to see that $a = R - d$ and $b = \sqrt{\frac{R^2}{4} - d^2}$.
+Also, in \autoref{fig:ellipse_with_foci}, the distance $a = ||p_a - c||_2$, where $p_a$ is one of the intersection points of the ellipse with the major axis, is called the semi-major, and the distance $b = ||p_b-c||_2$, where $p_b$ is one of the intersection points of the ellipse with the minor axis, is called the semi-minor. These two values are also referred to as the shape parameters of an ellipse. Let $d = ||c-f_1||_2$, then it is easy to see that $a = R - d$ and $b = \sqrt{\frac{R^2}{4} - d^2}$.
 
 Finally, an ellipse is said to be axis-parallel if its major-axis (see \autoref{fig:ellipse_with_foci}), which is the line that passes through its two foci points, is parallel to the $x$-axis.
 
 \subsection{Axis-parallel}
 
-An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal}. This can be understood as a scaling transformation applied to the euclidean norm.
+An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal.}. This can be understood as a scaling transformation applied to the euclidean norm.
+
 Defining the matrix $Q$ as
 
 \[
@@ -99,25 +92,25 @@ Q=
 \left( {\begin{array}{cc}
     \frac{1}{a^2} & 0 \\
     0 & \frac{1}{b^2} \\
-    \end{array} } \right)
+    \end{array} } \right),
 \]
 
-Then, starting from \autoref{def:ellipse}, we can obtain the following equation
+\noindent then, starting from \autoref{def:ellipse}, we can obtain the following equation
 
 \begin{align*}
-        (p-c)^{T}Q(p-c) = 1\\
-    (\frac{p_x-c_x}{a^2}, \frac{p_y-c_y}{b^2})^{T}(p_x-c_x, p_y-c_y) = 1
+        (p-c)^{T}Q(p-c) = 1 & \Rightarrow \\
+    (\frac{p_x-c_x}{a^2}, \frac{p_y-c_y}{b^2})^{T}(p_x-c_x, p_y-c_y) = 1 & \Rightarrow
  \end{align*}
  \begin{equation}\label{equation:pellipse}
-  \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} = 1
+  \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} = 1,
  \end{equation}
 
-where $a$ and $b$ are the semi-major and semi-minor shape parameters respectively.
+\noindent where $a$ and $b$ are the semi-major and semi-minor shape parameters, respectively.
 
 Also, the coverage region is determined by just changing the equality to a inequality as follows
 
 \begin{equation}\label{equation:cover_pellipse}
-\frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} \le 1
+\frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} \le 1.
 \end{equation}
 
 Another way to represent ellipses, which will be useful in some occasions, is through writing it as a curve, function of the angle with its major-axis (see \autoref{fig:ellipse_params}).
@@ -136,10 +129,10 @@ Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R
     \begin{equation}\label{eq:parametric_ellipse}
     \gamma(t) = \left\{
     \begin{array}{l}
-    x(t)= a\cos{t} + c_x\\
-    y(t)=b\sin{t} + c_y
+    x(t)= a\cos{t} + c_x,\\
+    y(t)=b\sin{t} + c_y.
     \end{array}
     \right.
     \end{equation}
 
-No equivalent disk-circle wording exists for ellipses, this could be a source of ambiguity in the text, that is why a note for the reader was judged to be necessary. Throughout this work an ellipse will represent the set of points that satisfy \autoref{def:ellipse}. In some places, though, with prior clarification, we will denote as an ellipse, the set of points that are covered by the ellipse itself. For example, when we define $\Pp \cap E$ as the set of points in $\Pp$ that are covered by $E$, we are implicitly calling $E$ the set of points that are covered by the ellipse itself as it is defined by \autoref{def:ellipse}.
+No equivalent disk-circle wording exists for ellipses, this could be a source of ambiguity in the text, that is why a note for the reader was judged to be necessary. Throughout this work an ellipse will represent the set of points that satisfy \autoref{def:ellipse}. In some places, though, with prior clarification, we will denote as an ellipse the set of points that are covered by the ellipse itself. For example, when we define $\Pp \cap E$ as the set of points in $\Pp$ that are covered by $E$, we are implicitly calling $E$ the set of points that are covered by the ellipse itself as it is defined by \autoref{def:ellipse}.
