@@ -17,7 +17,7 @@ We refer to the unit disk with undefined center as $D$. If it is placed at a cen
     Let $\Pp=\{p_1,\dots,p_n\}$ be a set of $n$ points in $\R^2$, and $w(p)>0, p \in \Pp$ the weight of every point in $\Pp$, we denote $w(A)$, with $A \subset \Pp$, as the sum of weights of every point in $A$. Finally, let $D$ be a unit disk, we define the optimal solution of $MCD(\Pp,1)$ as
     
     \begin{equation}\label{eq:max_one_disk}
-        \max_q w(\Pp \cap D(q))
+        \max_q w(\Pp \cap D(q)).
     \end{equation}
 
 \end{definicao}
@@ -38,7 +38,7 @@ Let $\Pp=\{p_1,\dots,p_n\}$, with $p\in \R^2$ be a set of points, $\D=\{D_1,\dot
 \centering
 
     \caption{Three disks that have non-empty pairwise intersection among them, but no common intersection}
-    \begin{tikzpicture}[domain=0:11]
+    \begin{tikzpicture}[scale=0.55]
     %\draw [help lines] (-5,-3) grid (5,3);
     \draw (0,0) circle (1cm) (0.9,1.6) circle (1cm) (-0.9,1.6) circle (1cm);
 
@@ -48,9 +48,9 @@ Let $\Pp=\{p_1,\dots,p_n\}$, with $p\in \R^2$ be a set of points, $\D=\{D_1,\dot
 	\draw[fill] (0,0) circle [radius=.5pt];
     \draw[fill] (-0.9,1.6) circle [radius=.5pt];
     
-    \node[below] at (0,0) {$p_1$};
-    \node[below] at (0.9, 1.6) {$p_2$};
-    \node[below] at (-0.9, 1.6) {$p_3$};
+    \node[below] at (0,0) {\tiny $p_1$};
+    \node[below] at (0.9, 1.6) {\tiny $p_2$};
+    \node[below] at (-0.9, 1.6) {\tiny $p_3$};
     
     %\draw [-] (-5,0) -- (5,0);
      %\draw [-] (0,-3) -- (0,3);
@@ -61,13 +61,13 @@ Let $\Pp=\{p_1,\dots,p_n\}$, with $p\in \R^2$ be a set of points, $\D=\{D_1,\dot
 \end{figure}
 
 
-A solution for the maximum weight clique is a set of points $Q$, such that the sum of weights of all disks that cover it is maximized. Even though, there could be a use for the whole set $Q$, as this problem is used as a tool to solve another problem, only finding a point from the maximum weight clique is enough. This will become clear when the equivalence is stated. With everything in hands, we can define the maximum weight clique problem as follows
+A solution for the maximum weight clique is a set of points $Q$, such that the sum of weights of all disks that cover it is maximized. Even though there could be a use for the whole set $Q$, as this problem is used as a tool to solve another problem, only finding a point from the maximum weight clique is enough. This will become clear when the equivalence is stated. With everything in hands, we can define the maximum weight clique problem as follows
 
 \begin{definicao}\label{def:max_weight_clique}
     Let $\D$ be a set of unit disks and $\Pp$ be a set of points as defined before, an optimal solution for the maximum weight clique problem is given by 
     
     \begin{equation}
-        \max_q \sum_{D_k \cap q \neq \emptyset} w_k
+        \max_q \sum_{D_k \cap q \neq \emptyset} w_k.
     \end{equation}
 
 \end{definicao}
@@ -105,8 +105,16 @@ This observation makes checking for every disk $\Cc$, every intersection area th
 In \autoref{fig:3disks_intersect}, it is shown all the intersection points between $D_1$ with $D_2$ and $D_3$, also they are labeled according to \autoref{def:inter_arc}, note that $\Gamma_+(1,3) > \Gamma_-(1,3)$ (the angles should be in the $[0,2\pi]$ interval).
 
 With \autoref{def:inter_arc} in hands, we can establish the basis of the algorithm to find the maximum clique that a disk $D_i$ participates: a traversal going through every point of intersection with $D_i$ in counter-clockwise order keeping a set of active disks, when an opening intersection angle is reached, the corresponding disk is added to the active set; when a closing one is reached, the corresponding disk is removed from the active set.
-This simple traversal, however, would not handle the special case with $\Gamma_+(i,j) > \Gamma_-(i,j)$, see \autoref{fig:3disks_intersect}. If the traversal begins at the point with smallest angle, the algorithm would remove $D_3$ from the active disks without first adding it, if there was another disk starting before $\Gamma_-(1,3)$, the algorithm would not have both of them in the active set at the same time, and the optimal solution could end up not being found. This can be worked around repeating the traversal once without resetting the active disks set, that way in the beginning of the second traversal, the active set would contain the disks that have $\Gamma_+(i,j) > \Gamma_-(i,j)$.
+This simple traversal, however, would not handle the special case with $\Gamma_+(i,j) > \Gamma_-(i,j)$ (see \autoref{fig:3disks_intersect}). If the traversal begins at the point with smallest angle, the algorithm would remove $D_3$ from the active disks without first adding it. If there was another disk starting before $\Gamma_-(1,3)$, the algorithm would not have both of them in the active set at the same time, and the optimal solution could end up not being found. This can be worked around repeating the traversal once without resetting the active disks set, that way in the beginning of the second traversal, the active set would contain the disks that have $\Gamma_+(i,j) > \Gamma_-(i,j)$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated simulating the traversal repetition (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively). It can be seen that without the repetition, the algorithm would find $2$ as the value of an optimal solution, which is wrong.
 
+\begin{figure}[H]
+    \centering
+    
+    \caption{The intersections list of a disk with three other disks.}
+    \input{tex/figures/fig:array_disks.tex}
+    \fautor
+    \label{fig:array_disks}
+\end{figure}
 
 \begin{algoritmo}
 \caption{Algorithm for $MCD(\Pp, 1)$ with unit weights}\label{algoritmo:mcd_1}
@@ -118,7 +126,6 @@ This simple traversal, however, would not handle the special case with $\Gamma_+
 \State Let $D_i$ be the disk with center at $p_i$
 \State Let $I_i$ be the set of disks that intersect with $D_i$
 \State $A = \bigcup_{j \in I_i} \Gamma_+(i,j) \cup \Gamma_-(i,j)$
-
 \State $Q \gets \{D_i\}$ \Comment{The set of active disks}
 \For{$cnt=1..2$} \Comment{Do it twice}
 \For{$a \in A$}\Comment{Assuming $A$ is sorted}
@@ -154,4 +161,10 @@ If a simpler implementation is desired, or the number of intersections is large,
 
 \section{Multiple disks $MCD(\Pp, m)$}
 
-For the case with $m>1$, a simple backtracking algorithm can be developed, considering every possible solution for every one of the $m$ unit disks. In any solution, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the maximum weight clique problem. The point $q$ is inside a intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by the algorithm as a candidate to be the optimal solution. Therefore, the \autoref{algoritmo:mcd_1} can be adapted to serve the backtracking that searches for an optimal solution of $MCD(\Pp, m)$. Then, as for every disk there are $\bigO(n^2)$ possible centers, the overall complexity of the backtracking algorithm is $\bigO(n^{2m})$.
+
+In \cite{cabello:2006}, a $\bigO(n^{2m-1}\log{n})$ algorithm for $MCD(\Pp, m)$ is developed as a sub-routine for its $(1-\epsilon)$-approximation algorithm. Firstly, they solve the sub-problem $MCD(\Pp, 2)$ in $\bigO(n^3\log{n})$. Then for the rest of the points that are not in that solution, it uses the algorithm developed in \cite{chazelle:1986} for the one-disk case checking every possible solution for every one of the disks left.
+
+It can be seen that in any solution of $MCD(\Pp, m)$, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the maximum weight clique problem: the point $q$ is inside an intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by \autoref{algoritmo:mcd_1} as a candidate to be the optimal solution. The number of points \autoref{algoritmo:mcd_1} goes through is $\bigO(n^2)$, then checking every possible center for every ellipse yields a $\bigO(n^{2m})$ run-time complexity.
+This algorithm is described in \autoref{chapter:ellipses} for the ellipses case.
+
+The choice of developing a different method for the problem, instead of using the one from \cite{cabello:2006}, is taken for the sake of simplicity considering both algorithms achieve similar bounds.

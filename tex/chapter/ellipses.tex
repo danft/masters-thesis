@@ -53,7 +53,7 @@ Let $MCE(\Pp, \E)$ be an instance of the maximal covering by ellipses, an optima
 \end{equation}
 \end{definicao}
 
-\autoref{algoritmo:mce} describes the adapted version of the maximal disk covering algorithm for the ellipses case. The $MCE_1$ procedure returns every possible set of points that an ellipse with shape parameters $(a,b)$ can cover. With that, procedure $MCE$ does the backtracking process, assigning every possible cover to every ellipse.
+\autoref{algoritmo:mce} describes the adapted version of the maximal disk covering algorithm for the ellipses case. In \autoref{algoritmo:mce1}, the $MCE_1$ procedure returns every possible set of points that an ellipse with shape parameters $(a,b)$ can cover. With that, procedure $MCE$ does the backtracking process, assigning every possible cover to every ellipse.
 
 As stated in \autoref{lema:disk}, $MCE_1$ runs in $\bigO(n^2\log{n})$, where $n$ is the number of points. The number of sets of points an ellipse can cover, however, is $\bigO(n^2)$. Note that the $\log{n}$ being part of the complexity is due to sorting the set $A$. If $MCE_1$ is called only in a pre-process phase storing its return for every ellipse, a $\bigO(n^{2m})$ run-time complexity can be achieved. 
 
@@ -66,7 +66,7 @@ It is worth noting that some easy improvements, which do not change the algorith
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 
-\begin{algoritmo}[H]
+\begin{algoritmo}
 \caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
 %\KwIn{alskdjf}
 
@@ -106,7 +106,7 @@ It is worth noting that some easy improvements, which do not change the algorith
 \end{algorithmic}
 \end{algoritmo}
 
-\begin{algoritmo}[H]
+\begin{algoritmo}
     \caption{Algorithm for $MCE(\Pp, \E)$ with unit weights}\label{algoritmo:mce}
     \begin{algorithmic}[1]
         \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of ellipses $\E = \{E_1, \dots, E_m\}$.}
