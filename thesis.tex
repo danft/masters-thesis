@@ -30,6 +30,11 @@
 \usepackage{tikz}
 \usetikzlibrary{quotes, angles, intersections}
 
+
+\floatname{algorithm}{Procedure}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 %\usepackage{algorithm2e}
 
 %MEUS COMANDOs
@@ -85,7 +90,7 @@
 % conter no mínimo 1 e no máximo 5 palavras-chave
 \textoresumo[english]{
     Planar maximal covering with ellipses is an optimization problem where one wants to place ellipses on the plane to cover demand points, such that a function depending on the value of the covered points and on the cost of the ellipses that have been used is maximized. Initially, we developed an algorithm for the version of the problem where the ellipses are parallel to the coordinate axis. For the future, we intend to adapt an approximation algorithm developed for the planar maximal covering by disks and develop a method for the variant of the problem where the ellipses can be freely rotated. 
-    }{Optimization, Maximal covering of points using ellipses}
+    }{Optimization, Planar Maximal Covering Location Problem, maximal covering of points using ellipses}
 
 % ----------------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS
@@ -115,7 +120,7 @@
 %\incluilistadecodigos
 
 % Inclui a lista de siglas e abreviaturas
-\incluilistadesiglas
+%\incluilistadesiglas
 
 % Inclui a lista de símbolos
 %\incluilistadesimbolos

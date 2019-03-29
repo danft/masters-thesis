@@ -1,10 +1,10 @@
-In this chapter, two versions of the planar maximal covering by ellipses problem will be introduced.
+In this chapter, two versions of the Planar Maximal Covering by Ellipses Problem will be introduced.
 Firstly, the axis-parallel variant will be defined and a method for it will be developed. Secondly, the version where there is no axis-parallel constraint and the ellipses can be freely rotated will be introduced.
 
 \section{Axis-Parallel}
-The maximal planar covering using axis-parallel ellipses was first introduced in \cite{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find the optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
+The maximal planar covering using axis-parallel ellipses was first introduced in \cite{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find an optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
 
-The second work found in the literature was \cite{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find the optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find the optimal solutions for the instances that the first method could not get as well as for new created instances.
+The second work found in the literature was \cite{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find an optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find optimal solutions for the instances that the first method could not get as well as for new created instances.
 
 \subsection{Notation and definition of the problem}
 
@@ -12,7 +12,7 @@ Axis-parallel ellipses are defined as the set of points that satisfy \autoref{eq
 
 Firstly, the case with only one ellipse is considered, an instance of the problem is denoted as $MCE(\Pp, a, b)$ where $\Pp$ is a set of points and $(a,b) \in \R_{>0}^2$ is a pair of real numbers called the shape parameters of an ellipse. 
 In the general case, every point has weights, but without loss of generality (later explained), this detail will be ignored and the weights are assumed to be unitary.
-The notation used here is similar to the one introduced on \autoref{chapter:pmclp}, the ellipse with an undefined center is referred to as $E$. To denote the ellipse with center set to be at point $q$, $E(q)$ is used. Also, the set of points covered by $E(q)$ is denoted by $E(q) \cap \Pp$, which indirectly defines $E(q)$ to be the set of points that satisfy \autoref{equation:cover_pellipse} (in other words $E(q)$ is the coverage region defined by the ellipse with shape parameters $(a,b)$, located at center $q$). Hence, the problem can be defined as follows
+The notation used here is similar to the one introduced on \autoref{chapter:pmclp}, the ellipse with an undefined center is referred to as $E$. To denote the ellipse with center set to be at point $q$, $E(q)$ is used. Also, the set of points covered by $E(q)$ is denoted by $E(q) \cap \Pp$, which indirectly defines $E(q)$ to be the set of points that satisfy \autoref{equation:cover_pellipse} (in other words $E(q)$ is the coverage region defined by the ellipse with shape parameters $(a,b)$, located at center $q$). Hence, the problem can be defined as follows.
 
 \begin{definicao}
 Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
@@ -60,11 +60,9 @@ As stated in \autoref{lema:disk}, $MCE_1$ runs in $\bigO(n^2\log{n})$, where $n$
 Also, it can be seen that the unitary weights assumption can be easily removed through replacing the way the answer is updated: 
 the weights of the covered points should be added to the answer instead of the number of covered points, this could be done by keeping an extra variable along with every possible set of points an ellipse can cover that is returned by $MCE_1$.
 
-It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the positive weights constraint. Also, if two ellipses have their centers with euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
+It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the positive weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
 
-\floatname{algorithm}{Procedure}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 
 \begin{algoritmo}
 \caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
@@ -73,7 +71,9 @@ It is worth noting that some easy improvements, which do not change the algorith
 \begin{algorithmic}[1]
 \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and the shape parameters $(a, b)$ of an ellipse.}
 \Ensure{A collection of subsets of $\Pp$ that the ellipse is able to cover.}
-\Procedure{$MCE_1$}{$\Pp, a, b$}\Comment{Returns every possible coverage.}
+
+\item[]
+\Procedure{$MCE_1$}{$\Pp, a, b$}
 \State $Z \gets \{\}$ \Comment{A collection of subsets of $\Pp$, each being a possible coverage.}
 
 \ForAll{$p_i \in \Pp$}
@@ -81,13 +81,19 @@ It is worth noting that some easy improvements, which do not change the algorith
 
 \State Let $I_i$ be the set of ellipses that intersect with $E_i$
 
-\State $A = \bigcup_{j \in I_i} \Gamma_+(i,j) \cup \Gamma_-(i,j)$
+%\State $A \gets \{\}$ \Comment{The multiset of intersection angles with $E_i$}
+
+\State $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$ \Comment{The multiset of intersection angles with $E_i$.}
+
+%\ForAll{$j \in I_i$}
+%\State $A \gets A \cup \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
+%\EndFor
 
 \State $Z \gets Z \cup \{\{p_i\}\}$
-\State $Cov \gets \{p_i\}$ \Comment{The set of active disks}
+\State $Cov \gets \{p_i\}$ \Comment{The set of active disks.}
 
-\For{$cnt=1..2$} \Comment{Do it twice}
-\For{$a \in A$}\Comment{Assuming $A$ is sorted}
+\For{$cnt=1..2$} \Comment{Do it twice.}
+\For{$a \in A$}\Comment{Assuming $A$ is sorted.}
 \State Let $p_a$ be the point represented by the ellipse that intersects $E_i$ at angle $a$. 
 \If{$a$ is a starting angle}
 \State $Cov \gets Cov \cup \{p_a\}$
@@ -111,7 +117,10 @@ It is worth noting that some easy improvements, which do not change the algorith
     \begin{algorithmic}[1]
         \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of ellipses $\E = \{E_1, \dots, E_m\}$.}
         \Ensure{The maximum number of points that can be covered by the set of ellipses $\E$.}
-        \Procedure{$MCE$}{$\Pp, \E, j=1$}\Comment{Returns an optimal solution of $MCE(\Pp, \E)$, $j$ is a backtracking parameter that says that $j$-th ellipse should be processed by this call.}
+        
+        \item[]
+        
+        \Procedure{$MCE$}{$\Pp, \E, j=1$}
         \If{$j = m+1$}
         \State \Return $0$
         \EndIf
@@ -121,7 +130,7 @@ It is worth noting that some easy improvements, which do not change the algorith
         \State Let $(a,b)$ be the shape parameters of $E$
         \State $Q \gets MCE_1(\Pp, a, b)$
         \For{$Cov \in Q$}
-        \State $ans \gets \max\{ans, |Cov| + MCE(\Pp \setminus Cov, \E, j+1)\}$ \Comment{Calls the procedure for the next ellipse}
+        \State $ans \gets \max\{ans, |Cov| + MCE(\Pp \setminus Cov, \E, j+1)\}$ \Comment{Calls the procedure for the next ellipse.}
         \EndFor
         \EndFor
         

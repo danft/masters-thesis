@@ -1,16 +1,16 @@
 Some definitions and results that are used throughout the text are given in this chapter.
 
-\section{Elliptical and euclidean norm functions}
+\section{Elliptical and Euclidean norm functions}
 
 A norm in $\R^2$ is a function that maps every vector onto a non-negative real number satisfying homogeneity and the triangle inequality. 
 
-Let $u \in \R^2$ be a vector, the euclidean norm of $u$ is defined as
+Let $u \in \R^2$ be a vector, the Euclidean norm of $u$ is defined as
 
 \begin{equation}\label{eq:norm2}
 ||u||_2 = \sqrt{u^{T}u},
 \end{equation}
 
-\noindent the elliptical norm, also known as weighted norm, takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the euclidean norm. Let $u \in \R^2$ be a vector, the elliptical norm of $u$ is defined as 
+\noindent the elliptical norm, also known as weighted norm, takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the Euclidean norm. Let $u \in \R^2$ be a vector, the elliptical norm of $u$ is defined as 
 
 \begin{equation}
 ||u||_{Q} = \sqrt{u^{T}Qu},
@@ -18,18 +18,18 @@ Let $u \in \R^2$ be a vector, the euclidean norm of $u$ is defined as
 
 \noindent where $Q$ is a $2$ by $2$ positive definite matrix.
 
-It is easy to see that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the euclidean norm.
+It is easy to see that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the Euclidean norm.
 
 Determining the distance between two points, given a norm function is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{Q}$.
 
 \section{Disk}
 
-A circle (or circumference) is a set of points in $\R^2$ that have constant euclidean distance, also known as radius, to another point, also referred to as the center of the circle. A unit circle is a circle with radius equal to $1$.
+A circle (or circumference) is a set of points in $\R^2$ that have constant Euclidean distance, also known as radius, to another point, also referred to as the center of the circle. A unit circle is a circle with radius equal to $1$.
 
-A disk is the set of points bounded by a circle. In other words let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy \autoref{eq:disk}.
+A disk is the set of points bounded by a circle. In other words let $c \in \R^2$, a unit disk with center $c$ is the set of every point $p \in \R^2$ which satisfy
 
 \begin{equation}\label{eq:disk}
-||p-c||_2^2 \le 1
+||p-c||_2^2 \le 1.
 \end{equation} 
 
 \section{Ellipse}
@@ -66,7 +66,7 @@ Note that asking $Q$ to be positive definite is the same as asking $4AC-B^2$ to 
     Let $c\in \R^2$ be the center of an ellipse and $Q$ be a $2$ by $2$ positive definite matrix. An ellipse is the set of every point $p \in \R^2$ that have $||p-c||_{Q}^2 = (p-c)^{T}Q(p-c) = 1$. Also, a point $p$ is considered covered by an ellipse if $||p-c||_{Q}^2 = (p-c)^{T}Q(p-c) \le 1$.
 \end{definicao}
 
-An alternative way to define an ellipse, which can be seen as just a property derived from the definition above, is to begin its construction with two points called foci and a constant $R \in \R$, with $R$ being greater than the euclidean distance between the two foci points (see \autoref{fig:ellipse_with_foci}). The ellipse is, then, defined as the set of points whose distance to the foci is equal to $R$. In other words, let $f_1, f_2 \in \R^2$ be the two foci points, the ellipse is the set of every point $p \in \R^2$, such that $||p-f_1||_2 + ||p-f_2||_2 = R$. It can be shown that this definition is equivalent to \autoref{def:ellipse}, with the coverage of a point $p$ being equivalent to $||p-f_1||_2 + ||p-f_2||_2 \le R$.
+An alternative way to define an ellipse, which can be seen as just a property derived from the definition above, is to begin its construction with two points called foci and a constant $R \in \R$, with $R$ being greater than the Euclidean distance between the two foci points (see \autoref{fig:ellipse_with_foci}). The ellipse is, then, defined as the set of points whose distance to the foci is equal to $R$. In other words, let $f_1, f_2 \in \R^2$ be the two foci points, the ellipse is the set of every point $p \in \R^2$, such that $||p-f_1||_2 + ||p-f_2||_2 = R$. It can be shown that this definition is equivalent to \autoref{def:ellipse}, with the coverage of a point $p$ being equivalent to $||p-f_1||_2 + ||p-f_2||_2 \le R$.
 
 \begin{figure}[H]
     \centering
@@ -83,7 +83,7 @@ Finally, an ellipse is said to be axis-parallel if its major-axis (see \autoref{
 
 \subsection{Axis-parallel}
 
-An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal.}. This can be understood as a scaling transformation applied to the euclidean norm.
+An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal.}. This can be understood as a scaling transformation applied to the Euclidean norm.
 
 Defining the matrix $Q$ as
 
@@ -118,7 +118,7 @@ Another way to represent ellipses, which will be useful in some occasions, is th
 \begin{figure}[H]
     \centering
     
-    \caption{The ellipse as a parametric curve}
+    \caption{The ellipse as a parametric curve.}
     \input{tex/figures/ellipse_definition.tex}
     \fautor
     \label{fig:ellipse_params}
