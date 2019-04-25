@@ -1,3 +1,4 @@
+#Makes julia be able to see GeometryBase
 push!(LOAD_PATH, pwd())
 
 using Plots

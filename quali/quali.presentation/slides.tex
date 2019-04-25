@@ -14,7 +14,8 @@
 \usepackage{mathrsfs}  
 
 %\usepackage{hyperref}
-%\usepackage{tikz}
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
 
 %MEUS COMANDOs
 \newcommand{\R}{\mathbb{R}}
@@ -39,7 +40,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Sumário}
+\frametitle{Contents}
  \tableofcontents
 \end{frame}
 
@@ -47,67 +48,113 @@
 \begin{frame}
 \frametitle{Introdução}
 \begin{itemize}
-	\item Problemas de cobertura
+	\item Covering problems
 	\begin{itemize}
-		%\item Cobertura mínima
-		\item Cobertura maximal
+		\item Set Cover Problem
+		\item Maximal Covering Problem
 	\end{itemize}
 	\item Maximal Covering Location Problem (MCLP)
 	\item Planar Maximal Covering Location Problem (PMCLP)
 	\begin{itemize}
-	\item Um disco: algoritmos $\bigO(n^2)$ e $\bigO(n^2\log{n})$
-	\item $m$ discos: algoritmo $\bigO(n^{2m-1}\log{n})$
+	\item One disk: $\bigO(n^2)$ and $\bigO(n^2\log{n})$ algorithms
+	\item $m$ disks: $\bigO(n^{2m-1}\log{n})$ algorithm
 	\end{itemize}
-	\item Objetivos
+	\item Goals
 	\begin{itemize}
-		\item Desenvolver algoritmo $\bigO(n^2\log{n})$ para um disco
-		\item Adaptar o algoritmo para o caso com $m$ ellipses
+		\item Develop a $\bigO(n^2\log{n})$ algorithm for the one disk case
+		\item Adapt it for the $m$ ellipses case
 	\end{itemize}
 \end{itemize}
 
 \end{frame} 
 
 
-\section{Preliminares}
+\section{Preliminaries}
 
-\begin{frame}
-	\frametitle{Preliminares}
-	\begin{block}{Norma Euclidiana}
-		Seja $u \in \R^2$
+\begin{frame}{Preliminaries}
+	
+	\begin{block}{Norms}
+		Let $u \in \R^2$ and $Q$ a $2$ by $2$ positive definite matrix
+		\begin{itemize}
+			\item Euclidean
+			\begin{equation*}
+			||u||_2 = \sqrt{u^Tu}
+			\end{equation*}
+			
+			\item Elliptical
+			\begin{equation*}
+			||u||_{Q} = \sqrt{u^TQu}
+			\end{equation*}
+		\end{itemize}
+	\end{block}
+
+
+
+\end{frame}
+
+\begin{frame}{Preliminaries}
+	
+	\begin{block}{Ellipse}
+		Given a center $c \in \R^2$ and a p.d. matrix $Q$, an ellipse is the set of points that satisfy
 		
 		\begin{equation*}
-		||u||_2 = \sqrt{u^Tu}
+		||u-c||_Q = 1
 		\end{equation*}
 		
+		with $\le$ representing the set of covered points
 	\end{block}
 
-\begin{block}{Norma Elíptica}
-	Seja $u \in \R^2$ e $Q$ uma matriz $2x2$ positiva definida
+	\begin{block}{Axis-parallel ellipse}
+		Any $2$ by $2$ diagonal d.p. matrix determines an axis-parallel ellipse, which can also be described by
+		
+		\begin{equation*}
+		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1
+		\end{equation*}
+	\end{block}
+
+\end{frame}
+
+\begin{frame}{Preliminaries}
+	\begin{figure}[H]
+		\centering
+		
+		\caption{Three curves representing the points that have distance equal to one.}
+		\input{figures/a.tex}
+		%\fautor
+		\label{fig:3ellipses_intersect}
+	\end{figure}
+\end{frame}
+
+\section{Maximal Covering by Disks}
+\begin{frame}{Maximal Covering by Disks}{One disk}
+	
+	$MCD(\Pp, 1)$ is the problem of placing one disk on the plane to cover a subset of a demand set $\Pp$ maximizing the weights of the covered points.
+	
+	\begin{equation*}\label{eq:max_one_disk}
+		\max_q w(\Pp \cap D(q)),
+	\end{equation*}
+	
+	\begin{itemize}
+		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$
+		\item $w(A)$, with $A\subset \Pp$ is the sum of weights of the points in $A$
+		\item $D(q)$ is a disk with radius one with center at point $q$
+		\item We will introduce an equivalent problem...
+	\end{itemize}
+\end{frame}
+
+\subsection{Maximum Weight Clique Problem}
+\begin{frame}{Maximum Weight Clique Problem}
+	Let $\D=\{D_1,\dots,D_n\}$ be a set of $n$ unit disks with weights $w_i>0$. The maximum weight clique is defined as
 	
 	\begin{equation*}
-	||u||_{Q} = \sqrt{u^TQu}
+	\max_q \sum_{D_k \cap q \neq \emptyset} w_k,
 	\end{equation*}
-\end{block}
-\end{frame}
-
-\begin{frame}{Preliminares}
-	\begin{block}{Disco}
-		content...
-	\end{block}
-
-	\begin{block}{Ellipse}
-		content...
-	\end{block}
-\end{frame}
-
-\section{Cobertura Maximal por Discos}
-\begin{frame}{Cobertura maximal por discos}{Um disco}
-	content... trabalhos passados e motivacao
-\end{frame}
-
-\section{Cobertura Maximal por Discos}
-\begin{frame}{Cobertura maximal por discos}{Um disco}
-	content... meu algoritmo
+	
+	\begin{itemize}
+		\item The disks are fixed at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$
+		\item A clique is a non-empty intersection area of a subset of disks
+		\item An optimal solution for the maximum weight clique is an optimal solution for $MCD(\Pp,1)$.
+	\end{itemize}
 \end{frame}
 
 

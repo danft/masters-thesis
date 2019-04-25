@@ -11,33 +11,29 @@ function root2(a::Real, b::Real, c::Real)::Union{Nothing, Tuple{Real,Real}}
 		return (-c / b, -c / b)
 	end
 
-	return (-b + √Δ) / 2*a, (-b-√Δ)/2*a
+	return (-b + √Δ) / (2*a), (-b-√Δ)/(2*a)
 end
 
-#Assumes that e_a.a === e_2.a
-function intersection(e_1::Ellipse, e_2::Ellipse)::Union{Nothing,Tuple{Point,Point}}
-	h::Real = e_2.center.x - e_1.center.y
-	k::Real = e_2.center.y - e_1.center.y
-	a::Real = e_1.a
-	b::Real = e_1.b
+#Assumes that e_a.a === e₂.a
+function intersection(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Point,Point}}
+	h::Float64 = e₂.center.x - e₁.center.y
+	k::Float64 = e₂.center.y - e₁.center.y
+	a::Float64 = e₁.a
+	b::Float64 = e₁.b
 
-	α = (-2k*a²)/(2h*b²)
-	β = (b²h² + a²k²) / (2h*b²)
+	α = (-2k*a^2)/(2h*b^2)
+	β = (b^2*h^2 + a^2*k^2) / (2h*b^2)
 	
-	ro = root2(b²α²+a², 2β*α*b², b²*β² - a²*b²)
+	ro = root2(b^2*α^2+a^2, 2β*α*b^2, b^2*β^2 - a^2*b^2)
 
 	if (ro === nothing)
 		return nothing 
 	end
 	
-	y_1, y_2 = ro
+	y₁, y₂ = ro
 
-	@show(y_1, y_2)
-	@show(b²α²+a², 2β*α*b², b²*β² - a²*b²)
+	x_₁ = y₁*α + β
+	x_₂ = y₂*α + β
 
-
-	x_1 = y_1*α + β
-	x_2 = y_2*α + β
-
-	return Point(x_1,y_1), Point(x_2,y_2)
+	return Point(x_₁,y₁), Point(x_₂,y₂)
 end
