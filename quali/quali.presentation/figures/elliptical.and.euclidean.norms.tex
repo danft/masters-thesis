@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{axis}[
+    %axis lines = left,
+    xlabel = $x$,
+    ylabel = {$y$},
+]
+%Below the red parabola is defined
+\addplot [domain=-pi:pi,samples=200,red]({1.2*cos(deg(x))}, {0.7*sin(deg(x))});
+
+\addlegendentry{$\tiny u^T\left[\begin{array}{cc}
+		1.2 & 0\\
+		0 & 0.6
+	\end{array}\right]u = 1$}
+\addplot [domain=-pi:pi,samples=200,blue]({sin(deg(x))}, {cos(deg(x))});
+\end{axis}
+\end{tikzpicture}

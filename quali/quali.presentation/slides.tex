@@ -14,19 +14,28 @@
 \usepackage{mathrsfs}  
 
 %\usepackage{hyperref}
-\usepackage{tikz}
-\usetikzlibrary{quotes, angles, intersections}
+
 
 %MEUS COMANDOs
+
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\D}{\mathscr{D}}
 \newcommand{\Pp}{\mathscr{P}}
 \newcommand{\Cc}{\mathscr{C}}
 \newcommand{\E}{\mathscr{E}}
 
-
-
 \newcommand{\bigO}{\mathscr{O}}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.4}
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+
+
+
+%FIM MEUS COMANDOS
 
 \title[Qualificação de Mestrado]{Planar Maximal Covering with Ellipses}
 \author[Tedeschi, D. F.]{Danilo F. Tedeschi}
@@ -44,9 +53,9 @@
  \tableofcontents
 \end{frame}
 
-\section{Introdução}
+\section{Introduction}
 \begin{frame}
-\frametitle{Introdução}
+\frametitle{Introduction}
 \begin{itemize}
 	\item Covering problems
 	\begin{itemize}
@@ -74,7 +83,7 @@
 \begin{frame}{Preliminaries}
 	
 	\begin{block}{Norms}
-		Let $u \in \R^2$ and $Q$ a $2$ by $2$ positive definite matrix
+		Let $u \in \R^2$ and $Q$ a $2x2$ positive definite matrix
 		\begin{itemize}
 			\item Euclidean
 			\begin{equation*}
@@ -88,17 +97,26 @@
 		\end{itemize}
 	\end{block}
 
+\end{frame}
 
-
+\begin{frame}{Preliminaries}
+	\begin{figure}[H]
+		\centering
+		
+		\caption{The elliptical and euclidean norms.}
+		\input{figures/elliptical.and.euclidean.norms.tex}
+		%\fautor
+		\label{fig:3ellipses_intersect}
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Preliminaries}
 	
 	\begin{block}{Ellipse}
-		Given a center $c \in \R^2$ and a p.d. matrix $Q$, an ellipse is the set of points that satisfy
+		Given a center $c \in \R^2$ and a $2x2$ p.d. matrix $Q$, an ellipse is the set of points that satisfy
 		
 		\begin{equation*}
-		||u-c||_Q = 1
+		||u-c||_Q = 1,
 		\end{equation*}
 		
 		with $\le$ representing the set of covered points
@@ -108,22 +126,15 @@
 		Any $2$ by $2$ diagonal d.p. matrix determines an axis-parallel ellipse, which can also be described by
 		
 		\begin{equation*}
-		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1
+		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1,
 		\end{equation*}
+		
+		where $(a,b)$ are the shape parameters and $c=(c_x,c_y)$ is the center.
 	\end{block}
 
 \end{frame}
 
-\begin{frame}{Preliminaries}
-	\begin{figure}[H]
-		\centering
-		
-		\caption{Three curves representing the points that have distance equal to one.}
-		\input{figures/a.tex}
-		%\fautor
-		\label{fig:3ellipses_intersect}
-	\end{figure}
-\end{frame}
+
 
 \section{Maximal Covering by Disks}
 \begin{frame}{Maximal Covering by Disks}{One disk}
@@ -136,8 +147,8 @@
 	
 	\begin{itemize}
 		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$
-		\item $w(A)$, with $A\subset \Pp$ is the sum of weights of the points in $A$
-		\item $D(q)$ is a disk with radius one with center at point $q$
+		\item $w(A)$, $A\subset \Pp$, is the sum of weights of the points in $A$
+		\item $D(q)$ is a unit disk with center at point $q$
 		\item We will introduce an equivalent problem...
 	\end{itemize}
 \end{frame}
@@ -151,12 +162,99 @@
 	\end{equation*}
 	
 	\begin{itemize}
-		\item The disks are fixed at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$
-		\item A clique is a non-empty intersection area of a subset of disks
+		\item The disks are fixed with centers at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$
+		\item A clique is a non-empty intersection area of a subset of disks. We search for only a point in an optimal clique.
 		\item An optimal solution for the maximum weight clique is an optimal solution for $MCD(\Pp,1)$.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
+		\begin{figure}[H]
+		\centering
+		
+		\caption{An instance of $MCD(\Pp,1)$.}
+		%\input{figures/elliptical.and.euclidean.norms.tex}
+      \center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
+		%\fautor
+		\label{fig:mcd_instance}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
+	\begin{figure}[H]
+		\centering
+		
+		\caption{An instance of $MCD(\Pp,1)$.}
+		%\input{figures/elliptical.and.euclidean.norms.tex}
+		\center{\includegraphics[width=.7\textwidth]{figures/mwc_instance.png}}
+		%\fautor
+		\label{fig:max_wieght_clique}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	Let $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ be the opening and closing angles of intersections of disks $i$ and $j$. Also, $\Gamma_+(i,j), \Gamma_-(i,j) \in [0,2\pi]$.
+	\begin{figure}[H]
+		\centering
+		
+		\caption{Three disks and their intersection points.}
+		\input{figures/img2.tex}
+		%\fautor
+		\label{fig:3disks_intersect}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	For a disk $D_i$, a counter-clockwise traversal visits every $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ in counter-clockwise order.
+	
+	\begin{itemize}
+		\item An intersection region of disks is bounded by arcs.
+		
+		\item The arc $\Gamma_+(i,j),\Gamma_-(i,j)$ (counter-clockwise) determines a region where $i$ and $j$ intersect.
+		
+		\item In a counter-clockwise traversal, the arcs where $\Gamma_+(i,j) > \Gamma_-(i,j)$ can be a problem for the implementation. Work-around: repeat it.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	
+	The algorithm is described simply as:
+	
+	For every disk, traverse the sorted list of intersection angles twice, keeping a set of active disks, and the current best solution.
+	
+\begin{figure}[H]
+	\centering
+	
+	\caption{The intersections list of a disk with three other disks.}
+	\input{figures/fig:array_disks.tex}
+%	\fautor
+	\label{fig:array_disks}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	
+	The run-time complexity of the algorithm is $\bigO(n^2\log{n})$.
+	
+	\begin{itemize}
+		\item There are $\bigO(n^2)$ intersections among $n$ disks
+		
+		\item Sorting takes $\bigO(n^2\log{n})$
+		
+		\item The traversal takes $\bigO(n)$ for every disk.
+		
+		\item Can be implemented in $K\log{n}$ where $K$ is the number of intersections. 
+	\end{itemize}
+
+\begin{block}{Multiple disks}
+	For every disk, try every possible assignment that the traversal goes through.
+\end{block}
+	
+
+	
+	
+\end{frame}
 
 \section{Cobertura Maximal por Ellipses}
 
