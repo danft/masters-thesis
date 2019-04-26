@@ -13,6 +13,8 @@ struct Ellipse
     center::Point
 	fx::Function
 	fy::Function
+	dfx::Function
+	dfy::Function
 
 	Ellipse(a::Real, b::Real, cx::Real, cy::Real) = Ellipse(a,b,Point(cx,cy))
 
@@ -22,7 +24,8 @@ struct Ellipse
 			return error("Invalid ellipse parameters")
 		end
 
-		return new(a,b,c, t-> c.x + a * cos(t), t-> c.y + b * sin(t))
+		return new(a,b,c, t-> c.x + a * cos(t), t-> c.y + b * sin(t), t->-a*sin(t), t-> b * cos(t))
 	end
 end
+
 end
