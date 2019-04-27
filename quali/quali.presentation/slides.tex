@@ -244,7 +244,7 @@
 		
 		\item The traversal takes $\bigO(n)$ for every disk.
 		
-		\item Can be implemented in $K\log{n}$ where $K$ is the number of intersections. 
+		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections. 
 	\end{itemize}
 
 \begin{block}{Multiple disks}
@@ -259,7 +259,18 @@
 \section{Maximal Covering by Ellipses}
 
 \begin{frame}{Maximal Covering by Ellipses}
-	content... trabalhos passados
+	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
+	
+	\begin{equation*}
+	\max_q |\Pp \cap (q)|,
+	\end{equation*}
+
+	\begin{itemize}
+		\item $E(q)$ is an axis-parallel ellipse with shape parameters $(a,b) \in \R^2_{>0}$.
+		\item Assuming unit weights for now
+		\item Same algorithm for one disk
+	\end{itemize}
+
 \end{frame}
 
 \begin{frame}{Cobertura Maximal por Ellipses}{$m$ elipses}
