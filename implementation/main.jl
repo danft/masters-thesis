@@ -1,17 +1,13 @@
-#Makes julia be able to see GeometryBase
+push!(LOAD_PATH, pwd())
+
 using Plots
-#using PGFPlots
 using Printf
 using LaTeXStrings
 
-include("Ellipses.jl")
 include("plotting.jl")
-include("Utils.jl")
 
-#import .Utils
-#import .Ellipses
-using .Utils
-using .Ellipses
+using Utils
+using Ellipses
 
 pgfplots()
 
