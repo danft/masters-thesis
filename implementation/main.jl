@@ -1,29 +1,40 @@
 #Makes julia be able to see GeometryBase
 using Plots
-using PGFPlots
+#using PGFPlots
 using Printf
 using LaTeXStrings
 
 include("Ellipses.jl")
+include("plotting.jl")
 include("Utils.jl")
-import .Utils
+
+#import .Utils
 #import .Ellipses
 using .Utils
 using .Ellipses
 
-function versor(A::AbstractArray)::AbstractArray{Real}
-	hh::Real = 0
-	hh = mapreduce(x->x^2, +, A)
-	return map(x -> x / hh, A)
+pgfplots()
+
+function main2()
+	e₁ = Ellipse(3,2,0,0)
+	e₂ = Ellipse(3,2,first(randn(1)), first(randn(1)))
+	e₃ = Ellipse(3,2,first(randn(1)),first(randn(1)))
+	#e2 = Ellipse(3,2,1,1)
+
+	plt = plotellipses([e₁, e₂, e₃])
+	#plt = plotellipses([e₁, e2])
+
+	savefig(plt, "a.pdf")
 end
 
 function main()
 
 	e₁ = Ellipse(3,2,0,0)
 	e₂ = Ellipse(3,2,1,1)
+	e₃ = Ellipse(3,2,rand(1),rand(1))
 	pgfplots()  
 
-	ret = ellipseinter(e₁, e₂)
+	ret = ellipseinter(e₁, e₂, e₃)
 
 	if (ret === nothing)
 		return nothing
@@ -76,4 +87,4 @@ function main()
 	return ret
 end
 
-main()
+#main()
