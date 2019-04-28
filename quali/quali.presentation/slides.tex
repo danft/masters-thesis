@@ -30,6 +30,8 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.4}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
 %\usepgfplotslibrary{external}
 %\tikzexternalize
 
@@ -149,6 +151,8 @@
 		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$
 		\item $w(A)$, $A\subset \Pp$, is the sum of weights of the points in $A$
 		\item $D(q)$ is a unit disk with center at point $q$
+		\item \cite{chazelle:1986} proposed a $\bigO(n^2)$ algorithm
+		\item \cite{drezner} proposed a $\bigO(n^2\log{n})$ which our work is based on
 		\item We will introduce an equivalent problem...
 	\end{itemize}
 \end{frame}
@@ -184,7 +188,7 @@
 	\begin{figure}[H]
 		\centering
 		
-		\caption{An instance of $MCD(\Pp,1)$.}
+		\caption{An instance of Maximum Weight Clique Problem.}
 		%\input{figures/elliptical.and.euclidean.norms.tex}
 		\center{\includegraphics[width=.7\textwidth]{figures/mwc_instance.png}}
 		%\fautor
@@ -193,7 +197,7 @@
 \end{frame}
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
-	Let $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ be the opening and closing angles of intersections of disks $i$ and $j$. Also, $\Gamma_+(i,j), \Gamma_-(i,j) \in [0,2\pi]$.
+	Let $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ be the opening and closing angles (with respect to $D_i$) of intersections of disks $i$ and $j$. Also, $\Gamma_+(i,j), \Gamma_-(i,j) \in [0,2\pi]$.
 	\begin{figure}[H]
 		\centering
 		
@@ -232,6 +236,17 @@
 \end{figure}
 \end{frame}
 
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+\begin{figure}
+	%\centering
+	
+	\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
+	\input{figures/mcd_sim.tex}
+	%	\fautor
+	%\label{fig:array_disks}
+\end{figure}
+\end{frame}
+
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 	
@@ -244,11 +259,11 @@
 		
 		\item The traversal takes $\bigO(n)$ for every disk.
 		
-		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections. 
+		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections.
 	\end{itemize}
 
 \begin{block}{Multiple disks}
-	For every disk, try every possible assignment that the traversal goes through.
+	For every disk, try every possible assignment that the traversal goes through. \cite{cabello:2006} proposed a $\bigO(n^{2m-1})$ algorithm.
 \end{block}
 	
 
@@ -273,13 +288,92 @@
 
 \end{frame}
 
-\begin{frame}{Cobertura Maximal por Ellipses}{$m$ elipses}
-	content... algoritmo
+\begin{frame}{Maximal Covering by Ellipses}
+\begin{figure}[H]
+	\centering
+	
+	\caption{Intersection points of $E_1$ with $E_2$ and $E_3$ along with opening and closing angles indicators.}
+	\input{figures/3ellipses_with_gammas.tex}
+	%	\fautor
+	\label{fig:3ellipses_with_gammas}
+\end{figure}
 \end{frame}
+
+\begin{frame}{Maximal Covering by Ellipses}{$m$ ellipses}
+	Let $MCE(\Pp, \E)$ be an instance of the maximal covering by ellipses, an optimal solution is given by
+	
+	\begin{equation*}
+	\max_{q_1, \dots, q_m}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i)\right|},
+	\end{equation*}
+	
+	\begin{itemize}
+		\item $\E$ is a set of $m$ ellipses
+		\item \cite{andreta,canbolat} are the works found on the problem which the ellipses have costs
+		\item \cite{andreta} also developed a method for the non-axis-parallel case
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Maximal Covering by Ellipses}{$m$ ellipses}
+	\begin{algorithm}[H]
+	%	\caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
+		%\KwIn{alskdjf}
+		
+		\begin{algorithmic}[1]
+			\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and the shape parameters $(a, b)$ of an ellipse.}
+			%\Ensure{A collection of subsets of $\Pp$ that the ellipse is able to cover.}
+			
+			%\item[]
+			%\Procedure{$MCE_1$}{$\Pp, a, b$}
+			%\State $Z \gets \{\}$ \Comment{A collection of subsets of $\Pp$, each being a possible coverage.}
+			
+			%\ForAll{$p_i \in \Pp$}
+			%\State Let $E_i$ be the ellipse with center at $p_i$ and parameters $(a,b)$
+			
+			%\State Let $I_i$ be the set of ellipses that intersect with $E_i$
+			
+			%\State $A \gets \{\}$ \Comment{The multiset of intersection angles with $E_i$}
+			
+			%\State $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$ %\Comment{The multiset of intersection angles with $E_i$.}
+			
+			%\ForAll{$j \in I_i$}
+			%\State $A \gets A \cup \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
+			%\EndFor
+			
+			%\State $Z \gets Z \cup \{\{p_i\}\}$
+			%\State $Cov \gets \{p_i\}$ \Comment{The set of active disks.}
+			
+			%\For{$cnt=1..2$} \Comment{Do it twice.}
+			%\For{$a \in A$}\Comment{Assuming $A$ is sorted.}
+			%\State Let $p_a$ be the point represented by the ellipse that intersects $E_i$ at angle $a$. 
+			%\If{$a$ is a starting angle}
+			%\State $Cov \gets Cov \cup \{p_a\}$
+			%\Else
+			%\State $Cov \gets Cov \setminus \{p_a\}$
+			%\EndIf
+			%\State $Z \gets Z \cup \{Cov\}$
+			%\EndFor
+			%\EndFor
+			%\EndFor
+			
+			%\State \Return $Z$
+			%\EndProcedure
+			
+			
+		\end{algorithmic}
+	\end{algorithm}
+\end{frame}
+
 
 \section{Trabalhos Futuros}
 
 \begin{frame}{Trabalhos Futuros}
 
 \end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
+	\bibliographystyle{amsalpha}
+	\bibliography{../references.bib}
+\end{frame}
+
 \end{document}
