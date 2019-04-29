@@ -1,17 +1,13 @@
-#Makes julia be able to see GeometryBase
+push!(LOAD_PATH, pwd())
+
 using Plots
-#using PGFPlots
 using Printf
 using LaTeXStrings
 
-include("Ellipses.jl")
 include("plotting.jl")
-include("Utils.jl")
 
-#import .Utils
-#import .Ellipses
-using .Utils
-using .Ellipses
+using Utils
+using Ellipses
 
 pgfplots()
 
@@ -25,6 +21,22 @@ function main2()
 	#plt = plotellipses([e₁, e2])
 
 	savefig(plt, "a.pdf")
+	savefig(plt, "a.tex")
+end
+
+function main3()
+
+	e₁ = Ellipse(3,2,0,0)
+	e₂ = Ellipse(3,2,first(randn(1)), first(randn(1)))
+	e₃ = Ellipse(3,2,first(randn(1)),first(randn(1)))
+	#e2 = Ellipse(3,2,1,1)
+
+	plt = plotwihtoutquiver([e₁, e₂, e₃])
+	#plt = plotellipses([e₁, e2])
+
+	savefig(plt, "a.pdf")
+	savefig(plt, "a.tex")
+
 end
 
 function main()

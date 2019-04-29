@@ -1,15 +1,18 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=1]
 \begin{axis}[
     %axis lines = left,
     xlabel = $x$,
     ylabel = {$y$},
+    width=\textwidth,
+    height=\axisdefaultheight
 ]
+
 %Below the red parabola is defined
-\addplot [domain=-pi:pi,samples=200,red]({1.2*cos(deg(x))}, {0.7*sin(deg(x))});
+\addplot [domain=-pi:pi,samples=200,red]({1.5*cos(deg(x))}, {1*sin(deg(x))});
 
 \addlegendentry{$\tiny u^T\left[\begin{array}{cc}
-		1.2 & 0\\
-		0 & 0.6
+		1.5 & 0\\
+		0 & 1
 	\end{array}\right]u = 1$}
 \addplot [domain=-pi:pi,samples=200,blue]({sin(deg(x))}, {cos(deg(x))});
 \end{axis}

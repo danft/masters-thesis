@@ -47,12 +47,12 @@ function ellipseinter(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Point,P
 		return nothing 
 	end
 	
-	y₁, y₂ = ro
+	y1, y2 = ro
 
-	x_₁ = y₁*α + β
-	x_₂ = y₂*α + β
+	x1 = y1*α + β
+	x2 = y2*α + β
 
-	return Point(x_₁ + e₁.center.x,y₁ + e₁.center.y), Point(x_₂ + e₁.center.x,y₂ + e₁.center.x)
+	return Point(x1 + e₁.center.x,y1 + e₁.center.y), Point(x2 + e₁.center.x,y2 + e₁.center.y)
 end
 
 function angles(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Real,Real}}
