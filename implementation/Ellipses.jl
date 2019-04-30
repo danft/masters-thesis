@@ -18,8 +18,9 @@ struct Ellipse
 	dfx::Function
 	dfy::Function
 
+	# No use for the center
+	Ellipse(a::Real, b::Real) = Ellipse(a,b,Point(0,0))
 	Ellipse(a::Real, b::Real, cx::Real, cy::Real) = Ellipse(a,b,Point(cx,cy))
-
 	Ellipse(a::Real, b::Real, c::Point) = 
 	begin 
 		if (a<=0 || b<=0)
@@ -37,6 +38,10 @@ function ellipseinter(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Point,P
 	k::Float64 = e₂.center.y - e₁.center.y
 	a::Float64 = e₁.a
 	b::Float64 = e₁.b
+
+	if (h==0)
+		error("Try to find intersection of ellipses with the same center")
+	end
 
 	α = (-2k*a^2)/(2h*b^2)
 	β = (b^2*h^2 + a^2*k^2) / (2h*b^2)
@@ -74,7 +79,9 @@ function angles(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Real,Real}}
 	u = [e₁.dfx(s1), e₁.dfy(s1)]
 	v = -[e₂.dfx(t1), e₂.dfy(t1)]
 
-	@show (u[1] * v[2] - u[2]*v[1])
+	@show(ret)
+	@show(s1,s2,t1,t2)
+	#@show (u[1] * v[2] - u[2]*v[1])
 
 	return u[1] * v[2] - u[2] * v[1] >= 0 ? (s1,s2) : (s2,s1)
 end

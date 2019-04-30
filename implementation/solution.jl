@@ -6,6 +6,18 @@ mutable struct PointW
 	x::Real
 	y::Real
 	w::Real
+
+	PointW(id::Int, x::Real, y::Real) = new(id,x,y,1)
+end
+
+mutable struct Solution
+	Cover::Set{PointW}
+	x::Real
+	y::Real
+end
+
+function Base.isless(lhs::PointW, rhs::PointW)
+	return (lhs.id != rhs.id) ? lhs.id < rhs.id : lhs.w < rhs.w
 end
 
 function hash(p::PointW)::UInt64
@@ -13,22 +25,25 @@ function hash(p::PointW)::UInt64
 end
 
 function sum(Z::Set{PointW})
-	return reduce(Z) do (pa,pb)
-		return pa.w + pb.w
+	ret = 0
+	for x in Z
+		ret += x.w
 	end
+	return ret
 end
 
-function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Set{PointW}}
-	Z::AbstractArray{Set{PointW}} = []
+function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Solution}
+	Z::AbstractArray{Solution} = []
 
 	n=length(P)
 
 	for i in 1:n 
 		e1 = Ellipse(E.a, E.b, P[i].x, P[i].y)
-		A::AbstractArray{Tuple{Real,PointW,Int}} = []
-		push!(Z, Set([P[i]]))
 
-		for j in 1:n
+		#angle, point, entering or leaving
+		A::AbstractArray{Tuple{Real,PointW,Int}} = [(0, P[1], 1), (2π, P[1], -1)]
+
+		for j in i+1:n
 			e2 = Ellipse(E.a, E.b, P[j].x, P[j].y)
 			ret = angles(e1, e2)
 			if (ret === nothing) continue end
@@ -45,15 +60,38 @@ function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Set{PointW}}
 
 		for pa in A
 			if (pa[3]==-1)
-				push!(Z, Cov)
+				push!(Z, Solution(copy(Cov), pa[2].x, pa[2].y))
 				setdiff!(Cov, [pa[2]])
 			else
 				push!(Cov, pa[2])
 			end
 		end
 	end
+
+	return Z
 end
 
 function MCE(P::AbstractArray{PointW}, E::AbstractArray{Ellipse})
 
 end
+
+function MCE1(P::AbstractArray{PointW}, a::Real, b::Real)
+	e::Ellipse = Ellipse(a,b)
+	Z = MCE1(P,e)
+
+	fopt = 0
+
+	for s in Z
+		zf = sum(s.Cover)
+		if (zf > fopt)
+			fopt = zf
+		end
+	end
+
+	return fopt
+end
+
+function ex1()
+	@show(MCE1([PointW(1,0,0), PointW(2, 1, 1), PointW(3,2,2)], 3,2))
+end
+

@@ -15,7 +15,7 @@ function root2(a::Real, b::Real, c::Real)::Union{Nothing, Tuple{Real,Real}}
 	end
 
 	if (a==0)
-		return (-c / b, -c / b)
+		return (b!=0) ? (-c / b, -c / b) : nothing
 	end
 
 	return (-b + √Δ) / (2*a), (-b-√Δ)/(2*a)
