@@ -30,8 +30,12 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.4}
-\usepackage{algorithmicx}
-\usepackage{algorithm}
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+\usepackage{float}
+\usepackage{caption}
+\newcommand{\source}[1]{\caption*{Source: {#1}} }
+
 %\usepgfplotslibrary{external}
 %\tikzexternalize
 
@@ -40,7 +44,8 @@
 %FIM MEUS COMANDOS
 
 \title[Qualificação de Mestrado]{Planar Maximal Covering with Ellipses}
-\author[Tedeschi, D. F.]{Danilo F. Tedeschi}
+\author[Tedeschi, D. F.]{Danilo F. Tedeschi\\ \small Orientadora: Dra. Marina Andretta}
+
 \institute[ICMC]{Instituto de Ciências Matemáticas e Computação}
 \date{\today}
 
@@ -48,6 +53,9 @@
 
 \begin{frame}
  \maketitle
+ 
+ 
+\centering Thanks to CAPES
 \end{frame}
 
 \begin{frame}
@@ -105,10 +113,11 @@
 	\begin{figure}[H]
 		\centering
 		
-		\caption{The elliptical and euclidean norms.}
+		\caption{The elliptical and euclidean norms}
 		\input{figures/elliptical.and.euclidean.norms.tex}
-		%\fautor
+		\source{Elaborated by the author.}
 		\label{fig:3ellipses_intersect}
+		
 	\end{figure}
 \end{frame}
 
@@ -179,7 +188,7 @@
 		\caption{An instance of $MCD(\Pp,1)$.}
 		%\input{figures/elliptical.and.euclidean.norms.tex}
       \center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
-		%\fautor
+		\source{Elaborated by the author.}
 		\label{fig:mcd_instance}
 	\end{figure}
 \end{frame}
@@ -191,7 +200,7 @@
 		\caption{An instance of Maximum Weight Clique Problem.}
 		%\input{figures/elliptical.and.euclidean.norms.tex}
 		\center{\includegraphics[width=.7\textwidth]{figures/mwc_instance.png}}
-		%\fautor
+		\source{Elaborated by the author.}
 		\label{fig:max_wieght_clique}
 	\end{figure}
 \end{frame}
@@ -203,7 +212,7 @@
 		
 		\caption{Three disks and their intersection points.}
 		\input{figures/img2.tex}
-		%\fautor
+		\source{Elaborated by the author.}
 		\label{fig:3disks_intersect}
 	\end{figure}
 \end{frame}
@@ -231,7 +240,7 @@
 	
 	\caption{The intersections list of a disk with three other disks.}
 	\input{figures/fig:array_disks.tex}
-%	\fautor
+	\source{Elaborated by the author.}
 	\label{fig:array_disks}
 \end{figure}
 \end{frame}
@@ -242,7 +251,7 @@
 	
 	\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
 	\input{figures/mcd_sim.tex}
-	%	\fautor
+		\source{Elaborated by the author.}
 	%\label{fig:array_disks}
 \end{figure}
 \end{frame}
@@ -262,18 +271,22 @@
 		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections.
 	\end{itemize}
 
-\begin{block}{Multiple disks}
-	For every disk, try every possible assignment that the traversal goes through. \cite{cabello:2006} proposed a $\bigO(n^{2m-1})$ algorithm.
-\end{block}
-	
+\end{frame}
 
+\begin{frame}{Maximum Weight Clique Problem}{Multiple disks}
+	\begin{itemize}
+		\item In \cite{cabello:2006} a $\bigO(n^{2m-1})$ algorithm was proposed. Also a $(1-\epsilon)-$approximation that runs in $\bigO(n\log{n})$ was introduced.
+		
+		\item In \cite{zhou} a heuristic method using an algorithm called mean-shift was developed. The mean-shift algorithm converges to a local density maxima of any probability distribution and it is used to find a smaller candidate list of centers for the disks.
+	\end{itemize}
+	
 	
 	
 \end{frame}
 
 \section{Maximal Covering by Ellipses}
 
-\begin{frame}{Maximal Covering by Ellipses}
+\begin{frame}{Maximal Covering by Ellipses}{One ellipse}
 	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
 	
 	\begin{equation*}
@@ -288,16 +301,17 @@
 
 \end{frame}
 
-\begin{frame}{Maximal Covering by Ellipses}
+\begin{frame}{Maximal Covering by Ellipses}{One ellipse}
 \begin{figure}[H]
 	\centering
 	
 	\caption{Intersection points of $E_1$ with $E_2$ and $E_3$ along with opening and closing angles indicators.}
 	\input{figures/3ellipses_with_gammas.tex}
-	%	\fautor
+	\source{Elaborated by the author.}
 	\label{fig:3ellipses_with_gammas}
 \end{figure}
 \end{frame}
+
 
 \begin{frame}{Maximal Covering by Ellipses}{$m$ ellipses}
 	Let $MCE(\Pp, \E)$ be an instance of the maximal covering by ellipses, an optimal solution is given by
@@ -308,66 +322,79 @@
 	
 	\begin{itemize}
 		\item $\E$ is a set of $m$ ellipses
-		\item \cite{andreta,canbolat} are the works found on the problem which the ellipses have costs
-		\item \cite{andreta} also developed a method for the non-axis-parallel case
+		\item \cite{canbolat} is the very first study on the problem. Slow exact method, a heuristic one was proposed.
+		\item \cite{andreta} proposed a method that breaks the problem into smaller optimization ones. Also, they developed a method for the non-axis-parallel case.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Maximal Covering by Ellipses}{$m$ ellipses}
+\begin{frame}[fragile]{Maximal Covering by Ellipses}{Pre-processing that finds every possible coverage for ellipse $E_i$}
 	\begin{algorithm}[H]
-	%	\caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
-		%\KwIn{alskdjf}
-		
+		%\caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
 		\begin{algorithmic}[1]
-			\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and the shape parameters $(a, b)$ of an ellipse.}
-			%\Ensure{A collection of subsets of $\Pp$ that the ellipse is able to cover.}
+			\STATE $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
+			\STATE $Z \gets \{\}$
 			
-			%\item[]
-			%\Procedure{$MCE_1$}{$\Pp, a, b$}
-			%\State $Z \gets \{\}$ \Comment{A collection of subsets of $\Pp$, each being a possible coverage.}
-			
-			%\ForAll{$p_i \in \Pp$}
-			%\State Let $E_i$ be the ellipse with center at $p_i$ and parameters $(a,b)$
-			
-			%\State Let $I_i$ be the set of ellipses that intersect with $E_i$
-			
-			%\State $A \gets \{\}$ \Comment{The multiset of intersection angles with $E_i$}
-			
-			%\State $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$ %\Comment{The multiset of intersection angles with $E_i$.}
-			
-			%\ForAll{$j \in I_i$}
-			%\State $A \gets A \cup \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
-			%\EndFor
-			
-			%\State $Z \gets Z \cup \{\{p_i\}\}$
-			%\State $Cov \gets \{p_i\}$ \Comment{The set of active disks.}
-			
-			%\For{$cnt=1..2$} \Comment{Do it twice.}
-			%\For{$a \in A$}\Comment{Assuming $A$ is sorted.}
-			%\State Let $p_a$ be the point represented by the ellipse that intersects $E_i$ at angle $a$. 
-			%\If{$a$ is a starting angle}
-			%\State $Cov \gets Cov \cup \{p_a\}$
-			%\Else
-			%\State $Cov \gets Cov \setminus \{p_a\}$
-			%\EndIf
-			%\State $Z \gets Z \cup \{Cov\}$
-			%\EndFor
-			%\EndFor
-			%\EndFor
-			
-			%\State \Return $Z$
-			%\EndProcedure
-			
+			\FOR{$cnt=1..2$} 
+			\FOR{$a \in A$}
+			\STATE Let $p_a$ be the point that intersects $E_i$ at angle $a$. 
+			\IF{$a$ is a starting angle}
+			\STATE $Cov \gets Cov \cup \{p_a\}$
+			\ELSE
+			\STATE $Cov \gets Cov \setminus \{p_a\}$
+			\ENDIF
+			\STATE $Z \gets Z \cup \{Cov\}$
+			\ENDFOR
+			\ENDFOR
 			
 		\end{algorithmic}
 	\end{algorithm}
 \end{frame}
 
 
-\section{Trabalhos Futuros}
+\begin{frame}{Maximal Covering by Ellipses}
+	
+	\begin{itemize}
+		\item The algorithm for $m$ ellipses tries every possible assignment of coverage for every one of the ellipses
+		\item Run-time complexity of $\bigO(n^2)^m = \bigO(n^{2m})$
+		
+		\item Simpler than the $m$ disks algorithm proposed by \cite{cabello:2006}. Achieves a similar complexity ($\bigO(n^{2m-1})$).
+		
+		\item Small improvements can be made in the pre-processing exhibited earlier in oder to reduce the size of the search space:
+		\begin{itemize}
+			\item Non-maximal coverage sets.
+			\item Ellipses that are too distant do not need to be checked.
+		\end{itemize}
+	
+		\item The unit-weight assumption can be easily dropped
+	\end{itemize}
+	
+\end{frame}
 
-\begin{frame}{Trabalhos Futuros}
 
+
+
+\section{Future Work}
+
+\begin{frame}{Future Work}
+	Primary goals:
+\begin{itemize}
+	\item Study the $(1-\epsilon)$-approximation method for the planar covering with disks in \cite{cabello:2006} and develop an adapted version of the algorithm for ellipses with the same time complexity of $\bigO(n\log{n})$.
+	
+	\item Develop an exact method for the version of the problem introduced in \cite{andreta} where the ellipses can be freely rotated.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Future Work}
+	
+	Secondary goals:
+	\begin{itemize}
+		 
+
+	\item Develop a probabilistic approximation algorithm based on \cite{aronov:2008} which proposed a Monte Carlo approximation for the problem of finding the deepest point in a arrangement of regions. The method runs in $\bigO(n\epsilon^2\log{n})$ and can be applied to solve the case with one ellipse. The case with more than one ellipse is left as a challenge for us for the next steps of our research.
+	
+	\item In \cite{zhou}, the task of finding every center candidate, after eliminating all the non-essential ones, is done in $\bigO(n^5)$ run-time complexity. We want to generalize this for the elliptical distance function and achieve a better run-time complexity. We also intend to use the mean-shift algorithm to try to develop a greedy version for the ellipses version.
+	
+		\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
