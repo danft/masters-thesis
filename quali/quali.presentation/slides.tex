@@ -27,7 +27,7 @@
 \newcommand{\E}{\mathscr{E}}
 
 \newcommand{\bigO}{\mathscr{O}}
-
+\usetikzlibrary{matrix}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.4}
 \usepackage{algorithm2e}
@@ -69,7 +69,7 @@
 \begin{itemize}
 	\item Covering problems
 	\begin{itemize}
-		\item Set Cover Problem
+		\item Minimum Cover Problem
 		\item Maximal Covering Problem
 	\end{itemize}
 	\item Maximal Covering Location Problem (MCLP)
@@ -81,11 +81,21 @@
 	\item Goals
 	\begin{itemize}
 		\item Develop a $\bigO(n^2\log{n})$ algorithm for the one disk case
-		\item Adapt it for the $m$ ellipses case
+		\item Adapt it for the $m$ ellipses case creating a $\bigO(n^{2m})$ algorithm
 	\end{itemize}
 \end{itemize}
 
 \end{frame} 
+
+\begin{frame}
+	\begin{figure}
+		\only<1>{\caption{Maximal cover by two disks.}}
+		\only<2>{\caption{Minimum number of disks needed to cover the set of points.}}
+		\only<1>{\input{figures/intro_a.tex}}
+		\only<2>{\input{figures/intro_b.tex}}
+		\source{Elaborated by the author.}
+	\end{figure}
+\end{frame}
 
 
 \section{Preliminaries}
@@ -113,7 +123,7 @@
 	\begin{figure}[H]
 		\centering
 		
-		\caption{The elliptical and euclidean norms}
+		\caption{The elliptical and euclidean norms.}
 		\input{figures/elliptical.and.euclidean.norms.tex}
 		\source{Elaborated by the author.}
 		\label{fig:3ellipses_intersect}
@@ -185,37 +195,46 @@
 		\begin{figure}[H]
 		\centering
 		
-		\caption{An instance of $MCD(\Pp,1)$.}
-		%\input{figures/elliptical.and.euclidean.norms.tex}
-      \center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
+		\only<1>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$.}}
+		
+		\only<2>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$. In gray, the optimal solution.}}
+		
+		\only<1>{\input{figures/max_w_clique.tex}}
+		\only<2>{\input{figures/max_w_clique_b.tex}}
+      %\center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
 		\source{Elaborated by the author.}
 		\label{fig:mcd_instance}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
-	\begin{figure}[H]
-		\centering
-		
-		\caption{An instance of Maximum Weight Clique Problem.}
-		%\input{figures/elliptical.and.euclidean.norms.tex}
-		\center{\includegraphics[width=.7\textwidth]{figures/mwc_instance.png}}
-		\source{Elaborated by the author.}
-		\label{fig:max_wieght_clique}
-	\end{figure}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	Defining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$:
+	
+	Let $D_i$ and $D_j$ be two unit disks that intersect at two points.
+	
+	\begin{itemize}
+		\item Assume $D_i$ is at the origin
+		\item We can find the polar angle of the intersection points. Let's call them $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ with the following condition:
+		\begin{itemize}
+			\item The arc defined by $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ bounds the region $D_i \cap D_j$
+			
+		\end{itemize}
+		\item Later it will be shown how to find which one is which algorithmically.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
-	Let $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ be the opening and closing angles (with respect to $D_i$) of intersections of disks $i$ and $j$. Also, $\Gamma_+(i,j), \Gamma_-(i,j) \in [0,2\pi]$.
 	\begin{figure}[H]
 		\centering
 		
-		\caption{Three disks and their intersection points.}
+		\caption{Three disks and their intersection points and angles.}
 		\input{figures/img2.tex}
 		\source{Elaborated by the author.}
 		\label{fig:3disks_intersect}
 	\end{figure}
 \end{frame}
+
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 	For a disk $D_i$, a counter-clockwise traversal visits every $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ in counter-clockwise order.
@@ -225,15 +244,19 @@
 		
 		\item The arc $\Gamma_+(i,j),\Gamma_-(i,j)$ (counter-clockwise) determines a region where $i$ and $j$ intersect.
 		
-		\item In a counter-clockwise traversal, the arcs where $\Gamma_+(i,j) > \Gamma_-(i,j)$ can be a problem for the implementation. Work-around: repeat it.
+		\item In a counter-clockwise traversal, the arcs where $\Gamma_+(i,j) > \Gamma_-(i,j)$ can be a problem for the implementation. The traversal is on a circle, where to start?
+		
+		\item If the traversal reaches a opening angle, we mark the intersecting disk as active. If it reaches a closing angle we unmark it.
+		
+		\item We want to find a point in the traversal with the most active disks.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 	
-	The algorithm is described simply as:
-	
 	For every disk, traverse the sorted list of intersection angles twice, keeping a set of active disks, and the current best solution.
+	
+	Doing the traversal twice solves the problem of deciding where to start.
 	
 \begin{figure}[H]
 	\centering
@@ -245,15 +268,31 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
-\begin{figure}
+%\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+%\begin{figure}
 	%\centering
 	
-	\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
-	\input{figures/mcd_sim.tex}
-		\source{Elaborated by the author.}
+%	\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
+%	\input{figures/mcd_sim.tex}
+%		\source{Elaborated by the author.}
 	%\label{fig:array_disks}
-\end{figure}
+%\end{figure}
+%\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+
+	\begin{figure}
+		\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
+		\only<1>{\input{figures/mcd_sim_1.tex}}
+		\only<2>{\input{figures/mcd_sim_2.tex}}
+		\only<3>{\input{figures/mcd_sim_2_5.tex}}
+		\only<4>{\input{figures/mcd_sim_3.tex}}
+		\only<5>{\input{figures/mcd_sim_4.tex}}
+		\only<6>{\input{figures/mcd_sim_5.tex}}
+		\only<7>{\input{figures/mcd_sim_6.tex}}
+		\only<8>{\input{figures/mcd_sim_7.tex}}
+			\source{Elaborated by the author.}
+	\end{figure}
 \end{frame}
 
 
@@ -273,14 +312,17 @@
 
 \end{frame}
 
-\begin{frame}{Maximum Weight Clique Problem}{Multiple disks}
+\begin{frame}{Maximum Covering by Disks}{Multiple disks}
+	
+	Works found in the literature:
+	
 	\begin{itemize}
 		\item In \cite{cabello:2006} a $\bigO(n^{2m-1})$ algorithm was proposed. Also a $(1-\epsilon)-$approximation that runs in $\bigO(n\log{n})$ was introduced.
 		
 		\item In \cite{zhou} a heuristic method using an algorithm called mean-shift was developed. The mean-shift algorithm converges to a local density maxima of any probability distribution and it is used to find a smaller candidate list of centers for the disks.
 	\end{itemize}
 	
-	
+	Because of the similarities, we will discuss only the multiple ellipses algorithm later.
 	
 \end{frame}
 
