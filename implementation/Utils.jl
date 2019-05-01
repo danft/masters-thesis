@@ -1,6 +1,15 @@
 module Utils 
 
-export Point, root2 
+export Point, PointW, root2 
+
+mutable struct PointW
+	id::Int
+	x::Real
+	y::Real
+	w::Real
+
+	PointW(id::Int, x::Real, y::Real) = new(id,x,y,1)
+end
 
 struct Point
 	x::Real

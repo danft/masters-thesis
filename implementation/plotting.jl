@@ -9,6 +9,14 @@ function versor(A::AbstractArray)::AbstractArray{Real}
 	return map(x -> x / norm(A), A)
 end
 
+function plotpointsellipse(X::AbstractArray{Real}, Y::AbstractArray{Real}, E::Ellipse)
+	plt = plot(X, Y, seriestype=:scatter,color=:black,lab="")
+
+	plot!(E.fx, E.fy, 0, 2π, dpi=300, label=L"E_1", xaxis=false,yaxis=false, color=colors[1])
+
+	return plt
+end
+
 function plotwihtoutquiver(E::AbstractArray{Ellipse})
 
 	e1 = E[1]

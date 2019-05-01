@@ -1,19 +1,12 @@
 push!(LOAD_PATH, pwd())
-using Ellipses
+using Ellipses 
+using Utils
 
-mutable struct PointW
-	id::Int
-	x::Real
-	y::Real
-	w::Real
-
-	PointW(id::Int, x::Real, y::Real) = new(id,x,y,1)
-end
-
-mutable struct Solution
+struct Solution
 	Cover::Set{PointW}
 	x::Real
 	y::Real
+	Solution() = new(Set{PointW}(), 0, 0)
 end
 
 function Base.isless(lhs::PointW, rhs::PointW)
@@ -60,8 +53,9 @@ function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Solution}
 
 		for pa in A
 			if (pa[3]==-1)
-				push!(Z, Solution(copy(Cov), pa[2].x, pa[2].y))
-				setdiff!(Cov, [pa[2]])
+				tmp::Solution = Solution(Cov, pa[2].x, pa[2].y)
+				push!(Z,tmp)
+				#setdiff!(Cov, [pa[2]])
 			else
 				push!(Cov, pa[2])
 			end
@@ -75,23 +69,27 @@ function MCE(P::AbstractArray{PointW}, E::AbstractArray{Ellipse})
 
 end
 
-function MCE1(P::AbstractArray{PointW}, a::Real, b::Real)
+function MCE1(P::AbstractArray{PointW}, a::Real, b::Real)::Solution
 	e::Ellipse = Ellipse(a,b)
 	Z = MCE1(P,e)
 
 	fopt = 0
+	optSolution = Solution()
 
 	for s in Z
 		zf = sum(s.Cover)
 		if (zf > fopt)
 			fopt = zf
+			optSolution = zf
 		end
 	end
 
-	return fopt
+	return optSolution 
 end
 
-function ex1()
-	@show(MCE1([PointW(1,0,0), PointW(2, 1, 1), PointW(3,2,2)], 3,2))
+function ex1(P::AbstractArray{PointW}, a::Real, b::Real)::Ellipse
+	so::Solution = MCE1(P, a,b)
+
+	return Ellipse(a, b, so.x, so.y)
 end
 
