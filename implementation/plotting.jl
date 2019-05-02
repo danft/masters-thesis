@@ -9,10 +9,19 @@ function versor(A::AbstractArray)::AbstractArray{Real}
 	return map(x -> x / norm(A), A)
 end
 
-function plotpointsellipse(X::AbstractArray{Real}, Y::AbstractArray{Real}, E::Ellipse)
-	plt = plot(X, Y, seriestype=:scatter,color=:black,lab="")
+function plotpointsellipse(X::AbstractVector{<:Real}, Y::AbstractVector{<:Real}, Es::AbstractVector{Ellipse})
+	plt = plot(X, Y, seriestype=:scatter,lab="", 
+			   markersize = 2.5, 
+			   markerstrokewidth=0.5,
+			   grid=false,
+			   aspect_ratio=:equal, xaxis=false,yaxis=false)
 
-	plot!(E.fx, E.fy, 0, 2π, dpi=300, label=L"E_1", xaxis=false,yaxis=false, color=colors[1])
+
+	i=1
+	for E in Es
+		plot!(E.fx, E.fy, 0, 2π, dpi=300, label=latexstring("E_", "$i"))
+		i+=1
+	end
 
 	return plt
 end

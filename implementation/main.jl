@@ -42,23 +42,28 @@ end
 
 function main()
 
-	P::Array{PointW} = []
+	P::Vector{PointW} = []
 	xmax = 5
 	ymax = 5
 	n = 20
 
-	for i in n
+	for i in 1:n
 		push!(P, PointW(i, rand() * xmax, rand() * ymax))
 	end
 
-	ret = ex1(P, 3, 2)
-
-	plt = plotpointsellipse(map(p -> p.x, P), map(p -> p.y, P), ret)
-
-	savefig(plt, "b.pdf")
+	#ret = ex1(P, 1, 1)
+	#@show(length(ret.Cover))
+	#@show(ret.x, ret.y)
 
 
-	return ret
+
+
+
+	ret2 = ex2(P, Ellipse(1,1), Ellipse(1.4, 1))
+	plt = plotpointsellipse(map(p -> p.x, P), map(p -> p.y, P), [ret2...])
+	savefig(plt, "c.pdf")
+
+	#return ret
 end
 
 #main()

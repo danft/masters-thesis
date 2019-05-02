@@ -1,8 +1,8 @@
+push!(LOAD_PATH, pwd())
 module Ellipses
 
-include("Utils.jl")
 #import .Utils
-using .Utils
+using Utils
 
 #exports
 export Ellipse
@@ -78,10 +78,6 @@ function angles(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Real,Real}}
 	
 	u = [e₁.dfx(s1), e₁.dfy(s1)]
 	v = -[e₂.dfx(t1), e₂.dfy(t1)]
-
-	@show(ret)
-	@show(s1,s2,t1,t2)
-	#@show (u[1] * v[2] - u[2]*v[1])
 
 	return u[1] * v[2] - u[2] * v[1] >= 0 ? (s1,s2) : (s2,s1)
 end
