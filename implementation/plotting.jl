@@ -9,11 +9,14 @@ function versor(A::AbstractArray)::AbstractArray{Real}
 	return map(x -> x / norm(A), A)
 end
 
-function plotpointsellipse(X::AbstractVector{<:Real}, Y::AbstractVector{<:Real}, Es::AbstractVector{Ellipse})
+function plotpointsellipse(X::AbstractVector{<:Real}, Y::AbstractVector{<:Real}, Es::AbstractVector{Ellipse}, iscov::Vector{Bool})
+	colors = [(h) ? :black : :red for h in iscov]
+
 	plt = plot(X, Y, seriestype=:scatter,lab="", 
 			   markersize = 2.5, 
 			   markerstrokewidth=0.5,
-			   grid=false,
+			   #grid=false,
+			   color=colors,
 			   aspect_ratio=:equal, xaxis=false,yaxis=false)
 
 

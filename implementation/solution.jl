@@ -38,10 +38,12 @@ function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Solution}
 		e1 = Ellipse(E.a, E.b, P[i].x, P[i].y)
 
 		#angle, point, entering or leaving
-		A::AbstractArray{Tuple{Real,PointW,Int}} = 
-		[(0, PointW(i,e1.center,P[i].w), 1), (2π, PointW(i,e1.center,P[i].w), -1)]
+		A::AbstractArray{Tuple{Real,PointW,Int}} = []
+		#[(0, PointW(i,e1.center,P[i].w), 1), (2π, PointW(i,e1.center,P[i].w), -1)]
 
-		for j in i+1:n
+		for j in 1:n
+			if (i == j) continue end
+
 			e2 = Ellipse(E.a, E.b, P[j].x, P[j].y)
 			ret = angles(e1, e2)
 			if (ret === nothing) continue end
@@ -57,7 +59,7 @@ function MCE1(P::AbstractArray{PointW}, E::Ellipse)::AbstractArray{Solution}
 		
 		sort!(A)
 
-		Cov::Set{PointW} = Set{PointW}()
+		Cov::Set{PointW} = Set{PointW}([P[i]])
 
 		xx = 0
 
@@ -118,12 +120,15 @@ function ex1(P::AbstractArray{PointW}, a::Real, b::Real)::Ellipse
 	return Ellipse(a, b, so.p.x, so.p.y)
 end
 
-function ex2(P::AbstractVector{PointW}, e1::Ellipse, e2::Ellipse)::Tuple{Ellipse,Ellipse}
+function ex2(P::AbstractVector{PointW}, e1::Ellipse, e2::Ellipse)::Tuple{Ellipse,Ellipse, Vector{Bool}}
 	Z = [MCE1(P,e1), MCE1(P,e2)]
 
 	fopt = 0
 	opt1::Ellipse = e1
 	opt2::Ellipse = e2
+	n = length(P)
+	iscov::Vector{Bool} = [false for i in 1:n]
+	optC::Set{PointW} = Set()
 
 	for z1 in Z[1], z2 in Z[2]
 		co = union(z1.Cover, z2.Cover)
@@ -132,11 +137,18 @@ function ex2(P::AbstractVector{PointW}, e1::Ellipse, e2::Ellipse)::Tuple{Ellipse
 			opt1 = Ellipse(e1.a, e2.b, z1.p)
 			opt2 = Ellipse(e2.a, e2.b, z2.p)
 			fopt = zf
+			optC = co
 		end
 	end
 
+	for p in optC
+		iscov[p.id] = true
+	end
+
+
+
 	@show(fopt)
 
-	return opt1, opt2
+	return opt1, opt2, iscov
 end
 

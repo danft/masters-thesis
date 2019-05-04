@@ -38,6 +38,15 @@
 
 %\usepgfplotslibrary{external}
 %\tikzexternalize
+%\usepackage{natbib}
+
+\usepackage[
+backend=biber,style=authoryear,autocite=inline
+]{biblatex}
+%\DeclareLanguageMapping{english}{english-apa}
+
+\addbibresource{../references.bib} %Imports bibliography file
+%\DeclareLanguageMapping{american}{american-apa}
 
 
 
@@ -55,7 +64,7 @@
  \maketitle
  
  
-\centering Thanks to CAPES
+\centering Agradecimentos à CAPES.
 \end{frame}
 
 \begin{frame}
@@ -70,7 +79,7 @@
 	\item Covering problems
 	\begin{itemize}
 		\item Minimum Cover Problem
-		\item Maximal Covering Problem
+		\item Maximal Covering Problem \autocite{church:1974}
 	\end{itemize}
 	\item Maximal Covering Location Problem (MCLP)
 	\item Planar Maximal Covering Location Problem (PMCLP)
@@ -100,60 +109,26 @@
 
 \section{Preliminaries}
 
-\begin{frame}{Preliminaries}
+%\begin{frame}{Preliminaries}
 	
-	\begin{block}{Norms}
-		Let $u \in \R^2$ and $Q$ a $2x2$ positive definite matrix
-		\begin{itemize}
-			\item Euclidean
-			\begin{equation*}
-			||u||_2 = \sqrt{u^Tu}
-			\end{equation*}
-			
-			\item Elliptical
-			\begin{equation*}
-			||u||_{Q} = \sqrt{u^TQu}
-			\end{equation*}
-		\end{itemize}
-	\end{block}
+%	\begin{block}{Norms}
+%		Let $u \in \R^2$ and $Q$ a $2x2$ positive definite matrix
+%		\begin{itemize}
+%			\item Euclidean
+%			\begin{equation*}
+%			||u||_2 = \sqrt{u^Tu}
+%			\end{equation*}
+%			
+%			\item Elliptical
+%			\begin{equation*}
+%			||u||_{Q} = \sqrt{u^TQu}
+%			\end{equation*}
+%		\end{itemize}
+%	\end{block}
 
-\end{frame}
+%\end{frame}
 
-\begin{frame}{Preliminaries}
-	\begin{figure}[H]
-		\centering
-		
-		\caption{The elliptical and euclidean norms.}
-		\input{figures/elliptical.and.euclidean.norms.tex}
-		\source{Elaborated by the author.}
-		\label{fig:3ellipses_intersect}
-		
-	\end{figure}
-\end{frame}
 
-\begin{frame}{Preliminaries}
-	
-	\begin{block}{Ellipse}
-		Given a center $c \in \R^2$ and a $2x2$ p.d. matrix $Q$, an ellipse is the set of points that satisfy
-		
-		\begin{equation*}
-		||u-c||_Q = 1,
-		\end{equation*}
-		
-		with $\le$ representing the set of covered points
-	\end{block}
-
-	\begin{block}{Axis-parallel ellipse}
-		Any $2$ by $2$ diagonal d.p. matrix determines an axis-parallel ellipse, which can also be described by
-		
-		\begin{equation*}
-		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1,
-		\end{equation*}
-		
-		where $(a,b)$ are the shape parameters and $c=(c_x,c_y)$ is the center.
-	\end{block}
-
-\end{frame}
 
 
 
@@ -170,8 +145,8 @@
 		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$
 		\item $w(A)$, $A\subset \Pp$, is the sum of weights of the points in $A$
 		\item $D(q)$ is a unit disk with center at point $q$
-		\item \cite{chazelle:1986} proposed a $\bigO(n^2)$ algorithm
-		\item \cite{drezner} proposed a $\bigO(n^2\log{n})$ which our work is based on
+		\item \autocite{chazelle:1986} proposed a $\bigO(n^2)$ algorithm
+		\item \autocite{drezner} proposed a $\bigO(n^2\log{n})$ which our work is based on
 		\item We will introduce an equivalent problem...
 	\end{itemize}
 \end{frame}
@@ -317,16 +292,53 @@
 	Works found in the literature:
 	
 	\begin{itemize}
-		\item In \cite{cabello:2006} a $\bigO(n^{2m-1})$ algorithm was proposed. Also a $(1-\epsilon)-$approximation that runs in $\bigO(n\log{n})$ was introduced.
+		\item In \autocite{cabello:2006} a $\bigO(n^{2m-1})$ algorithm was proposed. Also a $(1-\epsilon)-$approximation that runs in $\bigO(n\log{n})$ was introduced.
 		
-		\item In \cite{zhou} a heuristic method using an algorithm called mean-shift was developed. The mean-shift algorithm converges to a local density maxima of any probability distribution and it is used to find a smaller candidate list of centers for the disks.
+		\item In \autocite{zhou} a heuristic method using an algorithm called mean-shift was developed. The mean-shift algorithm converges to a local density maxima of any probability distribution and it is used to find a smaller candidate list of centers for the disks.
 	\end{itemize}
 	
 	Because of the similarities, we will discuss only the multiple ellipses algorithm later.
 	
 \end{frame}
-
 \section{Maximal Covering by Ellipses}
+
+\begin{frame}{Ellipses}
+	
+	\begin{block}{Ellipse}
+		Given a center $c \in \R^2$ and $Q \in \R^ {2x2}$, an ellipse is the set of points that satisfy
+		
+		\begin{equation*}
+		||u-c||_Q^2 = (u-c)^TQ(u-c) = 1,
+		\end{equation*}
+		
+		with $\le$ representing the set of covered points
+	\end{block}
+	
+	\begin{block}{Axis-parallel ellipse}
+		Any $2$ by $2$ diagonal d.p. matrix determines an axis-parallel ellipse, which can also be described by
+		
+		\begin{equation*}
+		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1,
+		\end{equation*}
+		
+		where $(a,b)$ are the shape parameters and $c=(c_x,c_y)$ is the center.
+	\end{block}
+	
+\end{frame}
+
+\begin{frame}{Ellipses}
+	\begin{figure}[H]
+		\centering
+		
+		\caption{The ellipse seen as just a linear transformation of a circle.}
+		\input{figures/elliptical.and.euclidean.norms.tex}
+		\source{Elaborated by the author.}
+		\label{fig:3ellipses_intersect}
+		
+	\end{figure}
+\end{frame}
+
+
 
 \begin{frame}{Maximal Covering by Ellipses}{One ellipse}
 	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
@@ -364,8 +376,8 @@
 	
 	\begin{itemize}
 		\item $\E$ is a set of $m$ ellipses
-		\item \cite{canbolat} is the very first study on the problem. Slow exact method, a heuristic one was proposed.
-		\item \cite{andreta} proposed a method that breaks the problem into smaller optimization ones. Also, they developed a method for the non-axis-parallel case.
+		\item \autocite{canbolat} is the very first study on the problem. Slow exact method, a heuristic one was proposed.
+		\item \autocite{andreta} proposed a method that breaks the problem into smaller optimization ones. Also, they developed a method for the non-axis-parallel case.
 	\end{itemize}
 \end{frame}
 
@@ -392,6 +404,13 @@
 	\end{algorithm}
 \end{frame}
 
+\begin{frame}
+	\begin{figure}
+		\caption{Optimal solution with two ellipses for a random instance.}
+		\input{figures/example_2_ellipses.tex}
+		\source{Elaborated by the author.}
+	\end{figure}
+\end{frame}
 
 \begin{frame}{Maximal Covering by Ellipses}
 	
@@ -399,7 +418,7 @@
 		\item The algorithm for $m$ ellipses tries every possible assignment of coverage for every one of the ellipses
 		\item Run-time complexity of $\bigO(n^2)^m = \bigO(n^{2m})$
 		
-		\item Simpler than the $m$ disks algorithm proposed by \cite{cabello:2006}. Achieves a similar complexity ($\bigO(n^{2m-1})$).
+		\item Simpler than the $m$ disks algorithm proposed by \autocite{cabello:2006}. Achieves a similar complexity ($\bigO(n^{2m-1})$).
 		
 		\item Small improvements can be made in the pre-processing exhibited earlier in oder to reduce the size of the search space:
 		\begin{itemize}
@@ -420,9 +439,9 @@
 \begin{frame}{Future Work}
 	Primary goals:
 \begin{itemize}
-	\item Study the $(1-\epsilon)$-approximation method for the planar covering with disks in \cite{cabello:2006} and develop an adapted version of the algorithm for ellipses with the same time complexity of $\bigO(n\log{n})$.
+	\item Study the $(1-\epsilon)$-approximation method for the planar covering with disks in \autocite{cabello:2006} and develop an adapted version of the algorithm for ellipses with the same time complexity of $\bigO(n\log{n})$.
 	
-	\item Develop an exact method for the version of the problem introduced in \cite{andreta} where the ellipses can be freely rotated.
+	\item Develop an exact method for the version of the problem introduced in \autocite{andreta} where the ellipses can be freely rotated.
 \end{itemize}
 \end{frame}
 
@@ -432,17 +451,18 @@
 	\begin{itemize}
 		 
 
-	\item Develop a probabilistic approximation algorithm based on \cite{aronov:2008} which proposed a Monte Carlo approximation for the problem of finding the deepest point in a arrangement of regions. The method runs in $\bigO(n\epsilon^2\log{n})$ and can be applied to solve the case with one ellipse. The case with more than one ellipse is left as a challenge for us for the next steps of our research.
+	\item Develop a probabilistic approximation algorithm based on \autocite{aronov:2008} which proposed a Monte Carlo approximation for the problem of finding the deepest point in a arrangement of regions. The method runs in $\bigO(n\epsilon^2\log{n})$ and can be applied to solve the case with one ellipse. The case with more than one ellipse is left as a challenge for us for the next steps of our research.
 	
-	\item In \cite{zhou}, the task of finding every center candidate, after eliminating all the non-essential ones, is done in $\bigO(n^5)$ run-time complexity. We want to generalize this for the elliptical distance function and achieve a better run-time complexity. We also intend to use the mean-shift algorithm to try to develop a greedy version for the ellipses version.
+	\item In \autocite{zhou}, the task of finding every center candidate, after eliminating all the non-essential ones, is done in $\bigO(n^5)$ run-time complexity. We want to generalize this for the elliptical distance function and achieve a better run-time complexity. We also intend to use the mean-shift algorithm to try to develop a greedy version for the ellipses version.
 	
 		\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-	\frametitle{References}
-	\bibliographystyle{amsalpha}
-	\bibliography{../references.bib}
+%	\frametitle{References}
+%\bibliographystyle{authoryear-comp}
+%	\bibliography{../references.bib}
+\printbibliography
 \end{frame}
 
 \end{document}

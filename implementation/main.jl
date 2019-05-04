@@ -55,13 +55,16 @@ function main()
 	#@show(length(ret.Cover))
 	#@show(ret.x, ret.y)
 
+	X = map(p->p.x, P)
+	Y = map(p->p.y, P)
 
-
-
-
-	ret2 = ex2(P, Ellipse(1,1), Ellipse(1.4, 1))
-	plt = plotpointsellipse(map(p -> p.x, P), map(p -> p.y, P), [ret2...])
+	e1, e2, iscov = ex2(P, Ellipse(1,1), Ellipse(1.4, 1))
+	plt = plotpointsellipse(X, Y, [e1, e2], iscov)
 	savefig(plt, "c.pdf")
+	savefig(plt, "c.tex")
+
+	@show(X)
+	@show(Y)
 
 	#return ret
 end
