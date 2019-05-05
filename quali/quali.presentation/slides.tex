@@ -41,7 +41,9 @@
 %\usepackage{natbib}
 
 \usepackage[
-backend=biber,style=authoryear,autocite=inline
+backend=biber,
+style=authoryear,
+autocite=inline
 ]{biblatex}
 %\DeclareLanguageMapping{english}{english-apa}
 
@@ -78,33 +80,46 @@ backend=biber,style=authoryear,autocite=inline
 \begin{itemize}
 	\item Covering problems
 	\begin{itemize}
-		\item Minimum Cover Problem
+		\item Minimum Cover Problem \autocite{karp}
 		\item Maximal Covering Problem \autocite{church:1974}
 	\end{itemize}
+
+\end{itemize}
+
+\begin{figure}
+	\caption{Minimum Vertex Cover and its maximal counterpart. The colored edges are in the cover.}
+	\input{figures/cover.tex}
+	
+	\source{Elaborated by the author.}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Introduction}
+\begin{itemize}
+
 	\item Maximal Covering Location Problem (MCLP)
+	
+	\begin{itemize}
+		\item Introduce at first for networks. Facilities are placed on nodes, covering a radius of neighboring vertexes.
+	\end{itemize}
 	\item Planar Maximal Covering Location Problem (PMCLP)
 	\begin{itemize}
-	\item One disk: $\bigO(n^2)$ and $\bigO(n^2\log{n})$ algorithms
-	\item $m$ disks: $\bigO(n^{2m-1}\log{n})$ algorithm
+		\item One disk is 3SUM-Hard \autocite{3SUM-kopelowitz:2014}.
+		\item One disk: $\bigO(n^2)$ and $\bigO(n^2\log{n})$ algorithms.
+		\item $m$ disks: $\bigO(n^{2m-1}\log{n})$ algorithm.
 	\end{itemize}
 	\item Goals
 	\begin{itemize}
-		\item Develop a $\bigO(n^2\log{n})$ algorithm for the one disk case
-		\item Adapt it for the $m$ ellipses case creating a $\bigO(n^{2m})$ algorithm
+		\item Develop a $\bigO(n^2\log{n})$ algorithm for the one disk case.
+		\item Adapt it for the $m$ ellipses case creating a $\bigO(n^{2m})$ algorithm.
 	\end{itemize}
 \end{itemize}
 
 \end{frame} 
 
-\begin{frame}
-	\begin{figure}
-		\only<1>{\caption{Maximal cover by two disks.}}
-		\only<2>{\caption{Minimum number of disks needed to cover the set of points.}}
-		\only<1>{\input{figures/intro_a.tex}}
-		\only<2>{\input{figures/intro_b.tex}}
-		\source{Elaborated by the author.}
-	\end{figure}
-\end{frame}
+
 
 
 \section{Preliminaries}
@@ -135,20 +150,44 @@ backend=biber,style=authoryear,autocite=inline
 \section{Maximal Covering by Disks}
 \begin{frame}{Maximal Covering by Disks}{One disk}
 	
-	$MCD(\Pp, 1)$ is the problem of placing one disk on the plane to cover a subset of a demand set $\Pp$ maximizing the weights of the covered points.
+	$MCD(\Pp, 1)$ is the problem of placing one disk on the plane to cover a subset of a demand set $\Pp$, with $n$ points, maximizing the weights of the covered points.
 	
 	\begin{equation*}\label{eq:max_one_disk}
 		\max_q w(\Pp \cap D(q)),
 	\end{equation*}
 	
 	\begin{itemize}
-		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$
-		\item $w(A)$, $A\subset \Pp$, is the sum of weights of the points in $A$
-		\item $D(q)$ is a unit disk with center at point $q$
-		\item \autocite{chazelle:1986} proposed a $\bigO(n^2)$ algorithm
-		\item \autocite{drezner} proposed a $\bigO(n^2\log{n})$ which our work is based on
-		\item We will introduce an equivalent problem...
+		\item $\Pp=\{p_1,\dots,p_n\}$ is the demand set with weights $w(p_i)>0$.
+		\item $w(A)$, $A\subset \Pp$, is the sum of weights of the points in $A$.
+		\item $D(q)$ is a unit disk with center at point $q$.
+		%\item \autocite{chazelle:1986} proposed a $\bigO(n^2)$ algorithm
+		%\item \autocite{drezner} proposed a $\bigO(n^2\log{n})$ which our work is based on
+		%\item We will introduce an equivalent problem...
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Maximal Covering by Disks}{One disk}
+\begin{figure}
+	\caption{An instance of $MCD(\Pp,1)$.}
+	\includegraphics[scale=0.6]{figures/mcd_one_disk.pdf}
+	\source{Elaborated by the author.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Maximal Covering By Disks}{One disk}
+	
+	Works and results found in the literature:
+	
+	\begin{itemize}
+		\item $MCD$ is as difficult the problem of given $n$ numbers, find three of them that sum to $0$. Proved by \autocite{aronov:2008}.
+		
+		\item In \autocite{drezner} a $\bigO(n^2\log{n})$ algorithm was developed. The idea of our algorithm to sort the intersections by their angles comes from here.
+		
+		\item In \autocite{chazelle:1986}, a $\bigO(n^2)$ algorithm was developed. It actually solves an equivalent problem which is introduced next.
+	\end{itemize}
+	
+	
+	
 \end{frame}
 
 \subsection{Maximum Weight Clique Problem}
@@ -160,43 +199,64 @@ backend=biber,style=authoryear,autocite=inline
 	\end{equation*}
 	
 	\begin{itemize}
-		\item The disks are fixed with centers at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$
+		\item The disks are fixed with centers at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$.
 		\item A clique is a non-empty intersection area of a subset of disks. We search for only a point in an optimal clique.
 		\item An optimal solution for the maximum weight clique is an optimal solution for $MCD(\Pp,1)$.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
-		\begin{figure}[H]
-		\centering
-		
-		\only<1>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$.}}
-		
-		\only<2>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$. In gray, the optimal solution.}}
-		
-		\only<1>{\input{figures/max_w_clique_v2.tex}}
-		\only<2>{\input{figures/max_w_clique_b.tex}}
-      %\center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
+\begin{frame}{Maximum Weight Clique Problem}
+	\begin{figure}
+		\only<1>{\caption{An instance of $MCD(\Pp, 1)$.}}
+		\only<2>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$.}}
+		\only<3>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$. In gray, the optimal solution.}}
+		\only<1>{\includegraphics[scale=0.55]{figures/mwc_1.pdf}}
+		\only<2>{\includegraphics[scale=0.55]{figures/mwc_2.pdf}}
+		\only<3>{\includegraphics[scale=0.55]{figures/mwc_3.pdf}}
+		%\only<2>{\input{figures/intro_b.tex}}
 		\source{Elaborated by the author.}
-		\label{fig:mcd_instance}
 	\end{figure}
 \end{frame}
 
+%\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
+%		\begin{figure}[H]
+%		\centering
+		
+%		\only<1>{}
+		
+%		\only<2>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$. In gray, the optimal solution.}}
+		
+%		\only<1>{\input{figures/max_w_clique_v2.tex}}
+%		\only<2>{\input{figures/max_w_clique_b.tex}}
+      %\center{\includegraphics[width=.7\textwidth]{figures/mcd_instance.png}}
+%		\source{Elaborated by the author.}
+%		\label{fig:mcd_instance}
+%	\end{figure}
+%\end{frame}
+
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
-	Defining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$:
-	
-	Let $D_i$ and $D_j$ be two unit disks that intersect at two points.
+	Defining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$:\\~\\
+
+	Let $D_i$ (at the origin) and $D_j$ be two unit disks that intersect at two points.
 	
 	\begin{itemize}
-		\item Assume $D_i$ is at the origin
-		\item We can find the polar angle of the intersection points. Let's call them $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ with the following condition:
-		\begin{itemize}
-			\item The arc defined by $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ bounds the region $D_i \cap D_j$
-			
-		\end{itemize}
-		\item Later it will be shown how to find which one is which algorithmically.
+		\item We know that the two intersection points define two arcs in $D_i$.
+		\item One of the arcs bounds $D_i\cap D_j$. That is the one we want to determine.
+		
+		\item We can determine the polar angles of the two intersection points.
+		%\item Assume $D_i$ is at the origin.
+		\item Assuming counter-clockwise direction, we define $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ as the angles of intersection that determines the arc of $D_i$ that bounds $D_i \cap D_j$.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+
+\begin{figure}
+	\caption{$\Gamma_+(1,2)$ and $\Gamma_-(1,2)$ example.}
+	\includegraphics[scale=0.65]{figures/gammas.pdf}
+		\source{Elaborated by the author.}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
@@ -276,13 +336,13 @@ backend=biber,style=authoryear,autocite=inline
 	The run-time complexity of the algorithm is $\bigO(n^2\log{n})$.
 	
 	\begin{itemize}
-		\item There are $\bigO(n^2)$ intersections among $n$ disks
+		\item There are $\bigO(n^2)$ intersections among $n$ disks.
 		
-		\item Sorting takes $\bigO(n^2\log{n})$
+		\item Sorting takes $\bigO(n^2\log{n})$.
 		
 		\item The traversal takes $\bigO(n)$ for every disk.
 		
-		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections.
+		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections \autocite{bentley:1979}.
 	\end{itemize}
 
 \end{frame}
@@ -311,7 +371,7 @@ backend=biber,style=authoryear,autocite=inline
 		||u-c||_Q^2 = (u-c)^TQ(u-c) = 1,
 		\end{equation*}
 		
-		with $\le$ representing the set of covered points
+		with $\le$ representing the set of covered points.
 	\end{block}
 	
 	\begin{block}{Axis-parallel ellipse}
@@ -344,13 +404,13 @@ backend=biber,style=authoryear,autocite=inline
 	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
 	
 	\begin{equation*}
-	\max_q |\Pp \cap (q)|,
+	\max_q |\Pp \cap E(q)|,
 	\end{equation*}
 
 	\begin{itemize}
-		\item $E(q)$ is an axis-parallel ellipse with center point $q$
-		\item Assuming unit weights for now
-		\item Same algorithm for one disk
+		\item $E(q)$ is an axis-parallel ellipse with center point $q$.
+		\item Assuming unit weights for now.
+		\item Same algorithm for one disk.
 	\end{itemize}
 
 \end{frame}
@@ -375,7 +435,7 @@ backend=biber,style=authoryear,autocite=inline
 	\end{equation*}
 	
 	\begin{itemize}
-		\item $\E$ is a set of $m$ ellipses
+		\item $\E$ is a set of $m$ ellipses.
 		\item \autocite{canbolat} is the very first study on the problem. Slow exact method, a heuristic one was proposed.
 		\item \autocite{andreta} proposed a method that breaks the problem into smaller optimization ones. Also, they developed a method for the non-axis-parallel case.
 	\end{itemize}
@@ -387,7 +447,7 @@ backend=biber,style=authoryear,autocite=inline
 		\begin{algorithmic}[1]
 			\STATE $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
 			\STATE $Z \gets \{\}$
-			
+			\STATE $Cov \gets \{p_i\}$
 			\FOR{$cnt=1..2$} 
 			\FOR{$a \in A$}
 			\STATE Let $p_a$ be the point that intersects $E_i$ at angle $a$. 
@@ -415,8 +475,8 @@ backend=biber,style=authoryear,autocite=inline
 \begin{frame}{Maximal Covering by Ellipses}
 	
 	\begin{itemize}
-		\item The algorithm for $m$ ellipses tries every possible assignment of coverage for every one of the ellipses
-		\item Run-time complexity of $\bigO(n^2)^m = \bigO(n^{2m})$
+		\item The algorithm for $m$ ellipses tries every possible assignment of coverage for every one of the ellipses.
+		\item Run-time complexity of $\bigO(n^{2m})$.
 		
 		\item Simpler than the $m$ disks algorithm proposed by \autocite{cabello:2006}. Achieves a similar complexity ($\bigO(n^{2m-1})$).
 		
@@ -426,7 +486,7 @@ backend=biber,style=authoryear,autocite=inline
 			\item Ellipses that are too distant do not need to be checked.
 		\end{itemize}
 	
-		\item The unit-weight assumption can be easily dropped
+		\item The unit-weight assumption can be easily dropped.
 	\end{itemize}
 	
 \end{frame}
