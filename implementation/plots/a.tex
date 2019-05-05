@@ -1,0 +1,50 @@
+% This file was created by matplotlib2tikz v0.7.4.
+\begin{tikzpicture}
+
+\begin{axis}[
+tick align=outside,
+tick pos=left,
+x grid style={white!69.01960784313725!black},
+xmin=-2, xmax=2,
+xtick style={color=black},
+y grid style={white!69.01960784313725!black},
+ymin=-2, ymax=2,
+ytick style={color=black}
+]
+\addplot [only marks, draw=red, fill=red, colormap/viridis]
+table{%
+x                      y
+-0.8 -0.2
+-0.2 0.4
+0.9 -0.4
+};
+\path [draw=black, fill=red, opacity=0.2]
+(axis cs:0.2,-0.2)
+--(axis cs:0.195184726672197,-0.298017140329561)
+--(axis cs:0.18078528040323,-0.395090322016128)
+--(axis cs:0.156940335732209,-0.490284677254462)
+--(axis cs:0.139375395780243,-0.539375395780243)
+--(axis cs:0.0902846772544636,-0.556940335732208)
+--(axis cs:-0.00490967798387038,-0.58078528040323)
+--(axis cs:-0.0812279586139392,-0.59210602792772)
+--(axis cs:-0.0951847266721968,-0.498017140329562)
+--(axis cs:-0.1,-0.400000000000001)
+--(axis cs:-0.0951847266721969,-0.30198285967044)
+--(axis cs:-0.0807852804032306,-0.204909677983873)
+--(axis cs:-0.056940335732209,-0.109715322745538)
+--(axis cs:-0.0238795325112869,-0.0173165676349108)
+--(axis cs:0.0180787356516448,0.0713967368259972)
+--(axis cs:0.0685303876974546,0.155570233019602)
+--(axis cs:0.110157019435624,0.211697248562716)
+--(axis cs:0.123879532511284,0.182683432365096)
+--(axis cs:0.156940335732207,0.0902846772544693)
+--(axis cs:0.180785280403229,-0.00490967798386432)
+--(axis cs:0.195184726672196,-0.101982859670432)
+--(axis cs:0.2,-0.199999999999992)
+--(axis cs:0.2,-0.2);
+\draw[draw=red,fill opacity=0] (axis cs:-0.8,-0.2) circle (1);
+\draw[draw=green!50.19607843137255!black,fill opacity=0] (axis cs:-0.2,0.4) circle (1);
+\draw[draw=blue,fill opacity=0] (axis cs:0.9,-0.4) circle (1);
+\end{axis}
+
+\end{tikzpicture}
