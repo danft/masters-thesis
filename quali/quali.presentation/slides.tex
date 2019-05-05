@@ -272,36 +272,52 @@ autocite=inline
 
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
-	For a disk $D_i$, a counter-clockwise traversal visits every $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ in counter-clockwise order.
+	
+	Some observations allow us to arrive at the algorithm:
+	
+%	For a disk $D_i$, a counter-clockwise traversal visits every $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ in counter-clockwise order.
 	
 	\begin{itemize}
 		\item An intersection region of disks is bounded by arcs.
 		
-		\item The arc $\Gamma_+(i,j),\Gamma_-(i,j)$ (counter-clockwise) determines a region where $i$ and $j$ intersect.
+		\item The arc $A(\Gamma_+(i,j),\Gamma_-(i,j))$ (counter-clockwise) determines a region where $i$ and $j$ intersect.
 		
-		\item In a counter-clockwise traversal, the arcs where $\Gamma_+(i,j) > \Gamma_-(i,j)$ can be a problem for the implementation. The traversal is on a circle, where to start?
+
+		\item For every disk $D_i$, we want to find an angle $\theta$, such that $$w(\{D_k : \theta \in A(\Gamma_+(i,k),\Gamma_-(i,k))\}),$$ is maximized. Most overlapping intervals (circular).
 		
-		\item If the traversal reaches a opening angle, we mark the intersecting disk as active. If it reaches a closing angle we unmark it.
-		
-		\item We want to find a point in the traversal with the most active disks.
+		\item To transform it to the problem of finding the most overlapping intervals, just copy the list of intersection angles. The arcs such that $\Gamma_+(i,j) > \Gamma_-(i,j)$ will be considered.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 	
-	For every disk, traverse the sorted list of intersection angles twice, keeping a set of active disks, and the current best solution.
+	Transforming it to the most overlapping intervals.
 	
-	Doing the traversal twice solves the problem of deciding where to start.
-	
-\begin{figure}[H]
-	\centering
-	
-	\caption{The intersections list of a disk with three other disks.}
-	\input{figures/fig:array_disks.tex}
-	\source{Elaborated by the author.}
-	\label{fig:array_disks}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		
+		\caption{The intersections list of a disk with three other disks.}
+		\input{figures/fig:array_disks.tex}
+		\source{Elaborated by the author.}
+		%\label{fig:array_disks}
+	\end{figure}
 \end{frame}
+
+\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
+	Our algorithm for the Maximum Weight Clique Problem:\\~\\
+	
+	For every disk $D_i$, do:
+	\begin{itemize}
+		\item Get the sorted list of intersection angles with $D_i$
+				$A=\cap_{j}\Gamma_+(i,j) \cup \Gamma_-(i,j)$.
+		\item Traverse it twice starting at the angle with smallest value.
+		\begin{itemize}
+			\item Keep a set of active disks. When an opening angle is visited, make the disk active, otherwise remove it from the set.
+			\item Update the optimal solution. Use the closing angle.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
 
 %\begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 %\begin{figure}
@@ -343,6 +359,10 @@ autocite=inline
 		\item The traversal takes $\bigO(n)$ for every disk.
 		
 		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections \autocite{bentley:1979}.
+		
+		\item The algorithm is basically finding the most number of overlapping intervals $n$ times.
+		
+		\item As it was mentioned, the solution found by this algorithm is a solution for the Maximal Covering by One Disk.
 	\end{itemize}
 
 \end{frame}
