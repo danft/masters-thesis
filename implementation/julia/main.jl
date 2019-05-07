@@ -12,6 +12,14 @@ using Ellipses
 
 pgfplots()
 
+function mainT()
+	e1 = Ellipse(2,1,0,0)
+	e2 = Ellipse(2,1,0.6,0.6)
+
+	@show(ellipseinter(e1, e2))
+
+end
+
 function main2()
 	e₁ = Ellipse(3,2,0,0)
 	e₂ = Ellipse(3,2,first(randn(1)), first(randn(1)))

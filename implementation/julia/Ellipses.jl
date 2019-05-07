@@ -45,6 +45,9 @@ function ellipseinter(e₁::Ellipse, e₂::Ellipse)::Union{Nothing,Tuple{Point,P
 
 	α = (-2k*a^2)/(2h*b^2)
 	β = (b^2*h^2 + a^2*k^2) / (2h*b^2)
+
+	@show(a, b, α, β)
+	@show(2h*b^2)
 	
 	ro = root2(b^2*α^2+a^2, 2β*α*b^2, b^2*β^2 - a^2*b^2)
 
