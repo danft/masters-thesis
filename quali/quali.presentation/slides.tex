@@ -102,10 +102,11 @@ autocite=inline
 	\item Maximal Covering Location Problem (MCLP)
 	
 	\begin{itemize}
-		\item Introduce at first for networks. Facilities are placed on nodes, covering a radius of neighboring vertexes.
+		\item Introduce at first for networks \autocite{church:1974}. Facilities are placed on nodes, covering a radius of neighboring vertexes.
 	\end{itemize}
 	\item Planar Maximal Covering Location Problem (PMCLP)
 	\begin{itemize}
+		\item Introduced by \autocite{church:1984}.
 		\item One disk is 3SUM-Hard \autocite{3SUM-kopelowitz:2014}.
 		\item One disk: $\bigO(n^2)$ and $\bigO(n^2\log{n})$ algorithms.
 		\item $m$ disks: $\bigO(n^{2m-1}\log{n})$ algorithm.
@@ -122,7 +123,7 @@ autocite=inline
 
 
 
-\section{Preliminaries}
+%\section{Preliminaries}
 
 %\begin{frame}{Preliminaries}
 	
@@ -179,7 +180,7 @@ autocite=inline
 	Works and results found in the literature:
 	
 	\begin{itemize}
-		\item $MCD$ is as difficult the problem of given $n$ numbers, find three of them that sum to $0$. Proved by \autocite{aronov:2008}.
+		\item $MCD$ is as difficult the problem of given $n$ numbers, find three of them that sum to $0$ (3SUM-HARD). Proved by \autocite{aronov:2008}.
 		
 		\item In \autocite{drezner} a $\bigO(n^2\log{n})$ algorithm was developed. The idea of our algorithm to sort the intersections by their angles comes from here.
 		
@@ -195,24 +196,30 @@ autocite=inline
 	Let $\D=\{D_1,\dots,D_n\}$ be a set of $n$ unit disks with weights $w_i>0$. The maximum weight clique is defined as
 	
 	\begin{equation*}
-	\max_q \sum_{D_k \cap q \neq \emptyset} w_k,
+	\max_{q\in\R^2} \sum_{D_k \cap q \neq \emptyset} w_k,
 	\end{equation*}
 	
 	\begin{itemize}
-		\item The disks are fixed with centers at $\Pp =\{p_1,\dots,p_n\}$ with $w_k=w(p_k)$.
 		\item A clique is a non-empty intersection area of a subset of disks. We search for only a point in an optimal clique.
-		\item An optimal solution for the maximum weight clique is an optimal solution for $MCD(\Pp,1)$.
+		
+		\item The weight of a clique is the sum of the weights of the disks that intersect with it.
+		
+		\item In our case, we just want a point from the optimum clique.
+		
+		\item Given an instance $MCD(\Pp, 1)$: fix the disk centers at $\Pp =\{p_1,\dots,p_n\}$ with weights $w_k=w(p_k)$.
+
+		%\item An optimal solution for the maximum weight clique is an optimal solution for $MCD(\Pp,1)$.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Maximum Weight Clique Problem}
+\begin{frame}{Maximum Weight Clique Problem}{Equivalence}
 	\begin{figure}
-		\only<1>{\caption{An instance of $MCD(\Pp, 1)$.}}
+		\only<1>{\caption{An instance of $MCD(\Pp, 1)$. We will show how an instance of the Maximum Weight Clique Problem is constructed from it.}}
 		\only<2>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$.}}
 		\only<3>{\caption{An instance of the Maximum Weight Clique Problem obtained from an instance of $MCD(\Pp, 1)$. In gray, the optimal solution.}}
-		\only<1>{\includegraphics[scale=0.55]{figures/mwc_1.pdf}}
-		\only<2>{\includegraphics[scale=0.55]{figures/mwc_2.pdf}}
-		\only<3>{\includegraphics[scale=0.55]{figures/mwc_3.pdf}}
+		\only<1>{\includegraphics[scale=0.50]{figures/mwc_1.pdf}}
+		\only<2>{\includegraphics[scale=0.50]{figures/mwc_2.pdf}}
+		\only<3>{\includegraphics[scale=0.50]{figures/mwc_3.pdf}}
 		%\only<2>{\input{figures/intro_b.tex}}
 		\source{Elaborated by the author.}
 	\end{figure}
@@ -238,7 +245,7 @@ autocite=inline
 \begin{frame}{Maximum Weight Clique Problem}{Algorithm}
 	Defining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$:\\~\\
 
-	Let $D_i$ (at the origin) and $D_j$ be two unit disks that intersect at two points.
+	Let $D_i$ (at the origin) and $D_j$ be two unit disks that have their corresponding circles intersect at two points.
 	
 	\begin{itemize}
 		\item We know that the two intersection points define two arcs in $D_i$.
@@ -421,15 +428,15 @@ autocite=inline
 
 
 \begin{frame}{Maximal Covering by Ellipses}{One ellipse}
-	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
+	Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, and $\Pp=\{p_1,\dots,p_n\}$ is a set of $n$ points with each point having a positive weight $w_i$, an optimal solution of $MCE(\Pp, a, b)$ is given by
 	
 	\begin{equation*}
-	\max_q |\Pp \cap E(q)|,
+	\max_q w(\Pp \cap E(q)),
 	\end{equation*}
 
 	\begin{itemize}
 		\item $E(q)$ is an axis-parallel ellipse with center point $q$.
-		\item Assuming unit weights for now.
+		\item $w(A)$, $A \subset \Pp$, is the sum of the weights of every point in $\Pp$.
 		\item Same algorithm for one disk.
 	\end{itemize}
 
@@ -451,11 +458,11 @@ autocite=inline
 	Let $MCE(\Pp, \E)$ be an instance of the maximal covering by ellipses, an optimal solution is given by
 	
 	\begin{equation*}
-	\max_{q_1, \dots, q_m}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i)\right|},
+	\max_{q_1, \dots, q_m}{w(\bigcup_{i=1}^{m} \Pp \cap E_i(q_i))},
 	\end{equation*}
 	
 	\begin{itemize}
-		\item $\E$ is a set of $m$ ellipses.
+		\item $\Pp$ is a set of $n$ points, $\E$ is a set of $m$ ellipses.
 		\item \autocite{canbolat} is the very first study on the problem. Slow exact method, a heuristic one was proposed.
 		\item \autocite{andreta} proposed a method that breaks the problem into smaller optimization ones. Also, they developed a method for the non-axis-parallel case.
 	\end{itemize}
@@ -463,7 +470,7 @@ autocite=inline
 
 \begin{frame}[fragile]{Maximal Covering by Ellipses}{Pre-processing that finds every possible coverage for ellipse $E_i$}
 	\begin{algorithm}[H]
-		%\caption{Algorithm for $MCE(\Pp, a, b)$ with unit weights}\label{algoritmo:mce1}
+		\caption{Adaptation of the algorithm for one disk to produce a candidate list for every ellipse.}\label{algoritmo:mce1}
 		\begin{algorithmic}[1]
 			\STATE $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
 			\STATE $Z \gets \{\}$
@@ -482,6 +489,10 @@ autocite=inline
 			
 		\end{algorithmic}
 	\end{algorithm}
+\end{frame}
+
+\begin{frame}{Maximal Covering by Ellipses}{$m$ Ellipses}
+	The modified one-disk-cover algorithm produces a list of candidates of location for each ellipse. An optimal solution is guaranteed to be in this list.
 \end{frame}
 
 \begin{frame}
