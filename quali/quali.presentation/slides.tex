@@ -365,12 +365,12 @@ autocite=inline
 		
 		\item The traversal takes $\bigO(n)$ for every disk.
 		
-		\item It can be implemented in $K\log{n}$ where $K$ is the number of intersections \autocite{bentley:1979}.
+		\item It can be implemented in $\bigO(K\log{n})$ where $K$ is the number of intersections \autocite{bentley:1979}.
 		
 		\item The algorithm is basically finding the most number of overlapping intervals $n$ times.
-		
-		\item As it was mentioned, the solution found by this algorithm is a solution for the Maximal Covering by One Disk.
+
 	\end{itemize}
+	As it was mentioned, the solution found by this algorithm is a solution for the Maximal Covering by One Disk.
 
 \end{frame}
 
@@ -392,7 +392,7 @@ autocite=inline
 \begin{frame}{Ellipses}
 	
 	\begin{block}{Ellipse}
-		Given a center $c \in \R^2$ and $Q \in \R^ {2x2}$, an ellipse is the set of points that satisfy
+		Given a center $c \in \R^2$ and $Q \in \R^ {2x2}$ a positive definite matrix, an ellipse is the set of points that satisfy
 		
 		\begin{equation*}
 		||u-c||_Q^2 = (u-c)^TQ(u-c) = 1,
@@ -402,7 +402,7 @@ autocite=inline
 	\end{block}
 	
 	\begin{block}{Axis-parallel ellipse}
-		Any $2$ by $2$ diagonal d.p. matrix determines an axis-parallel ellipse, which can also be described by
+		Any $2$ by $2$ diagonal p.d. matrix determines an axis-parallel ellipse, which can also be described by
 		
 		\begin{equation*}
 		\frac{(x-c_x)^2}{a^2} + \frac{(y-c_y)^2}{b^2} = 1,
@@ -468,32 +468,58 @@ autocite=inline
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Maximal Covering by Ellipses}{Pre-processing that finds every possible coverage for ellipse $E_i$}
+\begin{frame}[fragile]{Maximal Covering by Ellipses}{The algorithm for $m$ ellipses}
 	\begin{algorithm}[H]
-		\caption{Adaptation of the algorithm for one disk to produce a candidate list for every ellipse.}\label{algoritmo:mce1}
+		%\caption{Adaptation of the algorithm for one disk to produce a candidate list for every ellipse.}\label{algoritmo:mce1}
 		\begin{algorithmic}[1]
-			\STATE $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
-			\STATE $Z \gets \{\}$
-			\STATE $Cov \gets \{p_i\}$
-			\FOR{$cnt=1..2$} 
-			\FOR{$a \in A$}
-			\STATE Let $p_a$ be the point that intersects $E_i$ at angle $a$. 
-			\IF{$a$ is a starting angle}
-			\STATE $Cov \gets Cov \cup \{p_a\}$
-			\ELSE
-			\STATE $Cov \gets Cov \setminus \{p_a\}$
-			\ENDIF
-			\STATE $Z \gets Z \cup \{Cov\}$
+			\FOR{$E_i \in \E$}
+				\STATE{Fix an ellipse with the same shape as $E_i$ at each point.}
+				\STATE{$Z_i \gets $ every solution of Maximum Weight Clique for it.}
 			\ENDFOR
-			\ENDFOR
+		\end{algorithmic}
+	\end{algorithm}
+\begin{algorithm}[H]
+	\begin{algorithmic}[1]
+
+			\STATE{\textbf{function} $f(\Pp, j)$}
+				
+				\IF{$j=m$}{
+					\RETURN 0
+				}
+				\ENDIF
+				\STATE{$ans \gets 0$}
+				\FOR{$z \in Z_j$}
+					\STATE{Fix $E_j$ at $z$}
+					\STATE{$Q \gets$ points covered by $E_j(z)$}
+					\STATE{$ans \gets \max\{ans,f(\Pp \setminus Q, j+1) + w(Q)\}$}
+				\ENDFOR
+				\RETURN{$ans$}
+			
+			
+			%\FOR{$p_i \in \Pp$}
+			%\STATE $A \gets \bigcup_{j \in I_i} \{\Gamma_+(i,j) \cup \Gamma_-(i,j)\}$
+			%\STATE $Z \gets \{\}$
+			%\STATE $Cov \gets \{p_i\}$
+			%\FOR{$cnt=1..2$} 
+			%\FOR{$a \in A$}
+			%\STATE Let $p_a$ be the point that intersects $E_i$ at angle $a$. 
+			%\IF{$a$ is a starting angle}
+			%\STATE $Cov \gets Cov \cup \{p_a\}$
+			%\ELSE
+			%\STATE $Cov \gets Cov \setminus \{p_a\}$
+			%\ENDIF
+			%\STATE $Z \gets Z \cup \{Cov\}$
+			%\ENDFOR
+			%\ENDFOR
+			%\ENDFOR
 			
 		\end{algorithmic}
 	\end{algorithm}
 \end{frame}
 
-\begin{frame}{Maximal Covering by Ellipses}{$m$ Ellipses}
-	The modified one-disk-cover algorithm produces a list of candidates of location for each ellipse. An optimal solution is guaranteed to be in this list.
-\end{frame}
+%\begin{frame}{Maximal Covering by Ellipses}{$m$ Ellipses}
+%	The modified one-disk-cover algorithm produces a list of candidates of location for each ellipse. An optimal solution is guaranteed to be in this list.
+%\end{frame}
 
 \begin{frame}
 	\begin{figure}
