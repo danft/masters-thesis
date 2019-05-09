@@ -103,6 +103,8 @@ autocite=inline
 	
 	\begin{itemize}
 		\item Introduce at first for networks \autocite{church:1974}. Facilities are placed on nodes, covering a radius of neighboring vertexes.
+		
+		\item It is a NP-Hard problem \autocite{hatta:2013}.
 	\end{itemize}
 	\item Planar Maximal Covering Location Problem (PMCLP)
 	\begin{itemize}
@@ -343,12 +345,15 @@ autocite=inline
 		\caption{A traversal for $D_1$ with green disks representing the active set and red signs representing the current angle being visited (some are omitted).}
 		\only<1>{\input{figures/mcd_sim_1.tex}}
 		\only<2>{\input{figures/mcd_sim_2.tex}}
-		\only<3>{\input{figures/mcd_sim_2_5.tex}}
-		\only<4>{\input{figures/mcd_sim_3.tex}}
-		\only<5>{\input{figures/mcd_sim_4.tex}}
-		\only<6>{\input{figures/mcd_sim_5.tex}}
-		\only<7>{\input{figures/mcd_sim_6.tex}}
-		\only<8>{\input{figures/mcd_sim_7.tex}}
+		\only<3>{\input{figures/mcd_sim_2_1.tex}}
+		\only<4>{\input{figures/mcd_sim_2_2.tex}}
+		
+		\only<5>{\input{figures/mcd_sim_2_5.tex}}
+		\only<6>{\input{figures/mcd_sim_3.tex}}
+		\only<7>{\input{figures/mcd_sim_4.tex}}
+		\only<8>{\input{figures/mcd_sim_5.tex}}
+		\only<9>{\input{figures/mcd_sim_6.tex}}
+		\only<10>{\input{figures/mcd_sim_7.tex}}
 			\source{Elaborated by the author.}
 	\end{figure}
 \end{frame}
@@ -543,13 +548,13 @@ autocite=inline
 %	The modified one-disk-cover algorithm produces a list of candidates of location for each ellipse. An optimal solution is guaranteed to be in this list.
 %\end{frame}
 
-\begin{frame}
-	\begin{figure}
-		\caption{Optimal solution with two ellipses for a random instance.}
-		\input{figures/example_2_ellipses.tex}
-		\source{Elaborated by the author.}
-	\end{figure}
-\end{frame}
+%\begin{frame}
+%	\begin{figure}
+%		\caption{Optimal solution with two ellipses for a random instance.}
+%		\input{figures/example_2_ellipses.tex}
+%		\source{Elaborated by the author.}
+%	\end{figure}
+%\end{frame}
 
 \begin{frame}{Maximal Covering by Ellipses}
 	
@@ -562,10 +567,10 @@ autocite=inline
 		\item Small improvements can be made in the pre-processing exhibited earlier in oder to reduce the size of the search space:
 		\begin{itemize}
 			\item Non-maximal coverage sets.
-			\item Ellipses that are too distant do not need to be checked.
+			%\item Ellipses that are too distant do not need to be checked.
 		\end{itemize}
 	
-		\item The unit-weight assumption can be easily dropped.
+		%\item The unit-weight assumption can be easily dropped.
 	\end{itemize}
 	
 \end{frame}

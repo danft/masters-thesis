@@ -36,7 +36,7 @@
 
 \begin{tikzpicture}
 
-\matrix [matrix of nodes,row sep=,row sep=0mm,
+\matrix [matrix of nodes,row sep=0,row sep=0mm,
 column 1/.style={nodes={rectangle,draw,minimum width=1.5em, color=red,minimum height=0.5em}},
 column 2/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
 column 3/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
@@ -52,9 +52,6 @@ column 12/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum
 ] (O)
 {
 $2_+$ & $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$ & $2_+$ & $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$\\
-	%$+$ & $-$ & $-$ & $-$ & $+$ & $+$\\
+|[color=red!]|$1$\\ %& $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$ & $2_+$ & $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$\\
 };
-
-\node at (-4,-0.5) {$0$};
-\node at (0,-0.5) {$2\pi$};
 \end{tikzpicture}

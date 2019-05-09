@@ -5,18 +5,12 @@
 
 %Shape: Circle [id:dp37777408295388804] 
 \draw   (21,59.5) .. controls (21,45.69) and (32.19,34.5) .. (46,34.5) .. controls (59.81,34.5) and (71,45.69) .. (71,59.5) .. controls (71,73.31) and (59.81,84.5) .. (46,84.5) .. controls (32.19,84.5) and (21,73.31) .. (21,59.5) -- cycle ;
-
-
 %Shape: Circle [id:dp4562198988843913] 
-\draw  [color={rgb, 255:red, 155; green, 155; blue, 155 },draw opacity=1 ] (47.5,46.94) .. controls (47.5,33.14) and (58.69,21.94) .. (72.5,21.94) .. controls (86.31,21.94) and (97.5,33.14) .. (97.5,46.94) .. controls (97.5,60.75) and (86.31,71.94) .. (72.5,71.94) .. controls (58.69,71.94) and (47.5,60.75) .. (47.5,46.94) -- cycle ;
-
-
+\draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ] (47.5,46.94) .. controls (47.5,33.14) and (58.69,21.94) .. (72.5,21.94) .. controls (86.31,21.94) and (97.5,33.14) .. (97.5,46.94) .. controls (97.5,60.75) and (86.31,71.94) .. (72.5,71.94) .. controls (58.69,71.94) and (47.5,60.75) .. (47.5,46.94) -- cycle ;
 %Shape: Circle [id:dp8913971633985722] 
-\draw  [color=green  ,draw opacity=1 ] (33,53.5) .. controls (33,39.69) and (44.19,28.5) .. (58,28.5) .. controls (71.81,28.5) and (83,39.69) .. (83,53.5) .. controls (83,67.31) and (71.81,78.5) .. (58,78.5) .. controls (44.19,78.5) and (33,67.31) .. (33,53.5) -- cycle ;
-
-
+\draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ] (33,53.5) .. controls (33,39.69) and (44.19,28.5) .. (58,28.5) .. controls (71.81,28.5) and (83,39.69) .. (83,53.5) .. controls (83,67.31) and (71.81,78.5) .. (58,78.5) .. controls (44.19,78.5) and (33,67.31) .. (33,53.5) -- cycle ;
 %Shape: Circle [id:dp05970043129919356] 
-\draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ] (57.81,32.47) .. controls (57.81,18.66) and (69,7.47) .. (82.81,7.47) .. controls (96.62,7.47) and (107.81,18.66) .. (107.81,32.47) .. controls (107.81,46.27) and (96.62,57.47) .. (82.81,57.47) .. controls (69,57.47) and (57.81,46.27) .. (57.81,32.47) -- cycle ;
+\draw  [color={rgb, 255:red, 155; green, 155; blue, 155 } ,draw opacity=1 ] (57.81,32.47) .. controls (57.81,18.66) and (69,7.47) .. (82.81,7.47) .. controls (96.62,7.47) and (107.81,18.66) .. (107.81,32.47) .. controls (107.81,46.27) and (96.62,57.47) .. (82.81,57.47) .. controls (69,57.47) and (57.81,46.27) .. (57.81,32.47) -- cycle ;
 %Straight Lines [id:da04725899028195979] 
 %\draw[densely dotted]  (21,59.5) -- (71,59.5) ;
 
@@ -30,9 +24,9 @@
 % Text Node
 \draw (74.22,50) node [scale=0.6]  {$2_+$};
 % Text Node
-\draw (64.22,36.56) node [scale=0.6]  {$2_-$};
+\draw (64.22,36.56) node [scale=0.6,color=red]  {$2_-$};
 % Text Node
-\draw (54.32,40.66) node [scale=0.6,color=red]  {$3_-$};
+\draw (54.32,40.66) node [scale=0.6]  {$3_-$};
 % Text Node
 \draw (44.02,39.56) node [scale=0.6]  {$4_-$};
 
@@ -44,21 +38,21 @@
 
 \matrix [matrix of nodes,row sep=,row sep=0mm,
 column 1/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
-column 2/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
+column 2/.style={nodes={rectangle,draw,minimum width=1.5em, color=red,minimum height=0.5em}},
 column 3/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
 column 4/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
 column 5/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
 column 6/.style={nodes={rectangle,draw,minimum width=1.5em, minimum height=0.5em}},
 column 7/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}},
 column 8/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}},
-column 9/.style={nodes={rectangle,draw,minimum width=1.5em, color=red, minimum height=0.5em}},
+column 9/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}},
 column 10/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}},
 column 11/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}},
 column 12/.style={nodes={rectangle,draw,minimum width=1.5em, color=gray, minimum height=0.5em}}
 ] (O)
 {
 $2_+$ & $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$ & $2_+$ & $2_-$ & $3_-$ & $4_-$ & $4_+$ & $3_+$\\
-|[color=black]|$1$ & |[color=black]|$0$ & |[color=black]|$0$ & |[color=black]|$0$ & |[color=black]|$1$ & |[color=black]|$2$ & |[color=red]|$3$ & |[color=black]|$2$ & |[color=black]|$1$\\
+|[color=red]|$1$ & |[color=black]|$0$ & |[color=black]|$0$\\
 };
 
 %\node at (-4,-0.5) {$0$};
