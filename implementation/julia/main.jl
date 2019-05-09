@@ -13,10 +13,12 @@ using Ellipses
 pgfplots()
 
 function mainT()
-	e1 = Ellipse(2,1,0,0)
-	e2 = Ellipse(2,1,0.6,0.6)
+	e1 = Ellipse(3,2,0,0)
+	e2 = Ellipse(3,2,1,1)
 
 	@show(ellipseinter(e1, e2))
+
+	plt=plotwihtoutquiver([e1,e2])
 
 end
 
