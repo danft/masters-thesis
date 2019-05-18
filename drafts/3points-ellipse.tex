@@ -75,13 +75,18 @@ Now looking at $det(u_3, u_3-u_2)$
 \begin{equation}
 \begin{split}
 det(u_3, u_3-u_2) = det(M(\theta)v, M(\theta)w)=\\
-\left|\begin{array}{cc}M(\theta)_1 v & M(\theta)_2v\\ M(\theta)_1 w & M(\theta)_2w\end{array}\right|=\\
+\left|\begin{array}{cc}M(\theta)_1 v & M(\theta)_2v\\ M(\theta)_1 w & M(\theta)_2w\end{array}\right|=
+\end{split}
+\end{equation}
+
+\begin{equation*}
+\begin{split}
 (v_x\cos{\theta}-v_y\sin{\theta})(w_x\sin{\theta} + w_y\cos{\theta})-(\sin{\theta}v_x + \cos{\theta}v_y)(w_x\cos{\theta} - w_y\sin{\theta})=\\
 \cos^2{\theta}(v_xw_y-v_yw_x)+\sin^2{\theta}(-v_yw_x+v_xw_y) + \sin{\theta}\cos{\theta}(v_xw_x-v_yw_y-v_xw_x+v_yw_y)=\\
 v_xw_y(\cos^2{\theta}+\sin^2{\theta}) - v_yw_x(\cos^2{\theta}+\sin^2{\theta})=\\
-v_xw_y-v_yw_x=det(v, w) = det(u_3, u_3-u_2)
+v_xw_y-v_yw_x=det(v, w) = det(u_3, u_3-u_2) = det(p_3, p_3-p_2)
 \end{split}
-\end{equation}
+\end{equation*}
 
 Then, the second part is:
 
@@ -94,5 +99,98 @@ The main equation is:
 \begin{equation}
 \dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
 \end{equation}
+
+Looking at the first part:
+
+\begin{eqnarray*}
+ 	(X-u_1)^t(X-u_2)=X^t(X-u_2)=X^tX -X^tM(\theta)p_2=\\
+ 	x^2 + qy^2 - x(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - qy(p_{2x}\sin{\theta} + p_{2y}\cos{\theta})
+\end{eqnarray*}
+
+and
+
+\begin{eqnarray*}
+det(X,X-u_2)=\left|
+\begin{array}{cc}
+x & y\\
+x - M(\theta)_1p_2 & y - M(\theta)_2p_2 
+\end{array}
+\right| =\\
+\left|
+\begin{array}{cc}
+	x & y\\
+	x -(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) & y - (p_{2x}\sin{\theta} + p_{2y}\cos{\theta}) 
+\end{array}
+\right|=\\
+y(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - x(p_{2x}\sin{\theta} + p_{2y}\cos{\theta}) 
+\end{eqnarray*}
+
+Making:
+
+\begin{eqnarray}
+\gamma = p_{2x}\cos{\theta} - p_{2y}\sin{\theta}\\
+\delta = p_{2x}\sin{\theta} + p_{2y}\cos{\theta}\\
+D=\dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\end{eqnarray}
+
+Then, we get:
+
+\begin{equation}
+\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{x^2 + qy^2 - x\gamma -qy\delta}{y\gamma - x\delta} = D
+\end{equation}
+
+Rearranging
+
+\begin{eqnarray*}
+x^2 + qy^2 - x(\gamma -D\delta) - qy(\delta + \frac{D\gamma}{q}) = 0\\
+(x - \frac{\gamma -D\delta}{2})^2 + q(y - \frac{q\delta + D\gamma}{2q})^2 - \frac{(\gamma - D\delta)^2}{4} - \frac{(q\delta + D\gamma)^2}{4q} = 0 
+\end{eqnarray*}
+
+Then, as $q$ is fixed, we need to impose:
+$$ \frac{(\gamma - D\delta)^2}{4} + \frac{(q\delta + D\gamma)^2}{4q} = 1$$
+$$ q(\gamma^2 - 2D\gamma\delta + D^2\delta^2) + q^2\delta^2 + 2q\delta D \gamma + D^2\gamma^2 = 4q = $$
+
+$$
+q\gamma^2 + qD^2\delta^2 + q^2\delta^2 +D^2\gamma^2 = 4q
+$$
+
+$$
+\gamma^2(q +D^2) + \delta^2(qD^2 + q^2) = 4q
+$$
+
+Then,
+
+\begin{eqnarray}
+\gamma^2 = p_{2x}^2\cos^2{\theta} - p_{2x}p_{2y}\sin{2\theta} + p_{2y}^2\sin^2{\theta}\\
+\delta^2 = p_{2x}^2\sin^2{\theta} + p_{2x}p_{2y}\sin{2\theta}+ p_{2y}^2\cos^2{\theta}
+%\delta^2 = p_{2x}\sin{\theta} + p_{2y}\cos{\theta}
+\end{eqnarray}
+
+We have
+
+\begin{eqnarray*}
+\cos^2{\theta}((q+D^2)p_{2x}^2 + (qD^2+q^2)p_{2y}^2) +\\
+\sin^2{\theta}((q+D^2)p_{2y}^2 + (qD^2+q^2)p_{2x}^2))+\\
+\sin{2\theta}((qD^2+q^2)p_{2x}p_{2y}-(q+D^2)p_{2x}p_{2y}) = 4q
+\end{eqnarray*}
+
+Which can be written as
+
+\begin{eqnarray}
+A\cos^2{\theta} + 2B\sin{\theta}\cos{\theta} + C\sin^2{\theta} = D\\
+A,B,C,D > 0
+\end{eqnarray}
+
+Which can be rearranged as:
+
+\begin{eqnarray*}
+\frac{A-C}{2}\cos{(2\theta)} + B\sin{(2\theta)} + \frac{A+C-2D}{2} = 0
+\end{eqnarray*}
+
+Rewritting everything (keep up!):
+
+\begin{eqnarray*}
+\hat{A} \cos{(2\theta)} + \hat{B}\sin{(2\theta)} + \hat{C} = 0
+\end{eqnarray*}
 
 \end{document}
