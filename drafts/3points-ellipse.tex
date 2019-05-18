@@ -1,0 +1,98 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+
+\newcommand{\bigO}{\mathscr{O}}
+%\usetikzlibrary{matrix}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.4}
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+
+\usepackage{caption}
+\newcommand{\source}[1]{\caption*{Source: {#1}} }
+
+\begin{document}
+	Points:
+\begin{equation}
+\begin{split}
+	p_i = (x_i, y_i)\\
+	p_1 = (0,0)
+\end{split}
+\end{equation}
+
+If $p_i$ are not co-linear and the ellipse with form:
+
+\begin{equation}
+x^2 + qy^2 = a^2b^2
+\end{equation}
+
+can be determined by three points:
+
+\begin{equation}\label{eq:eq1}
+\dfrac{(x-x_1)(x - x_2) + q(y-y_1)(y-y_2)}{(y-y_1)(x-x_2)-(y-y_2)(x-x_1)} = 	\dfrac{(x_3-x_1)(x_3 - x_2) + q(y_3-y_1)(y_3-y_2)}{(y_3-y_1)(x_3-x_2)-(y_3-y_2)(x_3-x_1)}
+\end{equation}
+
+$q$ is fixed, we want to find $\theta$, let
+
+\begin{equation}
+M(\theta) = \left[\begin{array}{cc} \cos{\theta} & -\sin{\theta}\\ \sin{\theta} & \cos{\theta}\end{array}\right]
+\end{equation}
+
+Now, lets define
+
+\begin{eqnarray}
+u_i = M(\theta)p_i
+\end{eqnarray}
+
+we can rearrange \ref{eq:eq1}
+
+\begin{equation}
+\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{(u_3-u_1)^t(u_3-u_2)}{det(u_3-u_1, u_3-u_2)}
+\end{equation}
+
+Analyzing the second part:
+
+\begin{equation}
+\begin{split}
+\dfrac{(u_3-u_1)^t(u_3-u_2)}{det(u_3-u_1, u_3-u_2)} = \dfrac{u_3^t(u_3-u_2)}{det(u_3, u_3-u_2)} = \\
+\dfrac{p_3^tM(\theta)^t(M(\theta)(p_3-p_2))}{det(u_3, u_3-u_2)}=\dfrac{p_3^t(p_3-p_2)}{det(u_3, u_3-u_2)}
+\end{split}
+\end{equation}
+
+Now looking at $det(u_3, u_3-u_2)$
+
+\begin{equation}
+\begin{split}
+det(u_3, u_3-u_2) = det(M(\theta)v, M(\theta)w)=\\
+\left|\begin{array}{cc}M(\theta)_1 v & M(\theta)_2v\\ M(\theta)_1 w & M(\theta)_2w\end{array}\right|=\\
+(v_x\cos{\theta}-v_y\sin{\theta})(w_x\sin{\theta} + w_y\cos{\theta})-(\sin{\theta}v_x + \cos{\theta}v_y)(w_x\cos{\theta} - w_y\sin{\theta})=\\
+\cos^2{\theta}(v_xw_y-v_yw_x)+\sin^2{\theta}(-v_yw_x+v_xw_y) + \sin{\theta}\cos{\theta}(v_xw_x-v_yw_y-v_xw_x+v_yw_y)=\\
+v_xw_y(\cos^2{\theta}+\sin^2{\theta}) - v_yw_x(\cos^2{\theta}+\sin^2{\theta})=\\
+v_xw_y-v_yw_x=det(v, w) = det(u_3, u_3-u_2)
+\end{split}
+\end{equation}
+
+Then, the second part is:
+
+\begin{equation}
+\dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\end{equation}
+
+The main equation is:
+
+\begin{equation}
+\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\end{equation}
+
+\end{document}
