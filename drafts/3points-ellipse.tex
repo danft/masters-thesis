@@ -192,5 +192,28 @@ Rewritting everything (keep up!):
 \begin{eqnarray*}
 \hat{A} \cos{(2\theta)} + \hat{B}\sin{(2\theta)} + \hat{C} = 0
 \end{eqnarray*}
-%https://brilliant.org/wiki/trigonometric-equations/
+
+Then,
+
+\begin{eqnarray}
+\hat{A} \cos{(t)} + \hat{B}\sin{(t)} + \hat{C} = \hat{C} + \sqrt{\hat{A}^2 + \hat{B}^2} \sin{(t+\alpha)} = 0\\
+t + \alpha = \arcsin{\frac{-\hat{C}}{\sqrt{\hat{A}^2 + \hat{B}^2}}}
+\end{eqnarray}
+
+where $$\tan{\alpha} = \frac{\hat{A}}{\hat{B}} \Rightarrow \alpha = \arctan{\frac{\hat{A}}{\hat{B}}}$$
+
+Then, finally
+
+\begin{equation}
+	\theta = \arcsin{\frac{-\hat{C}}{2\sqrt{\hat{A}^2 + \hat{B}^2}}} - \frac{1}{2}\arctan{\frac{\hat{A}}{\hat{B}}}
+\end{equation}
+
+Similirarly we can achieve the other result:
+
+\begin{equation}
+\theta = \arccos{\frac{-\hat{C}}{2\sqrt{\hat{A}^2 + \hat{B}^2}}} + \frac{1}{2}\arctan{\frac{\hat{A}}{\hat{B}}}
+\end{equation}
+	
+	
+	%https://brilliant.org/wiki/trigonometric-equations/
 \end{document}
