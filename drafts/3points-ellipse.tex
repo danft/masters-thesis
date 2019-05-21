@@ -52,7 +52,8 @@ M(\theta) = \left[\begin{array}{cc} \cos{\theta} & -\sin{\theta}\\ \sin{\theta} 
 Now, lets define
 
 \begin{eqnarray}
-u_i = M(\theta)p_i
+u_i = M(\theta)(p_i-c)\\
+c=(h,k)
 \end{eqnarray}
 
 we can rearrange \ref{eq:eq1}
@@ -63,12 +64,11 @@ we can rearrange \ref{eq:eq1}
 
 Analyzing the second part:
 
-\begin{equation}
-\begin{split}
-\dfrac{(u_3-u_1)^t(u_3-u_2)}{det(u_3-u_1, u_3-u_2)} = \dfrac{u_3^t(u_3-u_2)}{det(u_3, u_3-u_2)} = \\
-\dfrac{p_3^tM(\theta)^t(M(\theta)(p_3-p_2))}{det(u_3, u_3-u_2)}=\dfrac{p_3^t(p_3-p_2)}{det(u_3, u_3-u_2)}
-\end{split}
-\end{equation}
+\begin{align*}
+u^tv = \cos^2{\theta}(u_xv_x + qu_yv_y)+\\
+\sin{\theta}\cos{\theta}((q-1)(u_yv_x+u_xv_y))+\\
+\sin^2{\theta}(u_yv_y + qu_xv_x)
+\end{align*}
 
 Now looking at $det(u_3, u_3-u_2)$
 
@@ -91,20 +91,20 @@ v_xw_y-v_yw_x=det(v, w) = det(u_3, u_3-u_2) = det(p_3, p_3-p_2)
 Then, the second part is:
 
 \begin{equation}
-\dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)}
 \end{equation}
 
 The main equation is:
 
 \begin{equation}
-\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)}
 \end{equation}
 
 Looking at the first part:
 
 \begin{eqnarray*}
  	(X-u_1)^t(X-u_2)=X^t(X-u_2)=X^tX -X^tM(\theta)p_2=\\
- 	x^2 + qy^2 - x(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - qy(p_{2x}\sin{\theta} + p_{2y}\cos{\theta})
+ 	x^2 + qy^2 - x((p_{2x}-h)\cos{\theta} - (p_{2y}-k)\sin{\theta}) - qy((p_{2x}-h)\sin{\theta} + (p_{2y}-k)\cos{\theta})
 \end{eqnarray*}
 
 and
@@ -122,62 +122,82 @@ x - M(\theta)_1p_2 & y - M(\theta)_2p_2
 	x -(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) & y - (p_{2x}\sin{\theta} + p_{2y}\cos{\theta}) 
 \end{array}
 \right|=\\
-y(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - x(p_{2x}\sin{\theta} + p_{2y}\cos{\theta}) 
+y(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - x(p_{2x}\sin{\theta} + p_{2y}\cos{\theta})
 \end{eqnarray*}
 
 Making:
 
 \begin{eqnarray}
 \gamma = p_{2x}\cos{\theta} - p_{2y}\sin{\theta}\\
+\gamma = p_{2x}\frac{1-t^2}{1+t^2} - p_{2y}\frac{2t}{1+t^2}\\
 \delta = p_{2x}\sin{\theta} + p_{2y}\cos{\theta}\\
-D=\dfrac{p_3^t(p_3-p_2)}{det(p_3, p_3-p_2)}
+\gamma = p_{2x}\frac{2t}{1+t^2} + p_{2y}\frac{1-t^2}{1+t^2}\\
+\Phi=\dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)} = \Phi_a\cos^2{\theta} + \Phi_b \sin{(2\theta)} + \Phi_c \sin^2{\theta}=\\
+\Phi=\Phi_a(\frac{1-t^2}{1+t^2})^2 + \Phi_b(\frac{4t(1-t^2)}{(1+t^2)^2}) + \Phi_c(\frac{2t}{1+t^2})^2\\
+\frac{1}{4}((\Phi_a-\Phi_c) \cos{2\theta} + 2\Phi_b\sin{2\theta} + \Phi_a + \Phi_c)=\\
+\Phi_a\cos{2\theta} + \Phi_b\sin{2\theta} + \Phi_c
 \end{eqnarray}
 
 Then, we get:
 
 \begin{equation}
-\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{x^2 + qy^2 - x\gamma -qy\delta}{y\gamma - x\delta} = D
+\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{x^2 + qy^2 - x\gamma -qy\delta}{y\gamma - x\delta} = \Phi
 \end{equation}
 
 Rearranging
 
 \begin{eqnarray*}
-x^2 + qy^2 - x(\gamma -D\delta) - qy(\delta + \frac{D\gamma}{q}) = 0\\
-(x - \frac{\gamma -D\delta}{2})^2 + q(y - \frac{q\delta + D\gamma}{2q})^2 - \frac{(\gamma - D\delta)^2}{4} - \frac{(q\delta + D\gamma)^2}{4q} = 0 
+x^2 + qy^2 - x(\gamma -\Phi(\delta)) - qy(\delta + \frac{\Phi\gamma}{q}) = 0\\
+(x - \frac{\gamma -\Phi\delta}{2})^2 + q(y - \frac{q\delta + \Phi\gamma}{2q})^2 = R\\
+R= \frac{(\gamma - \Phi\delta)^2}{4} + \frac{(q\delta + \Phi\gamma)^2}{4q^2}
 \end{eqnarray*}
 
+
+\section{Wrong one}
+
+
 Then, as $q$ is fixed, we need to impose:
-$$ \frac{(\gamma - D\delta)^2}{4} + \frac{(q\delta + D\gamma)^2}{4q} = 1$$
-$$ q(\gamma^2 - 2D\gamma\delta + D^2\delta^2) + q^2\delta^2 + 2q\delta D \gamma + D^2\gamma^2 = 4q = $$
+$$ \frac{(\gamma - \Phi\delta)^2}{4} + \frac{(q\delta + \Phi\gamma)^2}{4q^2} = a^2$$
+$$ q^2(\gamma^2 - 2\Phi\gamma\delta + \Phi^2\delta^2) + q^2\delta^2 + 2q\delta \Phi \gamma + \Phi^2\gamma^2 = 4q^2a^2= $$
 
 $$
-q\gamma^2 + qD^2\delta^2 + q^2\delta^2 +D^2\gamma^2 = 4q
+q^2\gamma^2 + q^2\Phi^2\delta^2 + q^2\delta^2 +\Phi^2\gamma^2  + 2\Phi\gamma\delta(q - q^2)= 4q^2a^2
 $$
 
 $$
-\gamma^2(q +D^2) + \delta^2(qD^2 + q^2) = 4q
+\gamma^2(q^2 +\Phi^2) + \delta^2[q^2(1+\Phi^2)] + \gamma\delta[2\Phi(q-q^2)]= 4q^2a^2
 $$
 
 Then,
 
 \begin{eqnarray}
 \gamma^2 = p_{2x}^2\cos^2{\theta} - p_{2x}p_{2y}\sin{2\theta} + p_{2y}^2\sin^2{\theta}\\
-\delta^2 = p_{2x}^2\sin^2{\theta} + p_{2x}p_{2y}\sin{2\theta}+ p_{2y}^2\cos^2{\theta}
-%\delta^2 = p_{2x}\sin{\theta} + p_{2y}\cos{\theta}
+\delta^2 = p_{2x}^2\sin^2{\theta} + p_{2x}p_{2y}\sin{2\theta}+ p_{2y}^2\cos^2{\theta}\\
+\delta\gamma = \cos^2{\theta}(p_{2x}p_{2y}) + \frac{\sin{(2\theta)}}{2}(p_{2x}^2 - p_{2y}^2) - \sin^2{\theta}(p_{2x}p_{2y})\\
+\Phi^2=
 \end{eqnarray}
 
 We have
 
 \begin{eqnarray*}
-\cos^2{\theta}((q+D^2)p_{2x}^2 + (qD^2+q^2)p_{2y}^2) +\\
-\sin^2{\theta}((q+D^2)p_{2y}^2 + (qD^2+q^2)p_{2x}^2))+\\
-\sin{2\theta}((qD^2+q^2)p_{2x}p_{2y}-(q+D^2)p_{2x}p_{2y}) = 4q
+\cos^2{\theta}[(q^2+\Phi^2)p_{2x}^2 + q^2(\Phi^2+1)p_{2y}^2 + 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
+\sin^2{\theta}[(q^2+\Phi^2)p_{2y}^2 + q^2(\Phi^2+1)p_{2x}^2 - 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
+\sin{(2\theta)}[\Phi(q-q^2)(p_{2x}^2-p_{2y}^2) - (q^2+\Phi^2)p_{2x}p_{2y} + q^2(\Phi^2+1)p_{2x}p_{2y}]=4q^2a^2
 \end{eqnarray*}
+
+-----
+
+\begin{eqnarray*}
+	(\frac{1-t^2}{1+t^2})^2[(q^2+\Phi^2)p_{2x}^2 + q^2(\Phi^2+1)p_{2y}^2 + 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
+	(\frac{2t}{1+t^2})^2[(q^2+\Phi^2)p_{2y}^2 + q^2(\Phi^2+1)p_{2x}^2 - 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
+		(\frac{4t(1-t^2)}{1+t^2})[\Phi(q-q^2)(p_{2x}^2-p_{2y}^2) - (q^2+\Phi^2)p_{2x}p_{2y} + q^2(\Phi^2+1)p_{2x}p_{2y}]=4q^2a^2
+\end{eqnarray*}
+
 
 Which can be written as
 
 \begin{eqnarray}
-A\cos^2{\theta} + 2B\sin{\theta}\cos{\theta} + C\sin^2{\theta} = D\\
+A\cos^2{\theta} + B\sin{(2\theta)} + C\sin^2{\theta} = D\\
 A,B,C,D > 0
 \end{eqnarray}
 
@@ -189,9 +209,14 @@ Which can be rearranged as:
 
 Rewritting everything (keep up!):
 
-\begin{eqnarray*}
+\begin{equation*}
+\begin{split}
+\hat{A}=\frac{A-C}{2}\\
+\hat{B}=B\\
+\hat{C}=\frac{A+C-2D}{2}\\
 \hat{A} \cos{(2\theta)} + \hat{B}\sin{(2\theta)} + \hat{C} = 0
-\end{eqnarray*}
+\end{split}
+\end{equation*}
 
 Then,
 
