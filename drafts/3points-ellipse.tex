@@ -21,8 +21,10 @@
 
 \usepackage{caption}
 \newcommand{\source}[1]{\caption*{Source: {#1}} }
-
+\newcommand{\detE}[6]{\dfrac{(#5-#1)(#5 - #3) + q(#6-#2)(#6-#4)}{(#6-#2)(#5-#3)-(#6-#4)(#5-#1)}}
 \begin{document}
+\section{Intro}
+
 	Points:
 \begin{equation}
 \begin{split}
@@ -40,7 +42,7 @@ x^2 + qy^2 = a^2b^2
 can be determined by three points:
 
 \begin{equation}\label{eq:eq1}
-\dfrac{(x-x_1)(x - x_2) + q(y-y_1)(y-y_2)}{(y-y_1)(x-x_2)-(y-y_2)(x-x_1)} = 	\dfrac{(x_3-x_1)(x_3 - x_2) + q(y_3-y_1)(y_3-y_2)}{(y_3-y_1)(x_3-x_2)-(y_3-y_2)(x_3-x_1)}
+\detE{x_1}{y_1}{x_2}{y_2}{x}{y} = 	\detE{x_1}{y_1}{x_2}{y_2}{x_3}{y_3}
 \end{equation}
 
 $q$ is fixed, we want to find $\theta$, let
@@ -56,60 +58,57 @@ u_i = M(\theta)(p_i-c)\\
 c=(h,k)
 \end{eqnarray}
 
-we can rearrange \ref{eq:eq1}
+as $u_1=0$, we have
 
 \begin{equation}
-\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{(u_3-u_1)^t(u_3-u_2)}{det(u_3-u_1, u_3-u_2)}
+\dfrac{X^t(X-u_2)}{det(X, X-u_2)} = \dfrac{u_3^t(u_3-u_2)}{det(u_3, u_3-u_2)}
 \end{equation}
 
-Analyzing the second part:
+\subsection{Right hand side of the equation}
+
+The dot product after, with the rotation applied is:
 
 \begin{align*}
-u^tv = \cos^2{\theta}(u_xv_x + qu_yv_y)+\\
-\sin{\theta}\cos{\theta}((q-1)(u_yv_x+u_xv_y))+\\
-\sin^2{\theta}(u_yv_y + qu_xv_x)
+u^tw = \cos^2{\theta}(u_xw_x + qu_yw_y)+\\
+\sin{\theta}\cos{\theta}((q-1)(u_yw_x+u_xw_y))+\\
+\sin^2{\theta}(u_yw_y + qu_xw_x)
 \end{align*}
 
-Now looking at $det(u_3, u_3-u_2)$
+The determinant, also with the rotation is:
 
-\begin{equation}
-\begin{split}
-det(u_3, u_3-u_2) = det(M(\theta)v, M(\theta)w)=\\
-\left|\begin{array}{cc}M(\theta)_1 v & M(\theta)_2v\\ M(\theta)_1 w & M(\theta)_2w\end{array}\right|=
-\end{split}
-\end{equation}
+\begin{align*}
+det(M(\theta)v, M(\theta)w)=\\
+\left|\begin{array}{cc}M(\theta)_1 v & M(\theta)_2v\\ M(\theta)_1 w & M(\theta)_2w\end{array}\right|=\\
+|M(\theta)|\left|\begin{array}{cc} v_x & v_y \\ w_x & w_y \end{array}\right|=\left|\begin{array}{cc} v_x & v_y \\ w_x & w_y \end{array}\right|=v_xw_y - v_yw_x
+\end{align*}
 
-\begin{equation*}
-\begin{split}
-(v_x\cos{\theta}-v_y\sin{\theta})(w_x\sin{\theta} + w_y\cos{\theta})-(\sin{\theta}v_x + \cos{\theta}v_y)(w_x\cos{\theta} - w_y\sin{\theta})=\\
-\cos^2{\theta}(v_xw_y-v_yw_x)+\sin^2{\theta}(-v_yw_x+v_xw_y) + \sin{\theta}\cos{\theta}(v_xw_x-v_yw_y-v_xw_x+v_yw_y)=\\
-v_xw_y(\cos^2{\theta}+\sin^2{\theta}) - v_yw_x(\cos^2{\theta}+\sin^2{\theta})=\\
-v_xw_y-v_yw_x=det(v, w) = det(u_3, u_3-u_2) = det(p_3, p_3-p_2)
-\end{split}
-\end{equation*}
+Now, grouping the constants:
 
-Then, the second part is:
+\begin{align*}
+\Gamma_1 = \frac{p_{3x}(p_{3x}-p_{2x}) + qp_{3y}(p_{3y}-p_{2y})}{det(p_3, p_3-p_2)}\\
+\Gamma_2 = \frac{(q-1)(p_{3y}(p_{3x}-p_{2x})+p_{3x}(p_{3y}-p_{2y}))}{det(p_3, p_3-p_2)}\\
+\Gamma_3 = \frac{p_{3y}(p_{3y}-p_{2y}) + qp_{3x}(p_{3x}-p_{2x})}{det(p_3,p_3-p_2)}
+\end{align*}
 
-\begin{equation}
-\dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)}
-\end{equation}
+Getting everything together we get
 
-The main equation is:
+\newcommand{\rhse}{\Gamma_1\cos^2{\theta} + \Gamma_2\cos{\theta}\sin{\theta} + \Gamma_3\sin^2{\theta}}
 
-\begin{equation}
-\dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)}
-\end{equation}
+\begin{align}
+\dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)}=\rhse
+\end{align}
 
+\subsection{The left rand side of the equation}
 Looking at the first part:
 
-\begin{eqnarray*}
+\begin{align*}
  	(X-u_1)^t(X-u_2)=X^t(X-u_2)=X^tX -X^tM(\theta)p_2=\\
  	x^2 + qy^2 - x((p_{2x}-h)\cos{\theta} - (p_{2y}-k)\sin{\theta}) - qy((p_{2x}-h)\sin{\theta} + (p_{2y}-k)\cos{\theta})
-\end{eqnarray*}
+\end{align*}
 
 and
 
-\begin{eqnarray*}
+\begin{align*}
 det(X,X-u_2)=\left|
 \begin{array}{cc}
 x & y\\
@@ -123,19 +122,14 @@ x - M(\theta)_1p_2 & y - M(\theta)_2p_2
 \end{array}
 \right|=\\
 y(p_{2x}\cos{\theta} - p_{2y}\sin{\theta}) - x(p_{2x}\sin{\theta} + p_{2y}\cos{\theta})
-\end{eqnarray*}
+\end{align*}
 
 Making:
 
 \begin{eqnarray}
 \gamma = p_{2x}\cos{\theta} - p_{2y}\sin{\theta}\\
-\gamma = p_{2x}\frac{1-t^2}{1+t^2} - p_{2y}\frac{2t}{1+t^2}\\
 \delta = p_{2x}\sin{\theta} + p_{2y}\cos{\theta}\\
-\gamma = p_{2x}\frac{2t}{1+t^2} + p_{2y}\frac{1-t^2}{1+t^2}\\
-\Phi=\dfrac{u_3^t(u_3-u_2)}{det(p_3, p_3-p_2)} = \Phi_a\cos^2{\theta} + \Phi_b \sin{(2\theta)} + \Phi_c \sin^2{\theta}=\\
-\Phi=\Phi_a(\frac{1-t^2}{1+t^2})^2 + \Phi_b(\frac{4t(1-t^2)}{(1+t^2)^2}) + \Phi_c(\frac{2t}{1+t^2})^2\\
-\frac{1}{4}((\Phi_a-\Phi_c) \cos{2\theta} + 2\Phi_b\sin{2\theta} + \Phi_a + \Phi_c)=\\
-\Phi_a\cos{2\theta} + \Phi_b\sin{2\theta} + \Phi_c
+\Phi = \rhse
 \end{eqnarray}
 
 Then, we get:
@@ -144,19 +138,24 @@ Then, we get:
 \dfrac{(X-u_1)^t(X-u_2)}{det(X-u_1, X-u_2)} = \dfrac{x^2 + qy^2 - x\gamma -qy\delta}{y\gamma - x\delta} = \Phi
 \end{equation}
 
-Rearranging
+\subsection{Doing all the maths}
+
+Now, we need to rearrange everything so it would look like an ellipse equation.
 
 \begin{eqnarray*}
-x^2 + qy^2 - x(\gamma -\Phi(\delta)) - qy(\delta + \frac{\Phi\gamma}{q}) = 0\\
+x^2 + qy^2 - x(\gamma -\Phi\delta) - qy(\delta + \frac{\Phi\gamma}{q}) = 0\\
 (x - \frac{\gamma -\Phi\delta}{2})^2 + q(y - \frac{q\delta + \Phi\gamma}{2q})^2 = R\\
 R= \frac{(\gamma - \Phi\delta)^2}{4} + \frac{(q\delta + \Phi\gamma)^2}{4q^2}
 \end{eqnarray*}
 
+As $q$ is a fixed parameter and we are rotating the points, we need to impose that $R=a^2$, so it satisfies the equation we started for an ellipse.
 
-\section{Wrong one}
+\section{Having $R=a^2$, it looks way easier than it is...}
 
 
-Then, as $q$ is fixed, we need to impose:
+Let us do it:
+
+
 $$ \frac{(\gamma - \Phi\delta)^2}{4} + \frac{(q\delta + \Phi\gamma)^2}{4q^2} = a^2$$
 $$ q^2(\gamma^2 - 2\Phi\gamma\delta + \Phi^2\delta^2) + q^2\delta^2 + 2q\delta \Phi \gamma + \Phi^2\gamma^2 = 4q^2a^2= $$
 
@@ -169,12 +168,17 @@ $$
 $$
 
 Then,
+\newcommand{\ct}{\cos{\theta}}
+\newcommand{\ctt}[1]{\cos^{#1}{\theta}}
+\newcommand{\st}{\sin{\theta}}
+\newcommand{\stt}[1]{\sin^{#1}{\theta}}
+
 
 \begin{eqnarray}
 \gamma^2 = p_{2x}^2\cos^2{\theta} - p_{2x}p_{2y}\sin{2\theta} + p_{2y}^2\sin^2{\theta}\\
 \delta^2 = p_{2x}^2\sin^2{\theta} + p_{2x}p_{2y}\sin{2\theta}+ p_{2y}^2\cos^2{\theta}\\
 \delta\gamma = \cos^2{\theta}(p_{2x}p_{2y}) + \frac{\sin{(2\theta)}}{2}(p_{2x}^2 - p_{2y}^2) - \sin^2{\theta}(p_{2x}p_{2y})\\
-\Phi^2=
+\Phi^2=\Gamma_1^2\ctt{4} + 2\Gamma_1\Gamma_2\ctt{3}\st + (2\Gamma_1\Gamma_3 + \Gamma_2^2)\ctt{2}\stt{2} + 2\Gamma_2\Gamma_3\ct\stt{3} + \Gamma_3^2\stt{4}
 \end{eqnarray}
 
 We have
@@ -185,60 +189,102 @@ We have
 \sin{(2\theta)}[\Phi(q-q^2)(p_{2x}^2-p_{2y}^2) - (q^2+\Phi^2)p_{2x}p_{2y} + q^2(\Phi^2+1)p_{2x}p_{2y}]=4q^2a^2
 \end{eqnarray*}
 
------
-
-\begin{eqnarray*}
-	(\frac{1-t^2}{1+t^2})^2[(q^2+\Phi^2)p_{2x}^2 + q^2(\Phi^2+1)p_{2y}^2 + 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
-	(\frac{2t}{1+t^2})^2[(q^2+\Phi^2)p_{2y}^2 + q^2(\Phi^2+1)p_{2x}^2 - 2\Phi(q-q^2)p_{2x}p_{2y}]+\\
-		(\frac{4t(1-t^2)}{1+t^2})[\Phi(q-q^2)(p_{2x}^2-p_{2y}^2) - (q^2+\Phi^2)p_{2x}p_{2y} + q^2(\Phi^2+1)p_{2x}p_{2y}]=4q^2a^2
-\end{eqnarray*}
 
 
-Which can be written as
+Let's call sines and cosines $s$ and $r$, with the condition that $$s^2+r^2-1=0$$
 
-\begin{eqnarray}
-A\cos^2{\theta} + B\sin{(2\theta)} + C\sin^2{\theta} = D\\
-A,B,C,D > 0
-\end{eqnarray}
+Renaming the constants on $\Phi^2$:
 
-Which can be rearranged as:
+$$\Phi^2 = \Phi_1 r^4 + \Phi_2 r^3s + \Phi_3r^2s^2 + \Phi_4rs^3 + \Phi_5s^4$$
 
-\begin{eqnarray*}
-\frac{A-C}{2}\cos{(2\theta)} + B\sin{(2\theta)} + \frac{A+C-2D}{2} = 0
-\end{eqnarray*}
+$$\Phi=\Gamma_1r^2 + \Gamma_2rs + \Gamma_3s^2$$
 
-Rewritting everything (keep up!):
+Now let's work on each of the terms separately:
+\subsection{First one $\cos^2(\theta)$}
+\begin{align*}
+r^2(\Phi^2(p_{2x}^2 + q^2p_{2y}^2) + 2\Phi(q-q^2)p_{2x}p_{2y} + q^2(p_{2x}^2+p_{2y}^2))=\\
+(p_{2x}^2+q^2p_{2y}^2)(\Phi_1 r^6 + \Phi_2 r^5s + \Phi_3r^4s^2 + \Phi_4r^3s^3 + \Phi_5r^2s^4) +\\
+2(q-q^2)p_{2x}p_{2y}(\Gamma_1r^4 + \Gamma_2r^3s + \Gamma_3r^2s^2)+\\
+q^2(p_{2x}^2+p_{2y}^2))r^2
+\end{align*}
 
-\begin{equation*}
-\begin{split}
-\hat{A}=\frac{A-C}{2}\\
-\hat{B}=B\\
-\hat{C}=\frac{A+C-2D}{2}\\
-\hat{A} \cos{(2\theta)} + \hat{B}\sin{(2\theta)} + \hat{C} = 0
-\end{split}
-\end{equation*}
+Grouping them
 
-Then,
+\begin{align*}
+r^6[(p_{2x}^2+q^2p_{2y}^2)\Phi_1]+\\
+r^5s[\Phi_2(p_{2x}^2+q^2p_{2y}^2)]+\\
+r^4s^2[\Phi_3(p_{2x}^2+q^2p_{2y}^2)]+\\
+r^4[2(q-q^2)p_{2x}p_{2y}\Gamma_1]+\\
+r^3s^3[\Phi_4(p_{2x}^2+q^2p_{2y}^2)]+\\
+r^3s[2(q-q^2)p_{2x}p_{2y}\Gamma_2]+\\
+r^2s^4[\Phi_5(p_{2x}^2+q^2p_{2y}^2)]+\\
+r^2s^2[2(q-q^2)p_{2x}p_{2y}\Gamma_3]+\\
+r^2[q^2(p_{2x}^2+p_{2y}^2)]
+\end{align*}
 
-\begin{eqnarray}
-\hat{A} \cos{(t)} + \hat{B}\sin{(t)} + \hat{C} = \hat{C} + \sqrt{\hat{A}^2 + \hat{B}^2} \sin{(t+\alpha)} = 0\\
-t + \alpha = \arcsin{\frac{-\hat{C}}{\sqrt{\hat{A}^2 + \hat{B}^2}}}
-\end{eqnarray}
+\subsection{Second one $\sin^2{\theta}$}
 
-where $$\tan{\alpha} = \frac{\hat{A}}{\hat{B}} \Rightarrow \alpha = \arctan{\frac{\hat{A}}{\hat{B}}}$$
+\begin{align*}
+s^2{\theta}[(q^2+\Phi^2)p_{2y}^2 + q^2(\Phi^2+1)p_{2x}^2 - 2\Phi(q-q^2)p_{2x}p_{2y}]=\\
+s^2(\Phi^2(p{2y}^2+q^2p_{2x}^2)-2\Phi(q-q^2)p_{2x}p_{2y}+q^2(p_{2x}^2+p_{2y}^2))
+\end{align*}
 
-Then, finally
+Almost the same as the first one:
 
-\begin{equation}
-	\theta = \arcsin{\frac{-\hat{C}}{2\sqrt{\hat{A}^2 + \hat{B}^2}}} - \frac{1}{2}\arctan{\frac{\hat{A}}{\hat{B}}}
-\end{equation}
+\begin{align*}
+r^6[\Phi_1(p_{2y}^2+q^2p_{2x}^2)]+\\
+r^5s[\Phi_2(p_{2y}^2+q^2p_{2x}^2)]+\\
+r^4s^2[\Phi_3(p_{2y}^2+q^2p_{2x}^2)]+\\
+r^4[-2(q-q^2)p_{2x}p_{2y}\Gamma_1]+\\
+r^3s^3[\Phi_4(p_{2y}^2+q^2p_{2x}^2)]+\\
+r^3s[-2(q-q^2)p_{2x}p_{2y}\Gamma_2]+\\
+r^2s^4[\Phi_5(p_{2y}^2+q^2p_{2x}^2)]+\\
+r^2s^2[-2(q-q^2)p_{2x}p_{2y}\Gamma_3]+\\
+r^2[q^2(p_{2x}^2+p_{2y}^2)]
+\end{align*}
 
-Similirarly we can achieve the other result:
+\subsection{The last one $\sin{\theta}\cos{\theta}$}
 
-\begin{equation}
-\theta = \arccos{\frac{-\hat{C}}{2\sqrt{\hat{A}^2 + \hat{B}^2}}} + \frac{1}{2}\arctan{\frac{\hat{A}}{\hat{B}}}
-\end{equation}
-	
-	
-	%https://brilliant.org/wiki/trigonometric-equations/
+\begin{align*}
+2rs[\Phi(q-q^2)(p_{2x}^2-p_{2y}^2) - (q^2+\Phi^2)p_{2x}p_{2y} + q^2(\Phi^2+1)p_{2x}p_{2y}]=\\
+2rs[\Phi^2(p_{2x}p_{2y}(q^2-1)) + \Phi(q-q^2)(p_{2x}^2-p_{2y}^2)]=\\
+(2p_{2x}p_{2y}(q^2-1))(\Phi_1 r^5s + \Phi_2 r^4s^2 + \Phi_3r^3s^3 + \Phi_4r^2s^4 + \Phi_5rs^5)+\\
+2(q-q^2)(p_{2x}^2-p_{2y}^2)(\Gamma_1r^3s + \Gamma_2r^2s^2 + \Gamma_3rs^3)
+\end{align*}
+Grouping the monomiums:
+\newcommand{\pcoeff}{2p_{2x}p_{2y}(q^2-1)}
+\newcommand{\pcoef}{2(q-q^2)(p_{2x}^2-p_{2y}^2)}
+\begin{align*}
+r^5s[\pcoeff\Phi_1]+\\
+r^4s[\pcoeff\Phi_2]+\\
+r^3s^3[\pcoeff\Phi_3]+\\
+r^3s[\pcoef\Gamma_1]+\\
+r^2s^4[\pcoeff\Phi_4]+\\
+r^2s^2[\pcoef\Gamma_2]+\\
+rs^5[\pcoeff\Phi_5]+\\
+rs^3[\pcoef\Gamma_3]
+\end{align*}
+
+\subsection{Putting all this mess together once again}
+Let's do this
+
+\begin{align*}
+r^6[(p_{2x}^2+q^2p_{2y}^2 + p_{2y}^2+q^2p_{2x}^2)\Phi_1]+\\
+r^5s[(p_{2x}^2+q^2p_{2y}^2 + p_{2y}^2+q^2p_{2x}^2)\Phi_2 + \pcoeff\Phi_1]+\\
+r^4s^2[(p_{2x}^2+q^2p_{2y}^2 + p_{2y}^2+q^2p_{2x}^2)\Phi_3]+\\
+r^3s^3[\pcoeff\Phi_3 + (p_{2x}^2+q^2p_{2y}^2 + p_{2y}^2+q^2p_{2x}^2)\Phi_4]+\\
+r^3s[\pcoef\Gamma_1]+\\
+r^2s^4[(p_{2x}^2+q^2p_{2y}^2 + p_{2y}^2+q^2p_{2x}^2)\Phi_3 + \pcoeff\Phi_4]+\\
+r^2s^2[\pcoef\Gamma_2]+\\
+r^2[2q^2(p_{2x}^2+p_{2y}^2)]+\\
+rs^5[\pcoeff\Phi_5]+\\
+rs^3[\pcoef\Gamma_3]=4a^2q^2
+\end{align*}
+
+Renaming the constants, we get:
+
+\begin{align*}
+A_1r^6 + A_2r^5s + A_3r^4s^2 + A_4r^3s^3 + A_5r^3s + A_6r^2s^4 + A_6r^2s^2 + A_7r^2 + A_8rs^5 + A_9rs^3 - 4a^2q^2 = 0\\
+r^2 + s^2 -1 = 0
+\end{align*}
 \end{document}

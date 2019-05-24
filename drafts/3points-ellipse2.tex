@@ -23,7 +23,9 @@
 \newcommand{\source}[1]{\caption*{Source: {#1}} }
 
 \begin{document}
-	\section{Intro}
+
+		
+	\section{Inter}
 	We have ellipses $E_0, E_1, E_2$, where $E_0$ is centered at $(0,0)$. Let the intersection points between $E_0$ and $E_i$ be $r_i$, we want $r1=r2$.
 	
 	Let $h_i,k_i$ be the center of $E_i$.
@@ -31,7 +33,20 @@
 	we have the $r_i$
 	
 	\begin{align}
-	y_i = \frac{b^2(h_1h_2^2 - h_2h_1^2) + a^2(h_1k_2^2 - h_2k_1^2)}{2a^2(h_1k_2-h_2k_1)}\\
-	x_i = y_i \frac{-2k_1a^2}{2h_1b^2} + \frac{b^2}{}
+	y = \frac{h_1h_2^2 - h_2h_1^2 + q(h_1k_2^2 - h_2k_1^2)}{2q(h_1k_2-h_2k_1)}\\
+	x_i = y_i \frac{-2qk_i}{2h_i} + \frac{h_i^2+qk_i^2}{2h_i}
 	\end{align}
+	
+	Also, let's already use the rotation:
+	
+	\begin{equation}
+	h_i=\cos{\theta}x_i - \sin{\theta}y_i, k_i=\sin{\theta}x_i + \cos{\theta}y_i
+	\end{equation}
+	
+	Using the fact that $h_i^2 + k_i^2 = a^2 + b^2$ and simplifying (with wolfram) the denominator we have, we have:
+	
+	\begin{align*}
+	y = \frac{(q-1)(h_2^2h_1 - h_1^2h_2) + q(a^2+b^2)(h_1-h_2)}{2q(x_1y_2-x_2y_1)}=\\
+	y = \frac{(h_2-h_1)((q-1)h_2h_1 -q(a^2+b^2))}{2q(x_1y_2-x_2y_1)}
+	\end{align*}
 \end{document}
