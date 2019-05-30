@@ -1,0 +1,103 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+
+\newcommand{\bigO}{\mathscr{O}}
+%\usetikzlibrary{matrix}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.4}
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+
+\usepackage{caption}
+\newcommand{\source}[1]{\caption*{Source: {#1}} }
+
+\begin{document}
+	\section{Intro}
+	
+	\begin{align*}
+	A(x_1^2-x_2^2) + B(x_1y_1-x_2y_2) + C(y_1^2-y_2^2) + D(x_1-x_2)+E(y_1-y_2) = 0\\
+	A(x_1^2-x_3^2) + B(x_1y_1-x_3y_3) + C(y_1^2-y_3^2) + D(x_1-x_3)+E(y_1-y_3) = 0\\
+	A(x_2^2-x_3^2) + B(x_2y_2-x_3y_3) + C(y_2^2-y_3^2) + D(x_2-x_3)+E(y_2-y_3) = 0\\
+	\end{align*}
+	
+	From them we get:
+	
+	\begin{align*}
+	D = -\frac{A(x_1^2-x_2^2) + B(x_1y_1-x_2y_2) + C(y_1^2-y_2^2) + E(y_1-y_2)}{x_1-x_2}\\
+	E = -\frac{	A(x_1^2-x_3^2) + B(x_1y_1-x_3y_3) + C(y_1^2-y_3^2) + D(x_1-x_3)}{y_1-y_3}
+	\end{align*}
+	
+	Inserting $E$ into $D$:
+	
+	\begin{align*}
+	D(x_1-x_2) = -A(x_1^2-x_2^2) - B(x_1y_1-x_2y_2) - C(y_1^2-y_2^2) +\\
+	\frac{	A(x_1^2-x_3^2) + B(x_1y_1-x_3y_3) + C(y_1^2-y_3^2) + D(x_1-x_3)}{y_1-y_3}(y_1-y_2)\\
+	D(x_1-x_2 - \frac{(y_1-y_2)(x_1-x_3)}{y_1-y_3})=\\
+	A(\frac{x_1^2-x_3^2}{y_1-y_3}-x_1^2+x_2^2)+\\
+	B(\frac{x_1y_1-x_3y_3}{y_1-y_3} - x_1y_1 + x_2y_2)+\\
+	C(\frac{y_1^2-y_3^2}{y_1-y_3}-y_1^2+y_2^2)
+	\end{align*}
+	
+	Renaming things:
+	
+	\begin{align*}
+	\alpha_d = x_1-x_2 -\frac{(x_1-x_3)(y_1-y_2)}{y_1-y_3}\\
+	\alpha_a = \frac{x_1^2-x_3^2}{y_1-y_3}-x_1^2+x_2^2\\
+	\alpha_b = \frac{x_1y_1-x_3y_3}{y_1-y_3} - x_1y_1 + x_2y_2\\
+	\alpha_c = \frac{y_1^2-y_3^2}{y_1-y_3}-y_1^2+y_2^2\\
+	D\alpha_d = A\alpha_a + B\alpha_b + C\alpha_c\\
+	D=\frac{A\alpha_a + B\alpha_b + C\alpha_c}{\alpha_d}
+	\end{align*}
+	
+	Going back to $(E)$:
+	
+	\begin{align*}
+	E(y_1-y_3) = -A(x_1^2-x_3^2 - (x_1-x_3)\frac{\alpha_a}{\alpha_d}) - B(x_1y_1-x_3y_3 - (x_1-x_3)\frac{\alpha_b}{\alpha_d}) -C(y_1^2-y_3^2-(x_1-x_3)\frac{\alpha_c}{\alpha_d})
+	\end{align*}
+	
+	Renaming things:
+	
+	\begin{align*}
+	\beta_e = y_1-y_3\\
+	\beta_a = -x_1^2+x_3^2 + (x_1-x_3)\frac{\alpha_a}{\alpha_d}\\
+	\beta_b = -x_1y_1+x_3y_3 + (x_1-x_3)\frac{\alpha_b}{\alpha_d}\\
+	\beta_c = -y_1^2+y_3^2+(x_1-x_3)\frac{\alpha_c}{\alpha_d}\\
+	E\beta_e = A\beta_a + B\beta_b + C\beta_c\\
+	E = \frac{A\beta_a + B\beta_b + C\beta_c}{\beta_e}
+	\end{align*}
+	
+	Using the third equation:
+	
+	\begin{align*}
+	A(x_2^2-x_3^2) + B(x_2y_2-x_3y_3) + C(y_2^2-y_3^2) +\\
+	\frac{A\alpha_a + B\alpha_b + C\alpha_c}{\alpha_d}(x_2-x_3)+\\
+	\frac{A\beta_a + B\beta_b + C\beta_c}{\beta_e}(y_2-y_3) = 0
+	\end{align*}
+	
+	Now, isolating $B$:
+	
+	\begin{align*}
+	A(x_2^2-x_3^2 + (x_2-x_3)\frac{\alpha_a}{\alpha_d} + (y_2-y_3)\frac{\beta_a}{\beta_e})+\\
+	B(x_2y_2 -x_3y_3 + (x_2-x_3)\frac{\alpha_b}{\alpha_d} + (y_2-y_3)\frac{\beta_b}{\beta_e})+\\
+	C(y_2^2-y_3^2 + (x_2-x_3)\frac{\alpha_c}{\alpha_d} + (y_2-y_3)\frac{\beta_c}{\beta_e})=0
+	\end{align*}
+	
+	\begin{align*}
+	\gamma_a = x_2^2-x_3^2 + (x_2-x_3)\frac{\alpha_a}{\alpha_d} + (y_2-y_3)\frac{\beta_a}{\beta_e}\\
+	\gamma_b = (x_2y_2 -x_3y_3 + (x_2-x_3)\frac{\alpha_b}{\alpha_d} + (y_2-y_3)\frac{\beta_b}{\beta_e}\\
+	\gamma_c = y_2^2-y_3^2 + (x_2-x_3)\frac{\alpha_c}{\alpha_d} + (y_2-y_3)\frac{\beta_c}{\beta_e}\\
+	A\gamma_a + B\gamma_b + C\gamma_c = 0\\
+	B = -\frac{A\gamma_a + C\gamma_c}{\gamma_b}
+	\end{align*}
+\end{document}
