@@ -1,0 +1,49 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+
+\newcommand{\bigO}{\mathscr{O}}
+%\usetikzlibrary{matrix}
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.4}
+\usepackage{algorithm2e}
+\usepackage{algorithmic}
+
+\usepackage{caption}
+\newcommand{\source}[1]{\caption*{Source: {#1}} }
+
+\begin{document}
+	\section{Intro}
+	Let's assume that $x_1, y_1 = (0,0)$ and $x_2 = 0$. Then we have:
+	
+	\begin{align*}
+	E=-Cy_2\\
+	Dx_3=-(Ax_3^2 + Bx_3y_3 + C(y_3^2-y_2y_3))\\
+	\end{align*}
+	
+	Renaming things:
+	
+	\begin{align}
+	E=C\beta\\
+	D = A\alpha_a + B\alpha_b + C\alpha_c
+	\end{align}
+	
+	\section{Working with $a$ and $b$}
+	
+	Let's call $q$ the normalizor factor:
+	
+	\begin{align*}
+	q = \frac{64(BDE - AE^2 - CD^2)}{(4AC-B^2)^2}
+	\end{align*}
+	
+\end{document}
