@@ -18,32 +18,183 @@
 %\pgfplotsset{compat=1.4}
 \usepackage{algorithm2e}
 \usepackage{algorithmic}
-
+\usepackage[utf8]{inputenc}
 \usepackage{caption}
 \newcommand{\source}[1]{\caption*{Source: {#1}} }
 
 \begin{document}
 	\section{Intro}
-	Let's assume that $x_1, y_1 = (0,0)$ and $x_2 = 0$. Then we have:
+	Queremos encontrar uma ellipse com major-axis $a$ e minor-axis $b$, tal que ela contenha três pontos $(x_1, y_1), (x_2, y_2), (x_3, y_3)$.
+	
+	Vamos assumir que $(x_1, y_1) = (0,0)$ e $x_2 = 0$. Veja que podemos aplicar translação e rotação aos pontos originais para obter uma instância desta forma.
+	
+	A equação da ellipse é dada por
+	
+	\begin{equation}
+	Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
+	\end{equation}
+	
+	Substituindo $(x_1, y_1)$ chegamos que $F=0$.
+	
+	Vamos assumir que todos os outros parametros são diferente de $0$. Veja que  as equações dadas por $(A, B, C, D, E)$ e $(\lambda A, \lambda B, \lambda C, \lambda D, \lambda E)$ representam a mesma elipse. Por isso vamos fixar $B=-1$.
+	
+
+	
+	Substituindo $(0, y_2)$ obtemos:
 	
 	\begin{align*}
-	E=-Cy_2\\
-	Dx_3=-(Ax_3^2 + Bx_3y_3 + C(y_3^2-y_2y_3))\\
+	Cy_2^2 + Ey_2 = 0\\
+	E = -Cy_2
 	\end{align*}
 	
-	Renaming things:
+	Substituindo $(x_3, y_3)$ obtemos:
+	
+	\begin{align*}
+	Ax_3^2 + x_3y_3 + C(y_3^2 - y_2y_3) + Dx_3 = 0\\
+	D = -\frac{Ax_3^2 - x_3y_3 + C(y_3^2 - y_2y_3)}{x3}
+	\end{align*}
+	
+	Agora nos resta fixar os parametros da forma da elipse $(a, b)$ e determinar $A$ e $C$.
+
+	\section{Determinando $A, C$}
+	
+	Fixando $B=1$ impomos que o angulo de rotação da elipse seja diferente de $0$.
+	
+	Temos duas equações que determinam $a,b$. Seja $\Delta=4AC-B^2=4AC-1$.
 	
 	\begin{align}
-	E=C\beta\\
-	D = A\alpha_a + B\alpha_b + C\alpha_c
+	a^2 = \dfrac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C - \sqrt{1 + (A-C)^2}}\\
+	b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}
 	\end{align}
 	
-	\section{Working with $a$ and $b$}
-	
-	Let's call $q$ the normalizor factor:
+	Deixe que $q = \frac{a^2}{b^2}$, $q$ representa a ecentricidade ou a proporção entre $a$ e $b$. Fixando $q$, conseguimos fixar a forma, mas não a escala da elipse. Vamos fazer isso pois as contas ficam mais simples.
 	
 	\begin{align*}
-	q = \frac{64(BDE - AE^2 - CD^2)}{(4AC-B^2)^2}
+	q = \frac{A + C + \sqrt{1 + (A-C)^2}}{A + C - \sqrt{1 + (A-C)^2}}\\
+	\sqrt{1 + (A-C)^2}(q+1) = (A+C)(q-1)\\
 	\end{align*}
 	
+	Seja $w = \frac{q-1}{q+1} = \frac{a^2-b^2}{a^2+b^2}$, veja que $w < 1$, isso será útil em algum momento. Portanto:
+	
+	\begin{align*}
+	1 + (A-C)^2 = w^2(A+C)^2\\	
+	\end{align*}
+	
+	Também vamos fixar o angulo de rotação $\theta \in [0, \frac{\pi}{4}]$. Seja $t = \tan{(2\theta)}$, temos:
+	
+	\begin{align*}
+	t = \frac{B}{A-C}\\
+	A = C - \frac{1}{t}
+	\end{align*}
+	
+	Voltando a equação anterior, temos:
+	
+	\begin{align*}
+	1 + (C - \frac{1}{t} - C)^2 = w^2(C-\frac{1}{t} + C)^2\\
+	1 + \frac{1}{t^2} = w^2(2C-\frac{1}{t})^2
+	\end{align*}
+	
+	Resolvendo a quadrática, achamos o valor de $C$:
+	
+	\begin{align}
+	C = \frac{w \pm \sqrt{t^2+1}}{2tw}
+	\end{align}
+	
+	Só vamos utilizar $C^+$ (o $C^-$ da um angulo de rotação maior que $\frac{\pi}{4}$, ainda nao sei o porquê).
+	
+	\subsection{Algumas propriedades}
+	
+	A condição $4AC - B^2 > 0$ tem que ser satisfeita para que a equação da conica represente uma elipse.
+	
+	Seja $\Gamma = A+C+\sqrt{1+(A-C)^2}$, substituindo $A$ em $\Gamma$, temos:
+	
+	\begin{align*}
+	\Gamma = 2C - \frac{1}{t} + \sqrt{1 + \frac{1}{t^2}}
+	\end{align*}
+	
+	Como estamos lidando primeiro com $t>0$, temos:
+	
+	\begin{align*}
+	\Gamma = 2C - \frac{\sqrt{1+t^2} - 1}{t}
+	\end{align*}
+	
+	Algumas propriedades que verifiquei utilizando Wolfram:
+	
+	\begin{itemize}
+		\item $4AC - B^2>0$ faz com que $A>0$ e $C>0$.
+		\item $C'<0$ para todo $t$.
+		\item $A'<0$ se e só se $t < \dfrac{\sqrt{1-w^2}}{w}$
+		\item $\Delta' < 0$ para todo $t$.
+		\item $\Gamma>0$ e $\Gamma' < 0$ para todo $t$.
+	\end{itemize}
+
+%	Vamos agora olhar para $D$ e $E$:
+	
+	\begin{align*}
+	D = -(A\alpha + \beta + C\gamma)\\
+	E = -C\eta\\
+	\alpha, \gamma, \eta>0
+	\end{align*}
+	
+	Suas derivadas
+	
+	\begin{align*}
+	D' = -(A'\alpha + C'\gamma)
+	\end{align*}
+	
+	\subsection{Só Falta achar $t$}
+	
+	Infelizmente não é fácil achar $t$.
+	
+	\section{Outro Approach}
+	
+	Vamos supor que os pontos são $(0,0), (h, 0), (\alpha h, m \times \alpha h)$ e que $m$ é positivo.
+	
+	Temos que $D = -Ah$ e também fixamos $B=-1$.
+	
+	Vamos agora utilizar a equação que fixa a ecentricidade para isolar $C$.
+	
+	\begin{align*}
+	1 + (A-C)^2 = w^2(A+C)^2\\
+	C = \frac{-Aw^2 - A \pm \sqrt{4A^2w^2 + w^2 -1}}{w^2 - 1}
+	\end{align*}
+	
+	Fixando o $A$ e encontrando $C$, talque $4AC > 1$ irá fixar a ecentricidade da elipse.
+	
+	\subsection{O terceiro ponto}
+	
+	Vamos olhar para a área detemrminada pelo triangulo dos pontos, chamamos a de $s$. Veja que o diametro da elipse que contem este triangulo é monótona em $s$ que por sua vez é monotona em $h$.
+	
+	Primeiro, econtramos a intersecção da reta $y=mx$ com a elipse.
+	
+	\begin{align*}
+	Ax^2 -x^2m + Cx^2m^2 -Ahx + Emx = 0\\
+	Ax -xm + Cxm^2 -Ah + Em = 0\\
+	x(A-m + Cm^2) = Ah - Em\\
+	x = \frac{Ah-Em}{A-m + Cm^2}
+	\end{align*}
+	
+	Para determinar $E$, utilizamos o terceiro ponto.
+	
+	\begin{align*}
+	A\alpha^2h^2 + B\alpha^2 h^2 m + Cm^2\alpha^2h^2 -Ah^2 \alpha + E m \alpha h = 0\\
+	Em = -(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)
+	\end{align*}
+	
+	Voltando para a equação anterior obtemos:
+	
+	\begin{align*}
+	x = \frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2}\\
+	y = mx\\
+	y = m\frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2}
+	\end{align*}
+	
+	Tomando a área do triangulo obtemos, veja que $s$ é conhecida dado $h$:
+	
+	\begin{align*}
+	m\frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2} \times h = s\\
+	A(mh^2\alpha) - h^2m^2\alpha + Cm^3h^2\alpha = s(A-m+Cm^2)\\
+	A(mh^2\alpha -s) + C(m^3h^2\alpha -sm^2) = h^2m^2\alpha\\
+	A\beta_1 + C\beta_2 + \beta_3 = 0
+	\end{align*}
 \end{document}
