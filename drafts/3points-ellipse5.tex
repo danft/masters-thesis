@@ -16,7 +16,7 @@
 %\usetikzlibrary{matrix}
 %\usepackage{pgfplots}
 %\pgfplotsset{compat=1.4}
-\usepackage{algorithm2e}
+\usepackage{algorithm2e}	
 \usepackage{algorithmic}
 \usepackage[utf8]{inputenc}
 \usepackage{caption}
@@ -178,7 +178,21 @@
 	
 	\begin{align*}
 	A\alpha^2h^2 + B\alpha^2 h^2 m + Cm^2\alpha^2h^2 -Ah^2 \alpha + E m \alpha h = 0\\
-	Em = -(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)
+	Em = -(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)\\
+	Em = h(-A(\alpha  - 1) +\alpha m - Cm^2\alpha)\\
+	E = h\beta
+	\end{align*}
+	
+	
+	\subsection{Semi-major}
+	
+	Fixando $A$ e utilizando a formula do semi-major, fazendo $H=\Delta(A + C - \sqrt{1 + (A-C)^2})$.
+	
+	\begin{align*}
+	a^2 H = AE^2 + DE + CD^2\\
+	a^2H = Ah^2\beta^2 -Ah^2\beta + CA^2h^2\\
+	h^2(A\beta^2 - A\beta + CA^2) = a^2H\\
+	h^2 = \frac{a^2H}{A\beta^2 - A\beta + CA^2}
 	\end{align*}
 	
 	Voltando para a equação anterior obtemos:
