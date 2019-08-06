@@ -195,20 +195,28 @@
 	h^2 = \frac{a^2H}{A\beta^2 - A\beta + CA^2}
 	\end{align*}
 	
-	Voltando para a equação anterior obtemos:
+	\subsubsection{Domínio $A$}
 	
+	A função $h^2$ não está definida para todo $A$. Como $A$ pode ser encontrado em função de $t = tan(2\theta)$, em que $\theta$ é o angulo de rotação da elipse, omitindo-se as contas temos:
+	
+	\begin{align}
+	A = \frac{-w + \sqrt{t^2 + 1}}{2tw}\\
+	\lim\limits_{t\to \infty} A = \frac{1}{2w}\\
+	\lim\limits_{t\to 0^+} A = \infty\\
+	A' = -\frac{w + \frac{1}{\sqrt{t^2+1}}}{2wt^2} < 0
+	\end{align}
+	
+	Logo, o domínio de $A$ é $\left[\dfrac{1}{2w}, \infty\right)$.
+	
+	Vamos propor que $h$ é uma função monótona. Portanto, será possível aplicar o algoritmo da bisseção para encontrar a resposta.
+	
+	A partir desse definição de $A$, também obtemos que $C = A + \frac{1}{t}$, ou seja $C > A$.
+	
+	\subsection{Monotonicidade}
+	
+	É possível, calculando a derivada de $C$ em função de $A$, ver que $C$ é crescente.
+	Como $\Delta>0$ e $\Delta'>0$, verificamos a seguir que $H$ é crescente:
 	\begin{align*}
-	x = \frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2}\\
-	y = mx\\
-	y = m\frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2}
-	\end{align*}
-	
-	Tomando a área do triangulo obtemos, veja que $s$ é conhecida dado $h$:
-	
-	\begin{align*}
-	m\frac{Ah+(	A(\alpha h - h) -\alpha hm + Cm^2h\alpha)}{A-m + Cm^2} \times h = s\\
-	A(mh^2\alpha) - h^2m^2\alpha + Cm^3h^2\alpha = s(A-m+Cm^2)\\
-	A(mh^2\alpha -s) + C(m^3h^2\alpha -sm^2) = h^2m^2\alpha\\
-	A\beta_1 + C\beta_2 + \beta_3 = 0
+	(A+C-\sqrt{1+(A-C)^2})' = 1 + C' - \frac{(A-C)(1-C')}{\sqrt{1+(A-C)^2}}
 	\end{align*}
 \end{document}

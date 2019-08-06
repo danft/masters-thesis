@@ -1,0 +1,65 @@
+
+
+%\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+every edge quotes/.append style = {anchor=south, sloped}
+
+%uncomment if require: \path (0,191); %set diagram left start at 0, and has height of 191
+
+%Shape: Ellipse [id:dp10634347053631776] 
+\draw   (68.5,97.75) .. controls (68.5,67.24) and (115.62,42.5) .. (173.75,42.5) .. controls (231.88,42.5) and (279,67.24) .. (279,97.75) .. controls (279,128.26) and (231.88,153) .. (173.75,153) .. controls (115.62,153) and (68.5,128.26) .. (68.5,97.75) -- cycle ;
+%Shape: Ellipse [id:dp7816950476685691] 
+\draw  [color={rgb, 255:red, 163; green, 163; blue, 163 }  ,draw opacity=1 ] (167.5,103.75) .. controls (167.5,73.24) and (214.62,48.5) .. (272.75,48.5) .. controls (330.88,48.5) and (378,73.24) .. (378,103.75) .. controls (378,134.26) and (330.88,159) .. (272.75,159) .. controls (214.62,159) and (167.5,134.26) .. (167.5,103.75) -- cycle ;
+%Straight Lines [id:da36505632658461096] 
+\draw    (234,52) -- (185.87,33.72) ;
+\draw [shift={(184,33)}, rotate = 381.03999999999996] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da357569598162492] 
+\draw    (234,52) -- (286.05,39.95) ;
+\draw [shift={(288,39.5)}, rotate = 526.97] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da9574900886541131] 
+\draw    (212,149) -- (173.91,137.34) ;
+\draw [shift={(172,136.75)}, rotate = 377.03] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da5801314237314061] 
+\draw    (212,149) -- (261.53,140.1) ;
+\draw [shift={(263.5,139.75)}, rotate = 529.8199999999999] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+
+% Text Node
+\draw (216,26) node [scale=0.7]  {$\gamma _{1} '( s_{2})$};
+% Text Node
+\draw (312.5,36.5) node [scale=0.7]  {$-\gamma _{2} '( t_{2})$};
+% Text Node
+\draw (284,143) node [scale=0.7]  {$\gamma _{1} '( s_{1})$};
+% Text Node
+\draw (147,134) node [scale=0.7]  {$-\gamma _{2} '( t_{1})$};
+% Text Node
+\draw (214,163) node [scale=0.7]  {$p_{1}$};
+% Text Node
+\draw (237,41) node [scale=0.7]  {$p_{2}$};
+% Text Node
+\draw (56,93) node   {$E_{1}$};
+% Text Node
+\draw (390,97) node   {$E_{2}$};
+
+
+\coordinate (O) at (212,149) ;
+\coordinate (A) at (261.53,140.1) ;
+\coordinate (B) at (173.91,137.34) ;
+
+\coordinate (O2) at (234,52);
+\coordinate (A2) at (185.87,33.72);
+\coordinate (B2) at (286.05,39.95);
+
+\draw (214,130) node [scale=0.7]  {$\theta$};
+
+\draw pic[draw=black, -, angle eccentricity=1.2, angle radius=0.2cm]
+{angle=A--O--B};
+
+\draw pic[draw=black, -, angle eccentricity=1.2, angle radius=0.2cm]
+{angle=A2--O2--B2};
+
+\end{tikzpicture}

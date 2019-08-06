@@ -1,0 +1,67 @@
+This section introduces the covering problem that does not have any axis-parallel constraint for the ellipses, we denote this version of the problem as $MCER$. The removal of this constraint introduces a new variable which is responsible for determining the rotation angle of every ellipse.
+
+An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, 2\pi]^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$. Also, we denote $\Pp \cap E_i(q_i, \theta_i)$ as the set of points covered by $E_i$ on this configuration. Therefore $MCER$ is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the number of points covered by the $m$ ellipses, which is given by \autoref{eq:optMCEn}.
+
+\begin{equation}\label{eq:optMCEn}
+\max_{Q, \Theta}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right|}.
+\end{equation}
+
+An additional notation is used on this chapter, we define $\tilde{E_i}(q_i, \theta_i)$ to be the set of points on the border of $E_i(q_i, \theta_i)$, we will specially use the operation $\Pp \cap \tilde{E_i}(q_i, \theta_i)$ referring to the set of points from $\Pp$ that lie on the border of $E_i(q_i, \theta_i)$.
+
+
+\begin{lema}\label{lema:mce_2b}
+	Let $(\Pp, \E)$ be an instance of $MCER$. In an optimal solution of $MCER$, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|\ge2$, there is $q_j'$ such that $\Pp \cap E_j(q_j', \theta_j)=\Pp \cap E_j(q_j, \theta_j)$ and $\Pp \cap \tilde{E_j}(q_j', \theta_j) \ge 2$.
+\end{lema}
+
+\begin{demonstracao}
+	First, the angle of rotation can be ignored as it does not change.
+	
+	Let $A=\Pp \cap E_j(q_j, \theta_j)$ be the set of points covered by $E_j$ and $X=\cap_{p \in A}E_j(p, \theta_j)$ be the region of intersection of ellipses centered at each point from $A$.
+	
+	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point creating a vertice. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap E_j(q_j', \theta_j)| \ge 2$.
+	
+	
+\end{demonstracao}
+
+\begin{definicao}\label{def:feasible_angle}
+	Let $E$ be an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi]$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \tilde{E}(q, \theta)$.
+\end{definicao}
+
+\begin{lema}\label{lema:3pnts}
+	Let $(\Pp, \E)$ be an instance of $MCER$, in an optimal solution, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|>2$, one of the two cases is true:
+	
+	\begin{enumerate}
+		\item There is $q', \theta'$, and $\{u, v, w\} \subset \Pp \cap E_j(q_j, \theta_j)$, such that $\{u, v, w\} \subset \tilde{E}(q', \theta')$.
+		
+		\item Let $A=\Pp \cap E_j(q_j, \theta_j)$, and $u, v \in A$ such that there exists $\hat{q}_j$ such that $\{u, v\} \subset \tilde{E_j}(\hat{q}_j, \theta_j)$ and $A \subset E_j(\hat{q}_j, \theta_j)$. Then for any $(E_j, u, v)$-feasible angle $\theta \in [0, 2\pi]$, there exists $\bar{q}_j$ such that $\{u, v\} \subset \tilde{E_j}(\bar{q}_j, \theta)$ and $A \subset E_j(\bar{q}_j, \theta)$.
+	\end{enumerate}
+\end{lema}
+
+The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
+
+The second case says that after fixing a pair of points on the border of $E_j$ maintaining the covered set, for any angle that allows the two points to stay on the border of $E_j$ the covered set will stay the same.
+
+The idea to prove \autoref{lema:3pnts} is that after fixing $u, v$ on the border of $E_j$, which is possible by \autoref{lema:mce_2b}, the movement of rotation and translation while keeping $u, v$ on the border is continuous. Because of that, the negation of case two implies case one and vice versa.
+
+
+As a consequence of \autoref{lema:3pnts}, from any optimal solution of $MCER$ it is possible to obtain another optimal solution which every ellipse has one, two or three points on its border.
+This result cuts the search space to $\bigO(mn^3)$ which is a very nice gain from where we started, with a infinite search space. Breaking down every possible case, for every ellipse in an optimal solution we obtain:
+
+\begin{itemize}
+	\item The ellipse covers only one point. You could place the ellipse so it has one point on its border, satisfying the claim above.
+	\item The ellipse covers exactly two points. Using \autoref{lema:mce_2b}, there is a solution with those two points on the border.
+	\item The ellipse covers more than two points. First we can use \autoref{lema:mce_2b} to fix two points on the border. By \autoref{lema_3} the angle can be ignored as long as the two fixed points are on the border or exists another optimal solution with three (or more) points on the border.
+\end{itemize}
+
+From those cases, three sub-problems need to be solved so we can have a method for $MCER$.
+
+The first one is covering one point with an ellipse which is trivial. For a point $(x, y) \in \R$ just set the center of the ellipse to be $(x, y) \in \R$.
+
+The second problem and third problems deserve sections on their own.
+
+\section{Two points on the border}
+
+Because of the case 2 of \autoref{lema:3pnts}, we want to find for every pair of points the set of points an ellipse with them on its border can cover
+
+
+ 

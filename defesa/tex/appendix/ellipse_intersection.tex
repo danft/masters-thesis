@@ -1,0 +1,105 @@
+In this appendix the intersection of two ellipses with the same shape parameters $(a,b) \in \R^2_{>0}$ is described with more detail, as well as determining the functions $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$ for two ellipses that intersect.
+
+\section{Intersection}
+
+Let $E_1$ and $E_2$ be two ellipses that the intersection will be determined here. Without loss of generality, let us assume that $E_1$ is at the origin and $E_2$ is located at the center $(h,k) \in \R^2$. Their equations are given by
+
+\begin{align*}
+    \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 && (E_1)\\
+    \frac{(x-h)^2}{a^2} + \frac{(y-k)^2}{b^2} = 1 && (E_2)
+\end{align*}
+
+As they are both equal to one we can get the following
+
+\begin{align*}
+    b^2x^2 + a^2y^2 = b^2(x-h)^2 + a^2(y-k)^2 \\
+    b^2(-2xh + h^2) + a^2(-2yk + k^2) = 0\\
+    x(2hb^2) = b^2h^2 + a^2(-2yk + k^2)\\
+    x = y\frac{-2ka^2}{2hb^2} + \frac{b^2h^2 + a^2k^2}{2hb^2}
+\end{align*}
+
+Which can be rewritten as
+
+\begin{align*}
+    x = y\alpha + \beta
+\end{align*}
+
+with the constants $\alpha$ and $\beta$ being
+
+\begin{align*}
+    \alpha = \frac{-2ka^2}{2hb^2} \\
+    \beta = \frac{b^2h^2 + a^2k^2}{2hb^2}
+\end{align*}
+
+Then replacing it back to the equation of $E_1$ we get
+
+\begin{align*}
+    \frac{(y\alpha + \beta)^2}{a^2} + \frac{y^2}{b^2} = 1\\
+    b^2(y\alpha + \beta)^2 + y^2a^2 - a^2b^2 = 0\\
+    y^2(b^2\alpha^2 + a^2) + y(2\beta\alpha b^2) + b^2\beta^2 -a^2b^2 = 0
+\end{align*}
+
+Which is a second degree polynomial, therefore, $E_1$ and $E_2$ intersect if, and only if the roots of the polynomial are real. The intersection points itself can be obtained by solving the polynomial for $y$ and applying its value onto the $x=y\alpha + \beta$ equation.
+
+\subsection{Determining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$}
+
+Let us assume that $E_1$ and $E_2$, each one with shape parameters $(a,b) \in \R^2_{>0}$, intersect at $p_1$ and $p_2$. Then, to determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the angles of intersection of $p_1$ and $p_2$ on $E_1$. For that, we will use the curve defined in \autoref{eq:parametric_ellipse} because it is easier to work with angles here.
+
+Given a point $(x,y)$, to find the angle it makes with the major axis, from \autoref{eq:parametric_ellipse}, we can get that
+
+\begin{align*}
+\dfrac{y-q_y}{x-q_x} = \dfrac{b}{a}\tan{t}\\
+t=\arctan\left(\dfrac{a}{b} \dfrac{y-q_y}{x-q_x}\right)
+\end{align*}
+
+As the image of $\arctan$ is $[-\frac{\pi}{2}, \frac{\pi}{2}]$, we need to check the sign of $x-q_x$ to determine the angle in $[0, 2\pi]$. After that, we can get the two angles that represent the intersection points $p_1$ and $p_2$ on $E_1$.
+
+To find out which one of the angles are $\Gamma_+(1,2)$, we need to go further and determine the derivative of $\gamma(t)$ which is going to be used to determine the vectors tangent to the ellipses at the intersection points.
+
+\begin{equation}\label{eq:der_parametric_ellipse}
+\gamma'(t) = \left\{
+\begin{array}{l}
+x'(t)= -a\sin{t}\\
+y'(t)=b\cos{t}
+\end{array}
+\right.
+\end{equation}
+
+Let $\gamma_1$ and $\gamma_2$ be the curves describing $E_1$ and $E_2$ respectively. Also, let $s_1$ be the angle, such that $\gamma_1(s_1)=p_1$, and $t_1$ be the angle, such that $\gamma_2(t_1)=p_1$.
+Then, the tangent vectors to the $E_1$ and $E_2$ at $p_1$ are $\gamma_1'(s_1)$ and $\gamma_2'(t_1)$ respectively.
+
+\begin{figure}[H]
+\centering
+
+    \caption{Determining $\Gamma_+(1,2)$}
+    \input{tex/figures/ellipse_gamma.tex}
+    \fautor
+    \label{fig:ellipse_gamma}
+\end{figure}
+
+The following lemma states a relation between $s_1$ and $\Gamma_+(1,2)$
+
+\begin{lema}\label{lema:lema_ellipse_angle}
+	Let $\theta$ be the angle between $\gamma_1'(s_1)$ and $-\gamma_2'(t_1)$. Then, $\theta \le \pi$ if, and only if $\Gamma_+(1,2)=s_1$.
+\end{lema}
+
+Instead of a formal proof of \autoref{lema:lema_ellipse_angle}, a graphical explanation using \autoref{fig:ellipse_gamma} is provided.
+
+
+First, let us state some facts that can also be seen in \autoref{fig:ellipse_gamma}
+
+\begin{itemize}
+    \item $E_1 \cap E_2$ is convex and bounded by two arcs, one from each ellipse.
+    \item Starting at any of the intersection points, one of the $E_1 \cap E_2$ arcs will be clockwise-oriented and the other, counter-clockwise-oriented. In \autoref{fig:ellipse_gamma}, for example, it is clear that only the $E_1$ arc starting at $p_1$, ending at $p_2$, is counter-clockwise-oriented.  
+    
+    
+    \item The counter-clockwise-oriented arc starting at $\Gamma_+(1,2)$ is from the ellipse $E_1$.
+\end{itemize}
+
+
+Let us assume that $p_1$ is the intersection point which is the opening angle $\Gamma_+(1,2)$. Then, the vectors $\gamma_1'(s_1)$ and $-\gamma_2'(t_1)$ are tangent to the $E_1 \cap E_2$ area at point $p_1$. Because of the convexity of $E_1 \cap E_2$, the angle between $\gamma_1'(s_1)$ and $-\gamma_2'(t_1)$ has to be less than or equal to $\pi$ (see \autoref{fig:ellipse_gamma}), which is what \autoref{lema:lema_ellipse_angle} says. It is easy to prove the converse by proving the contra-positive assuming that $p_1$ is the point which determines the angle $\Gamma_-(1,2)$.
+
+Lastly, in \autoref{fig:ellipse_gamma}, it can be seen that if one the intersection points is classified as $\Gamma_+(1,2)$ the other will necessarily be classified as $\Gamma_-(1,2)$. This gives us all we need to implement \autoref{algoritmo:mce}.
+
+%It is worth noting that computationally, this classification can be done taking the cross product of the two vectors and checking its signal, negative cross products imply an angle greater than $\pi$. Also, determining the polar angle of a point in $\R^2$ can be done using the $atan2(x,y)$ function which is present in most of the math libraries of modern programming languages.
+
