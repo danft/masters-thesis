@@ -1,0 +1,100 @@
+Let $p_1, p_2, p_3 \in \R^2$ and $E$ be an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. The problem is to find every pair $(q, \theta)$, with $q \in \R^2$ and $\theta \in [0, \pi]$, such that $\{p_1, p_2, p_3\} \subset \tilde{E}(q, \theta)$. In other words, one wants to find every center and angle of rotation of $E$, such that $p_1$, $p_2$ and $p_3$ are on the border of $E$.
+The goal of this section is to show that the number of solutions of such problem is limited, finding every one of them analytically is beyond the scope of this work.
+
+\section{Transforming the input}
+
+To make it simpler, let us translate the system to put $p_1$ at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This is described by \autoref{eq:trpnts}.
+
+\begin{equation}\label{eq:trpnts}
+\hat{p}=\left[\begin{array}{cc}
+\frac{b}{a}&0\\
+0&1
+\end{array}\right]
+\left[\begin{array}{cc}
+\cos{\theta}&\sin{\theta}\\
+\sin{\theta}&-\cos{\theta}
+\end{array}\right]\left[\begin{array}{c}
+p_x\\
+p_y
+\end{array}\right]
+\end{equation}
+
+The only unknown variable in \autoref{eq:trpnts} is $\theta$. Instead of dealing with trigonometric equations, we will use the following relations:
+
+\begin{equation}\label{eq:trigId}
+	\begin{array}{c}
+\cos{\theta} = \dfrac{t^2-1}{t^2+1}\\
+\sin{\theta} = \dfrac{2t}{t^2+1}.
+\end{array}
+\end{equation}
+
+After replacing the trigonometric functions with \autoref{eq:trigId}, we get $\hat{p}_1, \hat{p}_2, \hat{p}_3$ as quotients of polynomials on $t$ of degree $2$.
+
+\section{Three points on a circle}
+%find ref%
+There is a known way to determine the circle which contains three given points. 
+Let $(x_1, y_1)$, $(x_2, y_2)$, $(x_3, y_3)$ be three non-colinear points in $\R^2$, the equation of the circle passing through these points is given by the determinant on \autoref{3pnt_circle}
+
+\begin{equation}\label{3pnt_circle}
+\left|
+\begin{array}{cccc}
+x^2+y^2&x&y&1\\
+x_1^2+y_1^2&x_1&y_1&1\\
+x_2^2+y_2^2&x_2&y_2&1\\
+x_3^2+y_3^2&x_3&y_3&1
+\end{array}
+\right| = 0.
+\end{equation}
+
+Replacing the points by $\hat{p_1}, \hat{p_2}, \hat{p_3}$, we get:
+
+\begin{eqnarray*}
+\left|
+\begin{array}{cccc}
+x^2+y^2&x&y&1\\
+0&0&0&1\\
+\hat{p}_{2x}^2+\hat{p}_{2y}^2&\hat{p}_{2x}&\hat{p}_{2y}&1\\
+\hat{p}_{3x}^2+\hat{p}_{3y}^2&\hat{p}_{3x}&\hat{p}_{3y}&1\\
+\end{array}
+\right| = 0\\
+(x^2+y^2)\left|
+\begin{array}{cc}
+\hat{p}_{2x}& \hat{p}_{2y}\\
+\hat{p}_{3x}& \hat{p}_{3y}
+\end{array}\right|
++
+x\left|
+\begin{array}{cc}
+	\hat{p}_{2x}^2+\hat{p}_{2y}^2& \hat{p}_{2y}\\
+	\hat{p}_{3x}^2+\hat{p}_{3y}^2& \hat{p}_{3y}
+\end{array}\right|
+y\left|
+\begin{array}{cc}
+	\hat{p}_{2x}& \hat{p}_{2x}^2+\hat{p}_{2y}^2\\
+	\hat{p}_{3x}& \hat{p}_{3x}^2+\hat{p}_{3y}^2
+\end{array}\right|=0.
+\end{eqnarray*}
+
+We need to determine the radius of the circle and find the value of $t$, so the radius is equal to $b$. Rearranging the terms we obtain the expression:
+
+\begin{equation}\label{eq:le3}
+\dfrac{\left|
+	\begin{array}{cc}
+	\hat{p}_{2x}& \hat{p}_{2x}^2+\hat{p}_{2y}^2\\
+	\hat{p}_{3x}& \hat{p}_{3x}^2+\hat{p}_{3y}^2
+	\end{array}\right|^2
++\left|
+\begin{array}{cc}
+\hat{p}_{2x}^2+\hat{p}_{2y}^2& \hat{p}_{2y}\\
+\hat{p}_{3x}^2+\hat{p}_{3y}^2& \hat{p}_{3y}
+\end{array}\right|^2
+}{4\left|
+\begin{array}{cc}
+\hat{p}_{2x}& \hat{p}_{2y}\\
+\hat{p}_{3x}& \hat{p}_{3y}
+\end{array}\right|^2} = b^2,
+\end{equation}
+
+After replacing \autoref{eq:trpnts} on \autoref{eq:le3}, we obtain a polynomial of degree $12$, which gives an upper-bound of $12$ to the number of solutions.
+
+Nevertheless, because ellipses are symmetrical over their major-axis, we only need to consider rotations on the range $[0, \pi]$ as $\theta$ and $\theta+\pi$ represent the exact same solution geometrically. This ends halving the upper-bound to $6$.
