@@ -1,34 +1,58 @@
-This section introduces the covering problem that does not have any axis-parallel constraint for the ellipses, we denote this version of the problem as $MCER$. The removal of this constraint introduces a new variable which is responsible for determining the rotation angle of every ellipse.
+This section introduces the covering problem that does not have any axis-parallel constraint for the ellipses, we denote this version of the problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. The removal of this constraint introduces a new variable which is responsible for determining the rotation angle of every ellipse.
 
-An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, 2\pi]^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$. Also, we denote $\Pp \cap E_i(q_i, \theta_i)$ as the set of points covered by $E_i$ on this configuration. Therefore $MCER$ is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the number of points covered by the $m$ ellipses, which is given by \autoref{eq:optMCEn}.
+An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, 2\pi]^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}.
+Also, $\Pp \cap E_i(q_i, \theta_i)$ is denoted as the set of points covered by $E_i$ on this configuration. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the number of points covered by the $m$ ellipses, which is given by \autoref{eq:optMCEn}.
 
 \begin{equation}\label{eq:optMCEn}
 \max_{Q, \Theta}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right|}.
 \end{equation}
 
-An additional notation is used on this chapter, we define $\tilde{E_i}(q_i, \theta_i)$ to be the set of points on the border of $E_i(q_i, \theta_i)$, we will specially use the operation $\Pp \cap \tilde{E_i}(q_i, \theta_i)$ referring to the set of points from $\Pp$ that lie on the border of $E_i(q_i, \theta_i)$.
+An additional notation is used on this chapter, $\tilde{E_i}(q_i, \theta_i)$ is defined to be the set of points on the border of $E_i(q_i, \theta_i)$, specially, the operation $\Pp \cap \tilde{E_i}(q_i, \theta_i)$ is used to refer to the set of points from $\Pp$ that lie on the border of $E_i(q_i, \theta_i)$.
 
 
 \begin{lema}\label{lema:mce_2b}
-	Let $(\Pp, \E)$ be an instance of $MCER$. In an optimal solution of $MCER$, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|\ge2$, there is $q_j'$ such that $\Pp \cap E_j(q_j', \theta_j)=\Pp \cap E_j(q_j, \theta_j)$ and $\Pp \cap \tilde{E_j}(q_j', \theta_j) \ge 2$.
+	Let $(\Pp, \E)$ be an instance of MCER. In an optimal solution of MCER, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|\ge2$, there is $q_j'$ such that $\Pp \cap E_j(q_j', \theta_j)=\Pp \cap E_j(q_j, \theta_j)$ and $\Pp \cap \tilde{E_j}(q_j', \theta_j) \ge 2$.
 \end{lema}
 
 \begin{demonstracao}
 	First, the angle of rotation can be ignored as it does not change.
 	
 	Let $A=\Pp \cap E_j(q_j, \theta_j)$ be the set of points covered by $E_j$ and $X=\cap_{p \in A}E_j(p, \theta_j)$ be the region of intersection of ellipses centered at each point from $A$.
-	
-	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point creating a vertice. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \tilde{E}_j(q_j', \theta_j)| \ge 2$.
-	
+
+	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \tilde{E}_j(q_j', \theta_j)| \ge 2$.
 	
 \end{demonstracao}
+
+What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into another optimal solution where every ellipse covers the same set of points and those which cover more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses. An example is shown on \autoref{fig:ellipse-2-points} for one ellipse.
+
+A lot of the ideas developed in this chapter are based on fixing two points on the border of an ellipse, which is why \autoref{def:feasible_angle} introduces a new notation for angles that an ellipse rotated by it can be translated into a center, such that it contains two fixed points. 
+
+\begin{figure}[H]
+	\centering
+	\caption{An optimal solution before and after applying \autoref{lema:mce_2b}.}
+	\includegraphics{tex/figures/scripts/ellipse-2-points}
+	\fautor
+	\label{fig:ellipse-2-points}
+\end{figure}
+
+
 
 \begin{definicao}\label{def:feasible_angle}
 	Let $E$ be an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi]$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \tilde{E}(q, \theta)$.
 \end{definicao}
 
+On \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. On one of them, an ellipse is rotated by $\pi/4$ and it is located such that it contains the two fixed points on its border. That means $\pi/4$ is a $(E, u, v)$-feasible angle. On the other example, the ellipse is rotated by $\pi/2$ and there is not a center where the ellipse can be placed so it contains the two fixed points--they are too far apart. This makes $\pi/2$ a not $(E, u, v)$-feasible angle.
+
+\begin{figure}
+	\centering
+	\caption{A $(E, u, v)$-feasible angle and a not $(E, u, v)$-feasible angle.}
+	\includegraphics{tex/figures/scripts/feasible-angle}
+	\fautor
+	\label{fig:feasible-angle}
+\end{figure}
+
 \begin{lema}\label{lema:3pnts}
-	Let $(\Pp, \E)$ be an instance of $MCER$, in an optimal solution, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|>2$, one of the two cases is true:
+	Let $(\Pp, \E)$ be an instance of MCER, in an optimal solution, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|>2$, at least one of the two cases is true:
 	
 	\begin{enumerate}
 		\item There is $q', \theta'$, and $\{u, v, w\} \subset \Pp \cap E_j(q_j, \theta_j)$, such that $\{u, v, w\} \subset \tilde{E}(q', \theta')$.
@@ -40,6 +64,16 @@ An additional notation is used on this chapter, we define $\tilde{E_i}(q_i, \the
 The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
 
 The second case of \autoref{lema:3pnts} says that after fixing a pair of points on the border of $E_j$ maintaining the covered set, for any angle that allows the two points to stay on the border of $E_j$, there is a center that maintains the covered set the same.
+
+On \autoref{fig:lema-3-points} both cases of \autoref{lema:3pnts} are shown. There, it can be seen that for the second case, it does not matter which feasible angle by which the ellipse is rotated, the third point will always be inside the coverage area. Also, an example of the first case is shown where there are three points lie exactly on the border of the ellipse.
+
+\begin{figure}
+	\centering
+	\caption{An example of \autoref{lema:3pnts}.}
+	\includegraphics{tex/figures/scripts/lema-3-points}
+	\fautor
+	\label{fig:lema-3-points}
+\end{figure}
 
 The idea to prove \autoref{lema:3pnts} is that after fixing $u, v$ on the border of $E_j$, which is possible by \autoref{lema:mce_2b}, the movement of rotation and translation while keeping $u, v$ on the border is continuous. Because of that, the negation of case two implies case one and vice versa.
 
@@ -60,4 +94,72 @@ Let $E$ be an ellipse with shape parameters $(a, b)\in \R^2_{>0}$ and $u, v\in \
 
 For a fixed angle, finding every center such that two points are on the border of the ellipse is done on \autoref{chapter:ellipses_intersection}, from there we know that there could be at most $2$ of such centers. The only thing left to be done is finding a feasible angle. It turns out that the angle that makes the major-axis of the ellipse to be aligned with the line that passes through $u$ and $v$ will be a feasible angle if, and only if the set of feasible angles is not empty. This can be seen geometrically as other angles achieve a lesser maximum distance between the two points on the border.
 
- 
+\section{Ellipse by three points}
+
+In this section the problem of finding every location (center, angle of rotation), that makes an ellipse have three points on its border is presented, we will refer to this problem as \sigla{E3PNT}{Ellipse by Three points}. Firstly, it is going to be shown that the number of solutions of this problem is limited, this is a fundamental result which allows an algorithm for MCER to be developed. Secondly, a method to find every solution of E3PNT is described.
+
+\subsection{The number of solutions is limited by a constant}
+
+To prove that the number of solutions is limited by a constant, the problem is going to be modeled as finding the roots of an univariate polynomial of degree $12$. Let $u, v, w \in \R^2$ and $E$ be an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. The problem is to find every pair $(q, \theta)$, with $q \in \R^2$ and $\theta \in [0, \pi]$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$.
+
+To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
+This process can be parametrized by the angle of rotation of the points, as described by \autoref{eq:trpnts}, and because of the invertibility of linear transformations solutions for E3PNT can be obtained by reversing the transformations.
+
+\begin{figure}[H]
+	\centering
+	\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+	\includegraphics{tex/figures/scripts/circumscribed-circle}
+	\fautor
+	\label{fig:circumscribed-circle}
+\end{figure}
+\begin{equation}\label{eq:trpnts}
+\varphi(p, \theta)=\left[\begin{array}{cc}
+\frac{b}{a}&0\\
+0&1
+\end{array}\right]
+\left[\begin{array}{cc}
+\cos{\theta}&\sin{\theta}\\
+-\sin{\theta}&\cos{\theta}
+\end{array}\right]\left[\begin{array}{c}
+p_x\\
+p_y
+\end{array}\right].
+\end{equation}
+
+Then, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\varphi(u, \theta), \varphi(v, \theta)$ and $\varphi(w, \theta)$, such that the circle has radius $b$. As, for three non-colinear fixed points, there is always an unique circumscribed circle for the triangle formed by those three points, the only variable to be determined ends up being the angle of rotation $\theta$.
+
+Let $d_u(\theta), d_v(\theta), d_w(\theta)$ be the length of each of the sides of the triangle formed by the points $\varphi(u, \theta), \varphi(v, \theta)$ and $\varphi(w, \theta)$; and $A(\theta)$ be its area--note that the transformation does not preserve distance or area. Then, the radius $R$ of the circumscribed circle is given by \autoref{eq:circumscribed_circle} \cite[p.~189]{johnson1960}.
+
+\begin{equation}\label{eq:circumscribed_circle}
+R = \dfrac{d_u(\theta)d_v(\theta)d_w(\theta)}{4A(\theta)}.
+\end{equation}
+
+Instead of working with trigonometric functions, the following identities given by \autoref{eq:trigId} are used, so a polynomial can be obtained.
+
+\begin{equation}\label{eq:trigId}
+\begin{array}{c}
+\cos{\theta} = \dfrac{t^2-1}{t^2+1}\\
+\sin{\theta} = \dfrac{2t}{t^2+1}.
+\end{array}
+\end{equation}
+
+Looking at $\varphi(u, \theta)$, after replacing the trigonometric functions with \autoref{eq:trigId}, it then becomes a quotient of polynomials. Let $\Delta=t^2+1$, then $\varphi(u, \theta)$ is a polynomial of degree $2$ divided by $\Delta$. The area $A(\theta)$ can be calculated by taking the cross product of the vectors induced by $\varphi(v, \theta)$ and $\varphi(w, \theta)$ which ends up being a polynomial of degree $4$ divided by $\Delta^2$. Finally, let $\gamma_d(t)$ be a polynomial of degree $d\in\mathbb{N}$, then we get the following expressions for the length of the triangle and its area,
+\begin{align*}
+d_u(\theta)=||\varphi(v, \theta)-\varphi(u, \theta)|| = \sqrt{\dfrac{\gamma_4(t)}{\Delta^2}}\\
+A(\theta)=\dfrac{1}{2}|\varphi(v, \theta) \times \varphi(w, \theta)|=\frac{\gamma_4(t)}{\Delta^2}
+\end{align*}
+imposing \autoref{eq:circumscribed_circle} so the radius of the circumscribed circle is equal to $b$, we get the following equation,
+
+\begin{align*}
+\left(\sqrt{\dfrac{\gamma_4(t)}{\Delta^2}}\right)^3 - \dfrac{b\gamma_4(t)}{\Delta^2} = 0\\
+\dfrac{\gamma_{12}(t)}{\Delta^6} - \dfrac{b\gamma_8(t)}{\Delta^4} = 0,
+\end{align*}
+which after some manipulation, becomes an univariate polynomial of degree $12$ which can have up to $12$ different real roots. Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
+Therefore, the number of angles of rotation and centers that an ellipse of fixed shape can be placed, so it has three fixed points on its border is limited to $6$.
+
+Because there is no closed formula to find roots of polynomials of degree $12$ \cite{skopenkov2015}, and root-finding iterative methods, such as Newton's method, generally are not convergent for polynomials of degree $4$ or more \cite{mc1}, this approach is only useful to show the limitedness of the set of solutions.
+
+\subsection{A method for E3PNT}
+
+In this section we present a method for E3PNT and we try to justify it being correct, however, a proof is left as future work.
+

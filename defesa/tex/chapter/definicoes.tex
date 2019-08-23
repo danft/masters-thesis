@@ -18,7 +18,7 @@ Let $u \in \R^2$ be a vector, the Euclidean norm of $u$ is defined as
 
 \noindent where $Q$ is a $2$ by $2$ positive definite matrix.
 
-It is easy to see that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the Euclidean norm.
+The elliptical norm, when taking $Q$ to be the identity matrix, becomes the Euclidean norm.
 
 Determining the distance between two points, given a norm function, is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{Q}$.
 
@@ -83,7 +83,7 @@ Finally, an ellipse is said to be axis-parallel if its major-axis (see \autoref{
 
 \subsection{Axis-parallel}
 
-An axis parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal.}. This can be understood as a scaling transformation applied to the Euclidean norm.
+An axis-parallel ellipse centered at $c = (c_x,c_y)$ can be described using \autoref{def:ellipse} with $Q$ being a diagonal matrix \footnote{The only non-zero terms are in the main diagonal.}. This can be understood as a scaling transformation applied to the Euclidean norm.
 
 Defining the matrix $Q$ as
 
@@ -136,3 +136,20 @@ Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R
     \end{equation}
 
 No equivalent disk-circle wording exists for ellipses, this could be a source of ambiguity in the text, that is why a note for the reader was judged to be necessary. Throughout this work an ellipse will represent the set of points that satisfy \autoref{def:ellipse}. In some places, though, with prior clarification, we will denote as an ellipse the set of points that are covered by the ellipse itself. For example, when we define $\Pp \cap E$ as the set of points in $\Pp$ that are covered by $E$, we are implicitly calling $E$ the set of points that are covered by the ellipse itself as it is defined by \autoref{def:ellipse}.
+
+\subsection{Non-axis-parallel}
+
+An non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in [0, \pi]$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
+
+A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. First, the ellipse can be translated to the origin and then rotated by $-\theta$, the reverse transformations are expressed by \autoref{eq:rotated_ellipse}.
+
+\begin{equation}\label{eq:rotated_ellipse}
+\dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}=1.
+\end{equation}
+
+Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi]$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
+
+
+\begin{equation}\label{eq:rotated_ellipse_co}
+\dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
+\end{equation}
