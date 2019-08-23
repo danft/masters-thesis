@@ -10,9 +10,9 @@ Also, $\Pp \cap E_i(q_i, \theta_i)$ is denoted as the set of points covered by $
 An additional notation is used on this chapter, $\tilde{E_i}(q_i, \theta_i)$ is defined to be the set of points on the border of $E_i(q_i, \theta_i)$, specially, the operation $\Pp \cap \tilde{E_i}(q_i, \theta_i)$ is used to refer to the set of points from $\Pp$ that lie on the border of $E_i(q_i, \theta_i)$.
 
 
-\begin{lema}\label{lema:mce_2b}
+\begin{proposicao}\label{lema:mce_2b}
 	Let $(\Pp, \E)$ be an instance of MCER. In an optimal solution of MCER, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j, \theta_j)|\ge2$, there is $q_j'$ such that $\Pp \cap E_j(q_j', \theta_j)=\Pp \cap E_j(q_j, \theta_j)$ and $\Pp \cap \tilde{E_j}(q_j', \theta_j) \ge 2$.
-\end{lema}
+\end{proposicao}
 
 \begin{demonstracao}
 	First, the angle of rotation can be ignored as it does not change.
@@ -79,7 +79,6 @@ The idea to prove \autoref{lema:3pnts} is that after fixing $u, v$ on the border
 
 
 If we define an equivalence relation between optimal solutions as: $S_1$ is equivalent to $S_2$ if they both cover the same set of points, we can use \autoref{lema:3pnts} and \autoref{lema:mce_2b} to identify the equivalence classes. Let $S$ be any optimal solution, in $[S]$ (its equivalence class) there is another solution where any ellipse $E_j \in \E$ falls in at least one of the cases below:
-
 \begin{itemize}
 	\item $E_j$ covers only one point.
 	\item $E_j$ covers more than one point with $u$ and $v$ being on the border of $E_j$. Note that there could be infinitely many of solutions like that, however, \autoref{lema:3pnts} guarantees that any $(E_j, u, v)$-feasible angle yields an equivalent optimal solution.
@@ -96,11 +95,13 @@ For a fixed angle, finding every center such that two points are on the border o
 
 \section{Ellipse by three points}
 
-In this section the problem of finding every location (center, angle of rotation), that makes an ellipse have three points on its border is presented, we will refer to this problem as \sigla{E3PNT}{Ellipse by Three points}. Firstly, it is going to be shown that the number of solutions of this problem is limited, this is a fundamental result which allows an algorithm for MCER to be developed. Secondly, a method to find every solution of E3PNT is described.
+The problem of finding every center and angle of rotation of an ellipse which makes it have three points on its border is presented in this section. We refer to it as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. The objective is to find every pair $(q, \theta) \in \R^2\times[0, \pi]$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$.
+
+Firstly, it is going to be shown that the number of solutions of E3PNT is limited by a constant, this is a fundamental result which allows an algorithm for MCER to be developed. Secondly, a method to find every solution of E3PNT is described.
 
 \subsection{The number of solutions is limited by a constant}
 
-To prove that the number of solutions is limited by a constant, the problem is going to be modeled as finding the roots of an univariate polynomial of degree $12$. Let $u, v, w \in \R^2$ and $E$ be an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. The problem is to find every pair $(q, \theta)$, with $q \in \R^2$ and $\theta \in [0, \pi]$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$.
+To prove that the number of solutions is limited by a constant, the problem is going to be modeled as finding the roots of an univariate polynomial of degree $12$.
 
 To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
 This process can be parametrized by the angle of rotation of the points, as described by \autoref{eq:trpnts}, and because of the invertibility of linear transformations solutions for E3PNT can be obtained by reversing the transformations.
@@ -161,5 +162,16 @@ Because there is no closed formula to find roots of polynomials of degree $12$ \
 
 \subsection{A method for E3PNT}
 
-In this section we present a method for E3PNT and we try to justify it being correct, however, a proof is left as future work.
+In this section we present a method for E3PNT and we try to make a case of it being correct, however, a proof is left as future work.
+
+The idea of the method is to let two points fixed on the border of the ellipse and vary the angle to find it when the third point hits the border of the ellipse.
+
+Let $u$ and $v$ be the pair out of the three points that are most distant from each other, also let $\theta_u \in [0, \pi)$ be the greatest $(E, u, v)$-feasible angle. Given an angle $\theta \in [0, \theta_u]$, let $q_\theta\in\R^2$ be a center of $E$, such that $\{u, v\} \subset \tilde{E}(q_\theta, \theta)$. Note that in general, there are two such centers, they could be told apart by their $y$-coordinate, and the method needs to be executed for both of them separately.
+Then, a function $\rho : [0, \theta_u] \mapsto \R$ is defined to be the elliptical norm of the point $w$ with respect to $E(q_\theta, \theta)$.
+
+\begin{equation}\label{eq:rho}
+\rho(\theta) = \dfrac{}{}
+\end{equation}
+
+The angles such that \autoref{eq:rho} is equal to $1$ are the ones that are part of the solution and achieve three points on the border of the ellipse. From now on, a method is presented that tries to find those points in a efficient way. We conjecture that \autoref{eq:rho} is unimodal by parts, and we present a method that takes advantage of that.
 
