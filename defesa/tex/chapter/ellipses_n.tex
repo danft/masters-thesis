@@ -1,6 +1,6 @@
 This section introduces the covering problem that does not have any axis-parallel constraint for the ellipses, we denote this version of the problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. The removal of this constraint introduces a new variable which is responsible for determining the rotation angle of every ellipse.
 
-An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, 2\pi]^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}.
+An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}.
 Also, $\Pp \cap E_i(q_i, \theta_i)$ is denoted as the set of points covered by $E_i$ on this configuration. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the number of points covered by the $m$ ellipses, which is given by \autoref{eq:optMCEn}.
 
 \begin{equation}\label{eq:optMCEn}
@@ -38,7 +38,7 @@ A lot of the ideas developed in this chapter are based on fixing two points on t
 
 
 \begin{definicao}\label{def:feasible_angle}
-	Let $E$ be an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi]$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \tilde{E}(q, \theta)$.
+	Let $E$ be an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \tilde{E}(q, \theta)$.
 \end{definicao}
 
 On \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. On one of them, an ellipse is rotated by $\pi/4$ and it is located such that it contains the two fixed points on its border. That means $\pi/4$ is a $(E, u, v)$-feasible angle. On the other example, the ellipse is rotated by $\pi/2$ and there is not a center where the ellipse can be placed so it contains the two fixed points--they are too far apart. This makes $\pi/2$ a not $(E, u, v)$-feasible angle.
@@ -120,57 +120,65 @@ This process can be parametrized by the angle of rotation of the points, as desc
 \end{array}\right]
 \left[\begin{array}{cc}
 \cos{\theta}&\sin{\theta}\\
--\sin{\theta}&\cos{\theta}
+\sin{\theta}&-\cos{\theta}
 \end{array}\right]\left[\begin{array}{c}
 p_x\\
 p_y
 \end{array}\right].
 \end{equation}
 
-Then, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\varphi(u, \theta), \varphi(v, \theta)$ and $\varphi(w, \theta)$, such that the circle has radius $b$. As, for three non-colinear fixed points, there is always an unique circumscribed circle for the triangle formed by those three points, the only variable to be determined ends up being the angle of rotation $\theta$.
+Then, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $(0, 0), \varphi(v, \theta)$ and $\varphi(w, \theta)$, such that the circle has radius $b$. As, for three non-colinear fixed points, there is always an unique circumscribed circle for the triangle formed by those three points, the only variable to be determined ends up being the angle of rotation $\theta$.
 
-Let $d_u(\theta), d_v(\theta), d_w(\theta)$ be the length of each of the sides of the triangle formed by the points $\varphi(u, \theta), \varphi(v, \theta)$ and $\varphi(w, \theta)$; and $A(\theta)$ be its area--note that the transformation does not preserve distance or area. Then, the radius $R$ of the circumscribed circle is given by \autoref{eq:circumscribed_circle} \cite[p.~189]{johnson1960}.
+Let $A(\theta)$ be the area of the triangle formed by the points $(0, 0), \varphi(v, \theta)$ and $\varphi(w, \theta)$--note that the transformation does not preserve distance or area. Then, the radius $R$ of the circumscribed circle is given by \autoref{eq:circumscribed_circle} \cite[p.~189]{johnson1960}.
 
 \begin{equation}\label{eq:circumscribed_circle}
-R = \dfrac{d_u(\theta)d_v(\theta)d_w(\theta)}{4A(\theta)}.
+R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)}.
 \end{equation}
 
-Instead of working with trigonometric functions, the following identities given by \autoref{eq:trigId} are used, so a polynomial can be obtained.
+Imposing the radius to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, \pi) \mapsto \mathbb{R}_{>0}$ is defined by \autoref{eq:circumscribed_circle_b}. Note that, the problem now becomes the one of finding every $\theta \in [0, \pi)$, such that $\xi(\theta)=0$.
 
-\begin{equation}\label{eq:trigId}
-\begin{array}{c}
-\cos{\theta} = \dfrac{t^2-1}{t^2+1}\\
-\sin{\theta} = \dfrac{2t}{t^2+1}.
-\end{array}
+\begin{equation}\label{eq:circumscribed_circle_b}
+\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
 \end{equation}
 
-Looking at $\varphi(u, \theta)$, after replacing the trigonometric functions with \autoref{eq:trigId}, it then becomes a quotient of polynomials. Let $\Delta=t^2+1$, then $\varphi(u, \theta)$ is a polynomial of degree $2$ divided by $\Delta$. The area $A(\theta)$ can be calculated by taking the cross product of the vectors induced by $\varphi(v, \theta)$ and $\varphi(w, \theta)$ which ends up being a polynomial of degree $4$ divided by $\Delta^2$. Finally, let $\gamma_d(t)$ be a polynomial of degree $d\in\mathbb{N}$, then we get the following expressions for the length of the triangle and its area,
-\begin{align*}
-d_u(\theta)=||\varphi(v, \theta)-\varphi(u, \theta)|| = \sqrt{\dfrac{\gamma_4(t)}{\Delta^2}}\\
-A(\theta)=\dfrac{1}{2}|\varphi(v, \theta) \times \varphi(w, \theta)|=\frac{\gamma_4(t)}{\Delta^2}
-\end{align*}
-imposing \autoref{eq:circumscribed_circle} so the radius of the circumscribed circle is equal to $b$, we get the following equation,
+According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$ can be written as a real trigonometric polynomial of degree $j+k$ which can have up to $2(j+k)$ different roots in the interval $[0, 2\pi)$. The reason to bring up this fact is that $\xi(\theta)$ can be written as $\sum_i^M c_i \cos^{j_i}(\theta)\sin^{k_i}(\theta)$, for some $M \in \mathbb{N}$ and $c_1, \dots, c_m \in \R$, which implies that it can have up to $2$ times its degree, denoted by $\max_{i\in \{1, \dots, M\}}$, zero.
 
-\begin{align*}
-\left(\sqrt{\dfrac{\gamma_4(t)}{\Delta^2}}\right)^3 - \dfrac{b\gamma_4(t)}{\Delta^2} = 0\\
-\dfrac{\gamma_{12}(t)}{\Delta^6} - \dfrac{b\gamma_8(t)}{\Delta^4} = 0,
-\end{align*}
-which after some manipulation, becomes an univariate polynomial of degree $12$ which can have up to $12$ different real roots. Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
+ To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form, as it can be seen on \autoref{eq:dd} and \autoref{eq:dd2}, combine the parts as $\xi(\theta)$ is just addition and multiplication of terms in that form. It is also possible to see that the term of higher the degree of $\xi(\theta)$ is the multiplication of the three squared distances, as $\norm{\varphi(v, \theta)}^2$ has degree $2$ the degree of $\xi(\theta)$ is $6$.
+
+
+\begin{align}\label{eq:dd}
+	\norm{\varphi(v, \theta)}^2 = (v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta)^2 + (v_x\cos\theta - v_y\sin\theta)^2\\
+	\label{eq:dd2} A(\theta)^2=\dfrac{1}{4}\det\left(
+	\begin{array}{cc}
+		v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta&v_x\cos\theta - v_y\sin\theta\\
+		w_x\frac{b}{a}\cos\theta + w_y\frac{b}{a}\sin\theta&w_x\cos\theta - w_y\sin\theta
+	\end{array}\right)^2
+\end{align}
+
+Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
 Therefore, the number of angles of rotation and centers that an ellipse of fixed shape can be placed, so it has three fixed points on its border is limited to $6$.
 
-Because there is no closed formula to find roots of polynomials of degree $12$ \cite{skopenkov2015}, and root-finding iterative methods, such as Newton's method, generally are not convergent for polynomials of degree $4$ or more \cite{mc1}, this approach is only useful to show the limitedness of the set of solutions.
+A possible approach to find all the roots of a high-degree polynomial is to find all the eigenvalues of its companion matrix\cite{horn}. There are methods that do that with the observation that roots not close to the origin are susceptible to large errors and some times can not be found. This was experienced in some instances where the method could not find any roots which were priorly known.
+Therefore, Because there is no closed formula to find roots of polynomials of degree $12$ \cite{skopenkov2015}, and root-finding iterative methods, such as Newton's method, generally are not convergent for polynomials of degree $4$ or more \cite{mc1}, this approach is only useful to show the limitedness of the set of solutions. In the next section we present a method to approximate the roots of \autoref{eq:circumscribed_circle_b}.
 
 \subsection{A method for E3PNT}
 
 In this section we present a method for E3PNT and we try to make a case of it being correct, however, a proof is left as future work.
 
-The idea of the method is to let two points fixed on the border of the ellipse and vary the angle to find it when the third point hits the border of the ellipse.
+The idea of the method is to let two of the three points be fixed on the border of the ellipse and vary the angle to find it when the third point hits the border of the ellipse.
 
 Let $u$ and $v$ be the pair out of the three points that are most distant from each other, also let $\theta_u \in [0, \pi)$ be the greatest $(E, u, v)$-feasible angle. Given an angle $\theta \in [0, \theta_u]$, let $q_\theta\in\R^2$ be a center of $E$, such that $\{u, v\} \subset \tilde{E}(q_\theta, \theta)$. Note that in general, there are two such centers, they could be told apart by their $y$-coordinate, and the method needs to be executed for both of them separately.
 Then, a function $\rho : [0, \theta_u] \mapsto \R$ is defined to be the elliptical norm of the point $w$ with respect to $E(q_\theta, \theta)$.
 
 \begin{equation}\label{eq:rho}
-\rho(\theta) = \dfrac{}{}
+\rho(\theta) = \dfrac{\left((w-q_\theta)^T\left(\begin{array}{c}
+	\cos{\theta}\\
+	\sin{\theta}
+	\end{array}\right)\right)^2}{a^2}+
+\dfrac{\left((w-q_\theta)^T\left(\begin{array}{c}
+	\sin{\theta}\\
+	-\cos{\theta}
+	\end{array}\right)\right)^2}{b^2}
 \end{equation}
 
 The angles such that \autoref{eq:rho} is equal to $1$ are the ones that are part of the solution and achieve three points on the border of the ellipse. From now on, a method is presented that tries to find those points in a efficient way. We conjecture that \autoref{eq:rho} is unimodal by parts, and we present a method that takes advantage of that.
