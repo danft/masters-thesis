@@ -109,7 +109,7 @@
 \RequirePackage{colortbl}       % Controle das cores das celulas da tabela(utilizado no titulo)
 \RequirePackage{graphicx}		% Inclusao de graficos
 \RequirePackage{caption}        % Pacote para definicao dos captions
-\RequirePackage{subcaption}     % Pacote para definicao dos subcaptions(ambientes de subfigures)
+%\RequirePackage{subcaption}     % Pacote para definicao dos subcaptions(ambientes de subfigures)
 \RequirePackage{microtype} 		% para melhorias de justificacao
 \RequirePackage{pdfpages}       % Inclusao de arquivos PDF
 \RequirePackage{hyphenat}       % Pacote para retirar a hifenizacao do preambulo
@@ -828,13 +828,13 @@
     \let\lst@PlaceNumber\@empty
     \lstKV@SwitchCases{#1}%
     {%
-      none&\\%
-      left&\def\lst@PlaceNumber{%
+      none:\\%
+      left:\def\lst@PlaceNumber{%
         \llap{%
           \normalfont\lst@numberstyle{\thelstnumber\lst@numbersymbol}\kern\lst@numbersep%
         }%
       }\\%
-        right&\def\lst@PlaceNumber{%
+        right:\def\lst@PlaceNumber{%
           \rlap{%
             \normalfont\kern\linewidth\kern\lst@numbersep\lst@numberstyle{\lst@numbersymbol\thelstnumber}%
           }%
