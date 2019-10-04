@@ -1,11 +1,10 @@
 The problem of finding every center and angle of rotation of a fixed shape ellipse which makes it have three points on its border is presented in this section. Even though its simple statement--it is short and uses only basic mathematical concepts--we were not able to find any work on it, or even on related problems. 
 As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, and also make a case for the method we propose in terms of velocity of convergence and quality of the solutions that it finds.
 
-We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi]$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$. In other words, the goal is to develop a method to find every solution of E3PNT.
+We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi]$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$. In other words, the goal is to develop a method to find every solution of E3PNT. 
 
-\section{The number of solutions is limited by a constant}
 
-The basis of the method developed on \autoref{chapter:ellipses_n} is that the number of solutions of E3PNT is limited and they can be found efficiently. At first we introduce a way to model 
+\section{Transforming the problem}
 
 To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
 This process can be parametrized by the angle of rotation of the points, as described by \autoref{eq:trpnts}, and because of the invertibility of linear transformations solutions for E3PNT can be obtained by reversing the transformations.
@@ -45,7 +44,11 @@ Imposing the radius to be equal $b$ and squaring to eliminate the square roots p
 \xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
 \end{equation}
 
-According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$ can be written as a real trigonometric polynomial of degree $j+k$ which can have up to $2(j+k)$ different roots in the interval $[0, 2\pi)$. The reason to bring up this fact is that $\xi(\theta)$ can be written as $\sum_i^M c_i \cos^{j_i}(\theta)\sin^{k_i}(\theta)$, for some $M \in \mathbb{N}$ and $c_1, \dots, c_m \in \R$, which implies that it can have up to $2$ times its degree, denoted by $\max_{i\in \{1, \dots, M\}} \{j_i, k_i\}$.
+\subsection{The number of solutions is limited}
+
+The method developed on \autoref{chapter:ellipses_n} iterates over every solution of E3PNT for every triplet of points, this is only possible if the size of this set of solutions is limited. Also, if this was not true, it would be very difficult to describe a method to get every solution which could be infinite.
+
+According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$ can be written as a real trigonometric polynomial of degree $j+k$ which can have up to $2(j+k)$ different roots in the interval $[0, 2\pi)$. The reason to bring up this fact is that $\xi(\theta)$ can be written as $\sum_i^M c_i \cos^{j_i}(\theta)\sin^{k_i}(\theta)$, for some $M \in \mathbb{N}$ and $c_1, \dots, c_m \in \R$, which implies that it can have up to $2$ times its degree.
 
  To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form, as it can be seen on \autoref{eq:dd} and \autoref{eq:dd2}, combine the parts as $\xi(\theta)$ is just addition and multiplication of terms in that form. It is also possible to see that the term of higher the degree of $\xi(\theta)$ is the multiplication of the three squared distances, as $\norm{\varphi(v, \theta)}^2$ has degree $2$ the degree of $\xi(\theta)$ is $6$.
 
@@ -62,27 +65,49 @@ According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\
 Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
 Therefore, the number of angles of rotation and centers that an ellipse of fixed shape can be placed, so it has three fixed points on its border is limited to $6$.
 
-A possible approach to find all the roots of a high-degree polynomial is to find all the eigenvalues of its companion matrix\cite{horn}. There are methods that do that with the observation that roots not close to the origin are susceptible to large errors and some times can not be found. This was experienced in some instances where the method could not find any roots which were priorly known.
-Therefore, Because there is no closed formula to find roots of polynomials of degree $12$ \cite{skopenkov2015}, and root-finding iterative methods, such as Newton's method, generally are not convergent for polynomials of degree $4$ or more \cite{mc1}, this approach is only useful to show the limitedness of the set of solutions. In the next section we present a method to approximate the roots of \autoref{eq:circumscribed_circle_b}.
+\section{Attempts on solving E3PNT}
+
+\subsection{Converting $\xi(\theta)$ into a polynomial}
+
+Using the identity $x = \tan{\frac{\theta}{2}}$ it is possible to convert $\xi(\theta)$ on \autoref{eq:circumscribed_circle_b} into a univariate polynomial of degree $12$. The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. A possible approach, as described by \citeonline[p.~191]{horn}, is to find all the eigenvalues of a matrix related to the polynomial called the companion matrix. There are methods that do that fairly efficiently with the observation that roots which are not close to the origin are susceptible to large errors and some times can not be found, this indeed happened in practice, as for some instances the method did not find roots which were priorly known. Another possibility would be to use root-finding iterative methods, such as Newton's method, to approximate a root $\hat{x}$, divide the polynomial by $(x-\hat{x})$, and apply the method again until the method cannot converge. Nevertheless, a result published by \citeonline{mc1} says that iterative methods generally are not convergent for polynomials of degree $4$ or more, and also, the process of dividing the polynomial by $(x-\hat{x})$ carries along a lot of error, which could make the method, even if convergent, find spurious roots.
+
+\subsection{Using the conic general equation}
+
+The idea of this approach was to use the six-parameter conic equation to represent an ellipse. This equation is given by \autoref{eq:gen_ellipse}.
+
+\begin{equation}\label{eq:gen_ellipse}
+Ax^2+Bxy+Cy^2+Dy+Ex+F=0
+\end{equation}
+
+Setting the first point to be the origin, we get $F=0$, using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse and its major-axis and minor-axis have the predefined value. Let $\Delta=4AC-B^2=4AC-1$, \autoref{eq:gen_ellipse_a} and \autoref{eq:gen_ellipse_b} for both major-axis and minor-axis respectively, assuming $F=0$.
+
+\begin{align}\label{eq:gen_ellipse_a}
+a^2 = \dfrac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C - \sqrt{1 + (A-C)^2}}\\
+\label{eq:gen_ellipse_b}b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}
+\end{align}
+
+These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. Finding this set was judged to be non-trivial and probably could be approximated numerically, however, we decided not to further pursue this approach.
+
+Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}$ which becomes an expression that allows $A$ to be written as a function of $C$. This function appeared, at first we thought, to be monotonic, we tried to develop a method based on that, however, cases where the function does not behave as nicely were found. It is likely that developing a method to approximate solutions working with this function is possible, but we decided not to continue on this track.
+
 
 \section{A method for E3PNT}
 
-In this section we present a method for E3PNT and we try to make a case of it being correct, however, a proof is left as future work.
+One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation set of functions is going to be the set of $N$-degree Chebyshev polynomials.
 
-The idea of the method is to let two of the three points be fixed on the border of the ellipse and vary the angle to find it when the third point hits the border of the ellipse.
 
-Let $u$ and $v$ be the pair out of the three points that are most distant from each other, also let $\theta_u \in [0, \pi)$ be the greatest $(E, u, v)$-feasible angle. Given an angle $\theta \in [0, \theta_u]$, let $q_\theta\in\R^2$ be a center of $E$, such that $\{u, v\} \subset \tilde{E}(q_\theta, \theta)$. Note that in general, there are two such centers, they could be told apart by their $y$-coordinate, and the method needs to be executed for both of them separately.
-Then, a function $\rho : [0, \theta_u] \mapsto \R$ is defined to be the elliptical norm of the point $w$ with respect to $E(q_\theta, \theta)$.
+\subsection{Chebyshev interpolation}
 
-\begin{equation}\label{eq:rho}
-\rho(\theta) = \dfrac{\left((w-q_\theta)^T\left(\begin{array}{c}
-	\cos{\theta}\\
-	\sin{\theta}
-	\end{array}\right)\right)^2}{a^2}+
-\dfrac{\left((w-q_\theta)^T\left(\begin{array}{c}
-	-\sin{\theta}\\
-	\cos{\theta}
-	\end{array}\right)\right)^2}{b^2}
+Chebyshev polynomials are widely used in Numerical Analysis
+
+There are two kinds of very known Chebyshev polynomials. Here, only the first kind will be used, for a more through introduction see \citeonline{chebbook}.
+
+Also known as Chebyshev polynomial of the first kind, $T_n : [-1, 1] \mapsto [-1, 1]$ is defined as follows:
+
+\begin{equation}
+T_n(x) = \cos({n\arccos x})
 \end{equation}
 
-The angles such that \autoref{eq:rho} is equal to $1$ are the ones that are part of the solution and achieve three points on the border of the ellipse. From now on, a method is presented that tries to find those points in a efficient way. We conjecture that \autoref{eq:rho} is unimodal by parts, and we present a method that takes advantage of that.
+Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is very well-behaved (it is continuous with infinite continuous derivatives) and it is defined over a closed interval. These two properties provide very nice guarantees about the approximation function that is going to be constructed.
+
+
