@@ -93,21 +93,38 @@ Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}
 
 \section{A method for E3PNT}
 
-One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation set of functions is going to be the set of $N$-degree Chebyshev polynomials.
+One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi(\theta)$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $N$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $N$ by $N$ matrix.
 
 
 \subsection{Chebyshev interpolation}
 
-Chebyshev polynomials are widely used in Numerical Analysis
+Chebyshev polynomials are widely used in Numerical Analysis in areas like numerical integration, polynomial approximation, and ordinary and partial differential equations.
+They are also very useful in practice and are present in extension libraries in Python and MATLAB.
 
-There are two kinds of very known Chebyshev polynomials. Here, only the first kind will be used, for a more through introduction see \citeonline{chebbook}.
+Because of the scope of this work, only a brief introduction of Chebyshev polynomials of the first kind and its usage in polynomial interpolation is given. For a more thorough work on the subject, please check the book by \citeonline{chebbook}.
 
-Also known as Chebyshev polynomial of the first kind, $T_n : [-1, 1] \mapsto [-1, 1]$ is defined as follows:
+We refer to $T_n : [-1, 1] \mapsto [-1, 1]$ as the $n$-degree Chebyshev polynomial of the first kind:
 
 \begin{equation}
 T_n(x) = \cos({n\arccos x})
 \end{equation}
 
-Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is very well-behaved (it is continuous with infinite continuous derivatives) and it is defined over a closed interval. These two properties provide very nice guarantees about the approximation function that is going to be constructed.
+Although, its definition can be extended, so its domain is the whole real line, It also respects the following recurrence relation:
+
+\begin{equation}
+\begin{array}{ll}
+T_0(x) = 1& \\
+T_1(x) = x& \\
+T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x)&n = 2, 3, \dots
+\end{array}
+\end{equation}
+
+Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is very well-behaved (it is continuous with infinite continuous derivatives). This property provides very nice guarantees about the approximation function that is going to be constructed.
+
+Polynomial interpolation is a form of approximating a function by a polynomial of degree $N$ that passes through $N+1$ points. In fact, this polynomial is unique and it is determined by Lagrange's formula:
+
+\begin{equation}
+\sum_{j=0}^{N} \dfrac{\prod_{k \neq j}^{N+1} (x-x_k)}{\prod_{k \neq j}^{N+1} (x_j-x_k)}.
+\end{equation} 
 
 
