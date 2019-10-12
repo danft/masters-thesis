@@ -67,11 +67,17 @@ Therefore, the number of angles of rotation and centers that an ellipse of fixed
 
 \section{Attempts on solving E3PNT}
 
+In this section we give a brief review of some of the approaches we tried on developing a method for E3PNT.
+
 \subsection{Converting $\xi(\theta)$ into a polynomial}
 
-Using the identity $x = \tan{\frac{\theta}{2}}$, it is possible to convert $\xi(\theta)$ on \autoref{eq:circumscribed_circle_b} into a univariate polynomial of degree $12$. The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. A possible approach, as described by \citeonline[p.~191]{horn}, is to find all the eigenvalues of a matrix related to the polynomial called the companion matrix. 
-In general, finding all the eigenvalues of a matrix is not easy, however, companion matrices have a special form which allows their eigenvalues to be found through a QR decomposition, a $\bigO(n^2)$ algorithm can be found in \citeonline{bini:2007}.
- The only problem is that for degree $12$ polynomials, roots which are not close to the origin are susceptible to large errors and some times can not be found. This indeed happened in practice, as for some instances the method did not find roots which were priorly known. Another possibility would be to use root-finding iterative methods, such as Newton's method, to approximate a root $\hat{x}$, divide the polynomial by $(x-\hat{x})$, and apply the method again until the method cannot converge. A result published by \citeonline{mc1}, however, says that iterative methods generally are not convergent for polynomials of degree $4$ or more, and also, the process of dividing the polynomial by $(x-\hat{x})$ carries along a lot of error, which could make the method, even if convergent, find spurious roots.
+Using the identity $x = \tan{\frac{\theta}{2}}$, it is possible to convert $\xi(\theta)$ on \autoref{eq:circumscribed_circle_b} into a univariate polynomial of degree $12$. The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. Therefore, pursuing a numerical method would be a good choice for this problem.
+
+Perhaps the first idea one would have for this problem would be to use root-finding iterative methods, such as Newton's method, to approximate a root $\hat{x}$, divide the polynomial by $(x-\hat{x})$, and apply the method again until the method does not converge. A result published by \citeonline{mc1}, however, says that iterative methods generally are not convergent for polynomials of degree $4$ or more. Also, the process of dividing the polynomial by $(x-\hat{x})$ carries along a lot of error, which could make the method, even if convergent, find spurious roots. 
+
+This next approach is very popular in practice as it is present in external libraries like NumPy for Python \cite{python}. In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial. At first it seems that we are just trading for the same problem as, in general, to find the eigenvalues of a matrix, one needs to determine the roots of that matrix's characteristic polynomial. Nevertheless, it turns out that companion matrices are very convenient when it comes to finding eigenvalues. They are what is called Hessenberg matrices, and QR algorithms can be used to find their eigenvalues (a $\bigO(n^2)$ algorithm that does that can be found in \citeonline{bini:2007}).
+
+This method seemed to work fine, but for some instances it did not find roots which were priorly known. This happened probably because of the transformation that was used to convert $\xi$ into a polynomial. It can be very numerically unstable as the tangent function grows to fast for angles that are greater than $\frac{\pi}{4}$. Depending on the instance, there could be roots very close to $0$ and others that are too far from it.
 
 \subsection{Using the conic general equation}
 
@@ -125,8 +131,6 @@ p_n(x) = \sum_{j=0}^{n} a_j T_j(x).
 
 One of the greatest qualities of Chebyshev polynomials is its numerical stability. \citeonline{gautschi:1979} showed that the matrix that maps polynomials onto its coefficients written in the power form\footnote{A polynomial is in the power form or the monomial form if it can be written as $\sum_{j=0}^{n}a_jx^j$} has a condition number that grows exponentially with $n$. On the other hand, the matrix that converts polynomials to the Chebyshev basis as \autoref{eq:chebseries}, has a linear condition number bounded by $\sqrt{2}n$.
 
-Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is very well-behaved (it is continuous with infinite continuous derivatives). This property provides very nice guarantees about the approximation function that is going to be constructed.
-
 Polynomial interpolation is a form of approximating a function by a polynomial of degree $n$ that passes through $n+1$ chosen points. In fact, this polynomial is unique and it is determined by Lagrange's formula:
 
 \begin{equation}\label{eq:lagrange}
@@ -146,4 +150,38 @@ for $j=1, \dots, n$. If the domain of the function to be interpolated is in anot
 Then, the Chebyshev interpolation of a function $f: [a, b] \mapsto \R$ can be determined using Lagrange's formula and the points $\hat{x}_1, \dots, \hat{x}_n$. 
 As it was mentioned, finding the roots of a polynomial written in the monomial form can be done by determining the eigenvalues of a so-called Frobenius companion matrix. For small $n$ this works fine, however, converting the polynomial obtained by \autoref{eq:lagrange} to the power form, as $n$ grows, becomes a very ill-conditioned problem. 
 
-An alternative method can be found in \citeonline{boyd:2013}. It turns out that the Chebyshev interpolation can be calculated directly as a truncated Chebyshev series in $\bigO(n^2)$. Also, given a polynomial written in the Chebyshev basis, a $n\times n$ matrix can be constructed, such that its eigenvalues are the roots of that polynomial, the author refers to this matrix as the Chebyshev-Frobenius companion matrix. Therefore, the whole process of interpolating and finding the roots can be done using only Chebyshev polynomials which have great numerical stability. Also, Chebyshev-Frobenius matrices have the same property as companion matrices which allows their eigenvalues to be found by a QR decomposition. Summing the two steps, a $\bigO(n^2)$ algorithm can be achieved.
+An alternative method can be found in \citeonline{boyd:2013} where the Chebyshev interpolation is calculated directly as a truncated Chebyshev series, as in \autoref{eq:chebseries}, in $\bigO(n^2)$. Also, given a polynomial written in the Chebyshev basis, a $n\times n$ matrix can be constructed, such that its eigenvalues are the roots of that polynomial. \citeonline{boyd:2013} refers to this matrix as the Chebyshev-Frobenius companion matrix.
+
+Therefore, the whole process of interpolating and finding the roots can be done using only Chebyshev polynomials, which have great numerical stability. Also, Chebyshev-Frobenius matrices have the same property as companion matrices which allows their eigenvalues to be found by a QR decomposition. Summing the two steps, a $\bigO(n^2)$ algorithm can be achieved.
+
+The last question that needs to be addressed is how close the roots of the Chebyshev interpolant $f_n$ are to the roots of $\xi$?
+
+Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and  has infinitely many continuous and integrable derivatives. This satisfy all the requirements of the result in \citeonline[p.~28]{gottlieb} which says that if a function has $m$ continuous and integrable derivatives on a closed interval, then its absolute difference between the Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004} a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
+
+\section{Numerical Experiments}
+
+In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. Let $f_n$ be the $n$-degree Chebyshev interpolation of $\xi$, we measure the error by using the infinite norm:
+
+\begin{equation}
+r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|
+\end{equation}
+
+Also we adopt two suggestions from \cite{boyd:2013}. The first is to divide the interval into $K$ subintervals to achieve a precision without having to increase the degree of the interpolant too much. The second is to use a couple of Newton's iterations to refine the roots found. 
+
+Let $\theta^*$ be a root of $f_n$, then we measure the error associated with that root as $|\xi(\theta^*)|$. For the numerical experiments, we considered every triplet of points from an instance with $25$ points. Then for some values of $K$ and $n$ we define the error as the maximum error for every root that were found.
+
+\begin{figure}
+	\centering
+	\caption{The interpolation error measured on roots that were found.}
+	\includegraphics{tex/figures/interpolant_error}
+	\fautor
+	\label{fig:interpolant_error}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\caption{The interpolation error measured on roots that were found after three Newton's iterations.}
+	\includegraphics{tex/figures/interpolant_error_after_newton}
+	\fautor
+	\label{fig:interpolant_error_after_newton}
+\end{figure}
