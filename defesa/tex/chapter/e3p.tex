@@ -160,11 +160,26 @@ Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roo
 
 \section{Numerical Experiments}
 
-In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. Let $f_n$ be the $n$-degree Chebyshev interpolation of $\xi$, we measure the error by using the infinite norm:
+In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. 
+Let $f_n$ be the $n$-degree Chebyshev interpolation of $\xi$, we define the interpolation error $r_n$ as:
 
 \begin{equation}
-r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|
+r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
 \end{equation}
+
+Then, we want to determine the smallest $n$, such that $r_n \le \epsilon$, for a predefined $\epsilon$. Unfortunately, calculating $r_n$ involves taking samples from both functions on the whole interval, which is not viable computationally. In \citeonline[p.~50]{boyd:2001} a rule-thumb for estimating the interpolation error is given. It is worth mentioning that this rule 
+
+It uses a theorem that states that $r_n$ is limited by the sum of the coefficients of the Chebyshev series that were removed by the truncation. The rule-of-thumb for estimating $r_n$ is given by:
+
+\begin{equation}
+r_n \approx |a_n|.
+\end{equation}
+
+Note that 
+
+Obtaining an expression for it is not trivial, and sampling the whole interval is not viable computationally. 
+
+Therefore, an estimation of $r_n$ is used to measure how good is the approximation.
 
 Also we adopt two suggestions from \cite{boyd:2013}. The first is to divide the interval into $K$ subintervals to achieve a precision without having to increase the degree of the interpolant too much. The second is to use a couple of Newton's iterations to refine the roots found. 
 

@@ -1,0 +1,210 @@
+\documentclass{beamer}
+
+\usepackage{amsthm, amsfonts, amsmath, amssymb} % Pacote para a definicao dos ambientes matematicos
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[mathscr]{eucal}
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+\newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
+
+\author{Danilo Tedeschi\\Dra. Marina Andretta}
+\title{Fixed-Shape Ellipse by Three Points}
+\institute{Universidade de São Paulo}
+\date{25 de Outubro de 2019}
+
+\begin{document}
+	
+	\begin{frame}[t,plain]
+		\titlepage
+	\end{frame}
+	
+	\begin{frame}{Introduction}
+		The shape of an ellipse is given by its major-axis and minor-axis, $(a, b) \in \mathbb{R}^2$, with $a > b > 0$.
+		
+		\begin{figure}[H]
+			\centering
+			
+			%\caption{The ellipse as a parametric curve.}
+			\input{ellipse_figure.tex}
+			\label{fig:ellipse_params}
+			\caption{An ellipse with shape parameters $a$ and $b$.}
+		\end{figure}
+		
+	\end{frame}
+
+\begin{frame}{Introduction}
+	Here, the shape will be fixed and the center and angle of rotation are free.
+	
+	\begin{figure}
+	\centering
+	
+	%\caption{The ellipse as a parametric curve.}
+	\includegraphics[scale=.5]{3ellipses.pdf}
+	\label{fig:ell}
+	\caption{A fix-shape ellipse at different centers and with different angles of rotation.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Introduction}{Problem definition}
+Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an ellipse:
+	\begin{figure}
+	\centering
+	
+	%\caption{The ellipse as a parametric curve.}
+	\includegraphics[scale=.5]{e3psol1.pdf}
+	\label{fig:e3psol1}
+	\caption{An instance of the problem.}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Introduction}{Problem definition}
+	A solution is given by the ellipse's center $q \in \R^2$ and the angle of rotation $\theta \in [0, \pi)$, such that $u, v, w$ lie on its border. \textbf{We want to find every solution!}
+	\begin{figure}
+		\centering
+		
+		%\caption{The ellipse as a parametric curve.}
+		\includegraphics[scale=.5]{e3psol2.pdf}
+		\label{fig:e3psol2}
+		\caption{Every solution for that instance.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Introduction}
+	The equation of an ellipse is given by:
+	
+	\begin{equation*}
+	\frac{\left(\left[\begin{array}{c}
+	x-q_x\\
+	y-q_y
+		\end{array}\right]^T
+		\left[\begin{array}{c}
+		\cos\theta\\
+		\sin\theta
+		\end{array}\right]
+		\right)^2}{a^2}+\frac{\left(\left[\begin{array}{c}
+		x-q_x\\
+		q_y-y
+		\end{array}\right]^T
+		\left[\begin{array}{c}
+		\sin\theta\\
+		\cos\theta
+		\end{array}\right]
+		\right)^2}{b^2} = 1.
+	\end{equation*}
+	
+	\begin{itemize}
+		\item Fixing the points $u, v, w$, we get $3$ equations and $3$ unknowns $(q_x, q_y, \theta)$.
+		\item Finding every solution is difficult.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	Let's make the problem simpler by transforming it into a circle problem.
+	
+	Given any non-colinear points, there is an unique circumscribed circle. Also, we can turn an axis-parallel ellipse into a circle:
+	\begin{figure}
+		\centering
+		
+		%\caption{The ellipse as a parametric curve.}
+		\includegraphics[scale=.5]{el1.pdf}
+		\label{fig:el1}
+		\caption{Turning an ellipse with shape $(a, b)$ into a circle of radius $b$.}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	
+	Let's rotate the points instead of rotating the ellipse. A solution can be transformed into the original problem.
+	
+	\begin{figure}
+		\centering
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics{circumscribed-circle}
+		\caption{}
+		\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	Transforming it into a circle problem.
+	
+	\begin{itemize}
+		\item Translate the points so $u=(0, 0)$.
+		\item The ellipse is fixed, the points rotate.
+		\item Scale the $x$-axis by $\frac{b}{a}$.
+	\end{itemize}
+
+	After the transformation, the points are defined by $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$:
+	
+	\begin{equation*}\label{eq:trpnts}
+	\varphi(p, \theta)=\left[\begin{array}{cc}
+	\frac{b}{a}&0\\
+	0&1
+	\end{array}\right]
+	\left[\begin{array}{cc}
+	\cos{\theta}&\sin{\theta}\\
+	-\sin{\theta}&\cos{\theta}
+	\end{array}\right]\left[\begin{array}{c}
+	p_x\\
+	p_y
+	\end{array}\right].
+	\end{equation*}
+\end{frame}
+	
+\begin{frame}{Transforming the problem}
+	Find every $\theta \in [0, \pi)$, such that:
+	
+	\begin{itemize}
+		\item The circumscribe circle determined by: $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ has radius $b$.
+		
+		\item As long as they are not colinear, there is an unique circumscribe circle by three points.
+		
+	\end{itemize}
+
+	
+
+\end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+	There is a known formula for the radius of a circumscribed circle:
+
+	\begin{equation*}
+	R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)}
+	\end{equation*}
+	
+	\begin{itemize}
+		\item $R$ is the radius.
+		\item $A(\theta)$ is the area of the triangle defined by the points $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
+	\end{itemize}
+	\vspace{\baselineskip}
+	
+
+												
+\end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+We define the function $\xi : [0, \pi) \mapsto \R$:
+
+	\begin{equation*}
+	\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2
+	\end{equation*}
+	
+The roots of $\xi$ are solutions of our problem.
+	\begin{figure}
+	\centering
+
+	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+	\includegraphics[scale=.5]{036}
+	
+%	\label{fig:circumscribed-circle}
+\end{figure}
+\end{frame}
+	
+\end{document}
