@@ -121,7 +121,7 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 
 \begin{frame}{Transforming the problem}
 	
-	Let's rotate the points instead of rotating the ellipse. A solution can be transformed into the original problem.
+	Let's rotate the points instead of rotating the ellipse. It is equivalent:
 	
 	\begin{figure}
 		\centering
@@ -133,15 +133,14 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 \end{frame}
 
 \begin{frame}{Transforming the problem}
-	Transforming it into a circle problem.
+	Formally, we can transform the problem by:
 	
 	\begin{itemize}
 		\item Translate the points so $u=(0, 0)$.
-		\item The ellipse is fixed, the points rotate.
 		\item Scale the $x$-axis by $\frac{b}{a}$.
 	\end{itemize}
 
-	After the transformation, the points are defined by $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$:
+	Then, we rotate the points. The rotated points are $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$:
 	
 	\begin{equation*}\label{eq:trpnts}
 	\varphi(p, \theta)=\left[\begin{array}{cc}
@@ -156,19 +155,18 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 	p_y
 	\end{array}\right].
 	\end{equation*}
+	
+	After that, we need to look at the circumscribed circle formed by $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
 \end{frame}
 	
 \begin{frame}{Transforming the problem}
-	Find every $\theta \in [0, \pi)$, such that:
+	
+	\textbf{An angle is a solution if, and only if the circumscribed circle of the points  $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ has radius $b$.}
 	
 	\begin{itemize}
-		\item The circumscribe circle determined by: $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ has radius $b$.
-		
-		\item As long as they are not colinear, there is an unique circumscribe circle by three points.
-		
+		\item This is a problem of one variable!
+				
 	\end{itemize}
-
-	
 
 \end{frame}
 
@@ -206,5 +204,30 @@ The roots of $\xi$ are solutions of our problem.
 %	\label{fig:circumscribed-circle}
 \end{figure}
 \end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+	There is no clear pattern in $\xi$.
+\begin{figure}
+	\centering
+	
+	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+	\includegraphics[scale=.5]{035}
+	\caption{Another example of $\xi$.}
+	%	\label{fig:circumscribed-circle}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+	An example with two roots.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{012}
+		\caption{Another example of $\xi$.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
 	
 \end{document}
