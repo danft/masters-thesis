@@ -9,6 +9,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\D}{\mathscr{D}}
 \newcommand{\Pp}{\mathscr{P}}
+\newcommand{\bigO}{\mathscr{O}}
 \newcommand{\Cc}{\mathscr{C}}
 \newcommand{\E}{\mathscr{E}}
 \newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
@@ -71,7 +72,7 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 		%\caption{The ellipse as a parametric curve.}
 		\includegraphics[scale=.5]{e3psol2.pdf}
 		\label{fig:e3psol2}
-		\caption{Every solution for that instance.}
+		\caption{Every solution for the instance shown previously.}
 	\end{figure}
 \end{frame}
 
@@ -107,7 +108,7 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 \begin{frame}{Transforming the problem}
 	Let's make the problem simpler by transforming it into a circle problem.
 	
-	Given any non-colinear points, there is an unique circumscribed circle. Also, we can turn an axis-parallel ellipse into a circle:
+	An ellipse with shape $(a, b)$ can be transformed into a circle of radius $b$ through scaling the $x$-axis by $\frac{b}{a}$:
 	\begin{figure}
 		\centering
 		
@@ -121,14 +122,53 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 
 \begin{frame}{Transforming the problem}
 	
-	Let's rotate the points instead of rotating the ellipse. It is equivalent:
+	Let's rotate the points instead of rotating the ellipse:
 	
 	\begin{figure}
 		\centering
 		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-		\includegraphics{circumscribed-circle}
-		\caption{}
-		\label{fig:circumscribed-circle}
+		\includegraphics[scale=.5]{sol1}
+		\caption{Three points at their initial location.}
+		\label{fig:sol1}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	
+	Firstly, we rotate leaving one point fixed at $(0, 0)$:
+	
+	\begin{figure}
+		\centering
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{sol2}
+		\caption{After rotation.}
+		\label{fig:sol2}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	
+	Then, we scale by $\frac{b}{a}$ and check the radius of the circle:
+	
+	\begin{figure}
+		\centering
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{sol3}
+		\caption{After scaling.}
+		\label{fig:sol33}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	
+	If the radius is $b$, the angle is a solution:
+	
+	\begin{figure}
+		\centering
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{sol4}
+		\caption{One solution for this instance.}
+		\label{fig:sol4}
 	\end{figure}
 \end{frame}
 
@@ -137,10 +177,11 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 	
 	\begin{itemize}
 		\item Translate the points so $u=(0, 0)$.
-		\item Scale the $x$-axis by $\frac{b}{a}$.
+		\item Rotate by $\theta$ and scale the $x$-axis by $\frac{b}{a}$.
+		\item Find the $\theta$'s which produce a circle with radius $b$.
 	\end{itemize}
 
-	Then, we rotate the points. The rotated points are $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$:
+	This transformation is expressed by:
 	
 	\begin{equation*}\label{eq:trpnts}
 	\varphi(p, \theta)=\left[\begin{array}{cc}
@@ -153,23 +194,14 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 	\end{array}\right]\left[\begin{array}{c}
 	p_x\\
 	p_y
-	\end{array}\right].
+	\end{array}\right],
 	\end{equation*}
+	with $p=u, v, w$.
 	
-	After that, we need to look at the circumscribed circle formed by $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
-\end{frame}
-	
-\begin{frame}{Transforming the problem}
-	
-	\textbf{An angle is a solution if, and only if the circumscribed circle of the points  $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ has radius $b$.}
-	
-	\begin{itemize}
-		\item This is a problem of one variable!
-				
-	\end{itemize}
+	\textbf{This is an one variable problem on a closed interval!}
 
 \end{frame}
-
+	
 \begin{frame}{Fixed-shape ellipse by three points}
 	There is a known formula for the radius of a circumscribed circle:
 
@@ -200,7 +232,7 @@ The roots of $\xi$ are solutions of our problem.
 
 	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
 	\includegraphics[scale=.5]{036}
-	
+	\caption{An example of $\xi$.}
 %	\label{fig:circumscribed-circle}
 \end{figure}
 \end{frame}
@@ -224,9 +256,60 @@ The roots of $\xi$ are solutions of our problem.
 		
 		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
 		\includegraphics[scale=.5]{012}
-		\caption{Another example of $\xi$.}
+		\caption{Yet another example of $\xi$.}
 		%	\label{fig:circumscribed-circle}
 	\end{figure}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}
+	
+	\begin{block}{Chebyshev Polynomial}
+		$T_n: [-1, 1] \mapsto [-1, 1]$ is the $n$-degree Chebyshev polynomial:
+		\begin{equation*}
+		T_n(\cos t) = \cos(nt)
+		\end{equation*}
+	\end{block}
+	Also, it can be defined recursively:	
+	\begin{align*}
+	&T_0(x) = 1\\
+	&T_1(x) = x\\
+	&T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x)
+	\end{align*}
+	
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}
+	Interpolation on the roots of $T_n$, also known as Chebyshev Nodes:
+	
+	\begin{equation*}
+		x_k = \cos\left(\pi\frac{2k - 1}{2n}\right)
+	\end{equation*}
+	
+	The interpolation of a function $f : [-1, 1] \mapsto \R$ can be written directly using Chebyshev polynomial as basis:
+	
+	\begin{equation*}
+	f(x) \approx \sum_{k=0}^{n} a_k T_k(x)
+	\end{equation*}
+	
+	\begin{itemize}
+		\item A simple change of coordinates lets the interpolation to be done on any closed interval!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}
+		Why is it good?
+	
+	\begin{itemize}
+		\item Numerically stable! Way better then polynomials in the power format.
+		
+		\item No Runge's Phenomenon, the interpolation converges to $f$.
+		\begin{itemize}
+			\item $\bigO(n^{-m})$ if $f$ is $m$ times differentiable.
+			\item $\bigO(C^n)$, for $C<1$, if $f$ is analytical in a neighborhood of $[-1, 1]$.
+		\end{itemize}
+		
+		\item Very used in practice: present in external libraries like NumPy for Python.
+	\end{itemize}
 \end{frame}
 
 	
