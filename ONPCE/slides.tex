@@ -293,6 +293,7 @@ The roots of $\xi$ are solutions of our problem.
 	
 	\begin{itemize}
 		\item A simple change of coordinates lets the interpolation to be done on any closed interval!
+		\item This can be done in $\bigO(n^2)$.
 	\end{itemize}
 \end{frame}
 
@@ -310,6 +311,90 @@ The roots of $\xi$ are solutions of our problem.
 		
 		\item Very used in practice: present in external libraries like NumPy for Python.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}
+	Choosing the degree of the interpolation:
+	
+	\begin{itemize}
+		\item There is no guaranteed way to choose it.
+		\item A good rule is to examine the last coefficient.
+		\item For a predefined $\epsilon$, choose $n$, such that:
+		
+		\begin{equation*}
+		|a_n| \le \epsilon
+		\end{equation*}
+		
+		\item There are other ways like checking the error on a Lobatto grid.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}
+	For $n=32$, a precision of $10^{-10}$ is expected.
+	
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{error_coef}
+		\caption{$|a_n|$ for the interpolation of $\xi$ for an instance.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}{Roots}
+	The roots of a Chebyshev polynomial can be found though determining the eigenvalues of a Chebyshev companion matrix. This is it for $n=5$:
+	
+	\begin{equation*}
+	\left[\begin{array}{cccccc}
+	0&1&0&0&0\\
+	\frac{1}{2} & 0 & \frac{1}{2} & 0 & 0\\
+	0 & \frac{1}{2} & 0 & \frac{1}{2} & 0\\
+	0 & 0 & \frac{1}{2} & 0 & \frac{1}{2}\\
+	-\frac{a_0}{2a_5} & -\frac{a_1}{2a_5} &-\frac{a_2}{2a_5} &-\frac{a_3}{2a_5} &-\frac{a_4}{2a_5}\\
+	\end{array}\right]
+	\end{equation*}
+	
+	\begin{itemize}
+		\item This matrix is a Hessenberg matrix.
+		\item Its eigenvalues can be found by a QR algorithm in $\bigO(n^3)$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}{Roots}
+	The largest error on roots that were found for $n=32$ is around $10^{-14}$ for an instance:
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{error_roots}
+		\caption{$|\xi(\hat{\theta})|$, where $\hat{\theta}$ is a root of $f_n$.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Chebyshev Interpolation}{Roots}
+	The experiments were made using Python with the NumPy library. The running time is really low, even for $n=64$.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{running_time}
+		\caption{The running time to find the roots of $f_n$.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Example}
+	An example with $4$ solutions.\cite{andreta}.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{e3psol012}
+		\caption{An example with $4$ solutions.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
 \end{frame}
 
 	
