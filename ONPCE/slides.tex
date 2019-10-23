@@ -226,36 +226,43 @@ We define the function $\xi : [0, \pi) \mapsto \R$:
 	\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2
 	\end{equation*}
 	
-The roots of $\xi$ are solutions of our problem.
-	\begin{figure}
-	\centering
-
-	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-	\includegraphics[scale=.5]{036}
-	\caption{An example of $\xi$.}
-%	\label{fig:circumscribed-circle}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Fixed-shape ellipse by three points}
-	There is no clear pattern in $\xi$.
 	\begin{itemize}
 		\item It can be written as 
 		$$\xi(\theta)=\sum_{0 \le j, k \le Deg(\xi)} \alpha_{j,k}\cos^{j}{\theta}\sin^{k}{\theta}.$$
 		\item Degree $6$, at most $12$ roots in $[0, 2\pi)$ \cite[p.~150]{powell}
-	\end{itemize}
+		\item The roots of $\xi$ are solutions of our problem.	
+\end{itemize}
+	
+
+	
+\end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+	An example with no roots.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{036}
+		\caption{An example of $\xi$.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Fixed-shape ellipse by three points}
+	An example with two roots.
 \begin{figure}
 	\centering
 	
 	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-	\includegraphics[scale=.4]{012}
+	\includegraphics[scale=.5]{012}
 	\caption{Another example of $\xi$.}
 	%	\label{fig:circumscribed-circle}
 \end{figure}
 \end{frame}
 
 \begin{frame}{Fixed-shape ellipse by three points}
-	An example with two roots.
+	An example with four roots.
 	\begin{figure}
 		\centering
 		
@@ -414,7 +421,7 @@ The roots of $\xi$ are solutions of our problem.
 \end{frame}
 
 \begin{frame}{Chebyshev Interpolation}{Roots}
-	The roots of a Chebyshev polynomial can be found though determining the eigenvalues of a Chebyshev companion matrix \cite{boyd:2013}. For $n=5$ we have:
+	The roots of a Chebyshev polynomial can be found though determining the eigenvalues of a Chebyshev companion matrix \cite{boyd:2013}. For $n=5$, we have:
 	
 	\begin{equation*}
 	\left[\begin{array}{cccccc}
@@ -427,7 +434,7 @@ The roots of $\xi$ are solutions of our problem.
 	\end{equation*}
 	
 	\begin{itemize}
-		\item This matrix is a Hessenberg matrix.
+		\item This is a Hessenberg matrix.
 		\item Its eigenvalues can be found by a QR decomposition in $\bigO(n^3)$.
 	\end{itemize}
 \end{frame}
