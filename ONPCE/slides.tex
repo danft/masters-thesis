@@ -240,14 +240,15 @@ The roots of $\xi$ are solutions of our problem.
 \begin{frame}{Fixed-shape ellipse by three points}
 	There is no clear pattern in $\xi$.
 	\begin{itemize}
-		\item It can be written as $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$.
+		\item It can be written as 
+		$$\xi(\theta)=\sum_{0 \le j, k \le Deg(\xi)} \alpha_{j,k}\cos^{j}{\theta}\sin^{k}{\theta}.$$
 		\item Degree $6$, at most $12$ roots in $[0, 2\pi)$ \cite[p.~150]{powell}
 	\end{itemize}
 \begin{figure}
 	\centering
 	
 	%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-	\includegraphics[scale=.5]{035}
+	\includegraphics[scale=.4]{012}
 	\caption{Another example of $\xi$.}
 	%	\label{fig:circumscribed-circle}
 \end{figure}
@@ -259,8 +260,8 @@ The roots of $\xi$ are solutions of our problem.
 		\centering
 		
 		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-		\includegraphics[scale=.5]{012}
-		\caption{Yet another example of $\xi$.}
+		\includegraphics[scale=.5]{g4sol}
+		\caption{An example of $\xi$ with $4$ roots.}
 		%	\label{fig:circumscribed-circle}
 	\end{figure}
 \end{frame}
@@ -321,8 +322,8 @@ The roots of $\xi$ are solutions of our problem.
 	\end{equation*}
 	
 	\begin{itemize}
-		\item A simple change of coordinates lets the interpolation to be done on any closed interval!
 		\item This can be done in $\bigO(n^3)$ \cite{boyd:2013}.
+		\item A simple change of coordinates lets the interpolation to be done on any closed interval!
 	\end{itemize}
 \end{frame}
 
@@ -338,8 +339,49 @@ The roots of $\xi$ are solutions of our problem.
 			\item $\bigO(C^n)$, for $C<1$, if $f$ is analytical in a neighborhood of $[-1, 1]$ \cite{battles:2004}.
 		\end{itemize}
 		
-		\item Very used in practice: present in external libraries like NumPy for Python.
+		\item Very used in practice: 
+		\begin{itemize}
+			\item Present in external libraries like NumPy for Python.
+			\item Matlab tool Chebfun: allows functions to be treated as vectors.
+		\end{itemize}
 	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example}
+	$\xi$ and its approximation of degree $8$.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{inexn8}
+		\caption{An example of degree $8$ approximation.}
+		%	\label{fig:circumscribed-circle}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Example}
+	$\xi$ and its approximation of degree $10$.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{inexn10}
+		\caption{An example of degree $10$ approximation.}
+		
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Example}
+	$\xi$ and its approximation of degree $12$.
+	\begin{figure}
+		\centering
+		
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.6]{inexn12}
+		\caption{An example of degree $12$ approximation.}
+		
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Chebyshev Interpolation}
@@ -372,7 +414,7 @@ The roots of $\xi$ are solutions of our problem.
 \end{frame}
 
 \begin{frame}{Chebyshev Interpolation}{Roots}
-	The roots of a Chebyshev polynomial can be found though determining the eigenvalues of a Chebyshev companion matrix \cite{boyd:2013}. This is it for $n=5$:
+	The roots of a Chebyshev polynomial can be found though determining the eigenvalues of a Chebyshev companion matrix \cite{boyd:2013}. For $n=5$ we have:
 	
 	\begin{equation*}
 	\left[\begin{array}{cccccc}
@@ -425,6 +467,7 @@ The roots of $\xi$ are solutions of our problem.
 		%	\label{fig:circumscribed-circle}
 	\end{figure}
 \end{frame}
+
 
 \begin{frame}[allowframebreaks]
 	\frametitle{References}
