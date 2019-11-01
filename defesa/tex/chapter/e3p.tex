@@ -48,11 +48,9 @@ Imposing the radius to be equal $b$ and squaring to eliminate the square roots p
 
 The method developed on \autoref{chapter:ellipses_n} iterates over every solution of E3PNT for every triplet of points, this is only possible if the size of this set of solutions is limited. Also, if this was not true, it would be very difficult to describe a method to get every solution which could be infinite.
 
-According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$ can be written as a real trigonometric polynomial of degree $j+k$ which can have up to $2(j+k)$ different roots in the interval $[0, 2\pi)$. The reason to bring up this fact is that $\xi(\theta)$ can be written as $\sum_i^M c_i \cos^{j_i}(\theta)\sin^{k_i}(\theta)$, for some $M \in \mathbb{N}$ and $c_1, \dots, c_m \in \R$, which implies that it can have up to $2$ times its degree.
+According to \citeonline[p.~150]{powell}, any function of the form $\{\cos^j{x}\sin^k{x} : j, k \in \mathbb{N}\}$ can be written as a real trigonometric polynomial of degree $j+k$ which can have up to $2(j+k)$ different roots in the interval $[0, 2\pi)$. The reason to bring up this fact is that $\xi$ can be written as $$\sum_{0 \le j+k \le 6} c_{j,k} \cos^{j}(\theta)\sin^{k}(\theta),$$ for some $\{c_{j,k} \in \R: 0 \le j+k \le 6\}$, which implies that it can be converted to a real trigonometric polynomial of degree $6$ which can have up to $12$ roots.
 
- To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form, as it can be seen on \autoref{eq:dd} and \autoref{eq:dd2}, combine the parts as $\xi(\theta)$ is just addition and multiplication of terms in that form. It is also possible to see that the term of higher the degree of $\xi(\theta)$ is the multiplication of the three squared distances, as $\norm{\varphi(v, \theta)}^2$ has degree $2$ the degree of $\xi(\theta)$ is $6$.
-
-
+ To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form, as it can be seen on \autoref{eq:dd} and \autoref{eq:dd2}. It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared distances, as $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\xi$ is $6$.
 \begin{align}\label{eq:dd}
 	\norm{\varphi(v, \theta)}^2 = (v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta)^2 + (v_y\cos\theta - v_x\sin\theta)^2\\
 	\label{eq:dd2} A(\theta)^2=\dfrac{1}{4}\det\left(
@@ -69,15 +67,15 @@ Therefore, the number of angles of rotation and centers that an ellipse of fixed
 
 In this section we give a brief review of some of the approaches we tried on developing a method for E3PNT.
 
-\subsection{Converting $\xi(\theta)$ into a polynomial}
+\subsection{Converting $\xi$ into a polynomial}
 
-Using the identity $x = \tan{\frac{\theta}{2}}$, it is possible to convert $\xi(\theta)$ on \autoref{eq:circumscribed_circle_b} into a univariate polynomial of degree $12$. The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. Therefore, pursuing a numerical method would be a good choice for this problem.
+Using the identity $x = \tan{\frac{\theta}{2}}$, it is possible to convert $\xi(\theta)$ on \autoref{eq:circumscribed_circle_b} into a univariate real polynomial of degree $12$. The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. Therefore, pursuing a numerical method would be a good choice for this problem.
 
 Perhaps the first idea one would have for this problem would be to use root-finding iterative methods, such as Newton's method, to approximate a root $\hat{x}$, divide the polynomial by $(x-\hat{x})$, and apply the method again until the method does not converge. A result published by \citeonline{mc1}, however, says that iterative methods generally are not convergent for polynomials of degree $4$ or more. Also, the process of dividing the polynomial by $(x-\hat{x})$ carries along a lot of error, which could make the method, even if convergent, find spurious roots. 
 
 This next approach is very popular in practice as it is present in external libraries like NumPy for Python \cite{python}. In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial. At first it seems that we are just trading for the same problem as, in general, to find the eigenvalues of a matrix, one needs to determine the roots of that matrix's characteristic polynomial. Nevertheless, it turns out that companion matrices are very convenient when it comes to finding eigenvalues. They are what is called Hessenberg matrices, and QR algorithms can be used to find their eigenvalues (a $\bigO(n^2)$ algorithm that does that can be found in \citeonline{bini:2007}).
 
-This method seemed to work fine, but for some instances it did not find roots which were priorly known. This happened probably because of the transformation that was used to convert $\xi$ into a polynomial. It can be very numerically unstable as the tangent function grows to fast for angles that are greater than $\frac{\pi}{4}$. Depending on the instance, there could be roots very close to $0$ and others that are too far from it.
+This method seemed to work fine, but for some instances it did not find roots which were priorly known. This happened probably because of the transformation that was used to convert $\xi$ into a polynomial--later we introduce a different transformation which is more convenient. It can be very numerically unstable as the tangent function grows to fast for angles that are greater than $\frac{\pi}{4}$. Depending on the instance, there could be roots very close to $0$ and others that are too far from it.
 
 \subsection{Using the conic general equation}
 
@@ -99,12 +97,17 @@ These two equations define two curves in $\R^2$ with $A$ and $C$ being the chose
 Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}$ which becomes an expression that allows $A$ to be written as a function of $C$. This function appeared, at first we thought, to be monotonic, we tried to develop a method based on that, however, cases where the function does not behave as nicely were found. It is likely that developing a method to approximate solutions working with this function is possible, but we decided not to continue on this track.
 
 
-\section{A method for E3PNT}
+\section{Two methods for E3PNT}
+
+In this section we introduce two methods that successfully find every solution of E3P on the instances we use for experiments. 
+The first one uses an approximation of $\xi$, it is slightly more efficient in respect to running time than the second method, however, it the approximation has only asymptotic guarantees and we can assure that it will always work. The second method converts $\xi$ into a complex polynomial and finds its roots by determining the eigenvalues of its companion matrix.
+
+\subsection{An approximation method}
 
 One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi(\theta)$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n$ by $n$ matrix.
 
 
-\subsection{Chebyshev interpolation}
+\subsubsection{Chebyshev interpolation}
 
 Chebyshev polynomials are widely used in Numerical Analysis in areas like numerical integration, polynomial approximation, and ordinary and partial differential equations.
 They are also very useful in practice and are present in extension libraries in Python and MATLAB.
@@ -136,36 +139,54 @@ Polynomial interpolation is a form of approximating a function by a polynomial o
 \begin{equation}\label{eq:lagrange}
 f_n(x) = \sum_{j=0}^{n} f(x_j)\dfrac{\prod_{k \neq j}^{n+1} (x-x_k)}{\prod_{k \neq j}^{n+1} (x_j-x_k)},
 \end{equation} 
-with $f$ being the function to be approximated and $f_n$ the unique $n$ degree polynomial that passes through $\{(x_j, f(x_j)): j=0, 1, \dots n\}$. Because of the uniqueness of interpolant polynomials, there is a direct link between the quality of an approximation and the points chosen to interpolate. As a matter of fact, depending on the points one chooses, even increasing the degree of the interpolation makes the approximation worsen. This is known as Runge's phenomenon and an example can be seen in \citeonline[p.~37]{powell} where uniformly spaced points are chosen to interpolate the function $f(x) = (1+x^2)^{-1}$ on the interval $[-5, 5]$. That is where Chebyshev interpolation comes in, instead of $n+1$ arbitrary points, the interpolation is done on the $n+1$ roots of $T_n$, which are also known as Chebyshev Nodes:
+with $f$ being the function to be approximated, and $f_n$ the unique $n$-degree polynomial that passes through $\{(x_j, f(x_j)): j=0, 1, \dots n\}$. Because of the uniqueness of interpolant polynomials, there is a direct link between the quality of an approximation and the points chosen to interpolate. As a matter of fact, depending on the points one chooses, even increasing the degree of the interpolation makes the approximation worsen. This is known as Runge's phenomenon and an example can be seen in \citeonline[p.~37]{powell} where uniformly spaced points are chosen to interpolate the function $f(x) = (1+x^2)^{-1}$ on the interval $[-5, 5]$. 
 
+That is where Chebyshev interpolation comes in. Instead of choosing $n+1$ arbitrary points, the $n+1$ roots of $T_{n+1}$, which are also known as Chebyshev Nodes, are chosen as the interpolation points:
 \begin{equation}
-x_j = \cos{\left(\pi\dfrac{2n-2j+1}{2n}\right)},
+x_j = \cos{\left(\dfrac{\pi(k-\frac{1}{2})}{n+1}\right)},
 \end{equation}
-for $j=1, \dots, n$. If the domain of the function to be interpolated is in another range other than $[-1, 1]$, let us say $[a, b]$, then a transformation can be done to map it to the Chebyshev Nodes' domain:
+for $j=1, \dots, n+1$. This particular choice defeats Runge's phenomenon and provides a convergent approximation. 
 
+Note that, if the domain of the function to be interpolated is defined on a range other than $[-1, 1]$, let us say $[a, b]$, then a transformation can be done to map it to the Chebyshev Nodes' domain:
 \begin{equation}
 \hat{x_j} = \frac{a+b}{2} + \frac{b-a}{2}x_j.
 \end{equation}
 
 Then, the Chebyshev interpolation of a function $f: [a, b] \mapsto \R$ can be determined using Lagrange's formula and the points $\hat{x}_1, \dots, \hat{x}_n$. 
 As it was mentioned, finding the roots of a polynomial written in the monomial form can be done by determining the eigenvalues of a so-called Frobenius companion matrix. For small $n$ this works fine, however, converting the polynomial obtained by \autoref{eq:lagrange} to the power form, as $n$ grows, becomes a very ill-conditioned problem. 
-
 An alternative method can be found in \citeonline{boyd:2013} where the Chebyshev interpolation is calculated directly as a truncated Chebyshev series, as in \autoref{eq:chebseries}, in $\bigO(n^2)$. Also, given a polynomial written in the Chebyshev basis, a $n\times n$ matrix can be constructed, such that its eigenvalues are the roots of that polynomial. \citeonline{boyd:2013} refers to this matrix as the Chebyshev-Frobenius companion matrix.
 
 Therefore, the whole process of interpolating and finding the roots can be done using only Chebyshev polynomials, which have great numerical stability. Also, Chebyshev-Frobenius matrices have the same property as companion matrices which allows their eigenvalues to be found by a QR decomposition. Summing the two steps, a $\bigO(n^2)$ algorithm can be achieved.
 
 The last question that needs to be addressed is how close the roots of the Chebyshev interpolant $f_n$ are to the roots of $\xi$?
 
-Even though $\xi(\theta)$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and  has infinitely many continuous and integrable derivatives. This satisfy all the requirements of the result in \citeonline[p.~28]{gottlieb} which says that if a function has $m$ continuous and integrable derivatives on a closed interval, then its absolute difference between the Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004} a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
+Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and  has infinitely many continuous and integrable derivatives. This satisfy all the requirements of the result in \citeonline[p.~28]{gottlieb} which says that if a function has $m$ continuous and integrable derivatives on a closed interval, then its absolute difference between the Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004} a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
+
+To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$, such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$, nonetheless, in practice, it is taken to be a good estimate for the error $r_n$:
+\begin{equation}
+r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
+\end{equation}
+
+\subsection{Transforming $\xi$ into a complex polynomial}
+
+This approach is based on a idea published on \citeonline{boyd:2006} which converts a real trigonometric polynomial into a polynomial with a variable $z = e^{i\theta}$. In our case, we replace $\cos{\theta}$ and $\sin{\theta}$ with the following identities:
+\begin{align}
+\cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
+\sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
+\end{align}
+
+It is possible to show that with that substitution and changing the variable to $z=e^{it}$, we obtain a function on the form:
+\begin{equation}
+g(z)=\sum_{k=-6}^6 c_k z^k.
+\end{equation}
+Then, multiplying it by 
 
 \section{Numerical Experiments}
 
 In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. 
 Let $f_n$ be the $n$-degree Chebyshev interpolation of $\xi$, we define the interpolation error $r_n$ as:
 
-\begin{equation}
-r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
-\end{equation}
+
 
 Then, we want to determine the smallest $n$, such that $r_n \le \epsilon$, for a predefined $\epsilon$. Unfortunately, calculating $r_n$ involves taking samples from both functions on the whole interval, which is not viable computationally. In \citeonline[p.~50]{boyd:2001} a rule-thumb for estimating the interpolation error is given. It is worth mentioning that this rule 
 
