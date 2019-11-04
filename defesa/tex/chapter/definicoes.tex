@@ -142,14 +142,47 @@ No equivalent disk-circle wording exists for ellipses, this could be a source of
 An non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in [0, \pi]$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
 
 A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. First, the ellipse can be translated to the origin and then rotated by $-\theta$, the reverse transformations are expressed by \autoref{eq:rotated_ellipse}.
-
 \begin{equation}\label{eq:rotated_ellipse}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}=1.
 \end{equation}
-
 Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi]$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
-
-
 \begin{equation}\label{eq:rotated_ellipse_co}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
 \end{equation}
+
+\section{Polynomials and their roots}
+
+In this work, only univariate polynomials are used, so the definition and results are focused on this case. 
+
+A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it can be written as:
+\begin{equation}\label{eq:poly}
+p_n(x) = \sum_{k=0}^{n} a_k x^k.
+\end{equation}
+The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. However, a numerical approach exists for higher-degree polynomials.
+
+ In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial. At first it seems that we are just trading for the same problem as, in general, to find the eigenvalues of a matrix, one needs to determine the roots of that matrix's characteristic polynomial. Nevertheless, it turns out that companion matrices are very convenient when it comes to finding eigenvalues. They are what is called Hessenberg matrices, and QR algorithms can be used to find their eigenvalues (a $\bigO(n^2)$ algorithm that does that can be found in \citeonline{bini:2007}).
+ For example, given a polynomial of degree $4$ written as \autoref{eq:poly} its companion matrix is given by:
+ 
+ \begin{equation}
+ \left[\begin{array}{ccccc}
+ 0 & 1 & 0 & 0 & 0\\
+ 0 & 0 & 1 & 0 & 0\\
+ 0 & 0 & 0 & 1 & 0\\
+ 0 & 0 & 0 & 0 & 1\\
+ -a_0 & -a_1 & -a_2 & -a_3 & -a_4
+ \end{array}\right].
+ \end{equation}
+
+\section{Real trigonometric polynomial}
+
+The same definition found in \citeonline[p.~150]{powell} for real trigonometric polynomials is given here. They are also referred to as truncated Fourier Series in \citeonline{boyd:2006} and are given by:
+\begin{equation}\label{eq:trig_poly}
+p_n(\theta) = \sum_{k=0}^{n} a_k\cos(k\theta) + \sum_{k=1}^{n} b_k\sin(k\theta).
+\end{equation}
+We say that $p_n$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, it says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format:
+$$\begin{array}{cc}\cos^j{\theta}\sin^k{\theta} & \quad j, k \in \mathbb{Z}_+ \end{array},$$
+can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, the following expression also represents a $n$-degree real trigonometric polynomial:
+\begin{equation}\label{eq:trig_poly_2}
+\sum_{0 \le j+k \le n}c_{j,k}\cos^j{\theta}\sin^k{\theta},
+\end{equation}
+for some $\{c_{j,k} \in \R: 0 \le j+k \le n\}$.
