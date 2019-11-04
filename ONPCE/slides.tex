@@ -19,10 +19,13 @@
 \institute{Universidade de São Paulo}
 \date{25 de Outubro de 2019}
 
+
 \begin{document}
 	
 	\begin{frame}[t,plain]
 		\titlepage
+		
+		\footnotesize This research has been funded by Cordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES). This is part of a Master's research project on the problem: \textit{Planar Maximal Covering by Ellipses with Rotation}.
 	\end{frame}
 	
 	\begin{frame}{Introduction}
@@ -154,8 +157,20 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 		\centering
 		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
 		\includegraphics[scale=.5]{sol3}
-		\caption{After scaling.}
+		\caption{After scaling by $\frac{b}{a}$.}
 		\label{fig:sol33}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Transforming the problem}
+	Then, we apply the inverse transformation.
+		
+	\begin{figure}
+		\centering
+		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+		\includegraphics[scale=.5]{sol31}
+		\caption{After scaling by $\frac{a}{b}$.}
+
 	\end{figure}
 \end{frame}
 
@@ -167,7 +182,7 @@ Given three points $u, v, w \in \R^2$, and the shape $(a,b) \in \R^2$ of an elli
 		\centering
 		%\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
 		\includegraphics[scale=.5]{sol4}
-		\caption{One solution for this instance.}
+		\caption{A solution is obtained after scaling by $\frac{a}{b}$ and rotating by $-\theta$.}
 		\label{fig:sol4}
 	\end{figure}
 \end{frame}
@@ -228,7 +243,7 @@ We define the function $\xi : [0, \pi) \mapsto \R$:
 	
 	\begin{itemize}
 		\item It can be written as 
-		$$\xi(\theta)=\sum_{0 \le j, k \le Deg(\xi)} \alpha_{j,k}\cos^{j}{\theta}\sin^{k}{\theta}.$$
+		$$\sum_{0 \le j, k \le Deg(\xi)} \alpha_{j,k}\cos^{j}{\theta}\sin^{k}{\theta}.$$
 		\item Degree $6$, at most $12$ roots in $[0, 2\pi)$ \cite[p.~150]{powell}
 		\item The roots of $\xi$ are solutions of our problem.	
 \end{itemize}
