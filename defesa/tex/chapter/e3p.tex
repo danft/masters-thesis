@@ -151,20 +151,25 @@ r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
 
 \section{Converting $\xi$ into a polynomial}
 
-As it was pointed out on \autoref{chapter:definitions}, it is possible to find the roots of a univariate polynomial through an algorithm. For that reason, converting $\xi$ somehow into a polynomial can provide a good way to get the solutions of E3PNT. 
+On \autoref{chapter:definitions} a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial. Symbolic computing was used to compute the polynomials, in practice an external Python library called SymPy was utilized (see \citeonline{sympy} for more details).
 
-The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$. This transforms $\xi$ into a polynomial of degree $12$. At first this method seemed to work fine, however, for some instances it did not find roots which were priorly known. This happened probably because of the transformation that was used to convert $\xi$ into a polynomial. It can be very numerically unstable as the tangent function grows to fast for angles that are greater than $\frac{\pi}{4}$. Because of that, depending on the instance, there could be roots very close to $0$ and others that are too far from it.
+The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability.
 
-The second approach is based on a idea published on \citeonline{boyd:2006} which converts a real trigonometric polynomial into a polynomial with a variable $z = e^{i\theta}$. In our case, we replace $\cos{\theta}$ and $\sin{\theta}$ with the following identities:
-\begin{align}
+The second approach is based on a idea published on \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials into univariate complex polynomials in order to obtain its roots using the companion matrix scheme.
+Also, in \citeonline{weidner} it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
+
+\begin{align}\label{eq:complex_trig}
 \cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
 \sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
 \end{align}
 
-It is possible to show that with that substitution and changing the variable to $z=e^{it}$, we obtain a function on the form:
+It is possible to show that with that substitution and changing the variable to $z=e^{it}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$:
+
 \begin{equation}
-g(z)=\sum_{k=-6}^6 c_k z^k.
+g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. It is important to notice that this definition of $g$ does not impose that $z$ stays in the unit circle as any complex number, for that the additional condition: $|z|=1$ would need to be added.
+
 Then, multiplying $g$ by $z^6 = e^{6i\theta}$, the following polynomial is obtained:
 
 \begin{equation}

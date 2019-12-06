@@ -1207,7 +1207,7 @@
 }{
     % Configuracao da fonte para a compilacao por pdfLaTeX
     \RequirePackage[T1]{fontenc}	    	% Selecao de codigos de fonte.
-    \RequirePackage[utf8]{inputenc}		% Codificacao do documento (conversao automatica dos acentos)
+    \RequirePackage[utf8x]{inputenc}		% Codificacao do documento (conversao automatica dos acentos)
       
     \newcommand\@icmcTitulo{\selectfont\usefont{T1}{phv}{b}{n}}
     \newcommand\@icmcAutorCapa{\fontsize{14pt}{1em}\selectfont\usefont{T1}{phv}{b}{n}}
