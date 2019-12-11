@@ -152,22 +152,31 @@ Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parame
 
 \section{Complex numbers}
 
-We introduce here some things about complex numbers that are used later on \autoref{chapter:e3p}.
+The set of complex numbers $\mathbb{C}$ is an extension of the set of real numbers $\R$ and can be very useful depending on the problem at hand. A thorough introduction on this topic is out of the scope and we just go through some basic properties that are going to be used later on \autoref{chapter:e3p}.
 
-Any complex number $z = a + bi \in \mathbb{C}$ can be written as follows:
+A complex number is composed of a real part added to an imaginary part which is a multiple of $i = \sqrt{-1}$, this is expressed as $a + bi$, with $a, b \in \R$. Because $z$ is composed of two real numbers, the complex number system can be visualized on $\R^2$ as shown on \autoref{fig:complex-numbers}. This is also a good way to visualize Euler's Formula, as it can be also seen on \autoref{fig:complex-numbers}, which says that any complex number can be written in terms of its radius and polar angle as follows:
 \begin{equation}
 z = re^{i\theta},
 \end{equation}
-where $\theta$ is the polar angle of the vector $(a, b)$, we refer to it as $angle(z)$, and $r$ is the length of this vector, we refer to it as $|z| = \sqrt{a^2 + b^2}$. This is known as the Euler's Formula. If $r=1$, then we say that $z$ is in the unit circle. The complex conjugate is another important operator that we need. Let $z = a + bi \in \mathbb{C}$, then we refer to $\bar{z}$ as the complex conjugate of $z$ and it is defined as:
+with $r$ being the length of the vector determined by the point $z$ on the complex plane and $\theta = angle(z)$ being its polar angle.
+\begin{figure}[ht]
+	\centering
+	\def\svgwidth{\columnwidth}
+	\includegraphics[scale=.5]{tex/figures/complex_numbers}
+	\caption{The representation of a complex number on two dimensions.}
+	\label{fig:complex-numbers}
+\end{figure}
+
+The complex conjugate is another important operator that is utilized later. Let $z = a + bi \in \mathbb{C}$, then we refer to $\bar{z}$ as the complex conjugate of $z$ and it is defined as:
 \begin{equation}
 \bar{z} = a - bi.
 \end{equation}
-Also, it is useful to see that, then $1/z=\bar{z}/|z|$. Two observations about the angles of complex numbers are worth mentioning:
+Finally two observations about the angles of complex numbers are given here:
 \begin{align}
 angle(\bar{z}) = -angle(z)\\
-angle(-z) = \pi - angle(z).
+angle(-z) = \pi - angle(z),
 \end{align}
-
+checking their validity can be done by just observing the symmetry between the points defined by $z, \bar{z},$ and $-z$ on the plane.
 
 
 \section{Polynomials and their roots}
@@ -178,7 +187,7 @@ A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it
 \begin{equation}\label{eq:poly}
 p_n(z) = \sum_{k=0}^{n} a_k z^k.
 \end{equation}
-The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula to determine their roots. However, a numerical approach exists for higher-degree polynomials.
+The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula\footnote{A finite number of $+, -, \times, \div, \sqrt{}$.} to determine their roots. However, a numerical approach exists for higher-degree polynomials.
 
  In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial.  For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by:
  \begin{equation}
