@@ -139,13 +139,13 @@ No equivalent disk-circle wording exists for ellipses, this could be a source of
 
 \subsection{Non-axis-parallel}
 
-An non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in [0, \pi]$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
+A non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in [0, \pi]$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
 
-A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. First, the ellipse can be translated to the origin and then rotated by $-\theta$, the reverse transformations are expressed by \autoref{eq:rotated_ellipse}.
+A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. Reversing these transformations produces the following equation for a non-axis-parallel ellipse:
 \begin{equation}\label{eq:rotated_ellipse}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}=1.
 \end{equation}
-Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi]$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
+Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi)$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
 \begin{equation}\label{eq:rotated_ellipse_co}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
 \end{equation}
@@ -154,15 +154,15 @@ Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parame
 
 The set of complex numbers $\mathbb{C}$ is an extension of the set of real numbers $\R$ and can be very useful depending on the problem at hand. A thorough introduction on this topic is out of the scope and we just go through some basic properties that are going to be used later on \autoref{chapter:e3p}.
 
-A complex number is composed of a real part added to an imaginary part which is a multiple of $i = \sqrt{-1}$, this is expressed as $a + bi$, with $a, b \in \R$. Because $z$ is composed of two real numbers, the complex number system can be visualized on $\R^2$ as shown on \autoref{fig:complex-numbers}. This is also a good way to visualize Euler's Formula, as it can be also seen on \autoref{fig:complex-numbers}, which says that any complex number can be written in terms of its radius and polar angle as follows:
+A complex number is composed of a real part added to an imaginary part which is a multiple of the imaginary unit $i = \sqrt{-1}$. This is expressed as $a + bi$, with $a, b \in \R$. Because $z$ is composed of two real numbers, the complex number system can be visualized on $\R^2$ as shown on \autoref{fig:complex-numbers}. This is also a good way to visualize Euler's Formula, as it can be also seen on \autoref{fig:complex-numbers}, which says that any complex number can be written in terms of its radius and polar angle as follows:
 \begin{equation}
-z = re^{i\theta},
+z = re^{i\theta}=r(\cos{\theta} + i\sin{\theta}),
 \end{equation}
-with $r$ being the length of the vector determined by the point $z$ on the complex plane and $\theta = angle(z)$ being its polar angle.
+with $r$ being the length of the vector determined by the point $z$ on the complex plane and $\theta = angle(z)$ being its polar angle. Note that $angle$ is a function from $\mathbb{C}$ to $[0, 2\pi)$.
 \begin{figure}[ht]
 	\centering
 	\def\svgwidth{\columnwidth}
-	\includegraphics[scale=.5]{tex/figures/complex_numbers}
+	\includegraphics[scale=.4]{tex/figures/complex_numbers}
 	\caption{The representation of a complex number on two dimensions.}
 	\label{fig:complex-numbers}
 \end{figure}
@@ -171,23 +171,24 @@ The complex conjugate is another important operator that is utilized later. Let 
 \begin{equation}
 \bar{z} = a - bi.
 \end{equation}
-Finally two observations about the angles of complex numbers are given here:
+Finally, we need to state two observations about the angles of $-z$ and $\bar{z}$ with respect to the angle of $z$, this will be useful later on \autoref{chapter:e3p}.
 \begin{align}
-angle(\bar{z}) = -angle(z)\\
-angle(-z) = \pi - angle(z),
+angle(\bar{z}) = 2\pi-angle(z)\\
+angle(-z) = \pi + angle(z),
 \end{align}
-checking their validity can be done by just observing the symmetry between the points defined by $z, \bar{z},$ and $-z$ on the plane.
+checking the validity of these two equalities can be done by just observing the symmetry between the points defined by $z, \bar{z},$ and $-z$ on the plane.
 
 
 \section{Polynomials and their roots}
 
-In this work, only univariate polynomials are used, so the definition and results are focused on this case. 
+In this work, we are mostly interested in univariate polynomials defined over the complex numbers.
 
 A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it can be written as:
 \begin{equation}\label{eq:poly}
-p_n(z) = \sum_{k=0}^{n} a_k z^k.
+p_n(z) = \sum_{k=0}^{n} a_k z^k,
 \end{equation}
-The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula\footnote{A finite number of $+, -, \times, \div, \sqrt{}$.} to determine their roots. However, a numerical approach exists for higher-degree polynomials.
+with $a_0, \dots, a_n \in \mathbb{C}$.
+The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula\footnote{A finite number of $+, -, \times, \div, \sqrt{}$.} to determine their roots. Fortunately, a numerical approach exists for higher-degree polynomials which in practice works really well.
 
  In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial.  For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by:
  \begin{equation}
@@ -200,8 +201,10 @@ The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov201
  \end{array}\right].
  \end{equation}
  
- Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory. In \cite[p.~341]{golub} a practical version of it is developed. The idea is to convert the input matrix to the Hessenberg form, after that, the matrix preserves its form through the iterations and under some assumptions, convergence to the eigenvalues is achieved. It is worth mentioning that this approach is actually used in MATLAB and LAPACK, which is the external library used in NumPy for Python.
+ Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory. A very complete introduction to this algorithm can be found on \citeonline{watkins:2008}. The idea is to convert the input matrix to the Hessenberg form, after that, the matrix preserves its form through the iterations and under some assumptions, convergence to the eigenvalues is achieved.
  Also, in \citeonline{barel} it is pointed that companion matrices are already in the Hessenberg form, making the Hessenberg conversion step unnecessary. This and other properties are used in \citeonline{barel} on the development of a $\bigO(n^2)$ algorithm for the specific case of companion matrices.
+ 
+ In practice, LAPACK's ZGEEV routine is utilized--the user guide can be found in \citeonline{lapack}--which is an implementation of the QR algorithm that returns every eigenvalue of a complex matrix.
  
 \section{Real trigonometric polynomial}
 
@@ -209,7 +212,7 @@ The same definition found in \citeonline[p.~150]{powell} for real trigonometric 
 \begin{equation}\label{eq:trig_poly}
 p_n(\theta) = \sum_{k=0}^{n} a_k\cos(k\theta) + \sum_{k=1}^{n} b_k\sin(k\theta).
 \end{equation}
-We say that $p_n$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, it says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format:
+We say that $p_n: \R \mapsto \R$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, it says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format:
 $$\begin{array}{cc}\cos^j{\theta}\sin^k{\theta} & \quad j, k \in \mathbb{Z}_+ \end{array},$$
 can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, the following expression also represents a $n$-degree real trigonometric polynomial:
 \begin{equation}\label{eq:trig_poly_2}

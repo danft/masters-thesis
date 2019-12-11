@@ -151,7 +151,7 @@ r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
 
 \section{Converting $\xi$ into a polynomial}
 
-On \autoref{chapter:definitions} a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial. Symbolic computing was used to compute the polynomials, in practice an external Python library called SymPy was utilized (see \citeonline{sympy} for more details).
+On \autoref{chapter:definitions} a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. Symbolic computing was used to compute the polynomials, in practice an external Python library called SymPy was utilized (see \citeonline{sympy} for more details).
 
 The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability.
 
@@ -163,20 +163,42 @@ Also, in \citeonline{weidner} it is said that computing the roots of a real trig
 \sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
 \end{align}
 
-It is possible to show that with that substitution and changing the variable to $z=e^{it}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$:
+It is possible to show that with that substitution and changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$):
 
 \begin{equation}
 g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
-for some $c_0, \dots, c_{12} \in \mathbb{C}$. It is important to notice that this definition of $g$ does not impose that $z$ stays in the unit circle as any complex number, for that the additional condition: $|z|=1$ would need to be added.
-
-Then, multiplying $g$ by $z^6 = e^{6i\theta}$, the following polynomial is obtained:
-
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. Even though $g$ is not a polynomial, it is easy to obtain one from it. Firstly, the negative exponentials need to be shifted, this can be done by just multiplying $g$ by $z^6$. Secondly, the domain cannot be restricted to the unit circle, so we define $h : \mathbb{C} \mapsto \mathbb{C}$ as:
 \begin{equation}
 h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
 \end{equation}
 
-Then, every root of $\xi$ is a root of $h$. Note that the converse is not true, there could be roots of $h$ which are not roots of $\xi$, because a root $\hat{z}$ could have $|\hat{z}| \neq 1$ whereas $|e^{it}|$ is $1$.
+Then, by its definition is possible to see that every root of $g$ is also a root of $h$. Conversely, every root $\hat{z}$ of $h$ which is in $\mathbb{S}$--or $|\hat{z}|=1$--is also a root of $g$. Naturally, the angle of a root $\hat{z}$ of $g$ is a root of $\xi$ by Euler's Formula.
+
+It is possible to make another reduction to obtain a degree-$6$ polynomial from $h$ whose roots form a superset of the roots of $g$. As it has been mentioned on this chapter, an ellipse is symmetric with respect to its own axis. This means $\theta$ and $\pi + \theta$ are equivalent angles of rotation for any ellipse, thus $\xi(\theta) = \xi(\pi + \theta)$\footnote{$\xi$ is only defined over $[0, \pi)$, so this equality is not actually valid.}. 
+On \autoref{chapter:definitions}, it was stated that the angle of $z$ and $-z$ has the same symmetry with each other as an ellipse's angle of rotation:
+\begin{equation*}
+angle(-z) = \pi + angle(z).
+\end{equation*}
+From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
+\begin{align}
+h(-z) = (-z)^6g(-z) = z^6g(z).
+\end{align}
+Therefore, all the odd degree coefficients of $h$ are $0$ and we can define the $6$-degree polynomial $f : \mathbb{C} \mapsto \mathbb{C}$ with the substitution $y=z^2$:
+\begin{equation}
+f(y) = \sum_{k=0}^{6} c_{2k} y^k.
+\end{equation}
+Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of $-\sqrt{\hat{y}}$ is not between $[0, pi)$ we can ignore it. Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by:
+\begin{equation}
+angle(\sqrt{z}) = angle(z)/2.
+\end{equation}
+Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm, with $n=6$, can be constructed for E3P.
+
+It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe for future work it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to true:
+\begin{equation}
+c_k = \hat{c_{6-k}},
+\end{equation}
+for $k=0, \dots, 6$. For now, we do not have any ideas on how it could be proved. Nevertheless, this seems to lead somewhere interesting because this condition guarantees that $f$ is a self-reciprocal polynomial which implies that its roots will always come in pairs $(\hat{z}, 1/\hat{z})$.
 
 \section{Numerical Experiments}
 
