@@ -21,7 +21,7 @@
 %%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{packages/icmc}[2018/08/16 v1.3.8 Classe ICMC baseado em abnTeX2 - Teses e Dissertacoes dos Programas de Pos-graduacao do Instituto de Ciencias Matematicas e de Computacao]
+\ProvidesClass{packages/icmc}[2019/10/16 v1.3.9 Classe ICMC baseado em abnTeX2 - Teses e Dissertacoes dos Programas de Pos-graduacao do Instituto de Ciencias Matematicas e de Computacao]
 \RequirePackage{xifthen}
 \RequirePackage{ifxetex}        % Verifica se a compilacao ocorre por xetex
 \RequirePackage{ifluatex}       % Verifica se a compilacao ocorre por luatex
@@ -688,24 +688,24 @@
 }
 
 \addto\captionsenglish{% ingles
-    \renewcommand{\theoremaname}{Theorem}
-    \renewcommand{\proposicaoname}{Proposition}
-    \renewcommand{\lemaname}{Lemma}
-    \renewcommand{\corolarioname}{Corollary}
-    \renewcommand{\exemploname}{Example}
-    \renewcommand{\observacaoname}{Note}
-    \renewcommand{\definicaoname}{Definition}
-    \renewcommand{\demonstracaoname}{Demonstration}
+	\renewcommand{\theoremaname}{Theorem}
+	\renewcommand{\proposicaoname}{Proposition}
+	\renewcommand{\lemaname}{Lemma}
+	\renewcommand{\corolarioname}{Corollary}
+	\renewcommand{\exemploname}{Example}
+	\renewcommand{\observacaoname}{Note}
+	\renewcommand{\definicaoname}{Definition}
+	\renewcommand{\demonstracaoname}{Demonstration}
 }
 
 \theoremstyle{definition}
-\newtheorem{teorema}{\theoremaname}[chapter]
-\newtheorem{proposicao}{\proposicaoname}[chapter]
-\newtheorem{lema}{\lemaname}[chapter]
+\newtheorem{teorema}{\theoremaname}
+\newtheorem{proposicao}{\proposicaoname}
+\newtheorem{lema}{\lemaname}
 \newtheorem{corolario}{\corolarioname}
 \newtheorem{exemplo}{\exemploname}
 \newtheorem{observacao}{\observacaoname}
-\newtheorem{definicao}{\definicaoname}[chapter]
+\newtheorem{definicao}{\definicaoname}
 \newenvironment{demonstracao}{\begin{proof}[\demonstracaoname]}{\end{proof}}
 
 
@@ -822,25 +822,7 @@
    \endgroup%
 }
    
-\def\lst@numbersymbol{}
-\lst@Key{numbersymbol}{}{\def\lst@numbersymbol{#1}}
-\lst@Key{numbers}{none}{%
-    \let\lst@PlaceNumber\@empty
-    \lstKV@SwitchCases{#1}%
-    {%
-      none&\\%
-      left&\def\lst@PlaceNumber{%
-        \llap{%
-          \normalfont\lst@numberstyle{\thelstnumber\lst@numbersymbol}\kern\lst@numbersep%
-        }%
-      }\\%
-        right&\def\lst@PlaceNumber{%
-          \rlap{%
-            \normalfont\kern\linewidth\kern\lst@numbersep\lst@numberstyle{\lst@numbersymbol\thelstnumber}%
-          }%
-        }%
-    }{\PackageError{Listings}{Numbers #1 unknown}\@ehc}
-}
+\renewcommand*\thelstnumber{\arabic{lstnumber}:}
 
 % Cria um ambiente "codigo" estilizando o ambiente "lstlisting" 
 \newcounter{countcodigo}
@@ -857,7 +839,6 @@
             framexbottommargin=5pt,
             framextopmargin=5pt,
             abovecaptionskip=10pt,
-            numbersymbol=$:$,
             #1
           }
 }
@@ -1207,7 +1188,7 @@
 }{
     % Configuracao da fonte para a compilacao por pdfLaTeX
     \RequirePackage[T1]{fontenc}	    	% Selecao de codigos de fonte.
-    \RequirePackage[utf8x]{inputenc}		% Codificacao do documento (conversao automatica dos acentos)
+    \RequirePackage[utf8]{inputenc}		% Codificacao do documento (conversao automatica dos acentos)
       
     \newcommand\@icmcTitulo{\selectfont\usefont{T1}{phv}{b}{n}}
     \newcommand\@icmcAutorCapa{\fontsize{14pt}{1em}\selectfont\usefont{T1}{phv}{b}{n}}
