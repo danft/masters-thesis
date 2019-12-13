@@ -155,10 +155,13 @@ r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
 
 On \autoref{chapter:definitions} a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
 
+\subsection{Real polynomial}
+
 The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability.
 
-The second approach is based on a idea published on \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials into univariate complex polynomials in order to obtain its roots using the companion matrix scheme. This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial--more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
+\subsection{Complex polynomial}
 
+The second approach is based on a idea published on \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials in order to obtain its roots using the companion matrix scheme. This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial--more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
 \begin{align}\label{eq:complex_trig}
 \cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
 \sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
@@ -170,20 +173,24 @@ g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
 for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, the function $g'(\theta)=g(e^{i\theta})$ and the function $\xi$ are equivalent since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
 
-Now there is only two things preventing $g$ from being a polynomial: firstly, $z$ shows up with negative exponents up to $-6$, secondly its domain is the unit circle, not the whole complex set $\mathbb{C}$. The first issue can be fixed by multiplying $g$ by $z^6$, note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by extending the domain to $\mathbb{C}$, and considering only roots that lie on $\mathbb{S}$, notice also that no roots can go missing as $\mathbb{S} \subset \mathbb{C}$. Finally, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as follows:
+Now there is only two things preventing $g$ from being a polynomial: firstly, $z$ shows up with negative exponents (up to $-6$); secondly its domain is the unit circle $\mathbb{S}$, not the whole complex set $\mathbb{C}$. 
+The first issue can be fixed by multiplying $g$ by $z^6$, note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$, as $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear which requires a further check for every root that is found.
+Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as follows:
 \begin{equation}
 h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
 \end{equation}
+By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root $\hat{z}$ of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ though their angles on the unit circle.
 
-By its definition is possible to see that every root of $g$ is also a root of $h$, and conversely, every root $\hat{z}$ of $h$ which is in $\mathbb{S}$ is also a root of $g$. Naturally, given a root $\hat{z}$ of $g$, the angle of $\hat{z}$ is a root of $\xi$ by Euler's Formula used in the substitution $z=e^{i\theta}$.
+\subsubsection{Further improvements}
 
-It is possible to make another reduction to obtain a degree-$6$ polynomial, lowering in half the number of rows of the companion matrix utilized on obtaining the roots of $h$. 
-As it has been mentioned before, an ellipse is symmetric with respect to its own axis. This means that $\theta$ and $\pi + \theta$ are equivalent angles of rotation for any ellipse, thus $\xi(\theta) = \xi(\pi + \theta)$.
-On \autoref{chapter:definitions}, it was stated that the angle of $z$ and $-z$ has the same symmetry with each other as an ellipse's angle of rotation:
+It is possible to make another reduction to obtain a degree-$6$ polynomial, this can lower the size of the companion matrix utilized on obtaining the roots of $h$ from $12^2=144$ to $6^2=36$.
+As it has been mentioned before, an ellipse is symmetric with respect to its own major or minor axis. 
+In other words, rotating an ellipse by $\theta \in [0, \pi)$ is the same as rotating the same ellipse by $\pi + \theta$.
+On the other hand, on \autoref{chapter:definitions}, it was stated that the angle of the complex numbers $z$ and $-z$ has the same symmetry with each other as the aforementioned symmetry of ellipses:
 \begin{equation*}
 angle(-z) = \pi + angle(z).
 \end{equation*}
-From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
+From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact, an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
 \begin{align}
 h(-z) = (-z)^6g(-z) = z^6g(z).
 \end{align}
