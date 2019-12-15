@@ -9,16 +9,12 @@ Let $u \in \R^2$ be a vector, the Euclidean norm of $u$ is defined as
 \begin{equation}\label{eq:norm2}
 ||u||_2 = \sqrt{u^{T}u}.
 \end{equation}
-
-\noindent The elliptical norm, also known as weighted norm, takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the Euclidean norm. The elliptical norm of $u \in\R^2$ is defined as 
+The elliptical norm, also known as weighted norm, takes a $2$ by $2$ positive definite matrix as its parameter. This matrix can be seen as a linear transformation of the Euclidean norm. The elliptical norm of $u \in\R^2$ is defined as 
 
 \begin{equation}
 ||u||_{Q} = \sqrt{u^{T}Qu},
 \end{equation}
-
-\noindent where $Q$ is a $2$ by $2$ positive definite matrix.
-
-The elliptical norm, when taking $Q$ to be the identity matrix, becomes the Euclidean norm.
+where $Q$ is a $2$ by $2$ positive definite matrix. Note that the elliptical norm, when taking $Q$ to be the identity matrix, becomes the Euclidean norm.
 
 Determining the distance between two points, given a norm function, is done by calculating the norm of the vector defined by the difference between the two points. For example, the elliptical distance between the points $p,q \in \R^2$ is given by $||p-q||_{Q}$.
 
@@ -34,24 +30,21 @@ A disk is the set of points bounded by a circle. In other words let $c \in \R^2$
 
 \section{Ellipse}
 
-An ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. As the name suggests, conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation which describes any conic section is given as follows
-
+An ellipse is a curve which is categorized, along with the parabola and the hyperbola, as a conic section. 
+They get this name because conic sections are curves resulted from the intersection of a right circular cone in $\R^3$ with a plane \cite{brannan:geometry}. From that definition, an equation which describes any conic section is given as follows
 \begin{equation}\label{equation:quadratic_form}
 Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0,
 \end{equation}
-
-\noindent where $A,B,C,D,E,F \in \R$ are fixed and $x, y \in \R$.
-
-To distinguish an ellipse from the other conic sections given an instance of \autoref{equation:quadratic_form}, the condition $4AC - B^2>0$ must be verified \cite{ayoub}.
+where $A,B,C,D,E,F \in \R$ are fixed and $x, y \in \R$. Distinguishing an ellipse from the other conic sections ca be done using the condition given by \autoref{eq:conic_ellipse}. More details about conic sections can be found in \citeonline{ayoub}.
+\begin{equation}\label{eq:conic_ellipse}
+4AC - B^2>0.
+\end{equation}
 
 Assuming the center of an ellipse is $c \in \R^2$, then \autoref{equation:quadratic_form} can be rewritten as a quadratic form as follows
-
 \begin{equation}
 (p-c)^{T}Q(p-c) = 1,
 \end{equation}
-
-\noindent with $p \in \R^2$ and $Q$ being a $2$ by $2$ positive definite matrix which carries the parameters of the ellipse. From \autoref{equation:quadratic_form}, $Q$ can be defined as follows
-
+with $p \in \R^2$ and $Q$ being a $2$ by $2$ positive definite matrix which carries the parameters of the ellipse. From \autoref{equation:quadratic_form}, $Q$ can be defined as follows
 \[
 Q=
 \left( {\begin{array}{cc}
@@ -59,7 +52,6 @@ Q=
 	\frac{B}{2} & C \\
 	\end{array} } \right).
 \]
-
 Note that asking $Q$ to be positive definite is the same as asking $4AC-B^2$ to be positive. This makes us arrive at the following definition of the ellipse.
 
 \begin{definicao}\label{def:ellipse}
@@ -104,11 +96,9 @@ Q=
  \begin{equation}\label{equation:pellipse}
   \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} = 1,
  \end{equation}
+where $a$ and $b$ are the semi-major and semi-minor shape parameters, respectively.
 
-\noindent where $a$ and $b$ are the semi-major and semi-minor shape parameters, respectively.
-
-Also, the coverage region is determined by just changing the equality to an inequality as follows:
-
+Also, the coverage region is determined by just changing the equality to an inequality as follows
 \begin{equation}\label{equation:cover_pellipse}
 \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} \le 1.
 \end{equation}
@@ -124,18 +114,15 @@ Another way to represent ellipses, which will be useful in some occasions, is th
     \label{fig:ellipse_params}
 \end{figure}
 
-Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R^2_{>0}$. Then $\gamma : [0, 2\pi] \mapsto \R^2$ defines a curve which maps every angle onto a point on the ellipse and it is defined as follows:
-
-    \begin{equation}\label{eq:parametric_ellipse}
-    \gamma(t) = \left\{
-    \begin{array}{l}
-    x(t)= a\cos{t} + c_x,\\
-    y(t)=b\sin{t} + c_y.
-    \end{array}
-    \right.
-    \end{equation}
-
-No equivalent disk-circle wording exists for ellipses, this could be a source of ambiguity in the text, that is why a note for the reader was judged to be necessary. Throughout this work an ellipse will represent the set of points that satisfy \autoref{def:ellipse}. In some places, though, with prior clarification, we will denote as an ellipse the set of points that are covered by the ellipse itself. For example, when we define $\Pp \cap E$ as the set of points in $\Pp$ that are covered by $E$, we are implicitly calling $E$ the set of points that are covered by the ellipse itself as it is defined by \autoref{def:ellipse}.
+Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R^2_{>0}$. Then $\gamma : [0, 2\pi] \mapsto \R^2$ defines a curve which maps every angle onto a point on the ellipse and it is defined as follows
+\begin{equation}\label{eq:parametric_ellipse}
+\gamma(t) = \left\{
+\begin{array}{l}
+x(t)= a\cos{t} + c_x,\\
+y(t)=b\sin{t} + c_y.
+\end{array}
+\right.
+\end{equation}
 
 \subsection{Non-axis-parallel}
 
@@ -148,6 +135,11 @@ A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered a
 Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi)$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
 \begin{equation}\label{eq:rotated_ellipse_co}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
+\end{equation}
+
+The word ellipse can be a source of ambiguity, that is because it is not clear if we are talking about its border or its coverage area. To make things clear, throughout the text, ellipses will refer only to the border and for its coverage area we introduce a new notation: for any ellipse $E$ (parallel or not), its coverage region is defined as
+\begin{equation}
+cov(E).
 \end{equation}
 
 \section{Complex numbers}
