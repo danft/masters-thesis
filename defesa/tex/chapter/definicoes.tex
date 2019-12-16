@@ -126,21 +126,34 @@ y(t)=b\sin{t} + c_y.
 
 \subsection{Non-axis-parallel}
 
-A non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in [0, \pi]$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
+A non-axis-parallel ellipse centered at $c\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in \R$ is given. This angle represents the angle between the $x$-axis and the major-axis of the ellipse.
 
-A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. Reversing these transformations produces the following equation for a non-axis-parallel ellipse:
+A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations. Reversing these transformations produces the following equation for a non-axis-parallel ellipse
 \begin{equation}\label{eq:rotated_ellipse}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}=1.
 \end{equation}
-Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in [0, \pi)$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co}.
+Also, the coverage region of an ellipse centered at $c\in\R^2$ with shape parameters $(a, b)\in\R^2_{>0}$ and rotation angle $\theta \in \R$ is represented by every point $(x, y) \in \R^2$ that satisfies \autoref{eq:rotated_ellipse_co} as follows
 \begin{equation}\label{eq:rotated_ellipse_co}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
 \end{equation}
 
-The word ellipse can be a source of ambiguity, that is because it is not clear if we are talking about its border or its coverage area. To make things clear, throughout the text, ellipses will refer only to the border and for its coverage area we introduce a new notation: for any ellipse $E$ (parallel or not), its coverage region is defined as
-\begin{equation}
-cov(E).
-\end{equation}
+An example of rotated ellipse can be seen on \autoref{fig:rotated_ellipse}. The dashed lines represent its major and minor axes which are rotated with respect to the coordinate axes.
+On this picture, it is also displayed the symmetry of rotation angles regarding the ellipse's axes. From that, it can be seen that any angle of rotation $\theta$ is equivalent--as it produces the same ellipse--to the angle of rotation $\theta + k\pi$, with $k \in \mathbb{Z}$. Therefore, it is possible to conclude that to represent any ellipse, it is enough to specify the domain of $\theta$ to be $[0, \pi)$.
+
+\begin{figure}[H]
+	\centering
+	
+	\caption{A rotated ellipse.}
+	\includegraphics[scale=.5]{tex/figures/rotated_ellipse}
+	\fautor
+	\label{fig:rotated_ellipse}
+\end{figure}
+
+
+\subsection{Notation}
+
+As stated by \autoref{def:ellipse}, the word ellipse is used to refer to the set of points that satisfies the equality equation, which can be seen as the border of an ellipse's coverage area. For this work, however, it is more convenient to refer directly to the coverage area of an ellipse and add a notation to express its border. For example, let $E$ be an ellipse's coverage area, and $\Pp \subset \R^2$ a set of points, then $E \cap \Pp$ denotes the set of points from $\Pp$ inside the coverage area of that ellipse. When we need to refer specifically to the border of $E$, we use the boundary operator: $\partial E$.
+
 
 \section{Complex numbers}
 
@@ -174,15 +187,14 @@ checking the validity of these two equalities can be done by just observing the 
 \section{Polynomials and their roots}
 
 In this work, we are mostly interested in univariate polynomials defined over the complex numbers.
-
-A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it can be written as:
+A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it can be written as
 \begin{equation}\label{eq:poly}
 p_n(z) = \sum_{k=0}^{n} a_k z^k,
 \end{equation}
 with $a_0, \dots, a_n \in \mathbb{C}$.
 The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula\footnote{A finite number of $+, -, \times, \div, \sqrt{}$.} to determine their roots. Fortunately, a numerical approach exists for higher-degree polynomials which in practice works really well.
 
- In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial.  For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by:
+ In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial. For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by
  \begin{equation}
  \left[\begin{array}{ccccc}
  0 & 1 & 0 & 0 & 0\\
@@ -200,13 +212,13 @@ The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov201
  
 \section{Real trigonometric polynomial}
 
-The same definition found in \citeonline[p.~150]{powell} for real trigonometric polynomials is given here. They are also referred to as truncated Fourier Series in \citeonline{boyd:2006} and are given by:
+The same definition found in \citeonline[p.~150]{powell} for real trigonometric polynomials is given here. They are also referred to as truncated Fourier Series in \citeonline{boyd:2006} and are given by
 \begin{equation}\label{eq:trig_poly}
 p_n(\theta) = \sum_{k=0}^{n} a_k\cos(k\theta) + \sum_{k=1}^{n} b_k\sin(k\theta).
 \end{equation}
-We say that $p_n: \R \mapsto \R$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, it says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format:
+We say that $p_n: \R \mapsto \R$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, it says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format
 $$\begin{array}{cc}\cos^j{\theta}\sin^k{\theta} & \quad j, k \in \mathbb{Z}_+ \end{array},$$
-can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, the following expression also represents a $n$-degree real trigonometric polynomial:
+can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, the following expression also represents a $n$-degree real trigonometric polynomial
 \begin{equation}\label{eq:trig_poly_2}
 \sum_{0 \le j+k \le n}c_{j,k}\cos^j{\theta}\sin^k{\theta},
 \end{equation}
