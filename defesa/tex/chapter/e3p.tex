@@ -1,9 +1,7 @@
 The problem of finding every center and angle of rotation of a fixed shape ellipse which makes it have three points on its border is presented in this section. Even though its simple statement--it is short and uses only basic mathematical concepts--we were not able to find any work on it, or even on related problems. 
-As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those going through the issues with the failing approaches, at the end we propose a $\bigO(1)$ algorithm that finds every solution of the problem and run some numerical experiments to show the precision of the found solutions.
+As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. At the end we propose a $\bigO(1)$ algorithm that finds every solution of the problem, and also run some experiments to analyze efficiency in terms of numerical precision and CPU time.
 
-We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \tilde{E}(q, \theta)$.
-The goal is to develop a method to find every solution of E3PNT. 
-
+We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, the coverage area of an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. Because of its application on \autoref{chapter:ellipses_n}, every solution of E3PNT must be encountered. This is a vital piece of information which makes this problem more challenging.
 
 \section{Transforming the problem}
 
@@ -31,7 +29,7 @@ p_y
 \end{array}\right].
 \end{equation}
 
-After that transformation, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$, such that the circle has radius $b$. Therefore, the only unknown of this problem is the angle of rotation. This idea reduces the number of variables from $3$ to only $1$, however, this would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
+After that transformation, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$, such that the circle's radius is $b$. Therefore, the only unknown of this problem is the angle of rotation. This idea reduces the number of variables from $3$ to only $1$, however, this would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
 
 It turns out that for three non-colinear fixed points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, hence its radius can be easily computed and compared to $b$ when an angle is given.
 Let $A(\theta)$ be the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$--note that the transformation does not preserve distance or area. Then, the radius $R$ of the circumscribed circle is given by \autoref{eq:circumscribed_circle} \cite[p.~189]{johnson1960}.
