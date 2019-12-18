@@ -1,9 +1,11 @@
 The problem of finding every center and angle of rotation of a fixed shape ellipse which makes it have three points on its border is presented in this section. Even though its simple statement--it is short and uses only basic mathematical concepts--we were not able to find any work on it, or even on related problems. 
-As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. At the end we propose a $\bigO(1)$ algorithm that finds every solution of the problem, and also run some experiments to analyze efficiency in terms of numerical precision and CPU time.
+As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. At the end we propose an algorithm that takes around $6^3$ operations to compute every solution of the problem. Also, we run some experiments to analyze its efficiency in terms of numerical precision and CPU time.
 
-We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, the coverage area of an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. Because of its application on \autoref{chapter:ellipses_n}, every solution of E3PNT must be encountered. This is a vital piece of information which makes this problem more challenging.
+We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, the coverage area of an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, we need to encounter every solution of E3PNT, this requirement, of course, makes the problem more challenging.
 
 \section{Transforming the problem}
+
+Initially, E3PNT is a problem with $3$ unknown variables: $q_x, q_y, $ and $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also shown that the number of solutions of E3PNT is at most $6$.
 
 To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
 This process can be parametrized by the angle of rotation of the points, as described by \autoref{eq:trpnts}, and because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
@@ -200,7 +202,7 @@ Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{
 \begin{equation}
 angle(\sqrt{z}) = angle(z)/2.
 \end{equation}
-Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm, with $n=6$, can be constructed for E3P.
+Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm can be constructed for E3P. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm.
 
 It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe for future work it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
 \begin{equation}
