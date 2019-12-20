@@ -4,8 +4,7 @@ One of the 21 Karp's NP-Complete problems\footnote{The decision version, which a
 Given a demand set along with a collection of subsets of the demand set. The problem is then to determine the minimum number of elements from the collection of subsets that are needed to cover the whole demand set. One of its most famous examples is the Minimum Vertex Cover defined over graphs, where the vertex set has to be covered by a subset of edges.
 
 The second type of covering problems arose from the fact that covering almost all the demand set can be a lot cheaper than having to cover it all \cite{garcia}. This second type is known as \sigla{\MCLP}{Maximum Covering Location Problem}\footnote{Originally, the problem was defined using the word \textit{Maximal} on its title. In some sources, however, the word \textit{Maximum} is adopted.} and was introduced in \citeonline{church:1974}.
-In this first study, the problem was defined on a network and a set of demand nodes, a subset of the network's vertices; and a set of facilities, each with its coverage radius is given. 
-A demand node was considered covered if it was within any facility's coverage radius. The objective was then to maximize the demand set's coverage by choosing vertices to place every facility.
+In this first study, the author defined the problem for graphs, such that the demand set is a subset of the graph's vertices. Given a facility set where each facility has a coverage radius, the problem asks to choose vertices to place the facilities to maximize the coverage of the demand set.
 
 Just like the Minimum Cover problem, MCLP is NP-Hard \cite{hatta:2013} and both deterministic, using integer programming in \citeonline{church:1974}; and heuristic methods in \citeonline{revelle:2008} have been proposed to solve it. A very complete survey of developments in this area can be found in \citeonline{mclp_review}.
 
