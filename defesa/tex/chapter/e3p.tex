@@ -1,22 +1,19 @@
 The problem of finding every center and angle of rotation of a fixed shape ellipse which makes it have three points on its border is presented in this section. Even though its simple statement--it is short and uses only basic mathematical concepts--we were not able to find any work on it, or even on related problems. 
 As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. At the end we propose an algorithm that takes around $6^3$ operations to compute every solution of the problem. Also, we run some experiments to analyze its efficiency in terms of numerical precision and CPU time.
 
-We refer to this problem as \sigla{E3PNT}{Ellipse by Three points}, and an instance of it is given by three points $u, v, w \in \R^2$ and $E$, the coverage area of an ellipse with shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$. A solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, we need to encounter every solution of E3PNT, this requirement, of course, makes the problem more challenging.
+\section{Definition}
+
+We call the problem introduced in this section \sigla{E3PNT}{Ellipse by Three points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
+
+Let $E$ be the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, it is only useful a method would only be useful to our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
 
 \section{Transforming the problem}
 
 Initially, E3PNT is a problem with $3$ unknown variables: $q_x, q_y, $ and $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also shown that the number of solutions of E3PNT is at most $6$.
 
 To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
-This process can be parametrized by the angle of rotation of the points, as described by \autoref{eq:trpnts}, and because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
+This process can be parametrized by the angle of rotation of the points, as described by 
 
-\begin{figure}
-	\centering
-	\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
-	\includegraphics{tex/figures/scripts/circumscribed-circle}
-	\fautor
-	\label{fig:circumscribed-circle}
-\end{figure}
 \begin{equation}\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
 \frac{b}{a}&0\\
@@ -28,58 +25,68 @@ This process can be parametrized by the angle of rotation of the points, as desc
 \end{array}\right]\left[\begin{array}{c}
 p_x\\
 p_y
-\end{array}\right].
+\end{array}\right],
 \end{equation}
+because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
+
+\begin{figure}
+	\centering
+	\caption{Transforming an ellipse into a circle. T1, T2, and T3 represent the steps of the transformation.}
+	\includegraphics{tex/figures/scripts/circumscribed-circle}
+	\fautor
+	\label{fig:circumscribed-circle}
+\end{figure}
 
 After that transformation, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$, such that the circle's radius is $b$. Therefore, the only unknown of this problem is the angle of rotation. This idea reduces the number of variables from $3$ to only $1$, however, this would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
 
-It turns out that for three non-colinear fixed points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, hence its radius can be easily computed and compared to $b$ when an angle is given.
-Let $A(\theta)$ be the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$--note that the transformation does not preserve distance or area. Then, the radius $R$ of the circumscribed circle is given by \autoref{eq:circumscribed_circle} \cite[p.~189]{johnson1960}.
-
+It turns out that for three non-colinear fixed points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
 \begin{equation}\label{eq:circumscribed_circle}
-R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)}.
+R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
+with $A(\theta)$ being the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$--note that the transformation does not preserve distance or area. For more details about \autoref{eq:circumscribed_circle} see \citeonline[p.~189]{johnson1960}.
 
-Imposing the radius to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined by \autoref{eq:circumscribed_circle_b} in such a way that its zeros determine solutions to the E3PNT's instance. Two questions about $\xi(\theta)$ that arise are: is its set of roots finite? And, can they be found analytically?
-
+Imposing the radius to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
 \begin{equation}\label{eq:circumscribed_circle_b}
-\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
+\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
 \end{equation}
+in such a way that its zeros determine solutions for E3PNT. 
+
+Lastly, two questions about $\xi(\theta)$ that arise are: is its set of roots finite? And, if its set of roots is finite, can they be found analytically?
+
 
 \subsection{The number of solutions is limited}
 
-One of the steps of the method developed on \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Also, discovering a bound for that is essential for determining the efficiency of the algorithm.
+One of the steps of the method developed on \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Also, given that it is limited, discovering a bound for it is essential for determining the efficiency of the algorithm.
 
 Back on \autoref{chapter:definitions} real trigonometric polynomials were introduced. It was stated that a $n$-degree polynomial can have up to $2n$ distinct roots. It turns out that $\xi$ is a real trigonometric polynomial of degree $6$ and it can be written in the format given by \autoref{eq:trig_poly_2} which implies that it can have up to $12$ distinct roots.
- To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form, as it can be seen on \autoref{eq:dd} and \autoref{eq:dd2}. It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared distances. As $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\xi$ is $6$.
-\begin{align}\label{eq:dd}
-	\norm{\varphi(v, \theta)}^2 = (v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta)^2 + (v_y\cos\theta - v_x\sin\theta)^2\\
-	\label{eq:dd2} A(\theta)^2=\dfrac{1}{4}\det\left(
-	\begin{array}{cc}
-		v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta&v_y\cos\theta - v_x\sin\theta\\
-		w_x\frac{b}{a}\cos\theta + w_y\frac{b}{a}\sin\theta&w_y\cos\theta - w_x\sin\theta
-	\end{array}\right)^2
-\end{align}
+ To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form
+ \begin{align}\label{eq:dd}
+ 	\norm{\varphi(v, \theta)}^2 = (v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta)^2 + (v_y\cos\theta - v_x\sin\theta)^2\\
+ 	\label{eq:dd2} A(\theta)^2=\dfrac{1}{4}\det\left(
+ 	\begin{array}{cc}
+ 		v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta&v_y\cos\theta - v_x\sin\theta\\
+ 		w_x\frac{b}{a}\cos\theta + w_y\frac{b}{a}\sin\theta&w_y\cos\theta - w_x\sin\theta
+ 	\end{array}\right)^2.
+ \end{align}
+  It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\xi$ is $6$.
+
 
 Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
 Therefore, the number of angles of rotation and centers that an ellipse of fixed shape can be placed, so it has three fixed points on its border is limited to $6$.
 
 \section{An attempt using the conic general equation}
 
-The idea of this approach was to use the six-parameter conic equation to represent an ellipse. This equation is given by \autoref{eq:gen_ellipse}.
-
+The idea of this approach was to use the six-parameter conic equation to represent an ellipse. This equation is given by
 \begin{equation}\label{eq:gen_ellipse}
 Ax^2+Bxy+Cy^2+Dy+Ex+F=0.
 \end{equation}
 This equation actually represents any conic, for it to be an ellipse the condition $B^2 -4AC < 0$ must be satisfied.
 
-Setting the first point to be the origin, we get $F=0$, using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse and its major-axis and minor-axis have the predefined value. Let $\Delta=4AC-B^2=4AC-1$, \autoref{eq:gen_ellipse_a} and \autoref{eq:gen_ellipse_b} for both major-axis and minor-axis respectively, assuming $F=0$.
-
+Setting the first point to be the origin, we get $F=0$, using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse and its major-axis and minor-axis have the predefined value. Let $\Delta=4AC-B^2=4AC-1$, and assume $F=0$, then the expressions for both major-axis and minor-axis respectively are
 \begin{align}\label{eq:gen_ellipse_a}
 a^2 = \dfrac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C - \sqrt{1 + (A-C)^2}}\\
-\label{eq:gen_ellipse_b}b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}
+\label{eq:gen_ellipse_b}b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}.
 \end{align}
-
 These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. Finding this set was judged to be non-trivial and probably could be approximated numerically, however, we decided not to further pursue this approach.
 
 Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}$ which becomes an expression that allows $A$ to be written as a function of $C$. This function appeared, at first we thought, to be monotonic, we tried to develop a method based on that, however, cases where the function does not behave as nicely were found. It is likely that developing a method to approximate solutions working with this function is possible, but we decided not to continue on this track.
@@ -87,30 +94,26 @@ Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}
 
 \section{An approximation method}
 
-One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi(\theta)$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n$ by $n$ matrix.
+One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi(\theta)$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n\times n$ matrix.
 
 
 \subsection{Chebyshev interpolation}
 
 Chebyshev polynomials are widely used in Numerical Analysis in areas like numerical integration, polynomial approximation, and ordinary and partial differential equations.
-They are also very useful in practice and are present in extension libraries in Python and MATLAB.
+They are also very useful in practice and are present in extension libraries in Python, MATLAB and C.
 
 Because of the scope of this work, only a brief introduction of Chebyshev polynomials of the first kind and its usage in polynomial interpolation is given. For a more thorough work on the subject, please check the book by \citeonline{chebbook}.
 
-We refer to $T_n : [-1, 1] \mapsto [-1, 1]$ as the $n$-degree Chebyshev polynomial of the first kind, and it is defined as follows:
-
+We refer to $T_n : [-1, 1] \mapsto [-1, 1]$ as the $n$-degree Chebyshev polynomial of the first kind, and it is defined as
 \begin{equation}
-T_n(x) = \cos({n\arccos x})
+T_n(x) = \cos({n\arccos x}).
 \end{equation}
-
-It is important to mention that this definition can be extended to the whole real line. Using some trigonometric identities, $T_n$ can also be expressed as a recurrence relation:
-
+It is important to mention that this definition can be extended to the whole real line. Using some trigonometric identities, $T_n$ can also be expressed as a recurrence relation
 \begin{equation}
 T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x).
 \end{equation}
 
-An important property worth bringing up is that Chebyshev polynomials are orthogonal and form a basis for the polynomial space. This implies that any $p_n$ of degree up to $n$ can be expressed as a truncated Chebyshev series:
-
+An important property worth bringing up is that Chebyshev polynomials are orthogonal and form a basis for the polynomial space. This implies that any $p_n$ of degree up to $n$ can be expressed as a truncated Chebyshev series
 \begin{equation}\label{eq:chebseries}
 p_n(x) = \sum_{j=0}^{n} a_j T_j(x).
 \end{equation}
@@ -147,7 +150,7 @@ Even though $\xi$ is complicated enough, in a sense that finding its roots direc
 
 To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$, such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$, nonetheless, in practice, it is taken to be a good estimate for the error $r_n$:
 \begin{equation}
-r_n = \max_{0 \le \theta \le \pi} |f_n(\theta) - \xi(\theta)|.
+r_n = \max_{0 \le \theta < \pi} |f_n(\theta) - \xi(\theta)|.
 \end{equation}
 
 
@@ -198,17 +201,18 @@ Therefore, all the odd degree coefficients of $h$ are $0$ and we can define the 
 \begin{equation}
 f(y) = \sum_{k=0}^{6} c_{2k} y^k.
 \end{equation}
-Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of $-\sqrt{\hat{y}}$ is not between $[0, pi)$ we can ignore it. Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by:
+Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of one of the roots will not be between $[0, \pi)$ we can ignore on of them. 
+Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by:
 \begin{equation}
 angle(\sqrt{z}) = angle(z)/2.
 \end{equation}
 Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm can be constructed for E3P. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm.
 
 It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe for future work it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
-\begin{equation}
+\begin{equation}\label{eq:palindromic_pol}
 c_k = \overline{c_{6-k}},
 \end{equation}
-for $k=0, \dots, 6$. For now, we do not have any ideas on how it could be proved. Nevertheless, this seems to lead somewhere interesting because this condition guarantees that $f$ is a self-reciprocal polynomial which implies that its roots will always come in pairs $(\hat{z}, 1/\hat{z})$.
+for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used for further improving our algorithm.
 
 \section{Numerical Experiments}
 
