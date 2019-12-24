@@ -191,10 +191,11 @@ A function $p_n: \mathbb{C} \mapsto \mathbb{C}$ is a $n$-degree polynomial if it
 \begin{equation}\label{eq:poly}
 p_n(z) = \sum_{k=0}^{n} a_k z^k,
 \end{equation}
-with $a_0, \dots, a_n \in \mathbb{C}$.
+with $a_0, \dots, a_n \in \mathbb{C}$. In this work, when a polynomial is written in the form of \autoref{eq:poly} we say that it is in the power form or in the monomial form, we have these terms for it because we also use a different base to represent polynomials which as a result .
+
 The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov2015}) states that for polynomials of degree higher than four, there is no closed formula\footnote{A finite number of $+, -, \times, \div, \sqrt{}$.} to determine their roots. Fortunately, a numerical approach exists for higher-degree polynomials which in practice works really well.
 
- In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial, there exists a companion matrix, such that its eigenvalues are the zeros of that polynomial. For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by
+ In \citeonline[p.~195]{horn} a theorem is presented which says that for every univariate polynomial of degree $n$, there exists a companion matrix which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial. For example, the companion matrix of a degree-$5$ polynomial written as \autoref{eq:poly} is given by
  \begin{equation}
  \left[\begin{array}{ccccc}
  0 & 1 & 0 & 0 & 0\\
@@ -204,7 +205,8 @@ The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov201
  -\dfrac{a_0}{a_5} & -\dfrac{a_1}{a_5} & -\dfrac{a_2}{a_5} & -\dfrac{a_3}{a_5} & -\dfrac{a_4}{a_5}
  \end{array}\right].
  \end{equation}
- 
+
+
  Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory. A very complete introduction to this algorithm can be found on \citeonline{watkins:2008}. The idea is to convert the input matrix to the Hessenberg form, after that, the matrix preserves its form through the iterations and under some assumptions, convergence to the eigenvalues is achieved.
  Also, in \citeonline{barel} it is pointed that companion matrices are already in the Hessenberg form, making the Hessenberg conversion step unnecessary. This and other properties are used in \citeonline{barel} on the development of a $\bigO(n^2)$ algorithm for the specific case of companion matrices.
  
