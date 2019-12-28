@@ -1,7 +1,14 @@
-In this chapter, the classical version of PMCLP using disks will be defined and a version of the method will be proposed with the intention of later being used to solve the axis-parallel ellipses version of PMCLP. 
+In this chapter, we introduce the classical version of PMCLP using radius one disks, we refer to this problem as \sigla{MCD}{Maximum Covering by Disks}. We also propose a method for it intending to adapt it for the elliptical PMCLP introduced next chapter.
 
+\section{Definition}
 
-Throughout the course of this work, the maximal covering by disks problem is going to be referred to as $MCD(\Pp,m)$, where $\Pp$ is a set of points and $m$ is the number of unit disks.
+An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ unit disks $\D:=\{D_1, \dots, D_m\}$, which represent the facilities and are used to cover the demand set. 
+
+A solution for an instance of MCD chooses the location of the $m$ disks in $\D$. Formally, a solution is given by $Q:=(q_1, \dots, q_m)$, with $q_j\in\R^2$.
+
+Let $D\in \D$ and $q\in\R^2$, then we denote $D(q)$ as disk $D$ centered at $q$. Therefore, $\Pp \cap D(q)$ denotes the set of points from $\Pp$ covered by $D$.
+
+Given an instance of MCD, a solution for it is defined by the cen as .
 
 \section{One disk, $MCD(\Pp,1)$}
 
