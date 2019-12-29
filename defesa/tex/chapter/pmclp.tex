@@ -1,22 +1,34 @@
-In this chapter, we introduce the classical version of PMCLP using radius one disks, we refer to this problem as \sigla{MCD}{Maximum Covering by Disks}. We also propose a method for it intending to adapt it for the elliptical PMCLP introduced next chapter.
+In this chapter, we introduce a version of the classical Euclidean norm PMCLP where the facilities have a radius-one coverage area. We refer to this problem as \sigla{MCD}{Maximum Covering by Disks}, as a radius-one coverage area in a Euclidean normed space is simply a unit disk. We also propose a method for it intending to adapt it for the elliptical PMCLP that will be introduced in the next chapter.
 
 \section{Definition}
 
-An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ unit disks $\D:=\{D_1, \dots, D_m\}$, which represent the facilities and are used to cover the demand set. 
+An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ disks $\D:=\{D_1, \dots, D_m\}$, which represents the facilities and are used to cover the demand set. Additionally, for every point in $\Pp$ a weight is given, and for every disk in $\D$ a coverage radius is given. The weight of the $j$-th point is denoted by $w_j\in\R_{>0}$, and the coverage radius of the $j$-th facility is denoted by $r_j \in \R_{>0}$.
 
-A solution for an instance of MCD chooses the location of the $m$ disks in $\D$. Formally, a solution is given by $Q:=(q_1, \dots, q_m)$, with $q_j\in\R^2$.
+A solution for an instance of MCD is determined by $Q:=(q_1, \dots, q_m) \in \R^{2m}$ which specifies the center of every disk in $\D$.
+The coverage area of $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Finally, let $w : 2^{\Pp} \mapsto \R_{>0}$ be the function
 
-Let $D\in \D$ and $q\in\R^2$, then we denote $D(q)$ as disk $D$ centered at $q$. Therefore, $\Pp \cap D(q)$ denotes the set of points from $\Pp$ covered by $D$.
+\begin{equation}
+w(A) = \sum_{j : p_j \in A} w_j,
+\end{equation}
+which takes a subset of $\Pp$ and returns the sum of the weights of every point in that subset, then an optimal solution of MCD is given by the optmization problem:
 
-Given an instance of MCD, a solution for it is defined by the cen as .
+\begin{equation}
+\max_{Q} w\left(\bigcup_{j=1}^m \Pp \cap D_j(q_j)\right).
+\end{equation}
 
-\section{One disk, $MCD(\Pp,1)$}
+\subsection{CLS and CIPS}
+
+The method proposed in \cite{church:1984} involves the creation of a \sigla{CLS}{Candidate List Set} which is a finite set of possible solutions that needs to be considered so the optimal solution is found.
 
 
-Two exact methods for the $MCD(\Pp, 1)$ have been found in the literature. A $\bigO(n^2)$ algorithm is proposed by \cite{chazelle:1986} which improved the previously $\bigO(n^2\log{n})$ one proposed by \cite{drezner}.
-As it has been mentioned, $MCD(\Pp,1)$ is a 3SUM-HARD problem, which means that it is as hard as the 3SUM problem (the problem of finding $3$ real numbers that sum to $0$, given $n$ real numbers). Initially the lower bound of the 3SUM problem was conjectured to be $\Omega(n^2)$, matching the best algorithm for $MCD(\Pp,1)$, which meant that no better time-complexity could be achieved. Since then, however, better algorithms for 3SUM have been developed with a $\bigO(\frac{n^2}{poly(n)})$ run time complexity \cite{3SUM-kopelowitz:2014}.
+\section{One unit disk version}
 
-The $m=1$ version is treated here before the general case because it will be shown that, using the algorithm here proposed for $MCD(\Pp, 1)$, an optimal solution can be obtained for the $MCD(\Pp, m)$ as well as for the axis-parallel ellipse version of the problem.
+This is the case of MCD where $m=1$ and the only given disk has radius one. This version of the problem will be refered to as \sigla{MCD-1}{Maximum Covering by One Unit Disk}. Two exact methods for it have been found in the literature. A $\bigO(n^2)$ algorithm is proposed by \citeonline{chazelle:1986} which improved the previously $\bigO(n^2\log{n})$ one proposed by \citeonline{drezner}.
+As it has been mentioned, MCD-1 is a 3SUM-HARD problem, which means that it is as hard as the 3SUM problem (the problem of finding $3$ real numbers that sum to $0$, given $n$ real numbers). Initially the lower bound of the 3SUM problem was conjectured to be $\Omega(n^2)$, matching the best algorithm for MCD-1, which meant that no better time-complexity could be achieved. Since then, however, better algorithms for 3SUM have been developed with a $\bigO(\frac{n^2}{poly(n)})$ run time complexity \cite{3SUM-kopelowitz:2014}.
+
+This version is treated here before the general case because it will be shown that, using the algorithm here proposed for MCD-1, an optimal solution can be obtained for the MCD as well as for the axis-parallel ellipse version of the problem that will be introduced in the next chapter.
+
+
 
 \subsection{Notation and definition of the problem}
 
