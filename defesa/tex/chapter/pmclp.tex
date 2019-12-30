@@ -23,38 +23,49 @@ It is important to note that MCD is a slightly different PMCLP than the one intr
 
 The method proposed in \citeonline{church:1984} involves the creation of a \sigla{CLS}{Candidate List Set} which is a finite set of possible solutions for each facility. After a CLS is constructed, a complete search can be executed to find the best solution.
 
-As this work is developed torwards an exact method for MCD, the focus is on constructing a CLS that contains an optimal solution.
-This is done in \citeonline{church:1984} where a circle is defined for every demand point and a \sigla{CIPS}{circle intersection point set} is constructed containing every pairwise intersection of circles and the demand points. 
+As this work is developed towards an exact method for MCD, the focus is on constructing a CLS that contains an optimal solution.
+This is done in \citeonline{church:1984} where a circle is defined for every demand point, and a \sigla{CIPS}{circle intersection point set} is constructed containing the demand points and every pairwise circle intersection.
 We introduce a similar approach based on works found on the case for only one disk and describe a $\bigO(n^2\lg{n})$ algorithm for it.
 
 
 \section{One disk version}
 
-This version of the problem will be refered to as \sigla{MCD-1}{Maximum Covering by One Unit Disk} and it is just a specific case of MCD with one unit disk ($m=1$ and $r_1=1$). It is treated before the case with multiple facilities because it is used to construct a CLS that is guaranteed to contain an optimal solution.
+This version of the problem will be refered to as \sigla{MCD-1}{Maximum Covering by One Unit Disk} and it is just a specific case of MCD with one unit disk ($m=1$ and $r_1=1$). We later use the algorithm for MCD-1 to construct a CLS which is guaranteed to contain an optimal solution for MCD.
 
 Two exact methods for it have been found in the literature. A $\bigO(n^2)$ algorithm is proposed by \citeonline{chazelle:1986} which improved the previously $\bigO(n^2\log{n})$ one proposed by \citeonline{drezner}.
 As it has been mentioned, MCD-1 is a 3SUM-HARD problem, which means that it is as hard as the 3SUM problem (the problem of finding $3$ real numbers that sum to $0$, given $n$ real numbers). Initially the lower bound of the 3SUM problem was conjectured to be $\Omega(n^2)$, matching the best algorithm for MCD-1, which meant that no better time-complexity could be achieved. Since then, however, better algorithms for 3SUM have been developed with a $\bigO(\frac{n^2}{poly(n)})$ run time complexity \cite{3SUM-kopelowitz:2014}.
 
 
-In \citeonline{drezner}, the main idea used to develop the $\bigO(n^2\log{n})$ algorithm is that, even though there are infinitely many points where the disk could be placed, only a few of them, a finite amount of $\bigO(n^2)$, needs to be considered for the method to find an optimal one--this is also the idea used to construct the CIPS in \citeonline{church:1984}.
+In \citeonline{drezner}, the main idea used to develop the $\bigO(n^2\log{n})$ algorithm is that, even though there are infinitely many points where the disk could be placed, only a few of them, a finite amount of $\bigO(n^2)$, needs to be considered for the method to find an optimal one.
 The algorithm, for every point, sorts the other points with respect to the angle they form with the first one. After that, the first point is placed on the border of the disk and, going through the sorted list, the algorithm inserts and removes points from the disk coverage. Also, when inserting and removing a point from the coverage, it only checks the disk centers that make the entering/leaving point to be on the border. Because the algorithm only checks the centers that make the disk have two points on its border, the number of centers it goes through is bounded by the number of pairs of points, which is $\binom{n}{2} = \bigO(n^2)$.
 
-In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, instead of working directly with MCD-1, an equivalent problem called Maximum Weight Clique was introduced. The algorithm that we later describe in this work also uses this equivalence and it is described next.
+In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, instead of working directly with MCD-1, an equivalent problem called \sigla{MWC}{Maximum Weight Clique} was introduced. The algorithm for MCD that is developed in this chapter also uses that equivalence. Because of that, MWC is introduced in the next section.
 
 \section{Maximum Weight Clique Problem}
 
-Let $\Pp=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$, be a set of points; $\D=\{D_1,\dots,D_n\}$ a set of unit disks, such that $D_i$ is centered at $p_i$, $i=1,\dots,n$, with every disk having a weight $w_i > 0$, $i=1,\dots,n$. A clique, in this context, is a non-empty intersection area of two or more disks. A solution for the problem is a clique.
+An instance of MWC is given by a set of points $\Pp:=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$; and a set of disks $\D:=\{D_1,\dots,D_n\}$, such that $D_i$ is centered at $p_i$, for $i=1,\dots,n$, and with the $i$-th disk having a weight $w_i\in \R_{>0}$ assigned to it. 
 
+A clique, in this context, is a non-empty intersection region of one or more disks, and its weight is the sum of the weights of those disks in the intersection.
+Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$ as from $q$, the corresponding clique $S$ can be obtained as follows:
 
-Note that this is different than the clique problem on a intersection graph (a graph where the vertices are the disks and an edge exists if there is an intersection between two disks). 
+\begin{equation}
+S = \bigcap_{j : q \in D_j} D_j.
+\end{equation}
+With a geometric observation, the number of possible values for the solution can be reduced.
+Let $\partial \D = \{ \partial D_1, \dots, \partial D_n \}$ be the set of circles corresponding to each disk in $\D$, it is possible to see that any clique has at least one point on its border that is in the intersection of two circles in $\partial D$ or, in the case where the clique is composed of only one disk, the clique contains obviously the center of that disk. Therefore, $q$ can be actually limited to the set of pairwise intersections of $\partial \D$ as well as $\Pp$. Finally, an optimal solution of MWC is given by the optimization problem
 
+\begin{equation}
+\max_{q} \sum_{D_k \cap q \neq \emptyset} w_k,
+\end{equation}
+with $q \in \{\partial D_i \cap \partial D_j : 1 \le i < j \le n\} \cup \Pp$. It can be shown that the number of possible solutions for an instance of MWC is bounded by $\binom{n}{2} + n = \bigO(n^2)$.
 
-As shown in \autoref{fig:three_disks_no_intersection}, three disks could have non-empty pairwise intersection (which qualifies them as a clique on the intersection graph), however, the intersection of all the three together still be empty. 
-That is why the clique problem for unit disks is also referred to as the Maximum Geometric Clique Problem and as the Maximum Graphical Clique Problem when there is only the pairwise intersection condition \cite{inplace:2014}. 
+It is worth pointing out that MWC is a different problem than the maximum clique on a intersection graph (a graph where the vertices are the disks and an edge exists if there is an intersection between two disks). 
+As shown in \autoref{fig:three_disks_no_intersection}, three disks could have non-empty pairwise intersection and still have an empty intersection of all of them together.
+That is why MWC is also referred to as the Maximum Geometric Clique Problem and the other version, when there is only the pairwise intersection condition, is referred to as the Maximum Graphical Clique Problem \cite{inplace:2014}. 
 
-The graphical version of the problem was studied by \citeonline{graphical-clique}, where a $\bigO(n^{4.5})$ algorithm was proposed. Also, in \citeonline{inplace:2014}, a $\bigO(n^2\log{n})$ time in-place algorithm\footnote{An in-place algorithm is an algorithm that needs $\bigO(1)$ extra space.} for arbitrary radii disks was proposed. 
+%The graphical version of the problem was studied by \citeonline{graphical-clique}, where a $\bigO(n^{4.5})$ algorithm was proposed. Also, in \citeonline{inplace:2014}, a $\bigO(n^2\log{n})$ time in-place algorithm\footnote{An in-place algorithm is an algorithm that needs $\bigO(1)$ extra space.} for arbitrary radii disks was proposed. 
 
-In \citeonline{chazelle:1986}, the method for the Maximum Geometric Weight Clique Problem consists on building a planar graph on which the vertices were the $\bigO(n^2)$ pairwise intersection of the circumferences and the edges were the arcs of the circumferences connecting the intersections. With the graph constructed, a traversal is done to obtain the answer, thus the time complexity of $\bigO(n^2)$.
+In \citeonline{chazelle:1986}, the method for MWC consists on building a planar graph on which the vertices were the $\binom{n}{2}$ pairwise intersection of the circumferences and the edges were the arcs of the circumferences connecting the intersections. With the graph constructed, a traversal is done to obtain the answer, thus the time complexity of $\bigO(n^2)$.
 
 \begin{figure}[H]
 \centering
@@ -82,33 +93,19 @@ In \citeonline{chazelle:1986}, the method for the Maximum Geometric Weight Cliqu
     \fautor
 \end{figure}
 
+As it has been mentioned, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of the MCD-1, which means that a disk centered at $q^*$ which is an optimal solution of MWC, will have a maximal weight covering of the demand set $\Pp$.
 
-A solution for the Maximum Weight Clique is a set of points $Q$, such that the sum of weights of all disks that cover it is maximized. Even though there could be a use for the whole set $Q$, as this problem is used as a tool to solve another problem, only finding a point from the Maximum Weight Clique is enough. This will become clear when the equivalence is stated. With everything in hands, we can define the Maximum Weight Clique Problem as follows.
-
-\begin{definicao}\label{def:max_weight_clique}
-    Let $\D$ be a set of unit disks and $\Pp$ be a set of points as defined before. An optimal solution for the Maximum Weight Clique Problem is given by 
-    
-    \begin{equation}
-        \max_q \sum_{D_k \cap q \neq \emptyset} w_k.
-    \end{equation}
-
-\end{definicao}
-
-
-
-As it has been proposed, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of the $MCD(\Pp,1)$, which means that a disk centered at $q$, defined in \autoref{def:max_weight_clique}, will have a maximal weight covering of the set $\Pp$.
-
-Given an instance of $MCD(\Pp,1)$, the equivalent Maximum Weight Clique Problem is obtained by defining set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is an area where a disk could be placed to cover the corresponding points.
+Given an instance of MCD-1, the equivalent MWC intance is obtained by defining set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is a region where a disk could be placed to cover the corresponding points.
 
 In \autoref{fig:three_disks_no_intersection}, it can be seen that there is no point where a disk could be placed such that it would cover $p_1, p_2$ and $p_3$, nonetheless, in any of the pairwise intersections, a disk could be placed to cover the two corresponding points.
 
-Formally, in the Maximum Weight Clique Problem, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the $MCD(P,1)$ problem. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the one disk maximal covering problem. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$.
+Formally, in MWC, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the MCD-1 problem. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the one disk maximal covering problem. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$.
 
 \subsection{An algorithm for the Maximum Weight Clique Problem}
 
-The algorithm described here is based on the one in \cite{drezner}, also with some ideas from \cite{inplace:2014} and \cite{cabello:2006}. It has a run time complexity of $\bigO(n^2\log{n})$ and uses $\bigO(n)$ of extra space. It is worth noting, however, that a $\bigO((n+K)\log{n})$ run time, with $K$ being the number of intersections, can be obtained by using the algorithm in \cite{bentley:1979} to find all the intersections among the $n$ circumferences.
+The algorithm described here is based on the one in \citeonline{drezner}, also with some ideas from \citeonline{inplace:2014} and \citeonline{cabello:2006}. It has a run time complexity of $\bigO(n^2\log{n})$ and uses $\bigO(n)$ of extra space. It is worth noting, however, that a $\bigO((n+K)\log{n})$ run time, with $K$ being the number of intersections, can be obtained by using the algorithm in \citeonline{bentley:1979} to find all the intersections among the $n$ circumferences.
 
-Without loss of generality, the weights will be ignored, and the method will be described for the Maximum Clique Problem, assuming that every disk has unit weight. Also, it will be assumed that no pair of disks are placed at the same center.
+Without loss of generality, the weights will be ignored, and the method will be described for MWC, assuming that every disk has unit weight. Also, it will be assumed that no pair of disks are placed at the same center.
 
 Let $\D$ be a set of $n$ unit disks, a non-empty intersection area of a subset of disks is convex and bounded by the arcs of the disks that are intersecting \cite{inplace:2014}.
 With this observation, in order to find an optimal solution, it is sufficient to check, for every disk $D$, every intersection area that is bounded by its arc.
