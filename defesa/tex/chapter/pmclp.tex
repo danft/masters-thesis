@@ -43,21 +43,22 @@ In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, 
 
 \section{Maximum Weight Clique Problem}
 
-An instance of MWC is given by a set of points $\Pp:=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$; and a set of disks $\D:=\{D_1,\dots,D_n\}$, such that $D_i$ is centered at $p_i$, for $i=1,\dots,n$, and with the $i$-th disk having a weight $w_i\in \R_{>0}$ assigned to it. 
+An instance of MWC is given by a set of points $\Pp:=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$; and a set of unit disks $\D:=\{D_1,\dots,D_n\}$, such that $D_i$ is centered at $p_i$, for $i=1,\dots,n$, and with the $i$-th disk having a weight $w_i\in \R_{>0}$ assigned to it. 
 
 A clique, in this context, is a non-empty intersection region of one or more disks, and its weight is the sum of the weights of those disks in the intersection.
-Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$ as from $q$, the corresponding clique $S$ can be obtained as follows:
+Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$ which is inside any of the given disks in $\D$.
+From a solution $q$, the corresponding clique $S$ can be obtained by intersecting every disk that contains $q$:
 
 \begin{equation}
 S = \bigcap_{j : q \in D_j} D_j.
 \end{equation}
-With a geometric observation, the number of possible values for the solution can be reduced.
-Let $\partial \D = \{ \partial D_1, \dots, \partial D_n \}$ be the set of circles corresponding to each disk in $\D$, it is possible to see that any clique has at least one point on its border that is in the intersection of two circles in $\partial D$ or, in the case where the clique is composed of only one disk, the clique contains obviously the center of that disk. Therefore, $q$ can be actually limited to the set of pairwise intersections of $\partial \D$ as well as $\Pp$. Finally, an optimal solution of MWC is given by the optimization problem
+With a geometric observation, though, the number of possible values for the solution can be reduced.
+Let $\partial \D = \{ \partial D_1, \dots, \partial D_n \}$ be the set of circles corresponding to each disk in $\D$, it is possible to see that any clique has at least one point on its border that is in the intersection of two circles in $\partial D$ or, in the case where the clique is composed of only one disk, it contains obviously the center of its only disk. Therefore, $q$ can be actually limited to the set of pairwise intersections of $\partial \D$ as well as the set of centers of each disk $\Pp$. Finally, an optimal solution of MWC is given by the optimization problem
 
 \begin{equation}
 \max_{q} \sum_{D_k \cap q \neq \emptyset} w_k,
 \end{equation}
-with $q \in \{\partial D_i \cap \partial D_j : 1 \le i < j \le n\} \cup \Pp$. It can be shown that the number of possible solutions for an instance of MWC is bounded by $\binom{n}{2} + n = \bigO(n^2)$.
+with $q \in \{\partial D_i \cap \partial D_j : 1 \le i < j \le n\} \cup \Pp$. With this new observation, it can be shown that the number of possible solutions that need to be considered, so an optimal solution is found for an instance of MWC is bounded by $\binom{n}{2} + n = \bigO(n^2)$.
 
 It is worth pointing out that MWC is a different problem than the maximum clique on a intersection graph (a graph where the vertices are the disks and an edge exists if there is an intersection between two disks). 
 As shown in \autoref{fig:three_disks_no_intersection}, three disks could have non-empty pairwise intersection and still have an empty intersection of all of them together.
@@ -93,25 +94,22 @@ In \citeonline{chazelle:1986}, the method for MWC consists on building a planar 
     \fautor
 \end{figure}
 
-As it has been mentioned, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of the MCD-1, which means that a disk centered at $q^*$ which is an optimal solution of MWC, will have a maximal weight covering of the demand set $\Pp$.
+As it has been mentioned, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of MCD-1, which means that a disk centered at $q^*$ which is an optimal solution of MWC, will have a maximal weight covering of the demand set $\Pp$.
 
-Given an instance of MCD-1, the equivalent MWC intance is obtained by defining set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is a region where a disk could be placed to cover the corresponding points.
+Given an instance of MCD-1, the equivalent MWC intance is obtained by defining the set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is a region where a disk could be placed to cover the corresponding points.
 
 In \autoref{fig:three_disks_no_intersection}, it can be seen that there is no point where a disk could be placed such that it would cover $p_1, p_2$ and $p_3$, nonetheless, in any of the pairwise intersections, a disk could be placed to cover the two corresponding points.
 
-Formally, in MWC, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the MCD-1 problem. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the one disk maximal covering problem. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$.
+Formally, in MWC, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the equivalent MCD-1 instance. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the MCD-1 instance. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$ in MWC.
 
 \subsection{An algorithm for the Maximum Weight Clique Problem}
 
 The algorithm described here is based on the one in \citeonline{drezner}, also with some ideas from \citeonline{inplace:2014} and \citeonline{cabello:2006}. It has a run time complexity of $\bigO(n^2\log{n})$ and uses $\bigO(n)$ of extra space. It is worth noting, however, that a $\bigO((n+K)\log{n})$ run time, with $K$ being the number of intersections, can be obtained by using the algorithm in \citeonline{bentley:1979} to find all the intersections among the $n$ circumferences.
 
-Without loss of generality, the weights will be ignored, and the method will be described for MWC, assuming that every disk has unit weight. Also, it will be assumed that no pair of disks are placed at the same center.
-
-Let $\D$ be a set of $n$ unit disks, a non-empty intersection area of a subset of disks is convex and bounded by the arcs of the disks that are intersecting \cite{inplace:2014}.
-With this observation, in order to find an optimal solution, it is sufficient to check, for every disk $D$, every intersection area that is bounded by its arc.
+In \citeonline{inplace:2014} an important observation is made about the intersection regions of disks. Given an instance of MWC, any clique formed by a subset of $\D$ is bounded by the arcs of circles that intersect with it. Also, those arcs have the intersection of circles as its end-points. This can be seen on \autoref{fig:3disks_intersect} where the cliques that $D_1$ is part of are bounded by $D_1$'s arcs which have its intersections with the other circles as end-points. Following this, a definition is presented to characterize the end-points of an arc bordering a clique.
 
 \begin{definicao}\label{def:inter_arc}
-    Let $D_i$ and $D_j$ be two unit disks that intersect (at least at one point). Also let $(\theta_1, \theta_2) \in [0,2\pi]^2$ be the two angles that the circumferences induced by $D_i$ and $D_j$ intersect, with the condition that $(\theta_1,\theta_2)$ defines an arc (counter-clockwise order) of $D_i$ that is the border of $D_i \cap D_j$. If $D_i$ is tangent to $D_j$, then $\theta_1=\theta_2$. Then, define $\Gamma_+(i,j) = \theta_1$ and $\Gamma_-(i,j) = \theta_2$, also we refer to them as opening and closing intersection angles respectively.
+    Let $D_i$ and $D_j$ be two unit disks with non-empty intersection, and $(\theta_1, \theta_2) \in [0,2\pi)^2$ be the two angles that $\partial D_i$ and $\partial D_j$ intersect, with the condition that $(\theta_1,\theta_2)$ defines an arc (counter-clockwise order) of $D_i$ that is the border of $D_i \cap D_j$. If $D_i$ is tangent to $D_j$, then $\theta_1=\theta_2$. Then, define $\Gamma_+(i,j) = \theta_1$ and $\Gamma_-(i,j) = \theta_2$, also we refer to them as opening and closing intersection angles respectively.
 \end{definicao}
 
 \begin{figure}[H]
@@ -123,10 +121,25 @@ With this observation, in order to find an optimal solution, it is sufficient to
     \label{fig:3disks_intersect}
 \end{figure}
 
-In \autoref{fig:3disks_intersect}, it is shown all the intersection points between $D_1$ with $D_2$ and $D_3$. Also, they are labeled according to \autoref{def:inter_arc}. Note that $\Gamma_+(1,3) > \Gamma_-(1,3)$ (the angles should be in the $[0,2\pi]$ interval).
+In \autoref{fig:3disks_intersect}, it is shown all the intersection points between $D_1$ with $D_2$ and $D_3$. Also, they are labeled according to \autoref{def:inter_arc}. Note that $\Gamma_+(1,3) > \Gamma_-(1,3)$ (the angles should be in the $[0,2\pi)$ interval).
 
-With \autoref{def:inter_arc} in hand, we can establish the basis of the algorithm to find the maximum clique in which a disk $D_i$ participates: a traversal going through every point of intersection with $D_i$, in counter-clockwise order, keeping a set of active disks. When an opening intersection angle is reached, the corresponding disk is added to the active set; when a closing one is reached, the corresponding disk is removed from the active set.
-This simple traversal, however, would not handle the special case with $\Gamma_+(i,j) > \Gamma_-(i,j)$ (see \autoref{fig:3disks_intersect}). If the traversal begins at the point with smallest angle, the algorithm would remove $D_3$ from the active disks without first adding it. If there was another disk starting before $\Gamma_-(1,3)$, the algorithm would not have both of them in the active set at the same time, and an optimal solution could end up not being found. This can be worked around repeating the traversal once without resetting the active disks set, that way, in the beginning of the second traversal, the active set would contain the disks that have $\Gamma_+(i,j) > \Gamma_-(i,j)$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated, simulating the traversal repetition (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively). It can be seen that without the repetition, the algorithm would find $2$ as the value of an optimal solution, which is wrong.
+With \autoref{def:inter_arc} in hand, we can establish the basis of the algorithm for MWC.
+The idea is to find for every disk, the best clique it is part of, this way an optimal solution is surely found.
+
+Finding the best clique that $D_i$ participates is done by traversing every intersection of $\partial D_i$ with every circle from $\partial \D$ in counter-clockwise order while keeping a set of active disks. In other words, the set
+
+\begin{equation}
+A_i = \{\Gamma_+(i,j) : 1 \le j \le n\} \cup \{\Gamma_-(i,j) : 1 \le j \le n\},
+\end{equation}
+is traversed in counter-clockwise order and when an opening intersection angle is reached, the corresponding disk is added to the active set; and when a closing one is seen, the corresponding disk is removed from the active set. This way, finding an optimal solution can be achieved by keeping the weight of the active disks as well as the best one found so far.
+
+This simple traversal, however, would not handle the case with $\Gamma_+(i,j) > \Gamma_-(i,j)$ which would cause the algorithm to remove a disk wihtout first adding it leading to a possible non-optimal solution. 
+This can be fixed by traversing the following set instead
+
+\begin{equation}
+B_i = A_i \cup \{\Gamma_+(i,j) + 2\pi : 1 \le j \le n\} \cup \{\Gamma_-(i,j) + 2\pi: 1 \le j \le n\},
+\end{equation}
+which basically duplicates the list of intersections. This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated simulating the traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively). It can be seen that without the duplication, the algorithm would find $2$ as the value of an optimal solution, which is wrong.
 
 \begin{figure}[H]
     \centering
@@ -180,12 +193,12 @@ This simple traversal, however, would not handle the special case with $\Gamma_+
 \end{algorithmic}
 \end{algoritmo}
 
-\begin{lema}\label{lema:disk}
+\begin{teorema}\label{lema:disk}
 \autoref{algoritmo:mcd_1} for solving the Maximum Clique Problem has a $\bigO((n+K)\log{n})$ run time complexity, where $K$ is the number of intersections of the $n$ disks.
-\end{lema}
+\end{teorema}
 
 \begin{proof}
-    Finding every intersection can be done in $\bigO((n+K)\log{n})$  by a plane sweep, the method is described in \cite{bentley:1979}. 
+    Finding every intersection can be done in $\bigO((n+K)\log{n})$  by a plane sweep, the method is described in \citeonline{bentley:1979}. 
     Because the traversal is made in counter-clockwise order, the intersection points have to be sorted by their intersection angles, so an additional $\bigO(K\log{K})$ pre-processing is needed. All the other operations can be done in constant time. Therefore, the final algorithm complexity is $\bigO((n+K)\log{n})$.
 \end{proof}
 
