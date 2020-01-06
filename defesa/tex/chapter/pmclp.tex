@@ -11,7 +11,7 @@ The coverage area of $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Fin
 \begin{equation}
 w(A) = \sum_{j : p_j \in A} w_j,
 \end{equation}
-which takes a subset of $\Pp$ and returns the sum of the weights of every point in that subset; then an optimal solution of MCD is given by the optmization problem:
+which takes a subset of $\Pp$ and returns the sum of the weights of every point in it; then an optimal solution of MCD is given by the optmization problem:
 
 \begin{equation}
 \max_{Q} w\left(\bigcup_{j=1}^m \Pp \cap D_j(q_j)\right).
@@ -109,7 +109,7 @@ The algorithm described here is based on the one in \citeonline{drezner}, also w
 In \citeonline{inplace:2014} an important observation is made about the intersection regions of disks. Given an instance of MWC, any clique formed by a subset of $\D$ is bounded by the arcs of circles that intersect with it. Also, those arcs have the intersection of circles as its end-points. This can be seen on \autoref{fig:3disks_intersect} where the cliques that $D_1$ is part of are bounded by $D_1$'s arcs which have its intersections with the other circles as end-points. Following this, a definition is presented to characterize the end-points of an arc bordering a clique.
 
 \begin{definicao}\label{def:inter_arc}
-    Let $D_i$ and $D_j$ be two unit disks with non-empty intersection, and $(\theta_1, \theta_2) \in [0,2\pi)^2$ be the two angles that $\partial D_i$ and $\partial D_j$ intersect, with the condition that $(\theta_1,\theta_2)$ defines an arc (counter-clockwise order) of $D_i$ that is the border of $D_i \cap D_j$. If $D_i$ is tangent to $D_j$, then $\theta_1=\theta_2$. Then, define $\Gamma_+(i,j) = \theta_1$ and $\Gamma_-(i,j) = \theta_2$, also we refer to them as opening and closing intersection angles respectively.
+    Let $D_i$ and $D_j$ be two unit disks with non-empty intersection, and $(\theta_1, \theta_2) \in [0,2\pi)^2$ be the two angles that $\partial D_i$ and $\partial D_j$ intersect, with the condition that $(\theta_1,\theta_2)$ defines an arc (counter-clockwise order) of $D_i$ that is the border of $D_i \cap D_j$. Then, define $\Gamma_+(i,j) = \theta_1$ and $\Gamma_-(i,j) = \theta_2$, also we refer to them as opening and closing intersection angles respectively. As a convenience, if $D_i$ is tangent to $D_j$, then $\theta_1=\theta_2$; and $\Gamma_-(i, i)=0$ and $\Gamma_+(i,i)=2\pi$.
 \end{definicao}
 
 \begin{figure}[H]
@@ -126,20 +126,25 @@ In \autoref{fig:3disks_intersect}, it is shown all the intersection points betwe
 With \autoref{def:inter_arc} in hand, we can establish the basis of the algorithm for MWC.
 The idea is to find for every disk, the best clique it is part of, this way an optimal solution is surely found.
 
-Finding the best clique that $D_i$ participates is done by traversing every intersection of $\partial D_i$ with every circle from $\partial \D$ in counter-clockwise order while keeping a set of active disks. In other words, the set
+Finding the best clique that $D_i$ participates is done by traversing every intersection of $\partial D_i$ with every circle from $\partial \D$ in counter-clockwise order while keeping a set of active disks. 
+This way, finding an optimal solution can be achieved by keeping the weight of the active disks as well as the best clique found so far.
+
+In other words, the set
 
 \begin{equation}
 A_i = \{\Gamma_+(i,j) : 1 \le j \le n\} \cup \{\Gamma_-(i,j) : 1 \le j \le n\},
 \end{equation}
-is traversed in counter-clockwise order and when an opening intersection angle is reached, the corresponding disk is added to the active set; and when a closing one is seen, the corresponding disk is removed from the active set. This way, finding an optimal solution can be achieved by keeping the weight of the active disks as well as the best one found so far.
+is traversed in counter-clockwise order and when an opening intersection angle is reached, the corresponding disk is added to the active set; and when a closing one is seen, the corresponding disk is removed from the active set. 
 
-This simple traversal, however, would not handle the case with $\Gamma_+(i,j) > \Gamma_-(i,j)$ which would cause the algorithm to remove a disk wihtout first adding it leading to a possible non-optimal solution. 
+This simple traversal, however, would not handle the case with $\Gamma_+(i,j) > \Gamma_-(i,j)$ which would cause the algorithm to remove a disk wihtout first adding it to the active set list leading to a possible non-optimal solution. 
 This can be fixed by traversing the following set instead
 
 \begin{equation}
 B_i = A_i \cup \{\Gamma_+(i,j) + 2\pi : 1 \le j \le n\} \cup \{\Gamma_-(i,j) + 2\pi: 1 \le j \le n\},
 \end{equation}
-which basically duplicates the list of intersections. This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated simulating the traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively). It can be seen that without the duplication, the algorithm would find $2$ as the value of an optimal solution, which is wrong.
+which basically duplicates the set of intersections $A_i$ shifting it to the interval $[2\pi, 4\pi)$. 
+
+This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated simulating the traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively). It can be seen that without the duplication, the algorithm would find $2$ as the value of an optimal solution, which is wrong.
 
 \begin{figure}[H]
     \centering
