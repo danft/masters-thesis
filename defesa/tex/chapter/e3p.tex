@@ -3,16 +3,16 @@ As a result, starting from scratch, we ended up trying a handful of approaches w
 
 \section{Definition}
 
-We call the problem introduced in this section \sigla{E3PNT}{Ellipse by Three points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
+We call the problem introduced in this section \sigla{E3PNT}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
 
-Let $E$ be the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT is a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, it is only useful a method would only be useful to our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
+Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, a method would only be useful for our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
 
 \section{Transforming the problem}
 
-Initially, E3PNT is a problem with $3$ unknown variables: $q_x, q_y, $ and $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also shown that the number of solutions of E3PNT is at most $6$.
+Initially, E3PNT is a problem with $3$ unknown variables: the two coordinates of the center point $q_x, q_y, $ and the angle of rotation $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also show E3PNT has at most $6$ solutions.
 
-To make it simpler, let us translate the system, so the point $u$ is at $(0,0)$. Then, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
-This process can be parametrized by the angle of rotation of the points, as described by 
+To make the problem simpler, let us translate the system, so the point $u$ is at the origin. After that, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
+This process can be parametrized by the angle of rotation of the points, as described by
 
 \begin{equation}\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
@@ -25,9 +25,9 @@ This process can be parametrized by the angle of rotation of the points, as desc
 \end{array}\right]\left[\begin{array}{c}
 p_x\\
 p_y
-\end{array}\right],
+\end{array}\right].
 \end{equation}
-because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
+Because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
 
 \begin{figure}
 	\centering
@@ -37,15 +37,17 @@ because of the invertibility of linear transformations, solutions for E3PNT can 
 	\label{fig:circumscribed-circle}
 \end{figure}
 
-After that transformation, the problem to be solved is finding a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$, such that the circle's radius is $b$. Therefore, the only unknown of this problem is the angle of rotation. This idea reduces the number of variables from $3$ to only $1$, however, this would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
+After that transformation, the problem to be solved is the one of checking if there is a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. That implies that the only unknown of this problem is the angle of rotation $\theta$, reducing the number of variables from three to one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
 
 It turns out that for three non-colinear fixed points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
+
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
 with $A(\theta)$ being the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$--note that the transformation does not preserve distance or area. For more details about \autoref{eq:circumscribed_circle} see \citeonline[p.~189]{johnson1960}.
 
 Imposing the radius to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
+
 \begin{equation}\label{eq:circumscribed_circle_b}
 \xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
 \end{equation}
@@ -208,7 +210,7 @@ angle(\sqrt{z}) = angle(z)/2.
 \end{equation}
 Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm can be constructed for E3P. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm.
 
-It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe for future work it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
+It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe, for future work, it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
 \begin{equation}\label{eq:palindromic_pol}
 c_k = \overline{c_{6-k}},
 \end{equation}
