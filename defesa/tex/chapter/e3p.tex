@@ -37,31 +37,41 @@ Because of the invertibility of linear transformations, solutions for E3PNT can 
 	\label{fig:circumscribed-circle}
 \end{figure}
 
-After that transformation, the problem to be solved is the one of checking if there is a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. That implies that the only unknown of this problem is the angle of rotation $\theta$, reducing the number of variables from three to one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
+After that transformation, the problem to be solved is the one of checking the existence of a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. Notice that the problems are indeed equivalent, which implies that a bijection between the set of solutions of each problem exists.
+Working with this problem instead is preferred because of the reduction in the number of variables from three to one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
 
-It turns out that for three non-colinear fixed points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
+It turns out that for three non-colinear points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
 
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
-with $A(\theta)$ being the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$--note that the transformation does not preserve distance or area. For more details about \autoref{eq:circumscribed_circle} see \citeonline[p.~189]{johnson1960}.
+with $A(\theta)$ being the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$ (for more details about \autoref{eq:circumscribed_circle} see \citeonline[p.~189]{johnson1960}
+). It is important to note that the transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
 
-Imposing the radius to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
+With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for E3PNT.
+Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
 
 \begin{equation}\label{eq:circumscribed_circle_b}
-\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
+\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
 \end{equation}
-in such a way that its zeros determine solutions for E3PNT. 
+Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3PNT.
 
-Lastly, two questions about $\xi(\theta)$ that arise are: is its set of roots finite? And, if its set of roots is finite, can they be found analytically?
+Before continuing with this approach of trying to determine the roots of $\xi$, it is important to answer the question whether this set of roots is finite or not? Answering this question is also important because it automatically relates to the question about the number of solutions of E3PNT.
 
 
-\subsection{The number of solutions is limited}
+\subsection{The number of solutions of E3PNT}
 
-One of the steps of the method developed on \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Also, given that it is limited, discovering a bound for it is essential for determining the efficiency of the algorithm.
+One of the steps of the method developed in \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Also, given that it is limited, discovering a bound for it is essential for determining the efficiency of the algorithm.
 
-Back on \autoref{chapter:definitions} real trigonometric polynomials were introduced. It was stated that a $n$-degree polynomial can have up to $2n$ distinct roots. It turns out that $\xi$ is a real trigonometric polynomial of degree $6$ and it can be written in the format given by \autoref{eq:trig_poly_2} which implies that it can have up to $12$ distinct roots.
- To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in that form
+\begin{lema}
+	E3PNT has at most $6$ solutions.
+\end{lema}
+
+\begin{proof}
+	
+Back on \autoref{chapter:definitions}, real trigonometric polynomials were introduced. It was stated that a $n$-degree polynomial can have up to $2n$ distinct roots. It turns out that $\xi$ is a real trigonometric polynomial of degree $6$ and it can be written in the format given by \autoref{eq:trig_poly_2}. This implies that $\xi$ can have up to $12$ distinct roots.
+ To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in the same form as given by \autoref{eq:trig_poly_2}:
+ 
  \begin{align}\label{eq:dd}
  	\norm{\varphi(v, \theta)}^2 = (v_x\frac{b}{a}\cos\theta + v_y\frac{b}{a}\sin\theta)^2 + (v_y\cos\theta - v_x\sin\theta)^2\\
  	\label{eq:dd2} A(\theta)^2=\dfrac{1}{4}\det\left(
@@ -70,11 +80,9 @@ Back on \autoref{chapter:definitions} real trigonometric polynomials were introd
  		w_x\frac{b}{a}\cos\theta + w_y\frac{b}{a}\sin\theta&w_y\cos\theta - w_x\sin\theta
  	\end{array}\right)^2.
  \end{align}
-  It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\xi$ is $6$.
-
-
-Because ellipses are symmetrical with respect to their major-axis, and any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$, the number of different solutions is cut in half.
-Therefore, the number of angles of rotation and centers that an ellipse of fixed shape can be placed, so it has three fixed points on its border is limited to $6$.
+  It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\norm{\varphi(v, \theta)}^2$ is $6$ which consequently is the degree of $\xi$.
+Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Therefore, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be ignored.
+\end{proof}
 
 \section{An attempt using the conic general equation}
 
@@ -96,7 +104,7 @@ Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}
 
 \section{An approximation method}
 
-One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi(\theta)$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n\times n$ matrix.
+One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n\times n$ matrix.
 
 
 \subsection{Chebyshev polynomial}
@@ -151,95 +159,18 @@ The last question that needs to be addressed is how close the roots of the Cheby
 Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and  has infinitely many continuous and integrable derivatives. This satisfy all the requirements of the result in \citeonline[p.~28]{gottlieb} which says that if a function has $m$ continuous and integrable derivatives on a closed interval, then its absolute difference between the Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004} a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
 
 To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$, such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$, nonetheless, in practice, it is taken to be a good estimate for the error
+
 \begin{equation}
 r_n = \max_{0 \le \theta < \pi} |f_n(\theta) - \xi(\theta)|,
 \end{equation}
-which measures how far the interpolation is at the point it worst approximates.
+which measures how far the interpolation is at the point it worst approximates. 
 
-\section{Converting $\xi$ into a polynomial}
-
-In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
-
-\subsection{Real polynomial}
-
-The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability.
-
-\subsection{Complex polynomial}
-
-The second approach is based on a idea published on \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials in order to obtain its roots using the companion matrix scheme. This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial--more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
-\begin{align}\label{eq:complex_trig}
-\cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
-\sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
-\end{align}
-
-It is possible to show that with that substitution and changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit complex circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$):
-\begin{equation}
-g(z)=\sum_{k=0}^{12} c_k z^{k-6},
-\end{equation}
-for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, the function $g'(\theta)=g(e^{i\theta})$ and the function $\xi$ are equivalent since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
-
-Now there is only two things preventing $g$ from being a polynomial: firstly, $z$ shows up with negative exponents (up to $-6$); secondly its domain is the unit circle $\mathbb{S}$, not the whole complex set $\mathbb{C}$. 
-The first issue can be fixed by multiplying $g$ by $z^6$, note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$, as $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear which requires a further check for every root that is found.
-Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as follows:
-\begin{equation}
-h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
-\end{equation}
-By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root $\hat{z}$ of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ though their angles on the unit circle.
-
-\subsubsection{Further improvements}
-
-It is possible to make another reduction to obtain a degree-$6$ polynomial, this can lower the size of the companion matrix utilized on obtaining the roots of $h$ from $12^2=144$ to $6^2=36$.
-As it has been mentioned before, an ellipse is symmetric with respect to its own major or minor axis. 
-In other words, rotating an ellipse by $\theta \in [0, \pi)$ is the same as rotating the same ellipse by $\pi + \theta$.
-On the other hand, on \autoref{chapter:definitions}, it was stated that the angle of the complex numbers $z$ and $-z$ has the same symmetry with each other as the aforementioned symmetry of ellipses:
-\begin{equation*}
-angle(-z) = \pi + angle(z).
-\end{equation*}
-From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact, an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
-\begin{align}
-h(-z) = (-z)^6g(-z) = z^6g(z).
-\end{align}
-Therefore, all the odd degree coefficients of $h$ are $0$ and we can define the $6$-degree polynomial $f : \mathbb{C} \mapsto \mathbb{C}$ with the substitution $y=z^2$:
-\begin{equation}
-f(y) = \sum_{k=0}^{6} c_{2k} y^k.
-\end{equation}
-Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of one of the roots will not be between $[0, \pi)$ we can ignore on of them. 
-Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by:
-\begin{equation}
-angle(\sqrt{z}) = angle(z)/2.
-\end{equation}
-Finally, using the QR algorithm mentioned on \autoref{chapter:definitions} a $\bigO(n^3)$ algorithm can be constructed for E3P. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm.
-
-It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe, for future work, it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
-\begin{equation}\label{eq:palindromic_pol}
-c_k = \overline{c_{6-k}},
-\end{equation}
-for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used for further improving our algorithm.
-
-\section{Numerical Experiments}
+\subsection{Numerical Experiments}
 
 In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. 
-Let $f_n$ be the $n$-degree Chebyshev interpolation of $\xi$, we define the interpolation error $r_n$ as:
+The interpolation was run for several degrees for every triplet of points present in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found.
 
-
-
-Then, we want to determine the smallest $n$, such that $r_n \le \epsilon$, for a predefined $\epsilon$. Unfortunately, calculating $r_n$ involves taking samples from both functions on the whole interval, which is not viable computationally. In \citeonline[p.~50]{boyd:2001} a rule-thumb for estimating the interpolation error is given. It is worth mentioning that this rule 
-
-It uses a theorem that states that $r_n$ is limited by the sum of the coefficients of the Chebyshev series that were removed by the truncation. The rule-of-thumb for estimating $r_n$ is given by:
-
-\begin{equation}
-r_n \approx |a_n|.
-\end{equation}
-
-Note that 
-
-Obtaining an expression for it is not trivial, and sampling the whole interval is not viable computationally. 
-
-Therefore, an estimation of $r_n$ is used to measure how good is the approximation.
-
-Also we adopt two suggestions from \cite{boyd:2013}. The first is to divide the interval into $K$ subintervals to achieve a precision without having to increase the degree of the interpolant too much. The second is to use a couple of Newton's iterations to refine the roots found. 
-
-Let $\theta^*$ be a root of $f_n$, then we measure the error associated with that root as $|\xi(\theta^*)|$. For the numerical experiments, we considered every triplet of points from an instance with $25$ points. Then for some values of $K$ and $n$ we define the error as the maximum error for every root that were found.
+The results are shown in \autoref{fig:interpolant_error} where the worst error found among every root found is plotted against the interpolant degree used. A parameter $K$ is also used in the experiments. This is an idea suggested in \citeonline{boyd:2013} to improve accuracy. This parameter represents the number of sub-intervals that $[0, \pi)$ is divided into. This way $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when not so large degrees are used.
 
 \begin{figure}
 	\centering
@@ -249,10 +180,112 @@ Let $\theta^*$ be a root of $f_n$, then we measure the error associated with tha
 	\label{fig:interpolant_error}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\caption{The interpolation error measured on roots that were found after three Newton's iterations.}
-	\includegraphics{tex/figures/interpolant_error_after_newton}
-	\fautor
-	\label{fig:interpolant_error_after_newton}
-\end{figure}
+\section{Converting $\xi$ into a polynomial}
+
+In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
+
+\subsection{Real polynomial}
+
+The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability. This issue made us abandon this approach and pursue a different way to convert $\xi$ into a polynomial.
+
+\subsection{Complex polynomial}
+
+The second approach is based on a idea published in \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials. This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial--more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
+
+\begin{align}\label{eq:complex_trig}
+\cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
+\sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
+\end{align}
+
+It is possible to show that with that substitution and changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit complex circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$):
+
+\begin{equation}
+g(z)=\sum_{k=0}^{12} c_k z^{k-6},
+\end{equation}
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, the function $g(e^{i\theta})$ and the function $\xi$ are equivalent since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
+
+The function $g$ is still not a polynomial as $z$ shows up with negative exponents (up to $-6$), and its domain is the unit circle $\mathbb{S}$, not the whole complex set $\mathbb{C}$. 
+The first issue can be fixed by multiplying $g$ by $z^6$, note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$, as $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear which requires a further check for every root that is found.
+Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as
+
+\begin{equation}\label{eq:h}
+h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
+\end{equation}
+By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle.
+
+\subsubsection{Further improvements}
+
+It is possible to make another reduction to obtain a degree-$6$ polynomial, this can lower the size of the companion matrix utilized on obtaining the roots of $h$ from $12^2=144$ to $6^2=36$.
+As it has been mentioned before, an ellipse is symmetric with respect to its own major or minor axis. 
+In other words, rotating an ellipse by $\theta \in [0, \pi)$ is the same as rotating the same ellipse by $\pi + \theta$.
+On the other hand, in \autoref{chapter:definitions}, it was stated that the angle of the complex numbers $z$ and $-z$ has the same symmetry with each other as the aforementioned symmetry of ellipses:
+\begin{equation*}
+angle(-z) = \pi + angle(z).
+\end{equation*}
+From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact, an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
+\begin{align}
+h(-z) = (-z)^6g(-z) = z^6g(z).
+\end{align}
+Therefore, all the odd degree coefficients of $h$ are zero and we can define the $6$-degree polynomial $f : \mathbb{C} \mapsto \mathbb{C}$ with the substitution $y=z^2$ as follows
+\begin{equation}
+f(y) = \sum_{k=0}^{6} c_{2k} y^k.
+\end{equation}
+Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of one of the roots will not be between $[0, \pi)$ we can ignore one of them. 
+Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by the following identity
+\begin{equation}
+angle(\sqrt{z}) = angle(z)/2.
+\end{equation}
+Finally, using the QR algorithm mentioned in \autoref{chapter:definitions}, a $\bigO(n^3)$ algorithm can be constructed for E3PNT. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm that takes around $6^3$ operations.
+
+It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe, for future work, it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
+\begin{equation}\label{eq:palindromic_pol}
+c_k = \overline{c_{6-k}},
+\end{equation}
+for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used for further improving our algorithm.
+
+Assuming that an algorithm to obtain the eigenvalues of a matrix, the following algorithm to obtain every solution of E3PNT is described as follows.
+
+\begin{algoritmo}
+	\caption{Algorithm for E3P.}\label{algoritmo:e3p}
+	\begin{algorithmic}[1]
+		\Require{$u, v, w\in\R^2$, and $a, b\in\R_{>0}$, with $a>b$.}
+		\Ensure{Every solution of E3P.}
+		
+		\item[]
+		
+		\Procedure{$E3PNT$}{$u,v,w,a,b$}
+		
+		\State $\hat{u}\gets (0,0)$
+		\State $\hat{v} \gets v-u$
+		\State $\hat{w} \gets w-u$
+		
+		\State Let $c_0, \dots, c_{12}$ be the coefficients of polynomial $h$ as \autoref{eq:h}.
+		\State Let $A$ be a $6\times6$ zero matrix.
+		
+		\For{$i\in\{1, \dots, 6\}$}
+			\State $A_{i,i+1} \gets 1$
+		\EndFor
+		
+		\For{$j\in\{0, \dots, 5\}$}
+			\State $A_{6,j+1} \gets -\frac{c_j}{c_6}$
+		\EndFor
+		
+		\State $Q \gets \{\}$
+		
+		\ForAll{$q \in eig(A)$} \Comment{$eig(A)$ returns every eigenvalue of $A$.}
+		\State $\theta\gets angle(q)$
+		\If{$|\theta|=1$}
+			\State $Q \gets Q \cup \{\theta\}$
+		\EndIf
+		\EndFor
+		
+		\State $Sols\gets\{\}$
+		\ForAll{$\theta\in Q$}
+		\State Let $c$ be the center of the circumscribe circle of the points $(0,0); \varphi(\hat{v}, \theta); \varphi(\hat{w}, \theta)$.
+		\State $Sols \gets \cup \{(\theta, \varphi^{-1}(c, \theta)+u)\}$
+		\EndFor
+		
+		\State \Return $Sols$
+		\EndProcedure
+	\end{algorithmic}
+\end{algoritmo}
