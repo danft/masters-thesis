@@ -12,7 +12,7 @@ Let $E$ represent the coverage area of an ellipse with the given shape parameter
 Initially, E3PNT is a problem with $3$ unknown variables: the two coordinates of the center point $q_x, q_y, $ and the angle of rotation $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also show E3PNT has at most $6$ solutions.
 
 To make the problem simpler, let us translate the system, so the point $u$ is at the origin. After that, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
-This process can be parametrized by the angle of rotation of the points, as described by
+This process can be parameterized by the angle of rotation of the points, as described by
 
 \begin{equation}\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
@@ -27,7 +27,6 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation}
-Because of the invertibility of linear transformations, solutions for E3PNT can be obtained by reversing these transformations.
 
 \begin{figure}
 	\centering
@@ -37,7 +36,10 @@ Because of the invertibility of linear transformations, solutions for E3PNT can 
 	\label{fig:circumscribed-circle}
 \end{figure}
 
-After that transformation, the problem to be solved is the one of checking the existence of a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. Notice that the problems are indeed equivalent, which implies that a bijection between the set of solutions of each problem exists.
+\subsection{The circumradius problem}
+
+After that transformation, the problem to be solved is the one of checking the existence of a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. 
+Note that the problems are indeed equivalent: $\varphi$ is a linear function, thus its inverse $\varphi^{-1}$ is well defined and can be used to determine a bijection between the set of solutions of both problems.
 Working with this problem instead is preferred because of the reduction in the number of variables from three to one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
 
 It turns out that for three non-colinear points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
@@ -81,7 +83,7 @@ Back on \autoref{chapter:definitions}, real trigonometric polynomials were intro
  	\end{array}\right)^2.
  \end{align}
   It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\norm{\varphi(v, \theta)}^2$ is $6$ which consequently is the degree of $\xi$.
-Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Therefore, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be ignored.
+Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Therefore, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be dismissed.
 \end{proof}
 
 \section{An attempt using the conic general equation}
