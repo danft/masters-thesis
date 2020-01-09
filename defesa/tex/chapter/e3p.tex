@@ -221,7 +221,7 @@ By its definition it is possible to see that every root of $g$ is also a root of
 
 \subsubsection{Further improvements}
 
-It is possible to make another reduction to obtain a degree-$6$ polynomial, this can lower the size of the companion matrix utilized on obtaining the roots of $h$ from $12^2=144$ to $6^2=36$.
+It is possible to make another reduction to obtain a degree-$6$ polynomial.
 As it has been mentioned before, an ellipse is symmetric with respect to its own major or minor axis. 
 In other words, rotating an ellipse by $\theta \in [0, \pi)$ is the same as rotating the same ellipse by $\pi + \theta$.
 On the other hand, in \autoref{chapter:definitions}, it was stated that the angle of the complex numbers $z$ and $-z$ has the same symmetry with each other as the aforementioned symmetry of ellipses:
@@ -237,29 +237,25 @@ Therefore, all the odd degree coefficients of $h$ are zero and we can define the
 f(y) = \sum_{k=0}^{6} c_{2k} y^k.
 \end{equation}
 Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of one of the roots will not be between $[0, \pi)$ we can ignore one of them. 
-Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by the following identity
+Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by the identity
 \begin{equation}
 angle(\sqrt{z}) = angle(z)/2.
 \end{equation}
-Finally, using the QR algorithm mentioned in \autoref{chapter:definitions}, a $\bigO(n^3)$ algorithm can be constructed for E3PNT. Because $n$ will always be $6$, we can say that we have a $\bigO(1)$ algorithm that takes around $6^3$ operations.
 
 It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe, for future work, it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
 \begin{equation}\label{eq:palindromic_pol}
 c_k = \overline{c_{6-k}},
 \end{equation}
-for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used for further improving our algorithm.
+for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used to find the roots of $f$.
 
-Assuming that an algorithm to obtain the eigenvalues of a matrix, the following algorithm to obtain every solution of E3PNT is described in \autoref{algoritmo:e3p}.
+Finally, in the next section we use this approach of converting $\xi$ into a complex polynomial to develop an algorithm for E3PNT.
 
-\section{Numerical Experiments}
+\section{An algorithm for E3PNT}
 
-\begin{figure}
-	\centering
-	\caption{The interpolation error measured on roots that were found.}
-	\includegraphics{tex/figures/e3p_error}
-	\fautor
-	\label{fig:e3p_error}
-\end{figure}
+Among the approaches that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3PNT.
+The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately this approach requires finding the eigenvalues of a companion matrix, this matrix, however, is usually going to be larger than the $6\times 6$, which is the size of the matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
+
+Details about getting the eigenvalues of a companion matrix, or determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity and can be found elsewhere in this work. Also, we assume that the $angle$ function used in the algorithm returns the angle of a complex number in the interval $[0, 2\pi)$.
 
 
 \begin{algoritmo}
@@ -281,26 +277,47 @@ Assuming that an algorithm to obtain the eigenvalues of a matrix, the following 
 		
 		\For{$i\in\{1, \dots, 6\}$}\Comment{Constructing the companion matrix.}
 			\State $A_{i,i+1} \gets 1$
-			\State $A_{6,i} \gets -\dfrac{c_{i-1}}{c_6}$
+			\State $A_{6,i} \gets -\dfrac{c_{2(i-1)}}{c_{12}}$
 		\EndFor
 
 		
 		\State $Q \gets \{\}$
 		
 		\ForAll{$q \in eig(A)$} \Comment{$eig(A)$ returns every eigenvalue of $A$.}
-		\State $\theta\gets angle(q)$
+		\State $\theta\gets \min\{angle(-q)/2, angle(q)/2\}$
 		\If{$|\theta|=1$}
-			\State $Q \gets Q \cup \{\theta\}$
+			\State Let $c$ be the center of the circumscribe circle of $\Lambda(\theta)$.
+			\State $Q \gets Q\cup \{(\varphi^{-1}(c, \theta)+u, \theta)\}$
 		\EndIf
 		\EndFor
-		
-		\State $Sols\gets\{\}$
-		\ForAll{$\theta\in Q$}
-		\State Let $c$ be the center of the circumscribe circle of $\Lambda(\theta)$.
-		\State $Sols \gets \cup \{(\varphi^{-1}(c, \theta)+u, \theta)\}$
-		\EndFor
-		
-		\State \Return $Sols$
+				
+		\State \Return $Q$
 		\EndProcedure
 	\end{algorithmic}
 \end{algoritmo}
+
+\begin{teorema}
+	The \autoref{algoritmo:e3p} computes every solution of E3PNT in $\bigO(1)$ operations.
+\end{teorema}
+
+\begin{proof}
+	It has already been shown that computing every root of $\xi$ through the complex polynomial yields every solution of E3PNT, the only thing left to prove is the running time of the algorithm.
+	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$. Therefore, the whole algorithm runs in constant time.
+\end{proof}
+
+\subsection{Numerical Experiments}
+
+In this section we show the results of an experiment made to study the numerical stability of \autoref{algoritmo:e3p}.
+For every root found $\hat{\theta}$, we measure its error by $|\xi(\hat{\theta})$|.
+
+We generate random instances according to a normal distribution with $0$ mean and standard deviation $K$. We tried different values for $K$ and generated $1000$ instances for each one. The maximum error and the average error for different values of $K$ can be seen in \autoref{fig:e3p_error}.
+
+From this experiment we can say that \autoref{algoritmo:e3p} has a good numerical stability as the accuracy of the roots found shows to have a linear relation .
+
+\begin{figure}
+	\centering
+	\caption{The interpolation error measured on roots that were found.}
+	\includegraphics{tex/figures/e3p_error}
+	\fautor
+	\label{fig:e3p_error}
+\end{figure}
