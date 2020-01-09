@@ -9,9 +9,9 @@ Let $E$ represent the coverage area of an ellipse with the given shape parameter
 
 \section{Transforming the problem}
 
-Initially, E3PNT is a problem with $3$ unknown variables: the two coordinates of the center point $q_x, q_y, $ and the angle of rotation $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcenter of a triangle. We also show E3PNT has at most $6$ solutions.
+Initially, E3PNT is a problem with three unknown variables: the two coordinates of the center point $q_x, q_y, $ and the angle of rotation $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcircle of a triangle. We also show E3PNT has at most $6$ solutions.
 
-To make the problem simpler, let us translate the system, so the point $u$ is at the origin. After that, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$, transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed into a solution of the problem of finding a circumscribed circle of a triangle. 
+To make the problem simpler, let us translate the system, so the point $u$ is at the origin; that is, assume that the three points given by the E3PNT instance are $(0, 0); v; w$. After that, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$ transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed firstly into an axis-parallel ellipse, and then into a circle of radius $b$.
 This process can be parameterized by the angle of rotation of the points, as described by
 
 \begin{equation}\label{eq:trpnts}
@@ -27,6 +27,7 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation}
+Also, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $(0, 0); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear. This being said, we go further to introduce another problem which is equivalent to E3PNT.
 
 \begin{figure}
 	\centering
@@ -36,21 +37,24 @@ p_y
 	\label{fig:circumscribed-circle}
 \end{figure}
 
-\subsection{The circumradius problem}
+\subsection{A circumradius problem}
 
-After that transformation, the problem to be solved is the one of checking the existence of a circumscribed circle of the triangle formed by the points $\{(0, 0), \varphi(v, \theta),\varphi(w, \theta)\}$ with radius $b$. 
-Note that the problems are indeed equivalent: $\varphi$ is a linear function, thus its inverse $\varphi^{-1}$ is well defined and can be used to determine a bijection between the set of solutions of both problems.
-Working with this problem instead is preferred because of the reduction in the number of variables from three to one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
+The term circumradius, in this work, is used to describe the radius of a triangle's circumscribed circle, which is a circle that has the triangle's vertices on its border. Given an instance of E3PNT, we define the circumradius problem as the problem of determining an angle of rotation $\theta$, such that the circumradius of $\Lambda(\theta)\in[0, \pi)$ is equal to $b$.
 
-It turns out that for three non-colinear points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
+As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3PNT and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$; a solution for E3PNT can be obtained using the inverse transformation $\varphi^{-1}$. This is possible because for any fixed $\theta$, $\varphi$ is just a linear function which are known to be invertible.
+With that in mind, it is possible to conclude that both problems are equivalent because, from a solution of one, an unique solution of the other can be obtained.
+
+The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
+
+It turns out that for three non-collinear points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
 
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
-with $A(\theta)$ being the area of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$ (for more details about \autoref{eq:circumscribed_circle} see \citeonline[p.~189]{johnson1960}
-). It is important to note that the transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
+with $A(\theta)$ being the area of the triangle $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle see \citeonline[p.~189]{johnson1960}
+). It should be pointed out that the transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
 
-With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for E3PNT.
+With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for the circumradius problem.
 Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
 
 \begin{equation}\label{eq:circumscribed_circle_b}
@@ -58,12 +62,12 @@ Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roo
 \end{equation}
 Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3PNT.
 
-Before continuing with this approach of trying to determine the roots of $\xi$, it is important to answer the question whether this set of roots is finite or not? Answering this question is also important because it automatically relates to the question about the number of solutions of E3PNT.
-
+The next step is then to develop an algorithm to find every root of $\xi$.
+Before continuing with this approach though, it is important to address the question about the number of roots of $\xi$ in the interval $[0, \pi)$.
 
 \subsection{The number of solutions of E3PNT}
 
-One of the steps of the method developed in \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Also, given that it is limited, discovering a bound for it is essential for determining the efficiency of the algorithm.
+One of the steps of the method developed in \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering a bound for it is essential for determining the algorithm's efficiency.
 
 \begin{lema}
 	E3PNT has at most $6$ solutions.
@@ -170,9 +174,9 @@ which measures how far the interpolation is at the point it worst approximates.
 \subsection{Numerical Experiments}
 
 In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. 
-The interpolation was run for several degrees for every triplet of points present in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found.
+The interpolation was run for several degrees for every triplet of points present in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found; simply put we measure how close the roots are to zero.
 
-The results are shown in \autoref{fig:interpolant_error} where the worst error found among every root found is plotted against the interpolant degree used. A parameter $K$ is also used in the experiments. This is an idea suggested in \citeonline{boyd:2013} to improve accuracy. This parameter represents the number of sub-intervals that $[0, \pi)$ is divided into. This way $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when not so large degrees are used.
+The results are shown in \autoref{fig:interpolant_error} where the worst error found among every root found is plotted against the interpolant degree used. A parameter $K$ is also used in the experiments. This is an idea suggested in \citeonline{boyd:2013} to improve accuracy, this parameter represents the number of sub-intervals that $[0, \pi)$ is divided into. This way, $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when not so large degrees are used.
 
 \begin{figure}
 	\centering
@@ -245,10 +249,21 @@ c_k = \overline{c_{6-k}},
 \end{equation}
 for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used for further improving our algorithm.
 
-Assuming that an algorithm to obtain the eigenvalues of a matrix, the following algorithm to obtain every solution of E3PNT is described as follows.
+Assuming that an algorithm to obtain the eigenvalues of a matrix, the following algorithm to obtain every solution of E3PNT is described in \autoref{algoritmo:e3p}.
+
+\section{Numerical Experiments}
+
+\begin{figure}
+	\centering
+	\caption{The interpolation error measured on roots that were found.}
+	\includegraphics{tex/figures/e3p_error}
+	\fautor
+	\label{fig:e3p_error}
+\end{figure}
+
 
 \begin{algoritmo}
-	\caption{Algorithm for E3P.}\label{algoritmo:e3p}
+	\caption{The algorithm for E3P.}\label{algoritmo:e3p}
 	\begin{algorithmic}[1]
 		\Require{$u, v, w\in\R^2$, and $a, b\in\R_{>0}$, with $a>b$.}
 		\Ensure{Every solution of E3P.}
@@ -264,13 +279,11 @@ Assuming that an algorithm to obtain the eigenvalues of a matrix, the following 
 		\State Let $c_0, \dots, c_{12}$ be the coefficients of polynomial $h$ as \autoref{eq:h}.
 		\State Let $A$ be a $6\times6$ zero matrix.
 		
-		\For{$i\in\{1, \dots, 6\}$}
+		\For{$i\in\{1, \dots, 6\}$}\Comment{Constructing the companion matrix.}
 			\State $A_{i,i+1} \gets 1$
+			\State $A_{6,i} \gets -\dfrac{c_{i-1}}{c_6}$
 		\EndFor
-		
-		\For{$j\in\{0, \dots, 5\}$}
-			\State $A_{6,j+1} \gets -\frac{c_j}{c_6}$
-		\EndFor
+
 		
 		\State $Q \gets \{\}$
 		
@@ -283,8 +296,8 @@ Assuming that an algorithm to obtain the eigenvalues of a matrix, the following 
 		
 		\State $Sols\gets\{\}$
 		\ForAll{$\theta\in Q$}
-		\State Let $c$ be the center of the circumscribe circle of the points $(0,0); \varphi(\hat{v}, \theta); \varphi(\hat{w}, \theta)$.
-		\State $Sols \gets \cup \{(\theta, \varphi^{-1}(c, \theta)+u)\}$
+		\State Let $c$ be the center of the circumscribe circle of $\Lambda(\theta)$.
+		\State $Sols \gets \cup \{(\varphi^{-1}(c, \theta)+u, \theta)\}$
 		\EndFor
 		
 		\State \Return $Sols$
