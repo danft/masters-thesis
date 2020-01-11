@@ -252,10 +252,11 @@ Finally, in the next section we use this approach of converting $\xi$ into a com
 
 \section{An algorithm for E3PNT}
 
-Among the approaches that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3PNT.
-The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately this approach requires finding the eigenvalues of a companion matrix, this matrix, however, is usually going to be larger than the $6\times 6$, which is the size of the matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
+Among the methods that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3PNT.
+The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately, this method requires finding the eigenvalues of a companion matrix, which is usually going to be larger than the $6\times 6$, which is the size of the companion matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
 
-Details about getting the eigenvalues of a companion matrix, or determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity and can be found elsewhere in this work. Also, we assume that the $angle$ function used in the algorithm returns the angle of a complex number in the interval $[0, 2\pi)$.
+Details about getting the eigenvalues of a companion matrix, and determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity. 
+Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of E3PNT's instance.
 
 
 \begin{algoritmo}
@@ -268,7 +269,7 @@ Details about getting the eigenvalues of a companion matrix, or determining the 
 		
 		\Procedure{$E3PNT$}{$u,v,w,a,b$}
 		
-		\State $\hat{u}\gets (0,0)$
+		\State $\hat{u}\gets (0,0)$ \Comment{Translate the system, so $u$ is at the origin.}
 		\State $\hat{v} \gets v-u$
 		\State $\hat{w} \gets w-u$
 		
@@ -307,7 +308,7 @@ Details about getting the eigenvalues of a companion matrix, or determining the 
 
 \subsection{Numerical Experiments}
 
-In this section we show the results of an experiment made to study the numerical stability of \autoref{algoritmo:e3p}.
+In this section we show the results of an experiment we made to study the numerical stability of \autoref{algoritmo:e3p}.
 For every root found $\hat{\theta}$, we measure its error by $|\xi(\hat{\theta})$|.
 
 We generate random instances according to a normal distribution with $0$ mean and standard deviation $K$. We tried different values for $K$ and generated $1000$ instances for each one. The maximum error and the average error for different values of $K$ can be seen in \autoref{fig:e3p_error}.
