@@ -256,7 +256,7 @@ Among the methods that have been described here, converting $\xi$ into a complex
 The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately, this method requires finding the eigenvalues of a companion matrix, which is usually going to be larger than the $6\times 6$, which is the size of the companion matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
 
 Details about getting the eigenvalues of a companion matrix, and determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity. 
-Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of E3PNT's instance.
+Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of a E3PNT's instance.
 
 
 \begin{algoritmo}
@@ -308,17 +308,28 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 
 \subsection{Numerical Experiments}
 
-In this section we show the results of an experiment we made to study the numerical stability of \autoref{algoritmo:e3p}.
-For every root found $\hat{\theta}$, we measure its error by $|\xi(\hat{\theta})$|.
+In this section we show the results of an experiment we made to study the numerical stability of \autoref{algoritmo:e3p}. 
 
-We generate random instances according to a normal distribution with $0$ mean and standard deviation $K$. We tried different values for $K$ and generated $1000$ instances for each one. The maximum error and the average error for different values of $K$ can be seen in \autoref{fig:e3p_error}.
+We generate random instances of E3PNT according to
+\begin{equation}
+u, v, w \sim \mathcal{N}(0, K^2),
+\end{equation}
+with $K\in \R_{>0}$ being a parameter of the experiment. We also define the ellipse's shape parameters ass
+\begin{align}
+	a = K\\
+	b = \frac{K}{2}.
+\end{align}
+For the experiment, we tried several values for $K$ and adopted the error measure to be $|\xi(\hat{\theta})|$, with $\hat{\theta}$ being a root of the complex polynomial $h$. 
+For each different value of $K$, we ran the algorithm for $1000$ random instances. The results are shown in \autoref{fig:e3p_error} where the maximum and the average error  is plotted for each value of $K$ for which the experiment was run.
 
-From this experiment we can say that \autoref{algoritmo:e3p} has a good numerical stability as the accuracy of the roots found shows to have a linear relation .
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\caption{The interpolation error measured on roots that were found.}
 	\includegraphics{tex/figures/e3p_error}
 	\fautor
 	\label{fig:e3p_error}
 \end{figure}
+
+
+From this experiment, it is possible to conclude that the accuray of \autoref{algoritmo:e3p} is acceptable when the instance of E3PNT has numerical values within the box $[-10^5, 10^5]^2$. A more rigorous study on the numerical stability of E3PNT is left as future work.
+
