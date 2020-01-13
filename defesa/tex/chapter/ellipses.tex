@@ -1,34 +1,39 @@
-In this chapter, the version of the Planar Maximal Covering by Ellipses Problem where every ellipse has to be parallel to the coordinate axis will be introduced and a method for it will be developed.
+In this chapter, we introduce the version of PMCLP where every 
+facility has an axis-parallel ellipse as its coverage area. We refer to this problem as \sigla{MCE}{Maximum Covering by Ellipses}. We also present an algorithm for it which is an adaptation of the algorithm developed for MCD in \autoref{chapter:pmclp}.
 
-\section{Axis-Parallel}
-The maximal planar covering using axis-parallel ellipses was first introduced in \cite{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find an optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
+\section{Definition}
 
-The second work found in the literature was \cite{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find an optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find optimal solutions for the instances that the first method could not get as well as for new created instances.
+Axis-parallel ellipses are defined as the set of points that satisfy \autoref{equation:pellipse}. Note that all it takes to describe an axis-parallel ellipse is a pair of positive real numbers $(a,b) \in \R_{>0}^2$, also called its shape parameters, and a center point $q \in \R^2$.
 
-\subsection{Notation and definition of the problem}
+An instance of MCE is given by a set of $n$ demand points $\Pp = \{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ ellipses $\E = \{E_1, \dots, E_m\}$, which represents the facilities and are used to cover the demand set. Additionally, 
+a list of weights $\Ww:=\{w_1, \dots, w_n\}$ and a list of shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$ are given. The weight of the $j$-th point is $w_j\in\R_{>0}$, and the shape parameters of the $j$-th ellipse is given by $(a_j, b_j)\in\R_{>0}^2$, with $a_j>b_j$.
+To make the text more clear, we denote an instance of MCE as $\Pi:=(\Pp, \Ww, \Rr)$.
 
-Axis-parallel ellipses are defined as the set of points that satisfy \autoref{equation:pellipse}. Therefore, all it takes to describe one is a pair of positive real numbers $(a,b) \in \R_{>0}^2$, also called the shape parameters, and a center point $q \in \R^2$. 
-
-Firstly, the case with only one ellipse is considered, an instance of the problem is denoted as $MCE(\Pp, a, b)$ where $\Pp$ is a set of points and $(a,b) \in \R_{>0}^2$ is a pair of real numbers called the shape parameters of an ellipse. 
-In the general case, every point has weights, but firstly this detail will be ignored and the weights are assumed to be unitary.
-The notation used here is similar to the one introduced on \autoref{chapter:pmclp}, the ellipse with an undefined center is referred to as $E$. To denote the ellipse with center set to be at point $q$, $E(q)$ is used. Also, the set of points covered by $E(q)$ is denoted by $E(q) \cap \Pp$, which indirectly defines $E(q)$ to be the set of points that satisfy \autoref{equation:cover_pellipse} (in other words $E(q)$ is the coverage region defined by the ellipse with shape parameters $(a,b)$, located at center $q$). 
-Also, to denote the points on the border of $E(q)$ we use the notation $\tilde{E}(q)$, therefore $p \in \tilde{E}(q)$ translates to $p$ being on the border of $E(q)$.
-Hence, the problem can be defined as follows.
-
-\begin{definicao}
-Let $MCE(\Pp, a, b)$ be an instance of the maximal covering by one ellipse, with $E$ being an ellipse with shape parameters $(a,b) \in \R_{>0}^2$, an optimal solution of $MCE(\Pp, a, b)$ is given by
+A solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. The coverage region of $j$-th ellipse centered at $q_j$ is denoted by $E_j(q_j)$. Finally, let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
 
 \begin{equation}
-    \max_q |\Pp \cap E(q)|.
+\max_q w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right).
 \end{equation}
-\end{definicao}
 
-\subsection{One Disk algorithm adaptation}
+Firstly, we describe a method for the case with only one ellipse, and then use it in the algorithm for multiple ellipses to construct a CLS containing an optimal solution.
+
+\section{Related work}
+The maximal planar covering using axis-parallel ellipses was first introduced in \citeonline{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find an optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
+
+The second work found in the literature was \citeonline{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find an optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find optimal solutions for the instances that the first method could not get as well as for new created instances.
+
+
+\section{One Ellipse Version}
+
+Firstly, the case with only one ellipse is considered. An instance of it has $m=1$, and we set $(a, b):=(a_1, b_1)$ and $\E := \{E\}$. We refer to this version as \sigla{MCE-1}{Maximum Cover by One Ellipse} and a solution of it is given by a point $q\in\R^2$. Also, an optimal solution of MCE-1 is given by
+\begin{equation}
+\max_q w(\Pp \cap E(q)).
+\end{equation}
 
 An adaptation of \autoref{algoritmo:mcd_1} is obtained by just replacing the function that finds the intersection points between two disks by a function that finds the intersection points between two ellipses $E_i$ and $E_j$.
 It can be seen in \autoref{fig:3ellipses_intersect} that the intersection points and their correspondents $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ functions behave the same way as in the disks case.
 
-The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ is described thoroughly in \autoref{chapter:ellipses_intersection}. 
+The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ are described thoroughly in \autoref{chapter:ellipses_intersection}. 
 
 
 \begin{figure}[H]
@@ -40,19 +45,18 @@ The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Ga
     \label{fig:3ellipses_intersect}
 \end{figure}
 
-\subsection{Multiple ellipses}
+\section{An algorithm for MCE}
 
-The multiple ellipses case is handled using the same idea of the multiple disks case. The only difference is that an instance of the multiple ellipses may contain ellipses of different shapes, which does not happen for the disks case as every disk has the same radius. For this reason, a different pre-processing has to be done for every one of them.
+The basis of the algorithm for MCE that will be described in this section is the adaptation of the algorithm for MCE-1, so it returns a CLS for every ellipse in $\E$. Once a CLS is obtained for every facility, a simple complete search can be done to find an optimal solution.
+The procedure that does that is described by procedure MCE-CLS in \autoref{algoritmo:mce1}.
 
-An instance of the multiple ellipses case is denoted as $MCE(\Pp, \E)$, with $\Pp$ being a set of $n$ points and $\E = \{E_1, \dots, E_m\}$ being a set of $m$ ellipses, each one with shape parameters $(a_i, b_i) \in \R^2_{>0}, i = 1 \dots m$. Also, without loss of generality, the weight of every point is assumed to be unitary.
+\begin{lema}
+	Given an instance of MCE, and $j\in\{1, \dots, m\}$, then \autoref{algoritmo:mce1}, with $(\Pp; \Ww; (a_j,b_j))$ as its input, takes $\bigO(n^2\log{n})$ computations and returns a CLS of size $\bigO(n^2)$ that contains an optimal solution of the given MCE's instance.
+\end{lema}
 
-\begin{definicao}\label{def:MCE}
-Let $MCE(\Pp, \E)$ be an instance of the maximal covering by ellipses, an optimal solution is given by
-
-\begin{equation}
-    \max_{q_1, \dots, q_m}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i)\right|}.
-\end{equation}
-\end{definicao}
+\begin{proof}
+	\autoref{algoritmo:mce1} is an adaption of \autoref{algoritmo:mcd_1}, which relies on the idea of transforming MCD into the MWC problem.
+\end{proof}
 
 \autoref{algoritmo:mce} describes the adapted version of the maximal disk covering algorithm for the ellipses case. In \autoref{algoritmo:mce1}, the $MCE_1$ procedure returns every possible set of points that an ellipse with shape parameters $(a,b)$ can cover. With that, procedure $MCE$ does the backtracking process, assigning every possible cover to every ellipse.
 

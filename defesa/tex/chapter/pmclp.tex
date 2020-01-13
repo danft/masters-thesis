@@ -6,9 +6,9 @@ We refer to this problem as \sigla{MCD}{Maximum Covering by Disks}. We also prop
 An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ disks $\D:=\{D_1, \dots, D_m\}$, which represents the facilities and are used to cover the demand set. Additionally, for every point in $\Pp$ a weight is given, and for every disk in $\D$ a coverage radius is given. The weight of the $j$-th point is denoted by $w_j\in\R_{>0}$, and the coverage radius of the $j$-th facility is denoted by $r_j \in \R_{>0}$.
 
 A solution for an instance of MCD is determined by $Q:=(q_1, \dots, q_m) \in \R^{2m}$ which specifies the center of every disk in $\D$.
-The coverage region of the $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Finally, let $w : 2^{\Pp} \mapsto \R_{>0}$ be the function
+The coverage region of the $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Finally, let $w : 2^{\Pp} \mapsto \R_{\ge0}$ be the function
 
-\begin{equation}
+\begin{equation}\label{eq:subset_w}
 w(A) = \sum_{j : p_j \in A} w_j,
 \end{equation}
 which takes a subset of $\Pp$ and returns the sum of the weights of every point in it; then an optimal solution of MCD is given by the optmization problem:
