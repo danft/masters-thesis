@@ -1,10 +1,15 @@
-This section introduces the covering problem that does not have any axis-parallel constraint for the ellipses, we denote this version of the problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. The removal of this constraint introduces a new variable which is responsible for determining the rotation angle of every ellipse.
+This section introduces the elliptical PMCLP where there is no axis-parallel constraint, that is, the ellipses can be freely rotated. We refer to this problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. In comparison with MCE, this problem introduces a new a new variable which is responsible for determining the rotation angle of every ellipse making MCER a more challenging problem.
 
-An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, with every point having a unitary weight, and a set of ellipses $\E=\{E_1, \dots, E_m\}$, with fixed shape parameters $(a_i, b_i) \in \R^2_{>0}$, $i \in \{1, \dots, n\}$ with the additional condition that $a_i > b_i$. Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}.
-Also, $\Pp \cap E_i(q_i, \theta_i)$ is denoted as the set of points covered by $E_i$ on this configuration. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the number of points covered by the $m$ ellipses, which is given by \autoref{eq:optMCEn}.
+\section{Definition}
+
+An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; a list of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
+and a set of $m$ axis-parallel ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
+Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2\times\R^2 \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region.
+
+Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the weight of points covered by the $m$ ellipses, which is given by
 
 \begin{equation}\label{eq:optMCEn}
-\max_{Q, \Theta}{\left|\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right|}.
+\max_{Q, \Theta}{w\left(\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right)}.
 \end{equation}
 
 An additional notation is used on this chapter, $\tilde{E_i}(q_i, \theta_i)$ is defined to be the set of points on the border of $E_i(q_i, \theta_i)$, specially, the operation $\Pp \cap \tilde{E_i}(q_i, \theta_i)$ is used to refer to the set of points from $\Pp$ that lie on the border of $E_i(q_i, \theta_i)$.

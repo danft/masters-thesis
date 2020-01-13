@@ -3,7 +3,8 @@ We refer to this problem as \sigla{MCD}{Maximum Covering by Disks}. We also prop
 
 \section{Definition}
 
-An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; and a set of $m$ disks $\D:=\{D_1, \dots, D_m\}$, which represents the facilities and are used to cover the demand set. Additionally, for every point in $\Pp$ a weight is given, and for every disk in $\D$ a coverage radius is given. The weight of the $j$-th point is denoted by $w_j\in\R_{>0}$, and the coverage radius of the $j$-th facility is denoted by $r_j \in \R_{>0}$.
+An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; a set of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$; and $m$ disks given by their radii $\Rr:=\{r_1, \dots, r_m\}$, with $r_j\in\R_{>0}$. 
+Additionally, to make the text more clear, we define a set of $m$ disks as $\D = \{D_1, \dots, D_m\}$, with $D_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th disk is located as input, and returns its coverage region as defined by \autoref{eq:disk}.
 
 A solution for an instance of MCD is determined by $Q:=(q_1, \dots, q_m) \in \R^{2m}$ which specifies the center of every disk in $\D$.
 The coverage region of the $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Finally, let $w : 2^{\Pp} \mapsto \R_{\ge0}$ be the function
@@ -43,7 +44,7 @@ In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, 
 
 \section{Maximum Weight Clique Problem}
 
-An instance of MWC is given by a set of points $\Pp:=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$; and a set of unit disks $\D:=\{D_1,\dots,D_n\}$, such that $D_i$ is centered at $p_i$, for $i=1,\dots,n$, and with the $i$-th disk having a weight $w_i\in \R_{>0}$ assigned to it. 
+An instance of MWC is given by a set of points $\Pp:=\{p_1,\dots,p_n\}$, with $p_i \in \R^2$; a set of unit disks $\D:=\{D_1(p_1),\dots,D_n(p_n)\}$; and a set of weights $\Ww=\{w_1, \dots, w_n\}$ with the $i$-th disk having a weight $w_i\in \R_{>0}$ assigned to it. To make the notation less cluttered, we use, in this problem, $D_j:=D_j(p_j)$, for $j\in\{1, \dots, n\}$.
 
 A clique, in this context, is a non-empty intersection region of one or more disks, and its weight is the sum of the weights of those disks in the intersection.
 Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$ which is inside any of the given disks in $\D$.
@@ -151,10 +152,21 @@ This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,
     \label{fig:array_disks}
 \end{figure}
 
-\begin{algoritmo}
+\begin{teorema}\label{lema:disk}
+	\autoref{algoritmo:mcd_1} for solving the Maximum Clique Problem has a $\bigO((n+K)\log{n})$ run time complexity, where $K$ is the number of intersections of the $n$ disks.
+\end{teorema}
+
+\begin{proof}
+	Finding every intersection can be done in $\bigO((n+K)\log{n})$  by a plane sweep, the method is described in \citeonline{bentley:1979}. 
+	Because sorting the intersection angles needs to be done, an additional $\bigO(K\log{K})$ pre-processing is added. All the other operations can be done in constant time. Therefore, the final algorithm complexity is $\bigO((n+K)\log{n})$.
+\end{proof}
+
+If a simpler implementation is desired, or the number of intersections is large, determining the set $I_i$ (the set of disks that intersect with $D_i$, defined in \autoref{algoritmo:mcd_1}) can be simply done in $\bigO(n^2)$, making the algorithm have a worst-case complexity of $\bigO(n^2\log{n})$.
+
+\begin{algoritmo}[b]
 \caption{Algorithm for MCD-1.}\label{algoritmo:mcd_1}
 \begin{algorithmic}[1]
-\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\{w_1, \dots, w_n\}$.}
+\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$.}
 \Ensure{The maximum cover by a unit disk.}
 
 \item[]
@@ -187,17 +199,6 @@ This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,
 \end{algorithmic}
 \end{algoritmo}
 
-\begin{teorema}\label{lema:disk}
-\autoref{algoritmo:mcd_1} for solving the Maximum Clique Problem has a $\bigO((n+K)\log{n})$ run time complexity, where $K$ is the number of intersections of the $n$ disks.
-\end{teorema}
-
-\begin{proof}
-    Finding every intersection can be done in $\bigO((n+K)\log{n})$  by a plane sweep, the method is described in \citeonline{bentley:1979}. 
-    Because sorting the intersection angles needs to be done, an additional $\bigO(K\log{K})$ pre-processing is added. All the other operations can be done in constant time. Therefore, the final algorithm complexity is $\bigO((n+K)\log{n})$.
-\end{proof}
-
-If a simpler implementation is desired, or the number of intersections is large, determining the set $I_i$ (the set of disks that intersect with $D_i$, defined in \autoref{algoritmo:mcd_1}) can be simply done in $\bigO(n^2)$, making the algorithm have a worst-case complexity of $\bigO(n^2\log{n})$.
-
 \section{Multiple disks}
 
 
@@ -207,9 +208,46 @@ Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed
 
 \subsection{An algorithm for MCD}
 
-A simple adaptation can be done on \autoref{algoritmo:mcd_1}, so it returns a CLS that contains an optimal solution for the disk, instead of just finding the best solution. Also, the detail that MCD-1 is defined for unit disks can be ignored as \autoref{algoritmo:mcd_1} works for disks of any radius.
+A simple adaptation can be done on \autoref{algoritmo:mcd_1} to make it return a CLS that contains an optimal solution of MCD for that disk. This is shown in \autoref{algoritmo:mcd_cls}. 
+Notice also that MCD-1 is defined only for unit disks, however, this constrained can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
 
-It can be seen that in any solution of MCD, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the Maximum Weight Clique Problem: the point $q$ is inside an intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by \autoref{algoritmo:mcd_1} as a candidate to be an optimal solution. The number of points \autoref{algoritmo:mcd_1} goes through is $\bigO(n^2)$, then checking every possible center for every ellipse yields a $\bigO(n^{2m})$ run-time complexity.
+\begin{lema}
+	Suppose that an instance of MCD and an index $j\in\{1, \dots, m\}$ are given.
+	Then \autoref{algoritmo:mcd_cls}, when given the instance $(\Pp, \Ww, r_j)$ as input, returns a CLS $S_j$ of size $\bigO(n^2)$, such that $q^*_j\in S_j$, with $(q^*_1, \dots, q^*_m)$ being an optimal solution of the given MCD's instance.
+\end{lema}
+
+\begin{proof}
+It can be seen that in any solution of MCD, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the Maximum Weight Clique Problem: the point $q$ is inside an intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by \autoref{algoritmo:mcd_cls} as a candidate to be an optimal solution. The number of points \autoref{algoritmo:mcd_cls} goes through is $\bigO(n^2)$, then
+obviously $|S_j|=\bigO(n^2)$.
+\end{proof}
+
+Then, with \autoref{algoritmo:mcd_cls}, an algorithm for MCD that checks every possible center for every disk yields a $\bigO(n^{2m})$ run-time complexity.
 This algorithm is described in \autoref{chapter:ellipses} for the axis-parallel ellipses case.
 
 It is worth mentioning that the choice of developing a different method for the problem, instead of using the one from \citeonline{cabello:2006}, is taken for the sake of simplicity, considering both algorithms achieve similar bounds.
+
+\begin{algoritmo}
+	\caption{Algorithm for MCD-1 that returns a CLS.}\label{algoritmo:mcd_cls}
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$, and a radius $r\in\R_{>0}$.}
+		\Ensure{A CLS for the disk given by radius $r$.}
+		
+		\item[]
+		
+		\Procedure{$MCD_1$}{$\Pp, \Ww, r$}
+		\State $S \gets \{\}$
+		\ForAll{$p_i \in \Pp$}
+		\State Let $D_i$ be the disk with center at $p_i$
+		\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}.
+		
+		\State $Cov \gets \{\}$
+		\For{$a \in B_i$}\Comment{Assuming $B_i$ is sorted.}
+		\State Let $q_a$ be the intersection point correspondent to angle $a$. 
+		\State $S \gets S \cup \{q_a\}$	
+		\EndFor
+		\EndFor
+		
+		\State \Return $S$
+		\EndProcedure
+	\end{algorithmic}
+\end{algoritmo}

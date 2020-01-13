@@ -1,0 +1,76 @@
+In this chapter, we introduce the version of PMCLP where every 
+facility has an axis-parallel ellipse as its coverage area. We refer to this problem as \sigla{MCE}{Maximum Covering by Ellipses}. We also present an algorithm for it which is an adaptation of the algorithm developed for MCD in \autoref{chapter:pmclp}.
+
+\section{Definition}
+
+Axis-parallel ellipses are defined as the set of points that satisfy \autoref{equation:pellipse}. Note that all it takes to describe an axis-parallel ellipse is a pair of positive real numbers $(a,b) \in \R_{>0}^2$, also called its shape parameters, and a center point $q \in \R^2$.
+
+An instance of MCE is given by a set of $n$ demand points $\Pp = \{p_1, \dots, p_n\}$, with $p_j\in\R^2$; 
+a set of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
+and a set of $m$ axis-parallel ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
+Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th ellipse is located as input, and returns its coverage region.
+
+A solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. Finally, let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
+
+\begin{equation}
+\max_q w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right).
+\end{equation}
+
+In the next sections, we first describe a method for the case with only one ellipse, and then use it in the algorithm for multiple ellipses to construct a CLS containing an optimal solution.
+
+\section{Related work}
+The maximal planar covering using axis-parallel ellipses was first introduced in \citeonline{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find an optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
+
+The second work found in the literature was \citeonline{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find an optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find optimal solutions for the instances that the first method could not get as well as for new created instances.
+
+\section{One Ellipse Version}
+
+The case with only one ellipse is considered first because it will be adapted to become the basis of the algorithm for more than one ellipse. We refer to this version as \sigla{MCE-1}{Maximum Cover by One Ellipse}. 
+
+An instance of MCE-1 has $m=1$, and we set $(a, b):=(a_1, b_1)$, and $\E := \{E\}$. Therefore, an instance of MCE-1 is described by the tuple $(\Pp; \Ww; (a, b))$. A solution of MCE-1 is then given by a point $q\in\R^2$, and an optimal solution is given by the optimization problem
+
+\begin{equation}
+\max_q w(\Pp \cap E(q)).
+\end{equation}
+An adaptation of \autoref{algoritmo:mcd_1} is obtained by just replacing the function that finds the intersection points between two disks by a function that finds the intersection points between two ellipses $\partial E_i$ and $\partial E_j$.
+It can be seen in \autoref{fig:3ellipses_intersect} that the intersection points and their correspondents $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ functions behave the same way as in the disks case.
+The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ are described thoroughly in \autoref{chapter:ellipses_intersection}. 
+
+\begin{figure}[H]
+\centering
+    \caption{Three ellipses and their intersection points}
+    \includegraphics[scale=.32]{tex/figures/3ellipses_intersect.pdf}
+    \fautor
+    \label{fig:3ellipses_intersect}
+\end{figure}
+\section{An algorithm for MCE}
+
+The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$. Then, we define \autoref{algoritmo:mce} which just does a complete search in the CLS of every ellipse, therefore, counting every possibility, the runtime complexity of \autoref{algoritmo:mce} is $\bigO(n^{2m})$.
+
+It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
+
+\begin{algoritmo}
+    \caption{Algorithm for $MCE(\Pp, \E)$ with unit weights}\label{algoritmo:mce}
+    \begin{algorithmic}[1]
+        \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of ellipses $\E = \{E_1, \dots, E_m\}$.}
+        \Ensure{The maximum number of points that can be covered by the set of ellipses $\E$.}
+        
+        \item[]
+        
+        \Procedure{$MCE$}{$\Pp, \E, j=1$}
+        \If{$j = m+1$}
+        \State \Return $0$
+        \EndIf
+        
+        \State $ans \gets 0$
+
+        \State $S_j \gets MCE_1(\Pp, a_j, b_j)$
+        \For{$q \in S_j$}
+        \State $Cov \gets \Pp \cap q$
+        \State $ans \gets \max\{ans, w(Cov) + MCE(\Pp \setminus Cov, \E, j+1)\}$ \Comment{Calls the procedure for the next ellipse.}
+        \EndFor
+
+        \State \Return $ans$
+        \EndProcedure
+    \end{algorithmic}
+\end{algoritmo}
