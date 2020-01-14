@@ -8,9 +8,9 @@ Axis-parallel ellipses are defined as the set of points that satisfy \autoref{eq
 An instance of MCE is given by a set of $n$ demand points $\Pp = \{p_1, \dots, p_n\}$, with $p_j\in\R^2$; 
 a set of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
 and a set of $m$ axis-parallel ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
-Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th ellipse is located as input, and returns its coverage region.
+Additionally, to make the text more clear, we define a set $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{equation:cover_pellipse}.
 
-A solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. Finally, let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
+Then, a solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. Finally, let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
 
 \begin{equation}
 \max_q w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right).
@@ -45,15 +45,23 @@ The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Ga
 \end{figure}
 \section{An algorithm for MCE}
 
-The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$. Then, we define \autoref{algoritmo:mce} which just does a complete search in the CLS of every ellipse, therefore, counting every possibility, the runtime complexity of \autoref{algoritmo:mce} is $\bigO(n^{2m})$.
+The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$. Then, we define \autoref{algoritmo:mce} which just does a complete search in the CLS of every ellipse, therefore, counting every possibility, the run-time complexity of \autoref{algoritmo:mce} is $\bigO(n^{2m})$.
 
 It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
 
+\section{Ellipses' costs and utilization constraint}
+
+Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. One of them is the cost of each ellipse, which is defined as a list $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the cost of the $j$-th ellipse.
+The other parameter is a number $K\in \mathbb{N}$ which introduces a restriction on the number of ellipses that can be used (we will consider the equality restriction, that is, the number of ellipses utilized must be equal to $K$). We refer to this version of the problem as \sigla{MCE-K}{Maximum Covering by Ellipses with a $K$-constraint}.
+
+We use \autoref{algoritmo:mce} to develop an algorithm for MCE-K as follows. Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = K$, we invoke the algorithm for MCE for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$, note that we also need to keep track of the cost of using the ellipses whose indexes are in $I$. This simple adjustment achieves a run-time complexity of $\binom{n}{k} \times \bigO(n^{2m}) = \bigO(n^{2m})$. 
+
 \begin{algoritmo}
-    \caption{Algorithm for $MCE(\Pp, \E)$ with unit weights}\label{algoritmo:mce}
+    \caption{Algorithm for MCE}\label{algoritmo:mce}
     \begin{algorithmic}[1]
-        \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of ellipses $\E = \{E_1, \dots, E_m\}$.}
-        \Ensure{The maximum number of points that can be covered by the set of ellipses $\E$.}
+        \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
+        
+        \Ensure{The value of an optimal solution of MCE.}
         
         \item[]
         
