@@ -45,16 +45,30 @@ The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Ga
 \end{figure}
 \section{An algorithm for MCE}
 
-The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$. Then, we define \autoref{algoritmo:mce} which just does a complete search in the CLS of every ellipse, therefore, counting every possibility, the run-time complexity of \autoref{algoritmo:mce} is $\bigO(n^{2m})$.
+The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$ (we do not define it in this chapter because it would look the same as $MCD_1$, apart from the name, of course). 
 
-It is worth noting that some easy improvements, which do not change the algorithm's overall complexity, can be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
+Then, with the algorithm to construct a CLS for every ellipse in hands, an algorithm for MCE naturally comes into existence. In \autoref{algoritmo:mce}, a complete search is done backtracking every possibility in the CLS of every ellipse. This strategy is backed-up by \autoref{lema:mcd}, which says that there is an optimal solution in the CLS of each ellipse. 
+Following this, counting every possibility that the algorithm goes through, we arrive at the run-time complexity of $\bigO(n^{2m})$.
 
-\section{Ellipses' costs and utilization constraint}
+It is worth mentioning that, even though we call $MCE_1$ every time in the recursion, in practice, it is probably best to pre-process this step, and only call it $m$ times for the whole set of points.
+Some other easy improvements can also be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
 
-Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. One of them is the cost of each ellipse, which is defined as a list $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the cost of the $j$-th ellipse.
-The other parameter is a number $K\in \mathbb{N}$ which introduces a restriction on the number of ellipses that can be used (we will consider the equality restriction, that is, the number of ellipses utilized must be equal to $K$). We refer to this version of the problem as \sigla{MCE-K}{Maximum Covering by Ellipses with a $K$-constraint}.
+\section{Adding facility cost}
 
-We use \autoref{algoritmo:mce} to develop an algorithm for MCE-K as follows. Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = K$, we invoke the algorithm for MCE for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$, note that we also need to keep track of the cost of using the ellipses whose indexes are in $I$. This simple adjustment achieves a run-time complexity of $\binom{n}{k} \times \bigO(n^{2m}) = \bigO(n^{2m})$. 
+Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. This augmentation is caused by the introduction of a cost associated with each ellipse. Then, of course, having a cost for each facility only makes sense if there is a decision to be made about which ones are used. Therefore, another parameter $k\in\mathbb{N}$ is also given, and the problem is defined, such that exactly $k$ ellipses need to be selected to cover the demand set.
+
+We refer to this version of the problem as  \sigla{MCE-k}{Maximum Covering by Ellipses with a $k$-constraint}. An instance of it is given by the same parameters as MCE, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the cost of the $j$-th ellipse, and $k\in\mathbb{N}$.
+
+ A solution for MCE-k, however,  when compared to MCE's, has a bit more cluttered description. We define it as a set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$, such that $|I|=k$; and a tuple $Q:=(q_1, \dots, q_k)$, with $q_j\in\R^2$ being the center of the $j$-th ellipse in $I$. An optimal solution of MCE-k is given by the optimization problem
+
+\begin{equation}
+\max_{I, Q} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j)\right).
+\end{equation}
+
+Finally, \autoref{algoritmo:mce} can serve as basis for an algorithm for MCE-k. 
+Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = k$, the algorithm for MCE is invoked for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$; that is, an instance where only the ellipses in $I$ are present.
+After that, by keeping track of the costs of the utilized ellipses for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
+This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k})$. 
 
 \begin{algoritmo}
     \caption{Algorithm for MCE}\label{algoritmo:mce}
@@ -65,7 +79,7 @@ We use \autoref{algoritmo:mce} to develop an algorithm for MCE-K as follows. Fir
         
         \item[]
         
-        \Procedure{$MCE$}{$\Pp, \E, j=1$}
+        \Procedure{$MCE$}{$\Pp, \Ww, \Rr, j=1$}
         \If{$j = m+1$}
         \State \Return $0$
         \EndIf
@@ -75,7 +89,7 @@ We use \autoref{algoritmo:mce} to develop an algorithm for MCE-K as follows. Fir
         \State $S_j \gets MCE_1(\Pp, a_j, b_j)$
         \For{$q \in S_j$}
         \State $Cov \gets \Pp \cap q$
-        \State $ans \gets \max\{ans, w(Cov) + MCE(\Pp \setminus Cov, \E, j+1)\}$ \Comment{Calls the procedure for the next ellipse.}
+        \State $ans \gets \max\{ans, w(Cov) + MCE(\Pp \setminus Cov, \Ww, \Rr, j+1)\}$ \Comment{Calls the procedure for the next ellipse.}
         \EndFor
 
         \State \Return $ans$

@@ -211,7 +211,7 @@ Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed
 A simple adaptation can be done on \autoref{algoritmo:mcd_1} to make it return a CLS that contains an optimal solution of MCD for that disk. This is shown in \autoref{algoritmo:mcd_cls}. 
 Notice also that MCD-1 is defined only for unit disks, however, this constrained can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
 
-\begin{lema}
+\begin{lema}\label{lema:mcd}
 	Suppose that an instance of MCD and an index $j\in\{1, \dots, m\}$ are given.
 	Then \autoref{algoritmo:mcd_cls}, when given the instance $(\Pp, \Ww, r_j)$ as input, returns a CLS $S_j$ of size $\bigO(n^2)$, such that $q^*_j\in S_j$, with $(q^*_1, \dots, q^*_m)$ being an optimal solution of the given MCD's instance.
 \end{lema}
