@@ -1,10 +1,10 @@
-This section introduces the elliptical PMCLP where there is no axis-parallel constraint, and the ellipses can be freely rotated. We refer to this problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. In comparison with MCE, this problem introduces a new variable which is responsible for determining the rotation angle of every ellipse making MCER a more challenging problem.
+This section introduces the elliptical PMCLP where there is no axis-parallel constraint, and the ellipses can be freely rotated. We refer to this problem as \sigla{MCER}{Maximal Covering by Ellipses with Rotation}. In comparison with MCE, this problem introduces a new variable that is responsible for determining the rotation angle of every ellipse, making MCER a more challenging problem.
 
 \section{Definition}
 
 An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; a list of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
-and a set of $m$ axis-parallel ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
-Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2\times\R^2 \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region.
+and $m$ ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
+Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2\times\R^2 \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
 Lastly, an instance of MCER is defined as the tuple $(\Pp, \Ww, \Rr)$.
 
 Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the weight of points covered by the $m$ ellipses, which is given by
@@ -12,10 +12,15 @@ Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be 
 \begin{equation}\label{eq:optMCEn}
 \max_{Q, \Theta}{w\left(\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right)}.
 \end{equation}
+In addition to that, we define an equivalence relation between solutions of MCER. As likely expected, we say that two solutions are equivalent if the set of points covered by them is the same. In other words, two solutions of MCER $(Q, \Theta)$ and $(Q', \Theta')$ are said to be equivalent if, and only if 
+$$\bigcup_{j=1}^m\Pp \cap E_j(q_j', \theta_j') = \bigcup_{j=1}^m\Pp \cap E_j(q_j, \theta_j).$$
+
 Next, we introduce a proposition which says that given an optimal solution of MCER, it is possible to find another optimal solution with two points on the border of every ellipse that is already covering at least two points.
 
 \begin{proposicao}\label{lema:mce_2b}
-	Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. Then, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, there is $q_j'$ such that $\Pp \cap E_j(q_j', \theta_j^*)=\Pp \cap E_j(q_j^*, \theta_j^*)$ and $\Pp \cap \partial E_j(q_j', \theta_j^*) \ge 2$.
+	Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. 
+	Then, for any $E_j \in \E$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, 
+	an equivalent solution $(Q', \Theta^*)$ exists, such that $|\Pp \cap \partial E_j(q_j', \theta_j^*)|\ge 2$.
 \end{proposicao}
 
 \begin{proof}
@@ -23,7 +28,7 @@ Next, we introduce a proposition which says that given an optimal solution of MC
 	
 	Let $A=\Pp \cap E_j(q_j^*, \theta_j)$ be the set of points covered by the $j$-th ellipse and $X=\cap_{p \in A}E_j(p, \theta_j)$ be the region of intersection of ellipses centered at each point from $A$.
 
-	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
+	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point, creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
 	
 \end{proof}
 
@@ -40,28 +45,55 @@ A lot of the ideas developed in this chapter are based on fixing two points on t
 \end{figure}
 
 \begin{definicao}\label{def:feasible_angle}
-	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
+	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$. In addition to that, given an instance of MCER, we refer to the set of $(E_j, u, v)$-feasible angles as 
+	
+	\begin{equation}
+	\Phi_j(u, v) := \{\theta \in [0, \pi) : \theta \textnormal{ is a } (E_j,u,v)\textnormal{-feasible angle}\}.
+	\end{equation}
 \end{definicao}
 
-On \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. On one of them, an ellipse is rotated by $\pi/4$ and it is located, such that it contains the two fixed points on its border. That means $\pi/4$ is a $(E, u, v)$-feasible angle. On the other example, the ellipse is rotated by $\pi/2$ and there is not a center where the ellipse can be placed so it contains the two fixed points--they are too far apart. This makes $\pi/2$ a not $(E, u, v)$-feasible angle.
+In \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. The example with a solid contour shows an ellipse rotated by $\pi/4$ with two points on its border, making $\pi/4$ a $(E, u, v)$-feasible angle.
+The other example, with a dashed contour, presents a case where an ellipse rotated by $\pi/2$ is not able to have the two points on its border, no matter where it is placed; because of that, $\pi/2$ is said to be a not $(E, u, v)$-feasible angle.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\caption{A $(E, u, v)$-feasible angle and a not $(E, u, v)$-feasible angle.}
-	\includegraphics{tex/figures/scripts/feasible-angle}
+	\includegraphics[scale=.8]{tex/figures/scripts/feasible-angle}
 	\fautor
 	\label{fig:feasible-angle}
 \end{figure}
+
+In \autoref{chapter:definitions}, it was stated that the line that has the most distant intersection points with an ellipse is the one that passes through the origin, given that the linear parameter is fixed. It also says that the function $D$ given by \autoref{eq:dist_line_ellipse}, which represents the distance between the intersection points (it is negative when there is no intersection), attains every value less than its maximum.
+This result provides a direct way to check if a certain angle $\theta\in[0, \pi]$ is feasible or not: rotate the points by $-\theta$ and check if $D(m, 0)$ is $\ge d$ with $m$ being the angular coefficient of the line that passes through the two points, and $d$ being the distance between them.
+
+Furthermore, in \autoref{eq:dist_line_ellipse}, it can also be observed that $D(m, 0)^2$ is a parabola, which means that the set $\{m\in\R: D(m, 0)^2 \ge d^2\}$ is the union of at most two intervals. From there, given an instance of MCER, it is possible to arrive at the conclusion that a set of feasible angles for an ellipse and two points can be written as
+
+\begin{equation}\label{eq:phi_j}
+\Phi_j(u,v) = [\theta_1, \theta_2] \cup [\theta_3, \theta_4], 
+\end{equation}
+where $\theta_i$, $i=1\dots 4$, can be obtained from the solutions of $D(m, 0)^2=d$ and the extreme points $\{0, \pi, \pi/2\}$.
+As a final remark, the angle which makes the two points form a vertical line deserves special treatment as its line cannot be represented by the equation $y=mx$.
 
 \begin{lema}\label{lema:3pnts}
 Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. Then, for any $E_j \in \E$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|>2$, at least one of the two cases is true:
 	
 	\begin{enumerate}[label=(\alph*)]
-		\item There is $q', \theta'$, and $\{u, v, w\} \subset \Pp \cap E_j(q_j, \theta_j)$, such that $\{u, v, w\} \subset \partial E_j(q', \theta')$.
+		\item There is an equivalent solution $(Q', \Theta')$, such that $|\Pp\cap \partial E_j(q'_j, \theta'_j)| \ge 3$.\label{lema:3pnts_a}
 		
-		\item Let $A=\Pp \cap E_j(q_j^*, \theta_j^*)$, and $u, v \in A$, such that there exists $\hat{q}_j$, with $\{u, v\} \subset \partial E_j(\hat{q}_j, \theta_j^*)$ and $A \subset E_j(\hat{q}_j, \theta_j^*)$. Then, for any $(E_j, u, v)$-feasible angle $\theta \in [0, 2\pi]$, there exists $\bar{q}_j$ such that $\{u, v\} \subset \partial E_j(\bar{q}_j, \theta)$ and $A \subset E_j(\bar{q}_j, \theta)$.
+		\item There is $\{u, v\}\subset\Pp \cap E_j(q_j^*, \theta_j^*)$, such that for any $\theta\in\Phi_j(u,v)$, there is $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$. \label{lema:3pnts_b}
 	\end{enumerate}
 \end{lema}
+
+\begin{proof}
+	We are going to prove that if \autoref{lema:3pnts}\ref{lema:3pnts_a} is false, then \autoref{lema:3pnts}\ref{lema:3pnts_b} is true; and if \autoref{lema:3pnts}\ref{lema:3pnts_b} is false, then \autoref{lema:3pnts}\ref{lema:3pnts_a} is true.
+	
+	Before that, let us define $\Phi_j'$ as the open interval version of $\Phi_j$ as $\Phi_j'(u,v) = (\theta_1, \theta_2)\cup(\theta_3, \theta_4)$.
+	
+	Suppose that \autoref{lema:3pnts}\ref{lema:3pnts_a} is false.  
+	According to \autoref{lema:mce_2b}, there exists $\{u, v\} \subset \Pp$, such that an equivalent optimal solution exists with $u, v$ on the border of $E_j$. 
+	
+	For any $\theta\in\Phi_j'(u,v)$, we have get an 
+\end{proof}
 
 The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
 
@@ -72,7 +104,7 @@ On \autoref{fig:lema-3-points} both cases of \autoref{lema:3pnts} are shown. The
 \begin{figure}
 	\centering
 	\caption{An example of \autoref{lema:3pnts}.}
-	\includegraphics{tex/figures/scripts/lema-3-points}
+	\includegraphics[scale=.8]{tex/figures/scripts/lema-3-points}
 	\fautor
 	\label{fig:lema-3-points}
 \end{figure}

@@ -125,6 +125,12 @@ y(t)=b\sin{t} + c_y.
 \right.
 \end{equation}
 
+Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$ centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at a least one point, then plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
+\begin{equation}\label{eq:dist_line_ellipse}
+D(m, c)=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)},
+\end{equation}
+with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$. From that, we can conclude that if $m$ is fixed, the line that has the most distant intersection points with an ellipse is the one that passes through the origin; and also, that $D(m, c)$ attains every value in the range $(-\infty, D(m, 0)]$. Following that, the function $D(m, 0)^2$ is also a parabola, as a 
+
 \subsection{Non-axis-parallel}
 
 A non-axis-parallel ellipse centered at $(c_x, c_y)\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, and the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in \R$ is given. This new parameter represents the angle between the $x$-axis and the major-axis of the ellipse, this can be seen on \autoref{fig:rotated_ellipse} where the dashed lines represent the ellipse's axes and the angle between the major-axis and the $x$-axis is displayed.
