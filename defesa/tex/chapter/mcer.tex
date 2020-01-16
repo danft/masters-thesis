@@ -81,7 +81,7 @@ Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of
 	\begin{enumerate}[label=(\alph*)]
 		\item $|\Pp\cap \partial E_j(q'_j, \theta'_j)| < 3$, for any equivalent solution $(Q', \Theta')$, \label{lema:3pnts_a}
 		
-		\item There is $\{u, v\}\subset\Pp \cap E_j(q_j^*, \theta_j^*)$, such that for any $\theta'\in\Phi_j(u,v)$, there is $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.\label{lema:3pnts_b}
+		\item There is $\{u, v\}\subset\Pp \cap E_j(q_j^*, \theta_j^*)$, such that for any $\theta\in\Phi_j(u,v)$, there is $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.\label{lema:3pnts_b}
 	\end{enumerate}
 \end{lema}
 
@@ -92,16 +92,30 @@ Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of
 	
 	According to \autoref{lema:mce_2b}, there exists $\{u, v\} \subset \Pp$, such that an equivalent optimal solution $(Q', \Theta^*)$ exists with $u, v$ on the border of $E_j(q_j', \theta_j^*)$. Therefore, $\theta_j^*\in\Phi_j(u,v)$.
 	
-	Suppose that $|\Phi_j(u,v)|>1$ 
+	Now suppose that $u$ and $v$ have the $y$-coordinate, that is, the angle between them is $0$. If they are not, a rotation can be applied to make have the same $y$-coordinate. Then, we are going to prove that $\Phi_j(u, v) = [0, 2\alpha]$ for a specific case that can be used in the proof.
 	
-	We are going to prove that if \autoref{lema:3pnts}\ref{lema:3pnts_a} is false, then \autoref{lema:3pnts}\ref{lema:3pnts_b} is true; and if \autoref{lema:3pnts}\ref{lema:3pnts_b} is false, then \autoref{lema:3pnts}\ref{lema:3pnts_a} is true.
+	In \autoref{chapter:definitions}, a great deal of explanation was given on the maximum distance between the intersection points of a line with an axis-parallel ellipse. In particular, we are interested in the function $L$, defined in \autoref{eq:function-l}, which represents the squared distance of the intersection points of a line  $y=mx + c$, where $m$ is fixed, and an ellipse.
 	
-	Before that, let us define $\Phi_j'$ as the open interval version of $\Phi_j$ as $\Phi_j'(u,v) = (\theta_1, \theta_2)\cup(\theta_3, \theta_4)$.
+	To use those results here, we need to rotate the points, instead of rotating the ellipse. Let $\theta \in [0, \pi]\setminus\{\pi/2\}$, then if $L(\tan{\theta}) \ge ||v-u||_2^2$, it is possible to fit $u$ and $v$ on the ellipse's border. Defining $l(\theta)=L(\tan{\theta})$, with $l:[0, \pi]\setminus\{\pi/2\}$, we can say that
 	
-	Suppose that \autoref{lema:3pnts}\ref{lema:3pnts_a} is false.  
+	\begin{itemize}
+		\item $l$ is decreasing in $[0, \pi/2)$ because $L$ is decreasing in $[0, \infty)$. Therefore, if there is $\alpha\in[0, \pi/2)$, such that $l(\alpha) = ||v-u||_2^2$, then $l(\theta)>||v-u||_2^2$, for $\theta\in(\alpha, \pi/2)$.
+		\item $l(\theta) = l(\pi-\theta)$ because $L$ is an even function. Therefore, if there is $\alpha\in[0, \pi/2)$, such that $l(\alpha) = ||v-u||_2^2$, then $l(\theta)>||v-u||_2^2$, for $\theta\in(\pi/2,\pi-\alpha)$.
+	\end{itemize}
+	Then, we can conclude that $\Phi_j(u, v) = [0, \alpha]\cup [\pi-\alpha, \pi]$. Of course, if there is no $\alpha\in[0, \pi/2)$, such that $l(\alpha)=||v-u||_2^2$, then $\Phi_j(u,v)=[0, \pi]$.
+	From that, if we rotate the points by $\pi-\alpha$, we obtain $\Phi_j(u,v)=[0, 2\alpha]$. From now on, we assume that $\alpha>0$.
+	
+	With this result in hands, we can use a continuity argument to prove that \autoref{lema:3pnts}\ref{lema:3pnts_b} is true.
+	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$. In general, there are two possible centers that makes $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, choosing the right one makes $\delta$ be a continuous function having that $\delta(\theta_j^*) = q_j'$.
+	
+	Let $w\in \Pp \cap E_j(q_j^*, \theta_j^*) \setminus \{u,v\}$, then we define $f_w  : \R^3 \mapsto \R_{\ge0}$ to be a function that takes a center point $q$ and an angle of rotation $\theta$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$.
+	
+	We have that $f_w(q_j', \theta_j^*) < 1$ for any $w\in \Pp \cap E_j(q_j^*, \theta_j^*)$. We then, define function $g_w : \Phi_j(u,v) \mapsto \R_{\ge0}$ as $g_w(\theta) = f_w(\delta(\theta), \theta)$. As $g_w$ is a composition of continuous functions, it is also continuous.
+	
+	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)$ leaves the coverage of the ellipse, it must have $g_w(\theta)>1$, which by continuity, there must be another $\hat{\theta}$, such that $g_w(\hat{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis.
+	
+	$\Leftarrow$
 
-	
-	For any $\theta\in\Phi_j'(u,v)$, we have get an 
 \end{proof}
 
 The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
@@ -110,7 +124,7 @@ The second case of \autoref{lema:3pnts} says that after fixing a pair of points 
 
 On \autoref{fig:lema-3-points} both cases of \autoref{lema:3pnts} are shown. There, it can be seen that for the second case, it does not matter which feasible angle by which the ellipse is rotated, the third point will always be inside the coverage area. Also, an example of the first case is shown where there are three points lie exactly on the border of the ellipse.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\caption{An example of \autoref{lema:3pnts}.}
 	\includegraphics[scale=.8]{tex/figures/scripts/lema-3-points}
@@ -118,17 +132,6 @@ On \autoref{fig:lema-3-points} both cases of \autoref{lema:3pnts} are shown. The
 	\label{fig:lema-3-points}
 \end{figure}
 
-The idea to prove \autoref{lema:3pnts} is that after fixing $u, v$ on the border of $E_j$, which is possible by \autoref{lema:mce_2b}, the movement of rotation and translation while keeping $u, v$ on the border is continuous. Because of that, the negation of case two implies case one and vice versa.
-
-
-If we define an equivalence relation between optimal solutions as: $S_1$ is equivalent to $S_2$ if they both cover the same set of points, we can use \autoref{lema:3pnts} and \autoref{lema:mce_2b} to identify the equivalence classes. Let $S$ be any optimal solution, in $[S]$ (its equivalence class) there is another solution where any ellipse $E_j \in \E$ falls in at least one of the cases below:
-\begin{itemize}
-	\item $E_j$ covers only one point.
-	\item $E_j$ covers more than one point with $u$ and $v$ being on the border of $E_j$. Note that there could be infinitely many of solutions like that, however, \autoref{lema:3pnts} guarantees that any $(E_j, u, v)$-feasible angle yields an equivalent optimal solution.
-	\item $E_j$ covers more than two points with three of them on its border.
-\end{itemize}
-
-The following two sections will treat the second and third cases (the first case is trivial). Going through every possibility of an ellipse falling in any of the three cases guarantees that an optimal solution is found.
 
 \section{Ellipse by two points}
 

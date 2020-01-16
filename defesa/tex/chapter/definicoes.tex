@@ -125,11 +125,26 @@ y(t)=b\sin{t} + c_y.
 \right.
 \end{equation}
 
-Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$ centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at a least one point, then plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
+Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$ centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at a least one point. Plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
 \begin{equation}\label{eq:dist_line_ellipse}
 D(m, c)=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)},
 \end{equation}
-with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$. From that, we can conclude that if $m$ is fixed, the line that has the most distant intersection points with an ellipse is the one that passes through the origin; and also, that $D(m, c)$ attains every value in the range $(-\infty, D(m, 0)]$. Following that, the function $D(m, 0)^2$ is also a parabola, as a 
+with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters $(m, c)$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$. From that, we can conclude that if $m$ is fixed, the line that has the most distant intersection points with an ellipse is the one that passes through the origin; and also, that $D(m, c)$ attains every value in the range $[0, D(m, 0)]$. 
+Following that, we define a function $L:m\mapsto\R_{>0}$ that describes the maximum squared distance between the points of the intersection of an ellipse with a line with a fixed angular coefficient:
+\begin{equation}\label{eq:function-l}
+L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2}.
+\end{equation}
+It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $x=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty\, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
+In \autoref{fig:L-function-plot}, an example of function $L$ is shown with $(a, b) = (2, 1)$.
+
+\begin{figure}[H]
+	\centering
+	
+	\caption{Plot of function $L$ in the interval $[-7, 7]$.}
+	\includegraphics[scale=.5]{tex/figures/L-function-plot}
+	\fautor
+	\label{fig:L-function-plot}
+\end{figure}
 
 \subsection{Non-axis-parallel}
 
