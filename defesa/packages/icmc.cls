@@ -700,12 +700,12 @@
 
 \theoremstyle{definition}
 \newtheorem{teorema}{\theoremaname}
-\newtheorem{proposicao}{\proposicaoname}
-\newtheorem{lema}{\lemaname}
-\newtheorem{corolario}{\corolarioname}
+\newtheorem{proposicao}{\proposicaoname}[chapter]
+\newtheorem{lema}{\lemaname}[chapter]
+\newtheorem{corolario}{\corolarioname}[chapter]
 \newtheorem{exemplo}{\exemploname}
 \newtheorem{observacao}{\observacaoname}
-\newtheorem{definicao}{\definicaoname}
+\newtheorem{definicao}{\definicaoname}[chapter]
 \newenvironment{demonstracao}{\begin{proof}[\demonstracaoname]}{\end{proof}}
 
 
