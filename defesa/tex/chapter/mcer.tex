@@ -32,7 +32,9 @@ Next, we introduce a proposition which says that given an optimal solution of MC
 	
 \end{proof}
 
-What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into an equivalent optimal solution where every ellipse that covers more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses, an example of that can be seen in \autoref{fig:ellipse-2-points}.
+What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into an equivalent optimal solution where every ellipse that covers more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses, an example of that can be seen in \autoref{fig:ellipse-2-points}. 
+
+Next, a notation is defined for the set of equivalent solutions of an optimal solution which has at least two points on the border of every ellipse.
 
 \begin{definicao}
 	Let $(Q^*, \Theta^*)$ be an optimal solution for an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $\Omega(Q^*, \Theta^*)$ as the set of every equivalent solution of $(Q^*, \Theta^*)$, such that for any $(Q, \Theta)\in\Omega(Q^*, \Theta^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
@@ -43,7 +45,7 @@ A lot of the ideas developed in this chapter are based on fixing two points on t
 \begin{figure}
 	\centering
 	\caption{An optimal solution before and after applying \autoref{lema:mce_2b}.}
-	\includegraphics{tex/figures/scripts/ellipse-2-points}
+	\includegraphics[scale=.38]{tex/figures/ellipse-2-points}
 	\fautor
 	\label{fig:ellipse-2-points}
 \end{figure}
@@ -63,7 +65,7 @@ The other example, with a dashed contour, presents a case where an ellipse rotat
 \begin{figure}[H]
 	\centering
 	\caption{A $(E, u, v)$-feasible angle and a not $(E, u, v)$-feasible angle.}
-	\includegraphics[scale=.8]{tex/figures/scripts/feasible-angle}
+	\includegraphics[scale=.33]{tex/figures/feasible-angle2}
 	\fautor
 	\label{fig:feasible-angle}
 \end{figure}
@@ -104,22 +106,22 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 	
 	With this result in hands, we can use a continuity argument to complete our proof as follows.
 	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, and, from solution $(Q', \Theta')$, $\delta(\theta_j') = q_j'$.
-	In general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:2point-ellipse} for an example), however, as $\delta(\theta_j') = q_j'$, $\delta$ is well-defined.
+	In general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, as $\delta(\theta_j') = q_j'$, $\delta$ is well-defined.
 	
 	Let $w\in \Pp \cap E_j(q_j^*, \theta_j^*) \setminus \{u,v\}$, then we define $f_w  : \R^3 \mapsto \R_{\ge0}$ to be a function that takes a center point $q$ and an angle of rotation $\theta$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$ as defined by the left-and-side of \autoref{eq:rotated_ellipse}.
 	
-	We have that $f_w(q_j', \theta_j^*) < 1$ for all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)$. We then define function $g_w\colon \Phi_j(u,v) \mapsto \R_{\ge0}$ as $g_w(\theta) = f_w(\delta(\theta), \theta)$. As $g_w$ is a composition of continuous functions, it is also continuous.
+	For all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus \{u,v\}$, we have that $f_w(q_j', \theta_j^*) < 1$. We then define a function $g_w\colon \Phi_j(u,v) \mapsto \R_{\ge0}$ as $g_w(\theta) = f_w(\delta(\theta), \theta)$. As $g_w$ is a composition of continuous functions, it is also continuous.
 	
-	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)$ leaves the coverage of the ellipse, it must have $g_w(\theta)>1$, which by continuity, there must be another $\hat{\theta}$, such that $g_w(\hat{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis. The same can be said about a point that enters the coverage of $E_j$.
+	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus\{u,v\}$ is not covered by $E_j(\delta(\theta), \theta)$, it must have $g_w(\theta)>1$. Then, by continuity, another angle $\hat{\theta} \in(\theta_j^*, \theta)$ must exist, such that $g_w(\hat{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis. The same can be said about a point that enters the coverage of $E_j(\delta(\theta), \theta)$.
 \end{proof}
 
-\begin{figure}[H]
-	\centering
-	\caption{Every ellipse that contains two points for a fixed angle of rotation.}
-	\includegraphics[scale=.36]{tex/figures/2point-ellipse}
-	\fautor
-	\label{fig:2point-ellipse}
-\end{figure}
+%\begin{figure}[H]%
+%	\centering%
+%	\caption{Every ellipse that contains two points for a fixed angle of %rotation.}
+%	\includegraphics[scale=.36]{tex/figures/2point-ellipse}
+%	\fautor
+%	\label{fig:2point-ellipse}
+%\end{figure}
 
 
 The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
