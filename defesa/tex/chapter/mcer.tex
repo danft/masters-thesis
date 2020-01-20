@@ -135,14 +135,46 @@ Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}
 	\label{fig:lema-3-points}
 \end{figure}
 
-For every ellipse in an instance, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. That is what \autoref{lema:3pnts} is saying, that the implication of a non-existent equivalent optimal solution with three points on the ellipse's border implies that any feasible angle can be used. Therefore, we introduce a corollary next which describes a way of constructing a CLS that contains at least one optimal solution.
+For every ellipse in an instance of MCER, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. That is what \autoref{lema:3pnts} is saying, and because of that, we can construct a CLS which is finite and also contains an optimal solution.
+
+Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. We will define a set $\Omega(\Pp, \Ww, \Rr)$ and show that there exists an equivalent solution $(Q', \Theta')$ to  $(Q^*, \Theta^*)$, such that $(Q', \Theta') \in \Omega(\Pp, \Ww, \Rr)$. This is the same thing as showing that $\Omega(\Pp, \Ww, \Rr)$ contains an optimal solution.
+Before that, we define 
+\begin{equation*}
+S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)},
+\end{equation*}
+for all $j \in \{1, \dots, m\}$, as the set of all possible solutions for the $j$-th ellipse. We break the construction of $S_j$ into three separated cases, that is, $S_j^{(1)}, S_j^{(2)}$, and $S_j^{(3)}$.
+
+Firstly, consider the case where $|E_j(q_j^*, \theta_j^*)|=1$. 
+This case is not treated by any of the previous results presented in this chapter. Nevertheless, taking this possibility into account can be done by including solutions in $S_j$ that are guaranteed to cover at least one point. This is represented by
+\begin{equation}
+	S_j^{(1)} = \bigcup_{1 \le i \le n} \{(p_i, 0)\}.
+\end{equation}
+
+Then, the case in which the $j$-th ellipse covers more than one point is treated by \autoref{lema:3pnts}. There are two possible categories into which an optimal solution can be put according two \autoref{lema:3pnts}. 
+
+The first one is when there is no equivalent solution with three points on the $j$-th ellipse's border. This implies that, this solution can be represented by one that has a certain pair of points $u, v$ on the ellipse's border and is rotated by some angle in $\Phi_j(u,v)$. As only one angle is needed, we define $\theta_{uv}$ as the angle that makes the major-axis of the ellipse to be aligned with the line that passes through $u$ and $v$; this angle surely is in $\Phi_j(u,v)$ as the major-axis is the longest segment that crosses an ellipse. Having said that, we refer to $S_j^{(2)}$ the set of possible solutions that takes this case into account; we define it as
+\begin{equation}
+S_j^{(2)} = \bigcup_{1 \le i < j\le n} \{(q, \theta_{ij})\in \R^2\times\R: \{p_i, p_j\} \subset \partial E_j(q, \theta_{ij})\}.\\
+\end{equation}
+
+The only case left is when there is an equivalent solution with three points on the ellipse's border. We call this set of possible solutions $S_j^{(3)}$, and define it as
+\begin{equation}
+	S_j^{(3)} = \bigcup_{1 \le i < j < k \le n} \{(q, \theta)\in \R^2\times\R: \{p_i, p_j, p_k\} \subset \partial E_j(q, \theta)\},
+\end{equation}
+
+For a CLS to cover solutions in that category, 
+
+that the implication of a non-existent equivalent optimal solution with three points on the ellipse's border implies that any feasible angle can be used and it is possible to maintain two points on the ellipse's border. 
+
+
 
 \begin{corolario}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER. We define for all $j\in\{1, \dots, m\}$, $\Gamma_j^{(1)}, \Gamma_j^{(2)}, $and $\Gamma_j^{(3)}$ as
+	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER, and $\theta_{ij} \in [0, 2\pi]$ be the polar angle  of vector $p_j-p_i$, for all $i, j \in \{1, \dots, n\}$. We define, for all $j\in\{1, \dots, m\}$,
 	\begin{align*}
-	\Gamma_j^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\in \R^2\times\R\}\\
-	\Gamma_j^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, angle(u,v))\in \R^2\times\R: \{u, v ,w\} \subset \partial E_j(q, angle(u,v))\}\\
-	\Gamma_j^{(3)} &= \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times\R: \{u, v ,w\} \subset \partial E_j(q, \theta)\}.
+	S_j^{(1)} &= \bigcup_{1 \le i \le n} \{(p_i, 0)\in \R^2\times\R\},\\
+	S_j^{(2)} &= \bigcup_{1 \le i < j\le n} \{(q, \theta_{ij})\in \R^2\times\R: \{p_i, p_j\} \subset \partial E_j(q, \theta_{ij})\},\\
+	S_j^{(3)} &= \bigcup_{1 \le i < j < k \le n} \{(q, \theta)\in \R^2\times\R: \{p_i, p_j, p_k\} \subset \partial E_j(q, \theta)\},\\
+	S_j &= S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}.
 	\end{align*}
 	Then, there exists an optimal solution $(Q^*, \Theta^*)$, such that
 	\begin{equation*}
