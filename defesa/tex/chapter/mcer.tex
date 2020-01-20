@@ -106,7 +106,7 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 	
 	With this result in hands, we can use a continuity argument to complete our proof as follows.
 	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, and, from solution $(Q', \Theta')$, $\delta(\theta_j') = q_j'$.
-	In general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, as $\delta(\theta_j') = q_j'$, $\delta$ is well-defined.
+	In general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, as $\delta(\theta_j') = q_j'$, $\delta$ is well-defined. This is shown in \autoref{fig:lema-3-points} where $\delta$ is plotted for the whole interval $\Phi_j(u,v)$.
 	
 	Let $w\in \Pp \cap E_j(q_j^*, \theta_j^*) \setminus \{u,v\}$, then we define $f_w  : \R^3 \mapsto \R_{\ge0}$ to be a function that takes a center point $q$ and an angle of rotation $\theta$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$ as defined by the left-and-side of \autoref{eq:rotated_ellipse}.
 	
@@ -123,28 +123,31 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 %	\label{fig:2point-ellipse}
 %\end{figure}
 
-
-The first case of \autoref{lema:3pnts} is saying that there is another optimal solution which has $E_j$ covering the same set of points, but with three points on its border. 
-
-The second case of \autoref{lema:3pnts} says that after fixing a pair of points on the border of $E_j$ maintaining the covered set, for any angle that allows the two points to stay on the border of $E_j$, there is a center that maintains the covered set the same.
-
-On \autoref{fig:lema-3-points} both cases of \autoref{lema:3pnts} are shown. There, it can be seen that for the second case, it does not matter which feasible angle by which the ellipse is rotated, the third point will always be inside the coverage area. Also, an example of the first case is shown where there are three points lie exactly on the border of the ellipse.
+In \autoref{fig:lema-3-points} a visualization of \autoref{lema:3pnts} is presented.
+An initial optimal solution is given by the dashed-border ellipse. From it, the continuous function $\delta$ is defined by moving the ellipse through the rotation angles in $\Phi_j(u,v)$ while maintaining $u, v$ on its border. 
+Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}$ stay within the ellipse's cover for any angle of rotation, and, for point $w$, there exists an angle, such that it is on the ellipse's border.  
 
 \begin{figure}[H]
 	\centering
-	\caption{An example of \autoref{lema:3pnts}.}
-	\includegraphics[scale=.8]{tex/figures/scripts/lema-3-points}
+	\caption{A visualization of \autoref{lema:3pnts}.}
+	\includegraphics[scale=.6]{tex/figures/lema-3-points}
 	\fautor
 	\label{fig:lema-3-points}
 \end{figure}
 
+For every ellipse in an instance, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. That is what \autoref{lema:3pnts} is saying, that the implication of a non-existent equivalent optimal solution with three points on the ellipse's border implies that any feasible angle can be used. Therefore, we introduce a corollary next which describes a way of constructing a CLS that contains at least one optimal solution.
 
-\section{Ellipse by two points}
-
-Let $E$ be an ellipse with shape parameters $(a, b)\in \R^2_{>0}$ and $u, v\in \R^2$, one wants to find a $(E, u, v)$-feasible angle $\theta\in[0,\pi]$ and every center $q\in\R^2$ such that $\{u, v\} \subset \tilde{E}(q, \theta)$.
-
-For a fixed angle, finding every center such that two points are on the border of the ellipse is done on \autoref{chapter:ellipses_intersection}, from there we know that there could be at most $2$ of such centers. The only thing left to be done is finding a feasible angle. It turns out that the angle that makes the major-axis of the ellipse to be aligned with the line that passes through $u$ and $v$ will be a feasible angle if, and only if the set of feasible angles is not empty. This can be seen geometrically as other angles achieve a lesser maximum distance between the two points on the border.
-
-\section{Ellipse by three points}
-
+\begin{corolario}
+	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER. We define for all $j\in\{1, \dots, m\}$, $\Gamma_j^{(1)}, \Gamma_j^{(2)}, $and $\Gamma_j^{(3)}$ as
+	\begin{align*}
+	\Gamma_j^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\in \R^2\times\R\}\\
+	\Gamma_j^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, angle(u,v))\in \R^2\times\R: \{u, v ,w\} \subset \partial E_j(q, angle(u,v))\}\\
+	\Gamma_j^{(3)} &= \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times\R: \{u, v ,w\} \subset \partial E_j(q, \theta)\}.
+	\end{align*}
+	Then, there exists an optimal solution $(Q^*, \Theta^*)$, such that
+	\begin{equation*}
+	(Q^*, \Theta^*)\in \left\{(Q, \Theta) : (q_j, \theta_j)\in \{\Gamma_j^{(1)}\cup\Gamma_j^{(2)}\cup\Gamma_j^{(3)}\}\right\}.
+	\end{equation*}
+	
+\end{corolario}
 
