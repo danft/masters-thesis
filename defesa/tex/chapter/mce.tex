@@ -55,9 +55,10 @@ Some other easy improvements can also be made in the implementation. For example
 
 \section{Adding facility cost}
 
-Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. This augmentation is caused by the introduction of a cost associated with each ellipse. Then, of course, having a cost for each facility only makes sense if there is a decision to be made about which ones are used. Therefore, another parameter $k\in\mathbb{N}$ is also given, and the problem is defined, such that exactly $k$ ellipses need to be selected to cover the demand set.
+Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. This extension is the result of having costs associated with every facility.
+In MCE, though, the total cost, which is the sum of costs of every used facility, is constant; hence, to create a decision about which ones are utilized, a new parameter $k\in\mathbb{N}$ is given, along with a constraint on the number of used ellipses.
 
-We refer to this version of the problem as  \sigla{MCE-k}{Maximum Covering by Ellipses with a $k$-constraint}. An instance of it is given by the same parameters as MCE, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the cost of the $j$-th ellipse, and $k\in\mathbb{N}$.
+We refer to this version of the problem as  \sigla{MCE-k}{Maximum Covering by Ellipses with a $k$-constraint}. An instance of it is given by the same parameters as MCE, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost, and $k\in\mathbb{N}$.
 
  A solution for MCE-k, however,  when compared to MCE's, has a bit more cluttered description. We define it as a set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$, such that $|I|=k$; and a tuple $Q:=(q_1, \dots, q_k)$, with $q_j\in\R^2$ being the center of the $j$-th ellipse in $I$. An optimal solution of MCE-k is given by the optimization problem
 
@@ -67,7 +68,7 @@ We refer to this version of the problem as  \sigla{MCE-k}{Maximum Covering by El
 
 Finally, \autoref{algoritmo:mce} can serve as basis for an algorithm for MCE-k. 
 Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = k$, the algorithm for MCE is invoked for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$; that is, an instance where only the ellipses in $I$ are present.
-After that, by keeping track of the costs of the utilized ellipses for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
+After that, by keeping track of the utilized ellipses' costs for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
 This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k})$. 
 
 \begin{algoritmo}

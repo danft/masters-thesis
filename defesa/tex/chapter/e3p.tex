@@ -69,7 +69,7 @@ Before continuing with this approach though, it is important to address the ques
 
 One of the steps of the method developed in \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering a bound for it is essential for determining the algorithm's efficiency.
 
-\begin{lema}
+\begin{lema}\label{lema:e3p}
 	E3PNT has at most $6$ solutions.
 \end{lema}
 
@@ -297,7 +297,7 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 	\end{algorithmic}
 \end{algoritmo}
 
-\begin{teorema}
+\begin{teorema}\label{th:e3p}
 	The \autoref{algoritmo:e3p} computes every solution of E3PNT in $\bigO(1)$ operations.
 \end{teorema}
 

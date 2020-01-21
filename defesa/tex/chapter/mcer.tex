@@ -15,7 +15,15 @@ Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be 
 In addition to that, we define an equivalence relation between solutions of MCER. We say that two solutions are equivalent if the set of points covered by them is the same. In other words, two solutions of MCER $(Q, \Theta)$ and $(Q', \Theta')$ are said to be equivalent if, and only if 
 $$\bigcup_{j=1}^m\Pp \cap E_j(q_j', \theta_j') = \bigcup_{j=1}^m\Pp \cap E_j(q_j, \theta_j).$$
 
-Next, we introduce a proposition which says that given an optimal solution of MCER, it is possible to find another optimal solution with two points on the border of every ellipse that is already covering at least two points.
+In the next section we present some results which ultimately lead up to the construction of a CLS that contains an optimal solution for MCER.
+
+\section{Constructing a CLS}
+
+The goal of this section is to construct a finite set of solutions, also referred to as CLS, for MCER that contains at least one optimal solution.
+The main idea for doing that is to take advantage of \autoref{lema:e3p} and use the fact that there are at most six solutions for any instance of E3P.
+This set of solutions is then used in the next section on the development of a $\bigO(n^{3m})$ runtime algorithm for MCER.
+
+To begin with, a proposition is introduced which says that given an optimal solution of MCER, it is possible to find another optimal solution with two points on the border of every ellipse that is already covering at least two points.
 
 \begin{proposicao}\label{lema:mce_2b}
 	Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. 
@@ -32,15 +40,16 @@ Next, we introduce a proposition which says that given an optimal solution of MC
 	
 \end{proof}
 
-What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into an equivalent optimal solution where every ellipse that covers more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses, an example of that can be seen in \autoref{fig:ellipse-2-points}. 
+What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into an equivalent optimal solution where every ellipse that covers more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses. An example of that can be seen in \autoref{fig:ellipse-2-points}. 
 
-Next, a notation is defined for the set of equivalent solutions of an optimal solution which has at least two points on the border of every ellipse.
+Next, a notation is defined for the set of equivalent solutions of an optimal solution that has at least two points on the border of every ellipse. This helps us make the text less cluttered.
 
 \begin{definicao}
-	Let $(Q^*, \Theta^*)$ be an optimal solution for an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $\Omega(Q^*, \Theta^*)$ as the set of every equivalent solution of $(Q^*, \Theta^*)$, such that for any $(Q, \Theta)\in\Omega(Q^*, \Theta^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
+	Let $(Q^*, \Theta^*)$ be an optimal solution for an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $\Pi(Q^*, \Theta^*)$ as the set of every equivalent solution of $(Q^*, \Theta^*)$, such that for any $(Q, \Theta)\in\Pi(Q^*, \Theta^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
 \end{definicao}
 
-A lot of the ideas developed in this chapter are based on fixing two points on the border of an ellipse, which is why \autoref{def:feasible_angle} introduces a new notation for angles that an ellipse rotated by it can be translated into a center, such that it contains two fixed points. 
+A lot of the ideas developed in this chapter are based on fixing two points on the border of an ellipse.
+Based on that, \autoref{def:feasible_angle} introduces a new notation for angles that, given two points and an ellipse, it is possible to find a center where the ellipse rotated by that angle is placed, such that the two given points lie on its border.
 
 \begin{figure}
 	\centering
@@ -52,14 +61,14 @@ A lot of the ideas developed in this chapter are based on fixing two points on t
 
 \begin{definicao}\label{def:feasible_angle}
 	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
-	In addition to that, given an instance of MCER, we refer to the set of $(E_j, u, v)$-feasible angles as 
+	In addition to that, given an instance  $(\Pp, \Ww, \Rr)$ of MCER, the set of $(E_j, u, v)$-feasible angles is referred to as 
 	
 	\begin{equation}
 	\Phi_j(u, v) := \{\theta \in [0, \pi] : \theta \textnormal{ is a } (E_j,u,v)\textnormal{-feasible angle}\}.
 	\end{equation}
 \end{definicao}
 
-In \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. The example with a solid contour shows an ellipse rotated by $\pi/4$ with two points on its border, making $\pi/4$ a $(E, u, v)$-feasible angle.
+In \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. The example with a solid contour shows two ellipses rotated by $\pi/4$ with the two given points on its border, making $\pi/4$ a $(E, u, v)$-feasible angle.
 The other example, with a dashed contour, presents a case where an ellipse rotated by $\pi/2$ is not able to have the two points on its border, no matter where it is placed; because of that, $\pi/2$ is said to be a not $(E, u, v)$-feasible angle.
 
 \begin{figure}[H]
@@ -77,7 +86,7 @@ Following that, we present a lemma that, given an optimal solution, it says that
 \end{itemize}
 
 \begin{lema}\label{lema:3pnts}
-Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER; $j\in\{1, \dots, m\}$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|>2$; $(Q', \Theta')\in\Omega(Q^*, \Theta^*)$; and $\{u, v\}\subset \partial E_j(q_j', \theta_j')$.
+Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER; $j\in\{1, \dots, m\}$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|>2$; $(Q', \Theta')\in\Pi(Q^*, \Theta^*)$; and $\{u, v\}\subset \partial E_j(q_j', \theta_j')$.
 
 If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial E_j(\hat{q}_j, \hat{\theta}'_j)| < 3$, then for all $\theta\in\Phi_j(u,v)$, there exists $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.
 
@@ -123,8 +132,10 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 %	\label{fig:2point-ellipse}
 %\end{figure}
 
+What \autoref{lema:3pnts} is saying is that, for every ellipse in an instance of MCER, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. Because of that, it will be shown that we can construct a CLS which is finite and also contains an optimal solution.
+
 In \autoref{fig:lema-3-points} a visualization of \autoref{lema:3pnts} is presented.
-An initial optimal solution is given by the dashed-border ellipse. From it, the continuous function $\delta$ is defined by moving the ellipse through the rotation angles in $\Phi_j(u,v)$ while maintaining $u, v$ on its border. 
+An initial optimal solution is given by the dashed-border ellipse, and its center, represented by a star point. From it, the continuous function $\delta$ is defined by moving the ellipse through the rotation angles in $\Phi_j(u,v)$ while maintaining $u, v$ on its border. Ten angles were chosen from $\Phi_j(u,v)$ to be shown in \autoref{fig:lema-3-points}, among those were $0$ and $\max\{\Phi_j(u,v)\}$; their corresponding ellipses are displayed with solid-line borders.
 Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}$ stay within the ellipse's cover for any angle of rotation, and, for point $w$, there exists an angle, such that it is on the ellipse's border.  
 
 \begin{figure}[H]
@@ -133,53 +144,54 @@ Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}
 	\includegraphics[scale=.6]{tex/figures/lema-3-points}
 	\fautor
 	\label{fig:lema-3-points}
-\end{figure}
+\end{figure}.
 
-For every ellipse in an instance of MCER, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. That is what \autoref{lema:3pnts} is saying, and because of that, we can construct a CLS which is finite and also contains an optimal solution.
+Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. We will define a set $\Omega(\Pp, \Ww, \Rr)$ and show that there exists an equivalent solution $(Q', \Theta')$ to  $(Q^*, \Theta^*)$, such that $(Q', \Theta') \in \Omega(\Pp, \Ww, \Rr)$. This is the same thing as showing that $\Omega(\Pp, \Ww, \Rr)$ contains an optimal solution for the instance $(\Pp, \Ww, \Rr)$.
+The whole set $\Omega(\Pp, \Ww, \Rr)$ is constructed from a set of solutions for every ellipse. Let $j\in\{1, \dots, m\}$, we denote by $S_j$ the CLS for the $j$-th ellipse; its construction is broken into three separated cases denoted by $S_j^{(1)}$, $S_j^{(2)}$, and $S_j^{(3)}$. Next, we define them precisely.
 
-Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. We will define a set $\Omega(\Pp, \Ww, \Rr)$ and show that there exists an equivalent solution $(Q', \Theta')$ to  $(Q^*, \Theta^*)$, such that $(Q', \Theta') \in \Omega(\Pp, \Ww, \Rr)$. This is the same thing as showing that $\Omega(\Pp, \Ww, \Rr)$ contains an optimal solution.
-Before that, we define 
-\begin{equation*}
-S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)},
-\end{equation*}
-for all $j \in \{1, \dots, m\}$, as the set of all possible solutions for the $j$-th ellipse. We break the construction of $S_j$ into three separated cases, that is, $S_j^{(1)}, S_j^{(2)}$, and $S_j^{(3)}$.
+\subsection{First case}
 
-Firstly, consider the case where $|E_j(q_j^*, \theta_j^*)|=1$. 
+This is the case where $|E_j(q_j^*, \theta_j^*)|=1$, that is, the $j$-th ellipse only covers one point. 
 This case is not treated by any of the previous results presented in this chapter. Nevertheless, taking this possibility into account can be done by including solutions in $S_j$ that are guaranteed to cover at least one point. This is represented by
 \begin{equation}
-	S_j^{(1)} = \bigcup_{1 \le i \le n} \{(p_i, 0)\}.
+	S_j^{(1)} = \bigcup_{u \in \Pp} \{(u, 0)\}.
 \end{equation}
 
-Then, the case in which the $j$-th ellipse covers more than one point is treated by \autoref{lema:3pnts}. There are two possible categories into which an optimal solution can be put according two \autoref{lema:3pnts}. 
+\subsection{Second case}
 
-The first one is when there is no equivalent solution with three points on the $j$-th ellipse's border. This implies that, this solution can be represented by one that has a certain pair of points $u, v$ on the ellipse's border and is rotated by some angle in $\Phi_j(u,v)$. As only one angle is needed, we define $\theta_{uv}$ as the angle that makes the major-axis of the ellipse to be aligned with the line that passes through $u$ and $v$; this angle surely is in $\Phi_j(u,v)$ as the major-axis is the longest segment that crosses an ellipse. Having said that, we refer to $S_j^{(2)}$ the set of possible solutions that takes this case into account; we define it as
+The second and third cases are addressed by \autoref{lema:3pnts}. 
+Consider the second case to be the one where the $j$-ellipse covers more than one point and there is no equivalent solution with three points on the its border. 
+By \autoref{lema:3pnts}, $(Q^*, \Theta^*)$ can be represented by a solution that has some pair of points $u, v$ on the ellipse's border, and is rotated by some angle in $\Phi_j(u,v)$. 
+As only one angle is needed, we define $\theta_{uv}$ as the angle that makes the major-axis of the ellipse to be aligned with the line that passes through $u$ and $v$; this angle surely is in $\Phi_j(u,v)$ as the longest segment that crosses an ellipse is its major-axis.
+Having said that, we refer to $S_j^{(2)}$ the set of possible solutions that takes this case into account; we define it as
 \begin{equation}
-S_j^{(2)} = \bigcup_{1 \le i < j\le n} \{(q, \theta_{ij})\in \R^2\times\R: \{p_i, p_j\} \subset \partial E_j(q, \theta_{ij})\}.\\
+S_j^{(2)} = \bigcup_{\{u, v\} \subset \Pp} \{(q, \theta_{uv})\in \R^2\times\R: \{u,v\} \subset \partial E_j(q, \theta_{uv})\}.\\
 \end{equation}
+For a pair of points $u, v$, determining every ellipse with a fixed rotation angle that has $u$ and $v$ on its border is equivalent to determining the intersection points of two axis-parallel ellipses with the same shape parameters. This problem is discussed with great detail in \autoref{chapter:ellipses_intersection}.
 
-The only case left is when there is an equivalent solution with three points on the ellipse's border. We call this set of possible solutions $S_j^{(3)}$, and define it as
+\subsection{Third case}
+
+The only case left is the one where there is an equivalent solution with three points on the $j$-th ellipse's border. We call this set of possible solutions $S_j^{(3)}$, and define it as
 \begin{equation}
-	S_j^{(3)} = \bigcup_{1 \le i < j < k \le n} \{(q, \theta)\in \R^2\times\R: \{p_i, p_j, p_k\} \subset \partial E_j(q, \theta)\},
+	S_j^{(3)} = \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times\R: \{u, v, w\} \subset \partial E_j(q, \theta)\}.
+\end{equation}
+Determining the set $S_j^{(3)}$ can be done using the results from \autoref{chapter:e3p} for every triplet of points.
+
+Finally, we define the CLS for the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}$, and the set of possible solutions of an instance of MCER as
+\begin{equation}\label{eq:omega}
+\Omega(\Pp, \Ww, \Rr) = \{(Q, \Theta)\in \R^{2m}\times\R^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\}.
 \end{equation}
 
-For a CLS to cover solutions in that category, 
-
-that the implication of a non-existent equivalent optimal solution with three points on the ellipse's border implies that any feasible angle can be used and it is possible to maintain two points on the ellipse's border. 
-
-
-
-\begin{corolario}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER, and $\theta_{ij} \in [0, 2\pi]$ be the polar angle  of vector $p_j-p_i$, for all $i, j \in \{1, \dots, n\}$. We define, for all $j\in\{1, \dots, m\}$,
-	\begin{align*}
-	S_j^{(1)} &= \bigcup_{1 \le i \le n} \{(p_i, 0)\in \R^2\times\R\},\\
-	S_j^{(2)} &= \bigcup_{1 \le i < j\le n} \{(q, \theta_{ij})\in \R^2\times\R: \{p_i, p_j\} \subset \partial E_j(q, \theta_{ij})\},\\
-	S_j^{(3)} &= \bigcup_{1 \le i < j < k \le n} \{(q, \theta)\in \R^2\times\R: \{p_i, p_j, p_k\} \subset \partial E_j(q, \theta)\},\\
-	S_j &= S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}.
-	\end{align*}
-	Then, there exists an optimal solution $(Q^*, \Theta^*)$, such that
-	\begin{equation*}
-	(Q^*, \Theta^*)\in \left\{(Q, \Theta) : (q_j, \theta_j)\in \{\Gamma_j^{(1)}\cup\Gamma_j^{(2)}\cup\Gamma_j^{(3)}\}\right\}.
-	\end{equation*}
+\begin{teorema}
+	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER, and $\Omega(\Pp, \Ww, \Rr)$ be a set of solutions defined by \autoref{eq:omega}. Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)$, and $|\Omega(\Pp, \Ww, \Rr)|=\bigO(n^{3m})$.	
+\end{teorema}
+\begin{proof}
+	For every $j \in \{1, \dots, m\}$, by \autoref{lema:3pnts}, any optimal solution that covers more than one point can be transformed into one that is in $S_j^{(2)}$ or in $S_j^{(3)}$.
+	If an optimal solution covers only one point, it can be transformed into another one that is in $S_j^{(1)}$.
 	
-\end{corolario}
+	From \autoref{chapter:ellipses_intersection}, we can conclude that $|S_j^{(2)}|\le 2\binom{n}{2} = \bigO(n^2)$.
+	By \autoref{lema:e3p}, we have that $|S_j^{(3)}| \le 6\binom{n}{3} = \bigO(n^3)$.
+	Therefore, $|S_j|=\bigO(n^3)$, and as $|\Omega(\Pp, \Ww, \Rr)|= |S_1|\times|S_2|\times\dots\times|S_m|$, we have $|\Omega(\Pp, \Ww, \Rr)|=\bigO(n^{3m})$.
+\end{proof}
 
+\section{An algorithm for MCER}
