@@ -282,9 +282,16 @@ After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \W
 
 \begin{proof}
 	For every $j\in\{1, \dots, m\}$, let $Z \subset \Pp$ be the set of covered points by ellipses $1, \dots, j-1$. 
-	Unless $Z=\Pp$, \autoref{algoritmo:mcer} does not go through a solution that has $(q_j, \theta_j)$, such that $\Pp \cap E_j(q_j, \theta_j) \subset Z$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
+	Unless $Z=\Pp$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider $(q_j, \theta_j) \in S_j$, such that $\Pp \cap E_j(q_j, \theta_j) \subset Z$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
 \end{proof}
 
 \subsection{Improvements and implementation details}
 
-Some improvements can be made when implementing \autoref{algoritmo:mcer}.
+Some improvements can be made in the implementation of \autoref{algoritmo:mcer}.
+Instead of calling procedure $MCE_1$ every time in the backtracking routine, it is suggested that it is done outside in a pre-processing phase.
+
+Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the $MCE_1$ procedure in \autoref{algoritmo:mcer1}. 
+
+In our implementation we use a tree-like data structure to verify if a  that is also used in \citeonline{andreta}.
+
+
