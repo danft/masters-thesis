@@ -182,9 +182,10 @@ Finally, we define the CLS for the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{
 \Omega(\Pp, \Ww, \Rr) = \{(Q, \Theta)\in \R^{2m}\times\R^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\}.
 \end{equation}
 
-\begin{teorema}
+\begin{theorem}\label{th:mcer}
 	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER, and $\Omega(\Pp, \Ww, \Rr)$ be a set of solutions defined by \autoref{eq:omega}. Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)$, and $|\Omega(\Pp, \Ww, \Rr)|=\bigO(n^{3m})$.	
-\end{teorema}
+\end{theorem}
+
 \begin{proof}
 	For every $j \in \{1, \dots, m\}$, by \autoref{lema:3pnts}, any optimal solution that covers more than one point can be transformed into one that is in $S_j^{(2)}$ or in $S_j^{(3)}$.
 	If an optimal solution covers only one point, it can be transformed into another one that is in $S_j^{(1)}$.
@@ -195,4 +196,95 @@ Finally, we define the CLS for the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{
 \end{proof}
 
 \section{An algorithm for MCER}
-In this section we describe an algorithm for MCER that implicitly constructs the set $\Omega(\Pp, \Ww, \Rr)$.
+
+In this section we describe an algorithm for MCER that simply goes through every solution in $\Omega(\Pp, \Ww, \Rr)$ and therefore finds an optimal solution.
+
+Firstly, we describe an algorithm that returns a CLS for an ellipse given a demand set. 
+We assume that in \autoref{algoritmo:mcer1} the procedure $e2p(u, v, a, b)$ returns every $(q, \theta) \in \R^2\times\R$, such that, let $E$ be the coverage region of the ellipse with shape parameters $(a, b)$, $\{u, v\}\subset \partial E(q, \theta)$, and
+$\theta$ is an rotation angle that makes $E$'s major-axis parallel to the line defined by $u$ and $v$.
+
+\begin{algoritmo}
+	\caption{Algorithm for MCER}\label{algoritmo:mcer1}
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and an ellipse's shape parameters $(a, b)$.}
+		
+		\Ensure{A CLS for the ellipse with shape parameters $(a, b)$ considering the demand set $\Pp$.}
+		
+		\item[]
+		
+		\Procedure{$MCER_1$}{$\Pp, a, b$}
+		\State $S \gets \{\}$
+		
+		\For {$u \in \Pp$}
+		\State $S \gets S \cup \{(u, 0)\}$
+		\EndFor
+		
+		\For {$\{u, v\} \in \Pp$}
+		\State $S \gets S \cup e2p(u, v, a, b)$
+		\EndFor
+		
+		\For{$\{u, v, w\} \in \Pp$}
+		\State $S \gets S \cup e3p(u, v, a, b)$ \Comment{Defined in \autoref{algoritmo:e3p}.}
+		\EndFor
+		
+		\State \Return $S$
+		\EndProcedure
+	\end{algorithmic}
+\end{algoritmo}
+
+After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \Ww, \Rr)$ of MCER, and returns an optimal solution for it.
+
+
+\begin{algoritmo}
+	\caption{Algorithm for MCER}\label{algoritmo:mcer}
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
+		
+		\Ensure{An optimal solution of MCER.}
+		
+		\item[]
+		
+		\Procedure{$MCER$}{$\Pp, \Ww, \Rr, j=1$}
+		\If{$j = m+1$}
+		\State \Return $0$
+		\EndIf
+		
+		\State $ans \gets 0$
+		\State Let $(q_{j}^*, \dots, q_m^*); (\theta_{j}^*, \dots, \theta_m^*)$ be the optimal solution, initially set to $0$.
+		
+		\State $S_j \gets MCE_1(\Pp, a_j, b_j)$
+
+		
+		\For{$(q_j, \theta_j) \in S_j$}
+		\State $Cov \gets \Pp \cap E_j(q_j, \theta_j)$
+%		\State $((q_{j+1},\theta_{j+1}); \dots; (q_m, \theta_m)) \gets  MCE(\Pp\setminus Cov, \Ww, \Rr, j+1)\}$
+		
+		\State $(q_{j+1}, \dots, q_m); (\theta_{j+1}, \dots, \theta_m) \gets  MCE(\Pp\setminus Cov, \Ww, \Rr, j+1)$
+		
+		
+		\State $Cov \gets \bigcup_{k=j}^m \Pp \cap E_k(q_k, \theta_k)$
+		\If {$w(Cov) > ans$}
+			\State $ans \gets w(Cov)$
+			%\State $((q_{j}^*,\theta_{j}^*); \dots; (q_m^*, \theta_m^*)) \gets ((q_{j},\theta_{j}); \dots; (q_m, \theta_m))$
+			
+			\State $(q_{j}^*, \dots, q_m^*); (\theta_{j}^*, \dots, \theta_m^*) \gets (q_{j}, \dots, q_m); (\theta_{j}, \dots, \theta_m)$
+		\EndIf
+		\EndFor
+		
+		\State \Return $(q_{j}^*, \dots, q_m^*); (\theta_{j}^*, \dots, \theta_m^*)$
+		\EndProcedure
+	\end{algorithmic}
+\end{algoritmo}
+
+\begin{corolario}
+	\autoref{algoritmo:mcer} takes $\bigO(n^{3m})$ computations and returns an optimal solution.
+\end{corolario}
+
+\begin{proof}
+	For every $j\in\{1, \dots, m\}$, let $Z \subset \Pp$ be the set of covered points by ellipses $1, \dots, j-1$. 
+	Unless $Z=\Pp$, \autoref{algoritmo:mcer} does not go through a solution that has $(q_j, \theta_j)$, such that $\Pp \cap E_j(q_j, \theta_j) \subset Z$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
+\end{proof}
+
+\subsection{Improvements and implementation details}
+
+Some improvements can be made when implementing \autoref{algoritmo:mcer}.
