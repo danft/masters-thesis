@@ -22,7 +22,7 @@ As a remark, it is important to note that MCD is a slightly different PMCLP than
 
 \subsection{CLS and CIPS}
 
-The method proposed in \citeonline{church:1984} involves the creation of a \sigla{CLS}{Candidate List Set}, which is a finite set of possible solutions, for each facility. After a CLS is constructed, a complete search can be executed to find the best solution.
+The method proposed in \citeonline{church:1984} involves the creation of a \sigla{CLS}{Candidate List Set}, which is a finite set of possible solutions, for each facility. After a CLS is constructed, a complete search is executed to find the best solution. That is why, as an heuristic, it is a good idea to create small CLSs that somehow can still provide good solutions. 
 
 As this work is developed towards the creation of an exact method for MCD, the focus is on constructing a CLS that contains an optimal solution.
 This is done in \citeonline{church:1984} where a circle is defined for every demand point, and a \sigla{CIPS}{circle intersection point set} is constructed containing the demand points and every pairwise circle intersection.
@@ -144,21 +144,21 @@ In practice, traversing a circular list can be emulated by traversing a regular 
 B_i = A_i\cup\bigcup_{j=1}^n \{ 2\pi+\Gamma_-(i,j), 2\pi+\Gamma_+(i,j) \}.
 \end{equation}
 Assuming $B_i$ is sorted in ascending order, a copy of the elements of $A_i$ shifted to the interval $[2\pi, 4\pi]$ is added to its end and a simple traversal, going through the first element until the last one, simulates a traversal on the circular list $A_i$.
-This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the intersections list is duplicated simulating the traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively).
+This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the list of intersection between $\partial D_1$ with circles $\partial D_2, \partial D_3$ and $\partial D_4$ is duplicated simulating a traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively).
 
 \begin{figure}
     \centering
     
     \caption{The intersections list of a disk with three other disks.}
 	 %\input{tex/figures/array_disks.tex}
-    \includegraphics[scale=.28]{tex/figures/3_disks_intersect2.pdf}
+    \includegraphics[scale=.3]{tex/figures/3_disks_intersect2.pdf}
     \fautor
     \label{fig:array_disks}
 \end{figure}
 
-\begin{teorema}\label{lema:disk}
+\begin{theorem}\label{lema:disk}
 	\autoref{algoritmo:mcd_1} for solving the Maximum Clique Problem has a $\bigO((n+K)\log{n})$ run time complexity, where $K$ is the number of intersections of the $n$ disks.
-\end{teorema}
+\end{theorem}
 
 \begin{proof}
 	Finding every intersection can be done in $\bigO((n+K)\log{n})$  by a plane sweep, the method is described in \citeonline{bentley:1979}. 
@@ -206,7 +206,7 @@ If a simpler implementation is desired, or the number of intersections is large,
 \section{An algorithm for MCD}
 
 A simple adaptation can be done on \autoref{algoritmo:mcd_1} to make it return a CLS that contains an optimal solution of MCD for that disk. This is shown in \autoref{algoritmo:mcd_cls}. 
-Notice also that MCD-1 is defined only for unit disks, however, this constrained can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
+Notice also that MCD-1 is defined only for unit disks, however, this constraint can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
 
 \begin{lema}\label{lema:mcd}
 	Suppose that an instance of MCD and an index $j\in\{1, \dots, m\}$ are given.
