@@ -197,14 +197,13 @@ Finally, we define the CLS for the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{
 
 \section{An algorithm for MCER}
 
-In this section we describe an algorithm for MCER that simply goes through every solution in $\Omega(\Pp, \Ww, \Rr)$ and therefore finds an optimal solution.
+In this section we describe an algorithm for MCER that does a complete search on the CLS of each ellipse.
 
-Firstly, we describe an algorithm that returns a CLS for an ellipse given a demand set. 
-We assume that in \autoref{algoritmo:mcer1} the procedure $e2p(u, v, a, b)$ returns every $(q, \theta) \in \R^2\times\R$, such that, let $E$ be the coverage region of the ellipse with shape parameters $(a, b)$, $\{u, v\}\subset \partial E(q, \theta)$, and
-$\theta$ is an rotation angle that makes $E$'s major-axis parallel to the line defined by $u$ and $v$.
+Firstly, we describe an algorithm that constructs a CLS for a given ellipse.
+Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \theta) \in \R^2\times\R$, such that, $\{u, v\}\subset \partial E(q, \theta)$, and $\theta$ is an rotation angle that makes $E$'s major-axis parallel to the line defined by $u$ and $v$. Also, the procedure $e3p$ called in \autoref{algoritmo:mcer1} is defined in \autoref{algoritmo:e3p}.
 
 \begin{algoritmo}
-	\caption{Algorithm for MCER}\label{algoritmo:mcer1}
+	\caption{An algorithm that constructs a CLS for a given ellipse.}\label{algoritmo:mcer1}
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and an ellipse's shape parameters $(a, b)$.}
 		
@@ -292,6 +291,11 @@ Instead of calling procedure $MCE_1$ every time in the backtracking routine, it 
 
 Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the $MCE_1$ procedure in \autoref{algoritmo:mcer1}. 
 
-In our implementation we use a tree-like data structure to verify if a  that is also used in \citeonline{andreta}.
+In our implementation we use the same approach used in \citeonline{andreta}. When constructing the CLS for the $j$-th ellipse, a tree-like data struct is utilized to verify if a solution $(q, \theta)$ covers a subset of another solution or not.
 
+Keeping an upper-bound for the solution during the backtracking in \autoref{algoritmo:mcer} can also provide a good improvement in practice. Let $z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta))$, and $OPT$ the value of an optimal solution. When the algorithm chooses $(q_j, \theta_j) \in S_j$ as the solution for the $j$-th ellipse, we have
 
+\begin{equation}
+OPT \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
+\end{equation}
+This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be pre-processed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER$ procedure.
