@@ -4,7 +4,7 @@ We refer to this problem as \sigla{MCD}{Maximum Covering by Disks}. We also prop
 \section{Definition}
 
 An instance of MCD is given by a set of $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with $p_j\in\R^2$; a set of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$; and $m$ disks given by their radii $\Rr:=\{r_1, \dots, r_m\}$, with $r_j\in\R_{>0}$. 
-Additionally, to make the text more clear, we define a set of $m$ disks as $\D = \{D_1, \dots, D_m\}$, with $D_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th disk is located as input, and returns its coverage region as defined by \autoref{eq:disk}.
+Additionally, to make the text more clear, we define a set of $m$ disks as $\D:=\{D_1, \dots, D_m\}$, with $D_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th disk is located as input, and returns its coverage region as defined by \autoref{eq:disk}.
 
 A solution for an instance of MCD is determined by $Q:=(q_1, \dots, q_m) \in \R^{2m}$ which specifies the center of every disk in $\D$.
 The coverage region of the $j$-th disk centered at $q_j$ is denoted by $D_j(q_j)$. Finally, let $w : 2^{\Pp} \mapsto \R_{\ge0}$ be the function
@@ -18,7 +18,7 @@ which takes a subset of $\Pp$ and returns the sum of the weights of every point 
 \max_{Q} w\left(\bigcup_{j=1}^m \Pp \cap D_j(q_j)\right).
 \end{equation}
 
-As a remark, it is important to note that MCD is a slightly different PMCLP than the one introduced in the first study on the subject in \citeonline{church:1984}. There, a coverage radius is given for each demand, rather than for each facility, and a demand is only considered covered if a facility is located within its radius. 
+As a remark, it is important to note that MCD is a slightly different PMCLP than the one introduced in the first study on the subject in \citeonline{church:1984}. There, a coverage radius is given for each demand, rather than for each facility, and a demand is only considered covered if a facility is located within its radius.
 
 \subsection{CLS and CIPS}
 
@@ -28,6 +28,10 @@ As this work is developed towards the creation of an exact method for MCD, the f
 This is done in \citeonline{church:1984} where a circle is defined for every demand point, and a \sigla{CIPS}{circle intersection point set} is constructed containing the demand points and every pairwise circle intersection.
 Here, we introduce a similar approach based on works found on the case for only one disk and describe a $\bigO(n^2\lg{n})$ algorithm for it.
 
+\section{Related Work}
+In \citeonline{cabello:2006}, a $\bigO(n^{2m-1}\log{n})$ algorithm for $MCD$ is developed as a sub-routine for its $(1-\epsilon)$-approximation algorithm. Firstly, they solve a sub-problem for two disks in $\bigO(n^3\log{n})$. Then, for the rest of the points that are not in that solution, it uses the algorithm developed in \citeonline{chazelle:1986} for the one-disk case, checking every possible solution for every one of the disks left.
+
+Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed. It uses a probabilistic algorithm called mean-shift which is a gradient ascent method proven to converge to a local density maxima of any probability distribution. The mean-shift is utilized to find good candidates of centers for the unit disks, then the method backtracks to find the best assignment. The results showed that the greedy algorithm achieves an optimal coverage in some instances, but for some other ones it has a 15 percent worse coverage ratio.
 
 \section{One disk version}
 
@@ -67,7 +71,7 @@ That is why MWC is also referred to as the Maximum Geometric Clique Problem and 
 
 %The graphical version of the problem was studied by \citeonline{graphical-clique}, where a $\bigO(n^{4.5})$ algorithm was proposed. Also, in \citeonline{inplace:2014}, a $\bigO(n^2\log{n})$ time in-place algorithm\footnote{An in-place algorithm is an algorithm that needs $\bigO(1)$ extra space.} for arbitrary radii disks was proposed. 
 
-In \citeonline{chazelle:1986}, the method for MWC consists on building a planar graph on which the vertices were the $\binom{n}{2}$ pairwise intersection of the circumferences and the edges were the arcs of the circumferences connecting the intersections. With the graph constructed, a traversal is done to obtain the answer, thus the time complexity of $\bigO(n^2)$.
+In \citeonline{chazelle:1986}, the method for MWC consists on building a planar graph on which the vertices are the $\binom{n}{2}$ pairwise intersection of the circumferences and the edges are the arcs of the circumferences connecting the intersections. With the graph constructed, a traversal is done to obtain the answer, thus the time complexity of $\bigO(n^2)$.
 
 \begin{figure}[H]
 \centering
@@ -199,14 +203,7 @@ If a simpler implementation is desired, or the number of intersections is large,
 \end{algorithmic}
 \end{algoritmo}
 
-\section{Multiple disks}
-
-
-In \citeonline{cabello:2006}, a $\bigO(n^{2m-1}\log{n})$ algorithm for $MCD$ is developed as a sub-routine for its $(1-\epsilon)$-approximation algorithm. Firstly, they solve a sub-problem for two disks in $\bigO(n^3\log{n})$. Then, for the rest of the points that are not in that solution, it uses the algorithm developed in \citeonline{chazelle:1986} for the one-disk case, checking every possible solution for every one of the disks left.
-
-Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed. It uses a probabilistic algorithm called mean-shift which is a gradient ascent method proven to converge to a local density maxima of any probability distribution. The mean-shift is utilized to find good candidates of centers for the unit disks, then the method backtracks to find the best assignment. The results showed that the greedy algorithm achieves an optimal coverage in some instances, but for some other ones it has a 15 percent worse coverage ratio.
-
-\subsection{An algorithm for MCD}
+\section{An algorithm for MCD}
 
 A simple adaptation can be done on \autoref{algoritmo:mcd_1} to make it return a CLS that contains an optimal solution of MCD for that disk. This is shown in \autoref{algoritmo:mcd_cls}. 
 Notice also that MCD-1 is defined only for unit disks, however, this constrained can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.

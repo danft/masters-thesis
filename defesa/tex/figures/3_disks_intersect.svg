@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="802.29412"
+     inkscape:cx="533.00841"
      inkscape:cy="472.29144"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -92,7 +92,7 @@
        d="m 207.28311,159.3974 a 56.613773,56.613773 0 0 1 -50.80578,61.86299 56.613773,56.613773 0 0 1 -61.878692,-50.78665 56.613773,56.613773 0 0 1 50.767522,-61.89439 56.613773,56.613773 0 0 1 61.91008,50.74838" />
     <g
        id="g849"
-       transform="translate(14.363096,11.717262)">
+       transform="matrix(0.8,0,0,0.8,32.987096,31.097562)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -116,7 +116,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g883"
-       transform="translate(70.303571,134.18155)">
+       transform="matrix(0.8,0,0,0.8,92.298971,153.61225)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -160,7 +160,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g931"
-       transform="translate(126.25324,48.512738)">
+       transform="matrix(0.8,0,0,0.8,148.24864,67.943438)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -204,7 +204,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g988"
-       transform="translate(-2.2678571,134.18155)">
+       transform="matrix(0.8,0,0,0.8,19.709543,153.61225)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -248,7 +248,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g1054"
-       transform="translate(-42.711312,43.467262)">
+       transform="matrix(0.8,0,0,0.8,-20.733912,62.897962)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -292,7 +292,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g1119"
-       transform="translate(-66.52381,93.738096)">
+       transform="matrix(0.8,0,0,0.8,-47.86621,113.1184)">
       <g
          word-spacing="normal"
          letter-spacing="normal"
@@ -316,7 +316,7 @@
            style="fill:#000000;stroke-width:0" /></g>    </g>
     <g
        id="g1183"
-       transform="translate(166.68747,87.766078)">
+       transform="matrix(0.8,0,0,0.8,185.35437,107.16738)">
       <g
          word-spacing="normal"
          letter-spacing="normal"

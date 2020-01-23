@@ -232,6 +232,9 @@ Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We 
 \end{algoritmo}
 
 After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \Ww, \Rr)$ of MCER, and returns an optimal solution for it.
+Even though it is based on \autoref{th:mcer}, the set of solutions $\Omega(\Pp, \Ww, \Rr)$ is not explicitly built in \autoref{algoritmo:mcer}. Instead, a complete search is done by backtracking the CLS of every ellipse returned by procedure $MCER_1$.
+
+Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $MCER$, returns an optimal solution for an instance $(\Pp, \Ww, \Rr)$ using the second procedure $MCER_{bt}$. This second procedure is responsible for the backtracking and takes two additional parameters $j\in\{1, \dots, m\}$, which represents the index of the ellipse that $MCER_{bt}$ is currently processing, and $Z\subset \Pp$, which represents the set of points that have not been covered by the ellipses already processed by $MCER_{bt}$.
 
 
 \begin{algoritmo}
@@ -242,23 +245,27 @@ After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \W
 		\Ensure{An optimal solution of MCER.}
 		
 		\item[]
+		\Procedure{$MCER$}{$\Pp, \Ww, \Rr$}
+		\State \Return $MCER_{bt}(\Pp, \Ww, \Rr, 1)$
+		\EndProcedure
 		
-		\Procedure{$MCER$}{$\Pp, \Ww, \Rr, j=1$}
+		\item[]
+		
+		\Procedure{$MCER_{bt}$}{$Z, \Ww, \Rr, j$}
 		\If{$j = m+1$}
 		\State \Return $0$
 		\EndIf
 		
 		\State $ans \gets 0$
-		\State Let $(q_{j}^*, \dots, q_m^*); (\theta_{j}^*, \dots, \theta_m^*)$ be the optimal solution, initially set to $0$.
+		\State $(q_{j}^*\gets 0, \dots, q_m^*\gets0); (\theta_{j}^*\gets 0, \dots, \theta_m^*\gets 0)$ \Comment{Setting to $0$ as a default value.}
 		
-		\State $S_j \gets MCE_1(\Pp, a_j, b_j)$
+		\State $S_j \gets MCER_1(Z, a_j, b_j)$
 
 		
 		\For{$(q_j, \theta_j) \in S_j$}
 		\State $Cov \gets \Pp \cap E_j(q_j, \theta_j)$
-%		\State $((q_{j+1},\theta_{j+1}); \dots; (q_m, \theta_m)) \gets  MCE(\Pp\setminus Cov, \Ww, \Rr, j+1)\}$
 		
-		\State $(q_{j+1}, \dots, q_m); (\theta_{j+1}, \dots, \theta_m) \gets  MCE(\Pp\setminus Cov, \Ww, \Rr, j+1)$
+		\State $(q_{j+1}, \dots, q_m); (\theta_{j+1}, \dots, \theta_m) \gets  MCER_{bt}(Z\setminus Cov, \Ww, \Rr, j+1)$
 		
 		
 		\State $Cov \gets \bigcup_{k=j}^m \Pp \cap E_k(q_k, \theta_k)$
@@ -280,9 +287,12 @@ After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \W
 \end{corolario}
 
 \begin{proof}
-	For every $j\in\{1, \dots, m\}$, let $Z \subset \Pp$ be the set of covered points by ellipses $1, \dots, j-1$. 
-	Unless $Z=\Pp$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider $(q_j, \theta_j) \in S_j$, such that $\Pp \cap E_j(q_j, \theta_j) \subset Z$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
+	For every $j\in\{1, \dots, m\}$, unless $Z=\{\}$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider any $(q_j, \theta_j) \in \R^2 \times \R$, such that $Z \cap E_j(q_j, \theta_j) = \{\}$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
 \end{proof}
+
+\subsection{Adding facility cost}
+
+
 
 \subsection{Improvements and implementation details}
 
