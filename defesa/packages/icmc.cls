@@ -760,7 +760,6 @@
 \renewcommand{\listalgorithmname}{\listalgoritmoname}%
 % Altera o nome padrao do rotulo
 \floatname{algorithm}{\algoritmoname}
-\floatname{algorithm}{Algorithm}
 
 % Configura a ``Lista de algoritmos'' conforme as regras da ABNT (para abnTeX2)
 \begingroup
