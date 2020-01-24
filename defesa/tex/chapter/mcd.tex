@@ -14,9 +14,9 @@ w(A) = \sum_{j : p_j \in A} w_j,
 \end{equation}
 which takes a subset of $\Pp$ and returns the sum of the weights of every point in it; then an optimal solution of MCD is given by the optmization problem:
 
-\begin{equation}
+\begin{equation*}
 \max_{Q} w\left(\bigcup_{j=1}^m \Pp \cap D_j(q_j)\right).
-\end{equation}
+\end{equation*}
 
 As a remark, it is important to note that MCD is a slightly different PMCLP than the one introduced in the first study on the subject in \citeonline{church:1984}. There, a coverage radius is given for each demand, rather than for each facility, and a demand is only considered covered if a facility is located within its radius.
 
@@ -35,16 +35,17 @@ Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed
 
 \section{One disk version}
 
-This version of the problem will be refered to as \sigla{MCD-1}{Maximum Covering by One Unit Disk} and it is just a specific case of MCD with only one disk with radius one ($m=1$ and $r_1=1$). We later use the algorithm for MCD-1 here described to construct a CLS which is guaranteed to contain an optimal solution for MCD.
+This version of the problem will be refered to as \sigla{MCD1}{Maximum Covering by One Unit Disk} and it is just a specific case of MCD with only one disk with radius one ($m=1$ and $r_1=1$). We refer to an instance of MCD1 as the tuple $(\Pp, \Ww)$.
+We later use the algorithm for MCD1 here described to construct a CLS which is guaranteed to contain an optimal solution for MCD.
 
-Two exact methods for MCD-1 have been found in the literature. A $\bigO(n^2)$ algorithm is proposed by \citeonline{chazelle:1986} which improved the previously $\bigO(n^2\log{n})$ one proposed by \citeonline{drezner}.
-As it has been mentioned, MCD-1 is a 3SUM-HARD problem, which means that it is as hard as the 3SUM problem (the problem of finding three real numbers that sum to zero, given $n$ real numbers). Initially the lower bound of the 3SUM problem was conjectured to be $\Omega(n^2)$, matching the best algorithm for MCD-1, which meant that no better time-complexity could be achieved. Since then, however, better algorithms for 3SUM have been developed with a $\bigO(\frac{n^2}{poly(n)})$ run time complexity \cite{3SUM-kopelowitz:2014}.
+Two exact methods for MCD1 have been found in the literature. A $\bigO(n^2)$ algorithm is proposed by \citeonline{chazelle:1986} which improved the previously $\bigO(n^2\log{n})$ one proposed by \citeonline{drezner}.
+As it has been mentioned, MCD1 is a 3SUM-HARD problem, which means that it is as hard as the 3SUM problem (the problem of finding three real numbers that sum to zero, given $n$ real numbers). Initially the lower bound of the 3SUM problem was conjectured to be $\Omega(n^2)$, matching the best algorithm for MCD1, which meant that no better time-complexity could be achieved. Since then, however, better algorithms for 3SUM have been developed with a $\bigO(\frac{n^2}{poly(n)})$ run time complexity \cite{3SUM-kopelowitz:2014}.
 
 
 In \citeonline{drezner}, the main idea used to develop the $\bigO(n^2\log{n})$ algorithm is that, even though there are infinitely many points where the disk could be placed, only a few of them, a finite amount of $\bigO(n^2)$, needs to be considered for the method to find an optimal solution.
 The algorithm, for every point, sorts the other points with respect to the angle they form with the first one. After that, the first point is placed on the border of the disk and, going through the sorted list, the algorithm inserts and removes points from the disk coverage. Also, when inserting and removing a point from the coverage, it only checks the disk centers that make the entering/leaving point to be on the border. Because the algorithm only checks the centers that make the disk have two points on its border, the number of centers it goes through is bounded by the number of pairs of points, which is $\binom{n}{2} = \bigO(n^2)$.
 
-In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, instead of working directly with MCD-1, an equivalent problem called \sigla{MWC}{Maximum Weight Clique} was introduced. The algorithm for MCD that is developed in this chapter also uses that equivalence. Because of that, MWC is introduced in the next section.
+In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, instead of working directly with MCD1, an equivalent problem called \sigla{MWC}{Maximum Weight Clique} was introduced. The algorithm for MCD that is developed in this chapter also uses that equivalence. Because of that, MWC is introduced in the next section.
 
 \section{Maximum Weight Clique Problem}
 
@@ -54,15 +55,15 @@ A clique, in this context, is a non-empty intersection region of one or more dis
 Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$ which is inside any of the given disks in $\D$.
 From a solution $q$, the corresponding clique $S$ can be obtained by intersecting every disk that contains $q$:
 
-\begin{equation}
+\begin{equation*}
 S = \bigcap_{j : q \in D_j} D_j.
-\end{equation}
+\end{equation*}
 With a geometric observation, though, the number of possible values for the solution can be reduced.
 Let $\partial \D = \{ \partial D_1, \dots, \partial D_n \}$ be the set of circles corresponding to each disk in $\D$, it is possible to see that any clique has at least one point on its border that is in the intersection of two circles in $\partial D$ or, in the case where the clique is composed of only one disk, it contains the center of its only disk. Because of that, $q$ can be actually limited to the set of pairwise intersections of $\partial \D$ as well as the set of centers of each disk $\Pp$. Then, with this observation, an optimal solution of MWC can be defined by the optimization problem
 
-\begin{equation}
+\begin{equation*}
 \max_{q} \sum_{D_k \cap q \neq \emptyset} w_k,
-\end{equation}
+\end{equation*}
 with $q \in \{\partial D_i \cap \partial D_j : 1 \le i < j \le n\} \cup \Pp$. With this new specification of the solution's search space, it can be shown that given an instance of MWC, an optimal solution for it can be found by going through $\binom{n}{2} + n = \bigO(n^2)$ possible ones.
 
 It is worth pointing out that MWC is a different problem than the maximum clique on a intersection graph (a graph where the vertices are the disks and an edge exists if there is an intersection between two disks). 
@@ -101,13 +102,13 @@ In \citeonline{chazelle:1986}, the method for MWC consists on building a planar 
     \fautor
 \end{figure}
 
-As it has been mentioned, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of MCD-1, which means that a disk centered at $q^*$ which is an optimal solution of MWC, will have a maximal weight covering of the demand set $\Pp$.
+As it has been mentioned, with the equivalence of the two problems, an optimal solution of the Maximum Weight Clique Problem is also an optimal solution of MCD1, which means that a disk centered at $q^*$ which is an optimal solution of MWC, will have a maximal weight covering of the demand set $\Pp$.
 
-Given an instance of MCD-1, the equivalent MWC intance is obtained by defining the set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is a region where a disk could be placed to cover the corresponding points.
+Given an instance of MCD1, the equivalent MWC intance is obtained by defining the set $\D$ to contain the disks centered at $\Pp$ and setting the weight of every disk to be the weight of its corresponding point in $\Pp$. A disk $D_i$ will represent the area where a disk can be placed in order to cover $p_i$. This means that a intersection between some disks is a region where a disk could be placed to cover the corresponding points.
 
 In \autoref{fig:three_disks_no_intersection}, it can be seen that there is no point where a disk could be placed such that it would cover $p_1, p_2$ and $p_3$, nonetheless, in any of the pairwise intersections, a disk could be placed to cover the two corresponding points.
 
-Formally, in MWC, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the equivalent MCD-1 instance. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the MCD-1 instance. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$ in MWC.
+Formally, in MWC, if a point $q$ lies inside $\bigcap_{k \in I} D_k$, with $I \subset \{1,\dots,n\}$, then a disk centered at $q$ will cover the points $p_k$, with $k\in I$ in the equivalent MCD1 instance. Conversely, the same applies for a disk placed at $q$ that covers points $p_k$, with $k \in I$ in the MCD1 instance. It means that $q$ will lie inside region $\bigcap_{k \in I} D_k$ in MWC.
 
 \subsection{An algorithm for the Maximum Weight Clique Problem}
 
@@ -131,25 +132,34 @@ In \citeonline{inplace:2014} an important observation is made about the intersec
 
 Also, we refer to $\Gamma_+(i,j)$ as an opening angle, and to $\Gamma_-(i,j)$ as a closing angle. In \autoref{fig:3disks_intersect}, it is shown all the intersection points between $D_1$ with $D_2$ and $D_3$. Also, they are labeled according to \autoref{def:inter_arc}. Note that $\Gamma_+(1,3) > \Gamma_-(1,3)$ (the angles should be in the $[0,2\pi]$ interval).
 
-With \autoref{def:inter_arc} in hand, we can establish the basis of the algorithm for MWC. For every disk $D_i$, let us describe an algorithm that gets the best clique which $D_i$ is part of. This way, an algorithm for MWC just uses that method for every disk and returns the best solution found. Firstly, let $A_i$ be a list that contains the intersection angles of $\partial D_i$ with every circle in $\partial \D$. Assume also that $A_i$ is actually a circular list sorted in ascending order and it is defined as
+With \autoref{def:inter_arc} in hand, we can establish the basis of the algorithm for MWC. For every disk $D_i$, let us describe an algorithm that gets the best clique which $D_i$ is part of. This way, an algorithm for MWC just uses that method for every disk and returns the best solution found. Firstly, let $A_i$ be a circular list that contains the intersection angles of $\partial D_i$ with every circle in $\partial \D$ defined as
 
-\begin{equation}
+\begin{equation*}
 A_i = \bigcup_{j=1}^n \{ \Gamma_-(i,j), \Gamma_+(i,j) \}.
-\end{equation}
+\end{equation*}
+Assume also that $A_i$ is sorted in ascending order by the angle values with ties being broken by prioritizing opening angles.
+
 Finding the best solution which $D_i$ is part of can be done by traversing $A_i$ while keeping a set of active disks. When an opening intersection angle is reached, the corresponding disk is added to the active set; and when a closing one is seen, the corresponding disk is removed from the active set. This way, finding an optimal solution can be achieved by keeping the weight of the active disks as well as the best clique found so far. Notice also that because $\Gamma_+(i,i)=0$ and $\Gamma_-(i,i)=2\pi$, any clique found by the traversal will also contain $D_i$.
 
-In practice, traversing a circular list can be emulated by traversing a regular list that has a copy of the original circular list added to its end. This is done here by traversing the regular list $B_i$ defined as
+In practice, traversing a circular list can be emulated by traversing a regular list that has a copy of the original circular list added to its end. 
+Therefore, the list $B_i$ is defined here as a list that contains the elements of $A_i$ and a copy of it shifted to the interval $[2\pi, 4\pi]$. It is defined as
 
 \begin{equation}\label{eq:b_i}
 B_i = A_i\cup\bigcup_{j=1}^n \{ 2\pi+\Gamma_-(i,j), 2\pi+\Gamma_+(i,j) \}.
 \end{equation}
-Assuming $B_i$ is sorted in ascending order, a copy of the elements of $A_i$ shifted to the interval $[2\pi, 4\pi]$ is added to its end and a simple traversal, going through the first element until the last one, simulates a traversal on the circular list $A_i$.
-This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,j)$, $B_i$ will contain $\Gamma_-(i,j) < \Gamma_+(i,j) + 2\pi$. This is shown in \autoref{fig:array_disks}, where the list of intersection between $\partial D_1$ with circles $\partial D_2, \partial D_3$ and $\partial D_4$ is duplicated simulating a traversal in $B_i$ (note the indication to where the traversal starts as well as the positive and negative signs representing when a intersection with another disk opens and closes, respectively).
+Assuming $B_i$ is sorted with the same criteria as $A_i$. A simple traversal, starting at the first element and going until the last one, simulates a traversal on the circular list $A_i$.
+This works because for any pair of disks $D_i$, $D_j$; $B_i$ contains $\Gamma_+(i,j) < \Gamma_-(i,j) + 2\pi$. That is, the algorithm encounters an opening angle before reaching a closing one for any circle.
 
+In \autoref{fig:array_disks}, the intersection points between $\partial D_1$ (solid border) with $\partial D_2, \partial D_3$, and $\partial D_4$ (dashed border) are shown with a plus or minus sign indicating opening or closing intersection angles. 
+The intersection list $B_1$ is also displayed in \autoref{fig:array_disks} along with the size of the set of active disks $Q$ after processing every point in $B_1$ -- this is exactly what \autoref{algoritmo:mcd_1} for MWC does for every disk. The region of optimal solutions is highlighted and can also be obtained by following $B_1$ while keeping track of $Q$.
+The special intersection point of $\partial D_1$ with itself can also be seen in \autoref{fig:array_disks}. Its usage is very convenient as with $\Gamma_+(1, 1)$ and $\Gamma_-(1,1)$  in $B_1$, the algorithm inserts $D_1$ in the set of active disks before processing any point and removes $D_1$ only after every point has been processed.
+
+Finally, we define \autoref{algoritmo:mcd_1} for MWC. Given an instance $(\Pp, \Ww)$ of MWC, the algorithm uses the approach described here of keeping a set of active disks while traversing the list $B_i$. It returns a point that is inside an optimal clique, this way \autoref{algoritmo:mcd_1} can also be used to get an optimal solution for an instance $(\Pp, \Ww)$ of MCD1.
+ 
 \begin{figure}
     \centering
     
-    \caption{The intersections list of a disk with three other disks.}
+    \caption{The intersection list of a disk with three other disks.}
 	 %\input{tex/figures/array_disks.tex}
     \includegraphics[scale=.3]{tex/figures/3_disks_intersect2.pdf}
     \fautor
@@ -168,37 +178,37 @@ This works because for any pair of disks, such that $\Gamma_+(i,j) > \Gamma_-(i,
 If a simpler implementation is desired, or the number of intersections is large, determining the set $I_i$ (the set of disks that intersect with $D_i$, defined in \autoref{algoritmo:mcd_1}) can be simply done in $\bigO(n^2)$, making the algorithm have a worst-case complexity of $\bigO(n^2\log{n})$.
 
 \begin{algoritmo}[b]
-\caption{Algorithm for MCD-1.}\label{algoritmo:mcd_1}
+\caption{Algorithm for MWC.}\label{algoritmo:mcd_1}
 \begin{algorithmic}[1]
-\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$.}
-\Ensure{The maximum cover by a unit disk.}
+\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of weights $\Ww=\{w_1, \dots, w_n\}$.}
+\Ensure{A point that is inside the maximum weight clique of unit disks.}
 
 \item[]
 
-\Procedure{$MCD_1$}{$\Pp$}
+\Procedure{$MWC$}{$\Pp, \D, \Ww$}
+\State Let $\D=\{D_1(p_1), \dots, D_n(p_n)\}$ be a set of unit disks
 \State $Q_{best} \gets \{\}$
-\State $ans \gets$ center of $D_1$
-\ForAll{$p_i \in \Pp$}
-\State Let $D_i$ be the disk with center at $p_i$
-\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}.
+\State $q^* \gets$ $p_1$
+\ForAll{$D_i \in \Pp$}
+\State Let $B_i$ be the list of intersection angles of $D_i(p_i)$ as defined by \autoref{eq:b_i}
 
 \State $Q \gets \{\}$ \Comment{The set of active disks.}
-\For{$a \in B_i$}\Comment{Assuming $B_i$ is sorted.}
-\State Let $D_a$ be the disk that intersects $D_i$ at angle $a$. 
-\If{$a$ is a starting angle}
-\State $Q \gets Q \cup \{D_a\}$
+\For{$\theta \in B_i$}\Comment{Assuming $B_i$ is sorted.}
+\State Let $D_j$ be the disk, such that $\theta \in D_j(p_j)\cap D_i(p_i)$
+\If{$\theta$ is a opening angle}
+\State $Q \gets Q \cup \{D_j\}$
 \Else
-\State $Q \gets Q \setminus \{D_a\}$
+\State $Q \gets Q \setminus \{D_j\}$
 \EndIf
-\If{$w(Q_{best}) < w(Q)$} \Comment{$w(Q)$ returns the weights of the disks in $Q$.}
+\If{$w(Q_{best}) < w(Q)$} 
 \State $Q_{best} \gets Q$
-\State $ans \gets $ point corresponding to the intersection angle $a$
+\State $q^* \gets$ point corresponding to the intersection angle $\theta$
 \EndIf
 
 \EndFor
 \EndFor
 
-\State \Return $ans$
+\State \Return $q^*$
 \EndProcedure
 \end{algorithmic}
 \end{algoritmo}
@@ -206,7 +216,7 @@ If a simpler implementation is desired, or the number of intersections is large,
 \section{An algorithm for MCD}
 
 A simple adaptation can be done on \autoref{algoritmo:mcd_1} to make it return a CLS that contains an optimal solution of MCD for that disk. This is shown in \autoref{algoritmo:mcd_cls}. 
-Notice also that MCD-1 is defined only for unit disks, however, this constraint can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
+Notice also that MCD1 is defined only for unit disks, however, this constraint can be dropped, as it is introduced just for the sake of keeping the text more simple and \autoref{algoritmo:mcd_1} works for any radius. A result about the runtime complexity of \autoref{algoritmo:mcd_cls} has already been given by \autoref{lema:disk}, the following result states about the adaption of it to be used in an algorithm for MCD.
 
 \begin{lema}\label{lema:mcd}
 	Suppose that an instance of MCD and an index $j\in\{1, \dots, m\}$ are given.
@@ -224,23 +234,24 @@ This algorithm is described in \autoref{chapter:ellipses} for the axis-parallel 
 It is worth mentioning that the choice of developing a different method for the problem, instead of using the one from \citeonline{cabello:2006}, is taken for the sake of simplicity, considering both algorithms achieve similar bounds.
 
 \begin{algoritmo}
-	\caption{Algorithm for MCD-1 that returns a CLS.}\label{algoritmo:mcd_cls}
+	\caption{Algorithm for MCD1 that returns a CLS.}\label{algoritmo:mcd_cls}
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$, and a radius $r\in\R_{>0}$.}
 		\Ensure{A CLS for the disk given by radius $r$.}
 		
 		\item[]
 		
-		\Procedure{$MCD_1$}{$\Pp, \Ww, r$}
+		\Procedure{CLS-MCD}{$\Pp, \Ww, r$}
 		\State $S \gets \{\}$
 		\ForAll{$p_i \in \Pp$}
-		\State Let $D_i$ be the disk with center at $p_i$
-		\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}.
+		\State Let $D_i(p_i)$ be the disk with center at $p_i$
+		\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}
 		
-		\State $Cov \gets \{\}$
-		\For{$a \in B_i$}\Comment{Assuming $B_i$ is sorted.}
-		\State Let $q_a$ be the intersection point correspondent to angle $a$. 
-		\State $S \gets S \cup \{q_a\}$	
+		\For{$\theta \in B_i$}\Comment{Assuming $B_i$ is sorted.}
+		\If{$\theta$ is a opening angle}
+		\State Let $q_\theta$ be the intersection point correspondent to angle $\theta$
+		\State $S \gets S \cup \{q_\theta\}$	
+		\EndIf
 		\EndFor
 		\EndFor
 		

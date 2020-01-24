@@ -12,9 +12,9 @@ Additionally, to make the text more clear, we define a set $\E = \{E_1, \dots, E
 
 Then, a solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. Finally, let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
 
-\begin{equation}
+\begin{equation*}
 \max_q w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right).
-\end{equation}
+\end{equation*}
 
 In the next sections, we first describe a method for the case with only one ellipse, and then use it in the algorithm for multiple ellipses to construct a CLS containing an optimal solution.
 
@@ -29,28 +29,71 @@ The case with only one ellipse is considered first because it will be adapted to
 
 An instance of MCE-1 has $m=1$, and we set $(a, b):=(a_1, b_1)$, and $\E := \{E\}$. Therefore, an instance of MCE-1 is described by the tuple $(\Pp; \Ww; (a, b))$. A solution of MCE-1 is then given by a point $q\in\R^2$, and an optimal solution is given by the optimization problem
 
-\begin{equation}
+\begin{equation*}
 \max_q w(\Pp \cap E(q)).
-\end{equation}
+\end{equation*}
 An adaptation of \autoref{algoritmo:mcd_1} is obtained by just replacing the function that finds the intersection points between two disks by a function that finds the intersection points between two ellipses $\partial E_i$ and $\partial E_j$.
 It can be seen in \autoref{fig:3ellipses_intersect} that the intersection points and their correspondents $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ functions behave the same way as in the disks case.
-The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ are described thoroughly in \autoref{chapter:ellipses_intersection}. 
+The intersection of two ellipses as well as determining $\Gamma_-(i,j)$ and $\Gamma_+(i,j)$ are described in the next section.
 
 \begin{figure}[H]
-\centering
-    \caption{Three ellipses and their intersection points}
-    \includegraphics[scale=.32]{tex/figures/3ellipses_intersect.pdf}
-    \fautor
-    \label{fig:3ellipses_intersect}
+	\centering
+	\caption{Three ellipses and their intersection points}
+	\includegraphics[scale=.34]{tex/figures/3ellipses_intersect.pdf}
+	\fautor
+	\label{fig:3ellipses_intersect}
 \end{figure}
+
+\section{Determining $\Gamma_+(i,j)$ and $\Gamma_-(i,j)$}\label{section:ellipses_intersection}
+
+Let $E_1(q_1)$, and $E_2(q_2)$ be two coverage region of ellipses centered at $q_1, q_2\in\R^2$ respectively, with shape parameters $(a, b)\in\R^2_{>0}$. After changing the coordinates to make the center of the first ellipse be at the origin, the intersection points between the two ellipses are defined by
+
+\begin{align}
+\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 && (E_1) \label{eq:ell_inter_1}\\
+\frac{(x-h)^2}{a^2} + \frac{(y-k)^2}{b^2} = 1 && (E_2), \nonumber
+\end{align}
+where $(h,k)\in\R^2$ is the center of the second ellipse after the coordinates were translated by $-q_1$. As both equations are equal to $1$, we have
+\begin{align}
+    b^2x^2 + a^2y^2 &= b^2(x-h)^2 + a^2(y-k)^2 \nonumber\\
+    x &= y\frac{-2ka^2}{2hb^2} + \frac{b^2h^2 + a^2k^2}{2hb^2} \nonumber\\
+    x &= y\alpha + \beta.\label{eq:ell_inter_2}
+\end{align}
+Replacing \autoref{eq:ell_inter_2} into \autoref{eq:ell_inter_1}, we get
+\begin{align}\label{eq:ell_inter_3}
+y^2(b^2\alpha^2 + a^2) + y(2\beta\alpha b^2) + b^2\beta^2 -a^2b^2 = 0,
+\end{align}
+Which is a second degree polynomial. Then, $\partial E_1(q_1) \cap \partial E_2(q_2) \neq \{\}$ if, and only if the roots of \autoref{eq:ell_inter_3} are real. The intersection points itself can be obtained by solving the polynomial for $y$ and applying its value onto the $x=y\alpha + \beta$ equation.
+
+Suppose that $\partial E_1(q_1) \cap \partial E_2(q_2) = \{p_1, p_2\}$, with $p_1 \neq p_2$. To determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the angles of intersection of $p_1$ and $p_2$ on $E_1(q_1)$ using the parametric equation for an ellipse defined in \autoref{eq:parametric_ellipse}. Given a point $(x, y)\in \partial E_1(q_1)$, using \autoref{eq:parametric_ellipse} we have
+
+\begin{equation*}
+\dfrac{a}{b}\dfrac{y-q_{1y}}{x-q_{1x}} = \tan{t}.
+\end{equation*}
+Solving for $t$ gives the angle of point $(x,y)$ on $E_1(q_1)$. Using that process we obtain $t^{(1)}_1, t^{(1)}_2$ as the angles of the points $\{p_1, p_2\}$ on $E_1(q_1)$; and $t^{(2)}_1, t^{(2)}_2$ as the angles of points $\{p_1, p_2\}$ on $E_2(q_2)$.
+Let $\gamma_1$ be the curve defined by $E_1(q_1)$ and $\gamma_2$ the curve defined by $E_2(q_2)$. Considering its derivatives \autoref{eq:der_parametric_ellipse} at the intersection points, as it can be seen in \autoref{fig:ellipse_gamma}, we have that $p_1$ is $\Gamma_+(1,2)$ if, and only if
+\begin{equation*}
+angle(\gamma_1'(t_1^{(1)}), -\gamma_2'(t_1^{(2)}) < \pi.
+\end{equation*}
+The case where that angle is equal to $\pi$ happens when both ellipses intersect at only one point. This case has to be treated separately as we need to have two equal intersection points: one as $\Gamma_+(1,2)$ and the other as $\Gamma_-(1,2)$.
+
+\begin{figure}
+	\centering
+	
+	\caption{The intersection list of a disk with three other disks.}
+	%\input{tex/figures/array_disks.tex}
+	\includegraphics[scale=.38]{tex/figures/ellipse_gamma.pdf}
+	\fautor
+	\label{fig:ellipse_gamma}
+\end{figure}
+
 \section{An algorithm for MCE}
 
-The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as $MCE_1$ (we do not define it in this chapter because it would look the same as $MCD_1$, apart from the name, of course). 
+The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as CLS-MCE (we do not define it in this chapter because it would look the same as CLS-MCD defined in \autoref{algoritmo:mcd_cls}, apart from the name, of course). 
 
 Then, with the algorithm to construct a CLS for every ellipse in hands, an algorithm for MCE naturally comes into existence. In \autoref{algoritmo:mce}, a complete search is done backtracking every possibility in the CLS of every ellipse. This strategy is backed-up by \autoref{lema:mcd}, which says that there is an optimal solution in the CLS of each ellipse. 
 Following this, counting every possibility that the algorithm goes through, we arrive at the run-time complexity of $\bigO(n^{2m})$.
 
-It is worth mentioning that, even though we call $MCE_1$ every time in the recursion, in practice, it is probably best to pre-process this step, and only call it $m$ times for the whole set of points.
+It is worth mentioning that, even though we call CLS-MCE every time in the recursion, in practice, it is probably best to pre-process this step, and only call it $m$ times for the whole set of points.
 Some other easy improvements can also be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
 
 \section{Adding facility cost}
@@ -58,18 +101,18 @@ Some other easy improvements can also be made in the implementation. For example
 Additionally, in \citeonline{andreta} and \citeonline{canbolat}, two other parameters are present in the definition of the problem. This extension is the result of having costs associated with every facility.
 In MCE, though, the total cost, which is the sum of costs of every used facility, is constant; hence, to create a decision about which ones are utilized, a new parameter $k\in\mathbb{N}$ is given, along with a constraint on the number of used ellipses.
 
-We refer to this version of the problem as  \sigla{MCE-k}{Maximum Covering by Ellipses with a $k$-constraint}. An instance of it is given by the same parameters as MCE, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost, and $k\in\mathbb{N}$.
+We refer to this version of the problem as  \sigla{MCE-$k$}{Maximum Covering by Ellipses with a $k$-constraint}. An instance of it is given by the same parameters as MCE, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost, and $k\in\mathbb{N}$, $k\le m$.
 
- A solution for MCE-k, however,  when compared to MCE's, has a bit more cluttered description. We define it as a set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$, such that $|I|=k$; and a tuple $Q:=(q_1, \dots, q_k)$, with $q_j\in\R^2$ being the center of the $j$-th ellipse in $I$. An optimal solution of MCE-k is given by the optimization problem
+ A solution for MCE-$k$, however,  when compared to MCE's, has a bit more cluttered description. We define it as a set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$, such that $|I|=k$; and a tuple $Q:=(q_1, \dots, q_k)$, with $q_j\in\R^2$ being the center of the $j$-th ellipse in $I$. An optimal solution of MCE-$k$ is given by the optimization problem
 
-\begin{equation}
+\begin{equation*}
 \max_{I, Q} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j)\right).
-\end{equation}
+\end{equation*}
 
-Finally, \autoref{algoritmo:mce} can serve as basis for an algorithm for MCE-k. 
+Finally, \autoref{algoritmo:mce} can serve as basis for the \autoref{algoritmo:mce-k} for MCE-$k$. 
 Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = k$, the algorithm for MCE is invoked for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$; that is, an instance where only the ellipses in $I$ are present.
 After that, by keeping track of the utilized ellipses' costs for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
-This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k})$. 
+This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k}) = \bigO(n^{3m})$. 
 
 \begin{algoritmo}
     \caption{Algorithm for MCE}\label{algoritmo:mce}
@@ -77,24 +120,61 @@ This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \ti
     \begin{algorithmic}[1]
         \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
         
-        \Ensure{The value of an optimal solution of MCE.}
+        \Ensure{An optimal solution for MCE.}
         
         \item[]
+        \Procedure{$MCE$}{$\Pp, \Ww, \Rr$}
+	    \State \Return $MCE_{bt}(\Pp, \Ww, \Rr, 1)$
+        \EndProcedure
         
-        \Procedure{$MCE$}{$\Pp, \Ww, \Rr, j=1$}
+        \Procedure{$MCE_{bt}$}{$Z, \Ww, \Rr, j=1$}
         \If{$j = m+1$}
         \State \Return $0$
         \EndIf
         
-        \State $ans \gets 0$
+        \State $(q_j^*, \dots, q_m^*) \gets (0, \dots, 0)$
 
-        \State $S_j \gets MCE_1(\Pp, a_j, b_j)$
-        \For{$q \in S_j$}
-        \State $Cov \gets \Pp \cap q$
-        \State $ans \gets \max\{ans, w(Cov) + MCE(\Pp \setminus Cov, \Ww, \Rr, j+1)\}$ \Comment{Calls the procedure for the next ellipse.}
+        \State $S_j \gets \textnormal{CLS-MCE}(Z, a_j, b_j)$
+        \For{$q_j \in S_j$}
+        \State $Cov \gets \Pp \cap E_j(q_j)$
+        \State $(q_{j+1}, \dots, q_m) \gets MCE_{bt}(Z \setminus Cov, \Ww, \Rr, j+1)\}$
+        
+        \If{$w(Cov) + w(\cup_{k=j+1}^m Z \cap E_k(q_k)) >  w(\cup_{k=j}^m Z \cap E_k(q_k^*))$}
+        \State $(q_j^*, \dots, q_j^*) \gets(q_j, \dots, q_m)$
+        \EndIf
         \EndFor
 
-        \State \Return $ans$
+        \State \Return $(q_j^*, \dots, q_m^*)$
         \EndProcedure
     \end{algorithmic}
+\end{algoritmo}
+
+\begin{algoritmo}
+	\caption{Algorithm for MCE-$k$}\label{algoritmo:mce-k}
+
+	
+	\begin{algorithmic}[1]
+   \Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, a list of costs $\Cc=\{c_1, \dots, c_m\}$, and $k\in \mathbb{N}$.}
+	\Ensure{An optimal solution for MCE-$k$.}
+	        
+	\item[]
+	
+\Procedure{MCE-$k$}{$\Pp, \Ww, \Rr, \Cc, k$}
+	\State $I^* = \{i_1^*, \dots, i_k^*\}\gets \{1, \dots, k\}$
+	\State $Q^* = (q_1^*, \dots, q_k^*) \gets (0, \dots, 0)$
+	
+	\ForAll{$I=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$, such that $|I|=k$}
+
+		\State $(q_1, \dots, q_k) \gets MCE(\Pp, \Ww, \{(a_j, b_j) \in \Rr: j \in I\})$
+		
+			
+		\If{$w(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j)) - \sum_{j\in I} c_j > w(\bigcup_{j=1}^k \Pp \cap E_{i_j^*}(q_j^*)) - \sum_{j\in I^*}c_{j}$}
+			\State $Q^* \gets (q_1, \dots, q_k)$
+			\State $I^* \gets I$
+		\EndIf
+	\EndFor
+	
+	\State \Return $I^*, Q^*$
+\EndProcedure
+	\end{algorithmic}
 \end{algoritmo}
