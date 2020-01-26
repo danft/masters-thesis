@@ -45,7 +45,8 @@ As it has been mentioned, MCD1 is a 3SUM-HARD problem, which means that it is as
 In \citeonline{drezner}, the main idea used to develop the $\bigO(n^2\log{n})$ algorithm is that, even though there are infinitely many points where the disk could be placed, only a few of them, a finite amount of $\bigO(n^2)$, needs to be considered for the method to find an optimal solution.
 The algorithm, for every point, sorts the other points with respect to the angle they form with the first one. After that, the first point is placed on the border of the disk and, going through the sorted list, the algorithm inserts and removes points from the disk coverage. Also, when inserting and removing a point from the coverage, it only checks the disk centers that make the entering/leaving point to be on the border. Because the algorithm only checks the centers that make the disk have two points on its border, the number of centers it goes through is bounded by the number of pairs of points, which is $\binom{n}{2} = \bigO(n^2)$.
 
-In \citeonline{chazelle:1986} and \citeonline{cabello:2006}, on the other hand, instead of working directly with MCD1, an equivalent problem called \sigla{MWC}{Maximum Weight Clique} was introduced. The algorithm for MCD that is developed in this chapter also uses that equivalence. Because of that, MWC is introduced in the next section.
+The algorithm for MCD1, developed in this chapter, can be seen as a parallel version of the algorithm developed by \citeonline{drezner}.
+We, however, based on \citeonline{chazelle:1986} and \citeonline{cabello:2006}, decided to work with an equivalent problem called \sigla{MWC}{Maximum Weight Clique} which is introduced in the next section.
 
 \section{Maximum Weight Clique Problem}
 
@@ -151,8 +152,9 @@ Assuming $B_i$ is sorted with the same criteria as $A_i$. A simple traversal, st
 This works because for any pair of disks $D_i$, $D_j$; $B_i$ contains $\Gamma_+(i,j) < \Gamma_-(i,j) + 2\pi$. That is, the algorithm encounters an opening angle before reaching a closing one for any circle.
 
 In \autoref{fig:array_disks}, the intersection points between $\partial D_1$ (solid border) with $\partial D_2, \partial D_3$, and $\partial D_4$ (dashed border) are shown with a plus or minus sign indicating opening or closing intersection angles. 
-The intersection list $B_1$ is also displayed in \autoref{fig:array_disks} along with the size of the set of active disks $Q$ after processing every point in $B_1$ -- this is exactly what \autoref{algoritmo:mcd_1} for MWC does for every disk. The region of optimal solutions is highlighted and can also be obtained by following $B_1$ while keeping track of $Q$.
-The special intersection point of $\partial D_1$ with itself can also be seen in \autoref{fig:array_disks}. Its usage is very convenient as with $\Gamma_+(1, 1)$ and $\Gamma_-(1,1)$  in $B_1$, the algorithm inserts $D_1$ in the set of active disks before processing any point and removes $D_1$ only after every point has been processed.
+The intersection list $B_1$ is also displayed in \autoref{fig:array_disks} along with the size of the set of active disks $Q$ after processing a point in $B_1$ -- this is exactly what \autoref{algoritmo:mcd_1} for MWC does for every disk. 
+It is possible to see that the optimal clique highlighted in \autoref{fig:array_disks} is enclosed by the arcs defined by $\Gamma_+(1,4)$ and $\Gamma_-(1,4)$, and can also be identified by following $B_1$ while keeping track of $Q$.
+The special intersection point of $\partial D_1$ with itself can also be seen in \autoref{fig:array_disks}. Its usage is very convenient as with $\Gamma_+(1, 1)$ and $\Gamma_-(1,1)$  in $B_1$, the algorithm inserts $D_1$ in the set of active disks before processing any point, and removes $D_1$ only after every point has been processed.
 
 Finally, we define \autoref{algoritmo:mcd_1} for MWC. Given an instance $(\Pp, \Ww)$ of MWC, the algorithm uses the approach described here of keeping a set of active disks while traversing the list $B_i$. It returns a point that is inside an optimal clique, this way \autoref{algoritmo:mcd_1} can also be used to get an optimal solution for an instance $(\Pp, \Ww)$ of MCD1.
  
@@ -244,8 +246,8 @@ It is worth mentioning that the choice of developing a different method for the 
 		\Procedure{CLS-MCD}{$\Pp, \Ww, r$}
 		\State $S \gets \{\}$
 		\ForAll{$p_i \in \Pp$}
-		\State Let $D_i(p_i)$ be the disk with center at $p_i$
-		\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}
+		%\State Let $D_i(p_i)$ be the disk with center at $p_i$
+		\State Let $B_i$ be the list of intersection angles of $\partial D_i(p_i)$ as defined by \autoref{eq:b_i}
 		
 		\For{$\theta \in B_i$}\Comment{Assuming $B_i$ is sorted.}
 		\If{$\theta$ is a opening angle}

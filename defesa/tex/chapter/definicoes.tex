@@ -35,7 +35,7 @@ They get this name because conic sections are curves resulted from the intersect
 \begin{equation}\label{equation:quadratic_form}
 Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0,
 \end{equation}
-where $A,B,C,D,E,F \in \R$ are fixed and $x, y \in \R$. Distinguishing an ellipse from the other conic sections ca be done using the condition given by 
+where $A,B,C,D,E,F \in \R$ are fixed and $x, y \in \R$. Distinguishing an ellipse from the other conic sections can be done using the condition
 \begin{equation*}
 4AC - B^2>0.
 \end{equation*}
@@ -70,9 +70,8 @@ An alternative way to define an ellipse, which can be seen as just a property de
     \label{fig:ellipse_with_foci}
 \end{figure}
 
-Also, in \autoref{fig:ellipse_with_foci}, the distance $a = ||p_a - c||_2$, where $p_a$ is one of the intersection points of the ellipse with the major axis, is called the semi-major, and the distance $b = ||p_b-c||_2$, where $p_b$ is one of the intersection points of the ellipse with the minor axis, is called the semi-minor. These two values are also referred to as the shape parameters of an ellipse. Let $d = ||c-f_1||_2$, then it is easy to see that $a = R - d$ and $b = \sqrt{\frac{R^2}{4} - d^2}$.
-
-Finally, an ellipse is said to be axis-parallel if its major-axis (see \autoref{fig:ellipse_with_foci}), which is the line that passes through its two foci points, is parallel to the $x$-axis.
+Also, in \autoref{fig:ellipse_with_foci}, the distance $a = ||p_a - c||_2$, where $p_a$ is one of the intersection points of the ellipse with the major axis, is called the semi-major, and the distance $b = ||p_b-c||_2$, where $p_b$ is one of the intersection points of the ellipse with the minor axis, is called the semi-minor. These two values are also referred to as the shape parameters of an ellipse.
+Finally, an ellipse is said to be axis-parallel if its major axis (see \autoref{fig:ellipse_with_foci}), which is the line that passes through its two foci points, is parallel to the $x$-axis.
 
 \subsection{Axis-parallel ellipse}
 
@@ -90,20 +89,17 @@ Q=
 then, starting from \autoref{def:ellipse}, we can obtain the following equation
 
  \begin{align}\label{equation:pellipse}
- \begin{aligned}
- (p-c)^{T}Q(p-c) &= 1 & \Rightarrow \\
- (\frac{p_x-c_x}{a^2}, \frac{p_y-c_y}{b^2})^{T}(p_x-c_x, p_y-c_y) &= 1 & \Rightarrow\\
+ (p-c)^{T}Q(p-c) &= 1 & \Rightarrow \nonumber \\
+ (\frac{p_x-c_x}{a^2}, \frac{p_y-c_y}{b^2})^{T}(p_x-c_x, p_y-c_y) &= 1 & \Rightarrow \nonumber\\
   \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} &= 1,&
-   \end{aligned}
  \end{align}
-where $a$ and $b$ are the semi-major and semi-minor shape parameters, respectively.
-
+where $(a, b) \in \R^2_{>0}$, with $a>b$, are ellipse's shape parameters.
 Also, the coverage region is determined by just changing the equality to an inequality as follows
 \begin{equation}\label{equation:cover_pellipse}
 \frac{(p_x-c_x)^2}{a^2} + \frac{(p_y-c_y)^2}{b^2} \le 1.
 \end{equation}
 
-Another way to represent ellipses, which will be useful in some occasions, is through writing it as a curve function of the angle with its major-axis (see \autoref{fig:ellipse_params}).
+Another way to represent ellipses, which will be useful in some occasions, is through writing it as a curve function of the angle with its major axis (see \autoref{fig:ellipse_params}).
 
 \begin{figure}[H]
     \centering
@@ -115,7 +111,7 @@ Another way to represent ellipses, which will be useful in some occasions, is th
     \label{fig:ellipse_params}
 \end{figure}
 
-Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R^2_{>0}$. Then $\gamma\colon[0, 2\pi]\mapsto\R^2$ defines a curve which maps every angle onto a point on the ellipse and it is defined as follows
+Let $c \in \R^2$ be the center of an ellipse with shape parameters $(a,b) \in \R^2_{>0}$, with $a>b$. Then $\gamma\colon[0, 2\pi)\mapsto\R^2$ defines a curve which maps every angle onto a point on the ellipse and it is defined as follows
 \begin{equation}\label{eq:parametric_ellipse}
 \gamma(t) = \left\{
 \begin{array}{l}
@@ -128,22 +124,27 @@ Also, its derivative with respect to $t$ is given as follows
 \begin{equation}\label{eq:der_parametric_ellipse}
 \gamma'(t) = \left\{
 \begin{array}{l}
-x'(t)= -a\sin{t}\\
-y'(t)=b\cos{t}
+x'(t)= -a\sin{t},\\
+y'(t)=b\cos{t}.
 \end{array}
 \right.
 \end{equation}
 
-Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$ centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at least at one point. Plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
+\subsection{The distance between points of an ellipse-line intersection}
+
+Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$, centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at least at one point. Plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
 \begin{equation*}\label{eq:dist_line_ellipse}
 D(m, c)=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)},
 \end{equation*}
 with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters $(m, c)$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$. From that, we can conclude that if $m$ is fixed, the line that has the most distant intersection points with an ellipse is the one that passes through the origin; and also, that $D(m, c)$ attains every value in the range $[0, D(m, 0)]$. 
-Following that, we define a function $L:m\mapsto\R_{>0}$ that describes the maximum squared distance between the points of the intersection of an ellipse with a line with a fixed angular coefficient:
+Following that, we define a function $L:\R\mapsto\R_{>0}$ as
+
 \begin{equation}\label{eq:function-l}
-L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2}.
+L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2},
 \end{equation}
-It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $x=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty\, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
+which describes the maximum distance between points of an ellipse-line intersection considering all lines with $m$ angular coefficient.
+
+It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $m=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty\, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
 In \autoref{fig:L-function-plot}, an example of function $L$ is shown with $(a, b) = (2, 1)$.
 
 \begin{figure}[H]
@@ -157,18 +158,20 @@ In \autoref{fig:L-function-plot}, an example of function $L$ is shown with $(a, 
 
 \subsection{Non-axis-parallel ellipse}
 
-A non-axis-parallel ellipse centered at $(c_x, c_y)\in\R^2$ can also be described by \autoref{def:ellipse}. Nonetheless, a simpler equation is going to be used here. Besides the center, and the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$, an angle of rotation $\theta \in \R$ is given. This new parameter represents the angle between the $x$-axis and the major-axis of the ellipse, this can be seen on \autoref{fig:rotated_ellipse}, where the dashed lines represent the ellipse's axes and the angle between the major-axis and the $x$-axis is displayed.
+A non-axis-parallel ellipse centered at $(c_x, c_y)\in\R^2$ can also be described by \autoref{def:ellipse}, nonetheless, in this work,  a simpler equation is used instead. 
+Besides the center and the shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$; an angle of rotation $\theta \in \R$ is given representing the angle between the $x$-axis and the major axis of the ellipse. This can be seen on \autoref{fig:rotated_ellipse}, where the dashed lines represent the ellipse's axes and the angle between the major-axis and the $x$-axis is displayed.
 
-A rotated ellipse by $\theta$ can be transformed into a axis-parallel centered at the origin by applying two linear transformations: translation, so its center is at $(0, 0)$, then rotation so its major-axis is parallel to the $x$-axis. Reversing these transformations produces the following equation for a non-axis-parallel ellipse
+An ellipse rotated by $\theta$ can be transformed into an axis-parallel, and origin-centered ellipse by applying two linear transformations: translation to make its center be at $(0, 0)$, and rotation to make its major axis parallel to the $x$-axis. Reversing these transformations produces the following equation for a non-axis-parallel ellipse
 \begin{equation}\label{eq:rotated_ellipse}
 \dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}=1.
 \end{equation}
-The coverage region of that same ellipse is given by every point $(x, y)\in\R^2$ that satisfies the following equation, which is the same as \autoref{eq:rotated_ellipse} with the equality sign $(=)$ replaced by $(\le)$
+The coverage region of that same ellipse is given by every point $(x, y)\in\R^2$ that satisfies the following equation
 \begin{equation}\label{eq:rotated_ellipse_co}
-\dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1.
+\dfrac{((x-c_x)\cos\theta + (y-c_y)\sin\theta)^2}{a^2}+\dfrac{((x-c_x)\sin\theta - (y-c_y)\cos\theta)^2}{b^2}\le 1,
 \end{equation}
+which is the same as \autoref{eq:rotated_ellipse} with the equality sign $(=)$ replaced by $(\le)$.
 
-Another important property of ellipses is shown on \autoref{fig:rotated_ellipse}. The two angles of rotation between the major-axis and the $x$-axis ($\theta$ and $\theta+\pi$) are actually equivalent -- they produce the same ellipse. This symmetry is true for any angle of rotation, which means that $\theta$ is equivalent to $\theta+k\pi$, $k\in\mathbb{Z}$. Therefore, it is possible to conclude that to represent any ellipse, it is enough to specify the domain of $\theta$ to be $[0, \pi)$.
+Another important property of ellipses is shown on \autoref{fig:rotated_ellipse}. The two angles of rotation between the major axis and the $x$-axis ($\theta$ and $\theta+\pi$) are equivalent -- they produce the same ellipse. This symmetry is true for any angle of rotation, which means that $\theta$ is equivalent to $\theta+k\pi$, $k\in\mathbb{Z}$. Therefore, to represent any ellipse, it is enough to specify the domain of $\theta$ as $[0, \pi)$.
 
 \begin{figure}[H]
 	\centering
@@ -187,9 +190,12 @@ As stated by \autoref{def:ellipse}, the word ellipse is used to refer to the set
 
 \section{Complex numbers}
 
-The set of complex numbers $\mathbb{C}$ is an extension of the set of real numbers $\R$ and can be very useful depending on the problem at hand. A thorough introduction on this topic is out of the scope and we just go through some basic properties that are going to be used later on \autoref{chapter:e3p}.
+The set of complex numbers $\mathbb{C}$ can be seen as just an extension of the set of real numbers $\R$. A thorough introduction on this topic is out of the scope and we just go through some basic properties that are going to be used later in \autoref{chapter:e3p}.
 
-A complex number is composed of a real part added to an imaginary part which is a multiple of the imaginary unit $i = \sqrt{-1}$. This is expressed as $a + bi$, with $a, b \in \R$. Because $z$ is composed of two real numbers, the complex number system can be visualized on $\R^2$ as shown on \autoref{fig:complex-numbers}. This is also a good way to visualize Euler's Formula, as it can be also seen on \autoref{fig:complex-numbers}, which says that any complex number can be written in terms of its radius and polar angle as follows:
+Any complex number $z\in\mathbb{C}$ is composed of a real part $a\in\R$, and an imaginary part $b\in\R$, multiple of the imaginary unit $i = \sqrt{-1}$. This is expressed as $z=a+ib$. 
+Because complex numbers are composed of two real numbers, mapping $\mathbb{C}$ to $\R^2$, as shown in  \autoref{fig:complex-numbers}, provides a good way to visualize the set of complex numbers. 
+This is also a good way to visualize Euler's Formula. As it can be seen on \autoref{fig:complex-numbers}, any complex number can be written in terms of its radius and polar angle as
+
 \begin{equation*}
 z = re^{i\theta}=r(\cos{\theta} + i\sin{\theta}),
 \end{equation*}
@@ -202,11 +208,11 @@ with $r$ being the length of the vector determined by the point $z$ on the compl
 	\label{fig:complex-numbers}
 \end{figure}
 
-The complex conjugate is another important operator that is utilized later. Let $z = a + bi \in \mathbb{C}$, then we refer to $\bar{z}$ as the complex conjugate of $z$ and it is defined as:
+The complex conjugate is another important operator that is utilized later. Let $z = a + bi \in \mathbb{C}$, then we refer to $\bar{z}$ as the complex conjugate of $z$ and it is defined as
 \begin{equation*}
 \bar{z} = a - bi.
 \end{equation*}
-Finally, we need to state two observations about the angles of $-z$ and $\bar{z}$ with respect to the angle of $z$, this will be useful later on \autoref{chapter:e3p}:
+Lastly, two observations that are very important for the developments of \autoref{chapter:e3p} need to be stated. Let $z\in \mathbb{C}$, then we have 
 \begin{align*}
 angle(\bar{z}) = 2\pi-angle(z),\\
 angle(-z) = \pi + angle(z).
@@ -237,8 +243,9 @@ The famous Abel-Ruffini Theorem (a proof can be seen in \citeonline{skopenkov201
  \end{equation*}
 
 
- Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory. A very complete introduction to this algorithm can be found on \citeonline{watkins:2008}. The idea is to convert the input matrix to the Hessenberg form, after that, the matrix preserves its form through the iterations and, under some assumptions, convergence to the eigenvalues is achieved.
- Also, in \citeonline{barel} it is pointed that companion matrices are already in the Hessenberg form, making the Hessenberg conversion step unnecessary. This and other properties are used in \citeonline{barel} on the development of a $\bigO(n^2)$ algorithm for the specific case of companion matrices.
+Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory (a very complete introduction to it can be found in \citeonline{watkins:2008}). 
+The first step of the QR algorithm is to convert the input matrix into the Hessenberg form. This is done because matrices in the Hessenberg form maintain its form under the iterations of the algorithm. After that, the algorithm, under some assumptions, converges to the matrix's eigenvalues after $\bigO(n)$ iterations, each one taking $\bigO(n^2)$ computations.
+Another method specific to companion matrices can be found in \citeonline{barel}. It uses the fact that companion matrices are already in the Hessenberg form to proposes a $\bigO(n^2)$ algorithm to find the roots of a $n$-degree polynomial.
  
  In practice, LAPACK's ZGEEV routine is utilized (the user guide can be found in \citeonline{lapack}), which is an implementation of the QR algorithm that returns every eigenvalue of a complex matrix.
  
@@ -250,8 +257,8 @@ p_n(\theta) = \sum_{k=0}^{n} a_k\cos(k\theta) + \sum_{k=1}^{n} b_k\sin(k\theta).
 \end{equation}
 We say that $p_n: \R \mapsto \R$ as defined by \autoref{eq:trig_poly} is a $n$-degree real trigonometric polynomial. An important property is stated in \citeonline[p.~150]{powell}, which says that a $n$-degree polynomial can have up to $2n$ distinct roots on the interval $[0, 2\pi)$. It also says that a function written in the format
 $$\begin{array}{cc}\cos^j{\theta}\sin^k{\theta}, & \quad j, k \in \mathbb{Z}_+, \end{array}$$
-can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, the following expression also represents a $n$-degree real trigonometric polynomial
+can be transformed into a real trigonometric polynomial of degree $j+k$. Therefore, for some $\{c_{j,k} \in \R: 0 \le j+k \le n\}$, the expression
 \begin{equation}\label{eq:trig_poly_2}
 \sum_{0 \le j+k \le n}c_{j,k}\cos^j{\theta}\sin^k{\theta},
 \end{equation}
-for some $\{c_{j,k} \in \R: 0 \le j+k \le n\}$.
+also represents a $n$-degree real trigonometric polynomial.

@@ -1,5 +1,5 @@
 In this chapter, we introduce the version of PMCLP where every 
-facility has an axis-parallel ellipse as its coverage area. We refer to this problem as \sigla{MCE}{Maximum Covering by Ellipses}. We also present an algorithm for it which is an adaptation of the algorithm developed for MCD in \autoref{chapter:pmclp}.
+facility has an axis-parallel ellipse as its coverage area. We refer to this problem as \sigla{MCE}{Maximum Covering by Ellipses}. We also present an algorithm for it which is an adaptation of the one developed for MCD in \autoref{chapter:pmclp}.
 
 \section{Definition}
 
@@ -62,24 +62,31 @@ Replacing \autoref{eq:ell_inter_2} into \autoref{eq:ell_inter_1}, we get
 \begin{align}\label{eq:ell_inter_3}
 y^2(b^2\alpha^2 + a^2) + y(2\beta\alpha b^2) + b^2\beta^2 -a^2b^2 = 0,
 \end{align}
-Which is a second degree polynomial. Then, $\partial E_1(q_1) \cap \partial E_2(q_2) \neq \{\}$ if, and only if the roots of \autoref{eq:ell_inter_3} are real. The intersection points itself can be obtained by solving the polynomial for $y$ and applying its value onto the $x=y\alpha + \beta$ equation.
+which is a second degree polynomial. Then, $\partial E_1(q_1) \cap \partial E_2(q_2) \neq \{\}$ if, and only if the roots of \autoref{eq:ell_inter_3} are real. The intersection points itself can be obtained by solving the polynomial for $y$ and plugging its value back into the $x=y\alpha + \beta$ equation.
 
-Suppose that $\partial E_1(q_1) \cap \partial E_2(q_2) = \{p_1, p_2\}$, with $p_1 \neq p_2$. To determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the angles of intersection of $p_1$ and $p_2$ on $E_1(q_1)$ using the parametric equation for an ellipse defined in \autoref{eq:parametric_ellipse}. Given a point $(x, y)\in \partial E_1(q_1)$, using \autoref{eq:parametric_ellipse} we have
+Suppose that $\partial E_1(q_1) \cap \partial E_2(q_2) = \{p_1, p_2\}$, with $p_1 \neq p_2$. To determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the intersection angles corresponding to $p_1$ and $p_2$ on $E_1(q_1)$. 
+
+Let $\gamma_1$ and $\gamma_2$ be two curves defined as \autoref{eq:parametric_ellipse} for $E_1(q_1)$ and $E_2(q_2)$ respectively. 
+The intersection angle of $p_i$ in $E_j(q_j)$ is defined as $t_i^{(j)} \in [0, 2\pi)$, such that $\gamma_j(t_i^{(j)}) = p_i$, for $i, j \in \{1, 2\}$. Obtaining $t_i^{(j)}$ can be done analytically solving the equation
 
 \begin{equation*}
-\dfrac{a}{b}\dfrac{y-q_{1y}}{x-q_{1x}} = \tan{t}.
+	\dfrac{a}{b}\dfrac{p_{iy}-q_{jy}}{p_{ix}-q_{jx}} = \tan{(t_i^{(j)})}.
 \end{equation*}
-Solving for $t$ gives the angle of point $(x,y)$ on $E_1(q_1)$. Using that process we obtain $t^{(1)}_1, t^{(1)}_2$ as the angles of the points $\{p_1, p_2\}$ on $E_1(q_1)$; and $t^{(2)}_1, t^{(2)}_2$ as the angles of points $\{p_1, p_2\}$ on $E_2(q_2)$.
-Let $\gamma_1$ be the curve defined by $E_1(q_1)$ and $\gamma_2$ the curve defined by $E_2(q_2)$. Considering its derivatives \autoref{eq:der_parametric_ellipse} at the intersection points, as it can be seen in \autoref{fig:ellipse_gamma}, we have that $p_1$ is $\Gamma_+(1,2)$ if, and only if
+
+Let $\gamma_1'$ and $\gamma_2'$ be the derivatives of $\gamma_1$ and $\gamma_2$ respectively as defined by \autoref{eq:der_parametric_ellipse}. Then, considering the tangent vectors $\gamma_1'(t_i^{(1)})$ and $-\gamma_2'(t_i^{(2)})$, $i\in \{1, 2\}$, as shown in \autoref{fig:ellipse_gamma}, we can define a function $\phi_{1,2}\colon \{p_1, p_2\} \to \{\Gamma_+(1,2), \Gamma_-(1,2)\}$ that takes an intersection point and returns its corresponding closing/opening intersection angle as
+
 \begin{equation*}
-angle(\gamma_1'(t_1^{(1)}), -\gamma_2'(t_1^{(2)}) < \pi.
+\phi_{1,2}(p_i) = \begin{cases}
+\Gamma_+(1,2) & angle(\gamma_1'(t_i^{(1)}), -\gamma_2(t_i^{(2)})) > \pi\\
+\Gamma_-(1,2) & angle(\gamma_1'(t_i^{(1)}), -\gamma_2(t_i^{(2)})) < \pi.
+\end{cases}
 \end{equation*}
-The case where that angle is equal to $\pi$ happens when both ellipses intersect at only one point. This case has to be treated separately as we need to have two equal intersection points: one as $\Gamma_+(1,2)$ and the other as $\Gamma_-(1,2)$.
+At last, the case where that angle is equal to $\pi$ happens only when both ellipses intersect at only one point. This case has to be treated separately as, by \autoref{def:inter_arc}, we need to have two equal intersection points: one as $\Gamma_+(1,2)$ and the other as $\Gamma_-(1,2)$.
 
 \begin{figure}
 	\centering
 	
-	\caption{The intersection list of a disk with three other disks.}
+	\caption{Determining $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$.}
 	%\input{tex/figures/array_disks.tex}
 	\includegraphics[scale=.38]{tex/figures/ellipse_gamma.pdf}
 	\fautor
@@ -109,7 +116,7 @@ We refer to this version of the problem as  \sigla{MCE-$k$}{Maximum Covering by 
 \max_{I, Q} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j)\right).
 \end{equation*}
 
-Finally, \autoref{algoritmo:mce} can serve as basis for the \autoref{algoritmo:mce-k} for MCE-$k$. 
+Finally, \autoref{algoritmo:mce} can serve as basis for MCE-$k$'s \autoref{algoritmo:mce-k}. 
 Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = k$, the algorithm for MCE is invoked for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$; that is, an instance where only the ellipses in $I$ are present.
 After that, by keeping track of the utilized ellipses' costs for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
 This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k}) = \bigO(n^{3m})$. 
@@ -139,7 +146,7 @@ This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \ti
         \State $Cov \gets \Pp \cap E_j(q_j)$
         \State $(q_{j+1}, \dots, q_m) \gets MCE_{bt}(Z \setminus Cov, \Ww, \Rr, j+1)\}$
         
-        \If{$w(Cov) + w(\cup_{k=j+1}^m Z \cap E_k(q_k)) >  w(\cup_{k=j}^m Z \cap E_k(q_k^*))$}
+        \If{$w(\cup_{k=j}^m Z \cap E_k(q_k)) >  w(\cup_{k=j}^m Z \cap E_k(q_k^*))$}
         \State $(q_j^*, \dots, q_j^*) \gets(q_j, \dots, q_m)$
         \EndIf
         \EndFor
