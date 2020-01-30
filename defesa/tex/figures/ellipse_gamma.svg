@@ -177,7 +177,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -241,7 +241,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.80000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.8, 0.8;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke markers fill"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.1,1.1;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke markers fill"
        id="path33353"
        sodipodi:type="arc"
        sodipodi:cx="153.2394"
@@ -253,7 +253,7 @@
        d="m 168.07411,138.15263 a 15,15 0 0 1 -7.2733,15.17537 15,15 0 0 1 -16.79036,-1.12989 15,15 0 0 1 -5.17449,-16.01304"
        sodipodi:open="true" />
     <path
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.80000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.80000001, 0.80000001;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke markers fill"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.1,1.1;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke markers fill"
        id="path33353-4"
        sodipodi:type="arc"
        sodipodi:cx="139.02034"
