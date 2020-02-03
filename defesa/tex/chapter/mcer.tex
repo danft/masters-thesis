@@ -2,7 +2,7 @@ This chapter introduces the elliptical PMCLP where there is no axis-parallel con
 
 \section{Definition}
 
-An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:ellipses}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; a list of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
+An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:mce}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; a list of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
 and $m$ ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
 Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j\colon \R^2\times\R \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
 Lastly, an instance of MCER is defined as a tuple $(\Pp, \Ww, \Rr)$.
@@ -36,7 +36,7 @@ To begin with, a proposition is introduced which says that given an optimal solu
 	
 	Let $A=\Pp \cap E_j(q_j^*, \theta_j)$ be the set of points covered by the $j$-th ellipse and $X=\cap_{p \in A}E_j(p, \theta_j)$ be the region of intersection of ellipses centered at each point in $A$.
 
-	As it was shown on \autoref{chapter:ellipses}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point, creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
+	As it was shown on \autoref{chapter:mce}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point, creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
 	
 \end{proof}
 
@@ -190,7 +190,7 @@ Finally, we define the CLS for the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{
 	For every $j \in \{1, \dots, m\}$, by \autoref{lema:3pnts}, any optimal solution that covers more than one point can be transformed into one that is in $S_j^{(2)}$ or in $S_j^{(3)}$.
 	If an optimal solution covers only one point, it can be transformed into another one that is in $S_j^{(1)}$.
 	
-	From \autoref{chapter:ellipses_intersection}, we can conclude that $|S_j^{(2)}|\le 2\binom{n}{2} = \bigO(n^2)$.
+	From \autoref{section:ellipses_intersection}, we can conclude that $|S_j^{(2)}|\le 2\binom{n}{2} = \bigO(n^2)$.
 	By \autoref{lema:e3p}, we have that $|S_j^{(3)}| \le 6\binom{n}{3} = \bigO(n^3)$.
 	Therefore, $|S_j|=\bigO(n^3)$, and as $|\Omega(\Pp, \Ww, \Rr)|= |S_1|\times|S_2|\times\dots\times|S_m|$, we have $|\Omega(\Pp, \Ww, \Rr)|=\bigO(n^{3m})$.
 \end{proof}
@@ -211,7 +211,7 @@ Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We 
 		
 		\item[]
 		
-		\Procedure{$MCER_1$}{$\Pp, a, b$}
+		\Procedure{CLS-MCER}{$\Pp, a, b$}
 		\State $S \gets \{\}$
 		
 		\For {$u \in \Pp$}
@@ -232,7 +232,7 @@ Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We 
 \end{algoritmo}
 
 After that, we define \autoref{algoritmo:mcer} which takes an instance $(\Pp, \Ww, \Rr)$ of MCER, and returns an optimal solution for it.
-Even though it is based on \autoref{th:mcer}, the set of solutions $\Omega(\Pp, \Ww, \Rr)$ is not explicitly built in \autoref{algoritmo:mcer}. Instead, a complete search is done by backtracking the CLS of every ellipse returned by procedure $MCER_1$.
+Even though it is based on \autoref{th:mcer}, the set of solutions $\Omega(\Pp, \Ww, \Rr)$ is not explicitly built in \autoref{algoritmo:mcer}. Instead, a complete search is done by backtracking the CLS of every ellipse returned by procedure CLS-MCER.
 
 Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $MCER$, returns an optimal solution for an instance $(\Pp, \Ww, \Rr)$ using the second procedure $MCER_{bt}$. This second procedure is responsible for the backtracking and takes two additional parameters $j\in\{1, \dots, m\}$, which represents the index of the ellipse that $MCER_{bt}$ is currently processing, and $Z\subset \Pp$, which represents the set of points that have not been covered by the ellipses already processed by $MCER_{bt}$.
 
@@ -257,9 +257,9 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 		\EndIf
 		
 		\State $ans \gets 0$
-		\State $(q_{j}^*\gets 0, \dots, q_m^*\gets0); (\theta_{j}^*\gets 0, \dots, \theta_m^*\gets 0)$ \Comment{Setting to $0$ as a default value.}
+		\State $(q_{j}^*, \dots, q_m^*); (\theta_{j}^*, \dots, \theta_m^*) \gets (0, \dots 0); (0, \dots, 0)$ \Comment{Setting to $0$ as a default value.}
 		
-		\State $S_j \gets MCER_1(Z, a_j, b_j)$
+		\State $S_j \gets \textnormal{CLS-MCER}(Z, a_j, b_j)$
 
 		
 		\For{$(q_j, \theta_j) \in S_j$}
@@ -283,7 +283,7 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 \end{algoritmo}
 
 \begin{corolario}
-	\autoref{algoritmo:mcer} takes $\bigO(n^{3m})$ computations and returns an optimal solution.
+	\autoref{algoritmo:mcer} takes $\bigO(n^{3m})$ computations and returns an optimal solution for an instance of MCER.
 \end{corolario}
 
 \begin{proof}
@@ -292,14 +292,57 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 
 \subsection{Adding facility cost}
 
+In this section, we consider the extended version of MCER where each facility has a cost assigned to it and exactly $k$ of them must be used in a solution. We refer to this version of the problem as \sigla{MCER-$k$}{Maximum Covering by Ellipses with Rotation and a $k$-constraint}. 
+
+An instance of MCER-$k$ has the same parameters as MCER plus a list of costs \mbox{$\Cc:=\{c_1, \dots, c_m\}$}, with $c_j\in\R_{>0}$ being the cost of the $j$-th facility; and $k\in\mathbb{N}$, $k\le m$.
+
+A solution for MCER-$k$ is given by $(I, Q, \Theta)$, with $I:=\{i_1, \dots, i_k\}\subset \{1, \dots, m\}$; \\\mbox{$Q:=(q_1, \dots, q_k)\in\R^{2k}$}, with $q_j$ being the center of the $i_j$-th ellipse; and \mbox{$\Theta:=(\theta_1, \dots, \theta_k) \in [0, \pi)^k$}, with $\theta_j$ being the angle of rotation of the $i_j$-th ellipse. An optimal solution of MCER-$k$ is given by the optimization problem
+
+\begin{equation*}
+	\max_{I, Q, \Theta} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j, \theta_j)\right).
+\end{equation*}
+
+Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \autoref{algoritmo:mcer-k} for MCER-$k$ that uses \autoref{algoritmo:mcer} for every $I:=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$. Therefore, \autoref{algoritmo:mcer-k} returns an optimal solution for MCER-$k$ in $\bigO(\binom{m}{k}n^{3k}) = \bigO(n^{4m})$ time.
+
+\begin{algoritmo}
+	\caption{Algorithm for MCER-$k$}\label{algoritmo:mcer-k}
+	
+	
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, a list of costs $\Cc=\{c_1, \dots, c_m\}$, and $k\in \mathbb{N}$.}
+		\Ensure{An optimal solution for MCER-$k$.}
+		
+		\item[]
+		
+		\Procedure{MCE-$k$}{$\Pp, \Ww, \Rr, \Cc, k$}
+		\State $I^* = \{i_1^*, \dots, i_k^*\}\gets \{1, \dots, k\}$
+		\State $Q^* = (q_1^*, \dots, q_k^*) \gets (0, \dots, 0)$
+		\State $\Theta^* = (\theta_1^*, \dots, \theta_k^*) \gets (0, \dots, 0)$
+		
+		\ForAll{$I=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$}
+		
+		\State $\Rr' \gets \{(a_j, b_j) \in \Rr: j \in I\}$
+		\State $(q_1, \dots, q_k); (\theta_1, \dots, \theta_k) \gets MCER(\Pp, \Ww, \Rr')$
+		
+		\If{$w(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j, \theta_j)) - \sum_{j\in I} c_j > w(\bigcup_{j=1}^k \Pp \cap E_{i_j^*}(q_j^*, \theta_j^*)) - \sum_{j\in I^*}c_{j}$}
+		\State $Q^* \gets (q_1, \dots, q_k)$
+		\State $\Theta^* \gets (\theta_1, \dots, \theta_k)$
+		\State $I^* \gets I$
+		\EndIf
+		\EndFor
+		
+		\State \Return $I^*, Q^*, \Theta^*$
+		\EndProcedure
+	\end{algorithmic}
+\end{algoritmo}
 
 
 \subsection{Improvements and implementation details}
 
 Some improvements can be made in the implementation of \autoref{algoritmo:mcer}.
-Instead of calling procedure $MCE_1$ every time in the backtracking routine, it is suggested that it is done outside in a pre-processing phase.
+Instead of calling procedure CLS-MCER every time in the backtracking routine, it is suggested that it is done outside in a pre-processing phase.
 
-Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the $MCE_1$ procedure in \autoref{algoritmo:mcer1}. 
+Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the CLS-MCER procedure in \autoref{algoritmo:mcer1}. 
 
 In our implementation we use the same approach used in \citeonline{andreta}. When constructing the CLS for the $j$-th ellipse, a tree-like data struct is utilized to verify if a solution $(q, \theta)$ covers a subset of another solution or not.
 
@@ -309,3 +352,5 @@ Keeping an upper-bound for the solution during the backtracking in \autoref{algo
 OPT \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
 \end{equation}
 This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be pre-processed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER$ procedure.
+
+I n the next section we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.

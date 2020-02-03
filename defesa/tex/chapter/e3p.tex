@@ -5,7 +5,7 @@ As a result, starting from scratch, we ended up trying a handful of approaches w
 
 We call the problem introduced in this section \sigla{E3PNT}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
 
-Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:ellipses_n}, a method would only be useful for our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
+Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
 
 \section{Transforming the problem}
 
@@ -67,10 +67,10 @@ Before continuing with this approach though, it is important to address the ques
 
 \subsection{The number of solutions of E3PNT}
 
-One of the steps of the method developed in \autoref{chapter:ellipses_n} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering a bound for it is essential for determining the algorithm's efficiency.
+One of the steps of the method developed in \autoref{chapter:mcer} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering a bound for it is essential for determining the algorithm's efficiency.
 
 \begin{lema}\label{lema:e3p}
-	E3PNT has at most $6$ solutions.
+	Any instance of E3PNT has at most $6$ solutions.
 \end{lema}
 
 \begin{proof}
@@ -306,30 +306,48 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$. Therefore, the whole algorithm runs in constant time.
 \end{proof}
 
-\subsection{Numerical Experiments}
+\subsection{Solutions for some instances}
 
-In this section we show the results of an experiment we made to study the numerical stability of \autoref{algoritmo:e3p}. 
-
-We generate random instances of E3PNT according to
-\begin{equation}
-u, v, w \sim \mathcal{N}(0, K^2),
-\end{equation}
-with $K\in \R_{>0}$ being a parameter of the experiment. We also define the ellipse's shape parameters ass
-\begin{align}
-	a = K\\
-	b = \frac{K}{2}.
-\end{align}
-For the experiment, we tried several values for $K$ and adopted the error measure to be $|\xi(\hat{\theta})|$, with $\hat{\theta}$ being a root of the complex polynomial $h$. 
-For each different value of $K$, we ran the algorithm for $1000$ random instances. The results are shown in \autoref{fig:e3p_error} where the maximum and the average error  is plotted for each value of $K$ for which the experiment was run.
+From \autoref{lema:e3p}, we know that any instance of E3P has at most six solutions. At first, though, it seemed like that bound was loose as we could not find any instances that made \autoref{algoritmo:e3p} return six solutions. 
+After some investigation, this turned out not to be the case. An example with six solutions is presented in \autoref{fig:e3p_6sols}. It is worth mentioning that the only instances that we found which produce six solutions have their three points form an equilateral triangle.
 
 \begin{figure}[H]
 	\centering
-	\caption{The interpolation error measured on roots that were found.}
-	\includegraphics{tex/figures/e3p_error}
+	\caption{An instance of E3P with six solutions.}
+	\includegraphics[scale=.35]{tex/figures/e3p_6sols}
+	\fautor
+	\label{fig:e3p_6sols}
+\end{figure}
+
+Another example is shown in \autoref{fig:e3p_4sols} where an instance of E3P is displayed along with its four solutions.
+
+\begin{figure}[H]
+	\centering
+	\caption{An instance of E3P with four solutions.}
+	\includegraphics[scale=.35]{tex/figures/e3p_4sols}
+	\fautor
+	\label{fig:e3p_4sols}
+\end{figure}
+
+\subsection{Numerical Stability}
+
+In this section we show the results of an experiment that is developed to study the numerical stability of \autoref{algoritmo:e3p}. 
+
+We define $K\in\R_{>0}$ as an experiment parameter and consider instances that the ellipse has shape parameters $(K, \frac{K}{2})$. Then, random instances are created by setting the three points to be $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1..3$, with $t_j$ being uniformly distributed in the interval $[0, 2\pi]$.
+To evaluate the stability of \autoref{algoritmo:e3p}, for any solution $(\hat{q}, \hat{\theta})$ found, we adopt its error measure to be $|\xi(\hat{\theta})|$.
+
+The experiment was run for various values of $K$. For each one of them, $100$ randomly generated instances were considered. The results are shown in \autoref{fig:e3p_error}, where the average and the maximum error are plotted.
+
+\begin{figure}[H]
+	\centering
+	\caption{The error measured on solutions found by \autoref{algoritmo:e3p}.}
+	\includegraphics[scale=.9]{tex/figures/e3p_error}
 	\fautor
 	\label{fig:e3p_error}
 \end{figure}
 
-
 From this experiment, it is possible to conclude that the accuray of \autoref{algoritmo:e3p} is acceptable when the instance of E3PNT has numerical values within the box $[-10^5, 10^5]^2$. A more rigorous study on the numerical stability of E3PNT is left as future work.
+
+
+
 
