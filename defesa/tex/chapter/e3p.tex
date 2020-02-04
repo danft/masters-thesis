@@ -1,19 +1,22 @@
-The problem of finding every center and angle of rotation of a fixed shape ellipse which makes it have three points on its border is presented in this section. Even though its simple statement--it is short and uses only basic mathematical concepts--we were not able to find any work on it, or even on related problems. 
-As a result, starting from scratch, we ended up trying a handful of approaches with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. At the end we propose an algorithm that takes around $6^3$ operations to compute every solution of the problem. Also, we run some experiments to analyze its efficiency in terms of numerical precision and CPU time.
+The problem of finding every center and angle of rotation of a fixed shape ellipse, which makes it have three points on its border, is presented in this section. 
+
+Even though its simple statement -- it is short and uses only basic mathematical concepts -- we were not able to find any work on it, or even on related problems.
+As a result, starting from scratch, we ended up trying a handful of approaches, with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. In the end, we propose an algorithm that takes around $6^3$ operations to compute every solution for any instance of the problem and run some experiments to analyze its efficiency in terms of numerical precision and CPU time.
 
 \section{Definition}
 
-We call the problem introduced in this section \sigla{E3PNT}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
+We call the problem introduced in this section \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
 
-Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3PNT can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3PNT. This requirement, of course, makes the problem more challenging.
+Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement, of course, makes the problem more challenging.
 
 \section{Transforming the problem}
 
-Initially, E3PNT is a problem with three unknown variables: the two coordinates of the center point $q_x, q_y, $ and the angle of rotation $\theta$. In this section, we transform E3PNT into the problem of finding the roots of an univariate function using the known problem of determining the circumcircle of a triangle. We also show E3PNT has at most $6$ solutions.
+Initially, E3P is a problem with three unknown variables: the two coordinates of the center point, $q_x$ and $q_y$, and the angle of rotation $\theta$. In this section, we transform E3P into the problem of finding the roots of a univariate function using a known circumcircle problem. 
+This transformation, besides reducing the number of unknown variables to one, is later utilized in the demonstration that E3P has at most six distinct solutions, which is one of the most important properties of E3P.
 
-To make the problem simpler, let us translate the system, so the point $u$ is at the origin; that is, assume that the three points given by the E3PNT instance are $(0, 0); v; w$. After that, we assume that the ellipse is actually axis-parallel and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to compress the x-axis by $\frac{b}{a}$ transforming the ellipse into a circle of radius $b$. This transformation can be seen on \autoref{fig:circumscribed-circle} where a solution of the E3PNT is transformed firstly into an axis-parallel ellipse, and then into a circle of radius $b$.
-This process can be parameterized by the angle of rotation of the points, as described by
-
+To make the problem simpler, let us translate the system, so the point $u$ is at the origin. That is, assume that the three points given by the E3P instance are $(0, 0); v; w$. After that, we assume that the ellipse is axis-parallel, and the points are the ones rotating. When an angle is found such that the three points lie on the border of the axis-parallel ellipse, a linear transformation can be applied to squeeze the x-axis by $\frac{b}{a}$. This compression on the $x$-axis makes the ellipse become a circle of radius $b$. 
+As only invertible transformations are used, given the final state where the three points are on the border of a circle of radius $b$, reversing the two transformations (stretching by $\frac{a}{b}$, rotating by $-\theta$) provides a solution of E3P.
+The whole process can be seen in \autoref{fig:circumscribed-circle} where a solution of the E3P is transformed firstly into an axis-parallel ellipse, and then into a circle of radius $b$. We introduce a function $\varphi\colon \R^2 \to \R^2$ that takes any point and apply these transformations to it as
 \begin{equation}\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
 \frac{b}{a}&0\\
@@ -27,7 +30,7 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation}
-Also, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $(0, 0); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear. This being said, we go further to introduce another problem which is equivalent to E3PNT.
+Also, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $(0, 0); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear. This being said, we go further to introduce a circumcircle problem which is equivalent to E3P.
 
 \begin{figure}
 	\centering
@@ -39,20 +42,19 @@ Also, to make the notation more clear, we denote by $\Lambda(\theta)$ the triang
 
 \subsection{A circumradius problem}
 
-The term circumradius, in this work, is used to describe the radius of a triangle's circumscribed circle, which is a circle that has the triangle's vertices on its border. Given an instance of E3PNT, we define the circumradius problem as the problem of determining an angle of rotation $\theta$, such that the circumradius of $\Lambda(\theta)\in[0, \pi)$ is equal to $b$.
+The term circumradius, in this work, is used to describe the radius of a triangle's circumscribed circle, which is a circle that has the triangle's vertices on its border. Given an instance of E3P, we define the circumradius problem as the problem of determining an angle of rotation $\theta\in[0, \pi)$, such that the circumradius of $\Lambda(\theta)$ is equal to $b$.
 
-As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3PNT and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$; a solution for E3PNT can be obtained using the inverse transformation $\varphi^{-1}$. This is possible because for any fixed $\theta$, $\varphi$ is just a linear function which are known to be invertible.
-With that in mind, it is possible to conclude that both problems are equivalent because, from a solution of one, an unique solution of the other can be obtained.
+As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3P and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$; a solution for E3P can be obtained using the inverse transformation $\varphi^{-1}$. 
+With that in mind, it is possible to conclude that both problems are equivalent because, from a solution of one, a unique solution of the other can be obtained.
 
-The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with radius $b$ is a convenient problem.
-
-It turns out that for three non-collinear points, there is always an unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the expression
+The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with a radius $b$ is a convenient problem.
+It turns out that, for three non-collinear points, there is always a unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the following expression
 
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
 with $A(\theta)$ being the area of the triangle $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle see \citeonline[p.~189]{johnson1960}
-). It should be pointed out that the transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
+). It should be pointed out that this transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
 
 With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for the circumradius problem.
 Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
@@ -60,22 +62,21 @@ Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roo
 \begin{equation}\label{eq:circumscribed_circle_b}
 \xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
 \end{equation}
-Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3PNT.
+Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3P.
 
-The next step is then to develop an algorithm to find every root of $\xi$.
-Before continuing with this approach though, it is important to address the question about the number of roots of $\xi$ in the interval $[0, \pi)$.
+Before attempting to develop an algorithm to find every root of $\xi$, we address the question about the number of roots of $\xi$ in the interval $[0, \pi)$.
 
-\subsection{The number of solutions of E3PNT}
+\subsection{The number of solutions of E3P}
 
-One of the steps of the method developed in \autoref{chapter:mcer} is to iterate over every solution of E3PNT for every triplet of points. Of course doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering a bound for it is essential for determining the algorithm's efficiency.
+One of the steps of the method developed in \autoref{chapter:mcer} is to iterate over every solution of E3P for every triplet of points. Of course, doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering an upper-bound for that is essential for determining the algorithm's efficiency.
 
 \begin{lema}\label{lema:e3p}
-	Any instance of E3PNT has at most $6$ solutions.
+	Any instance of E3P has at most $6$ solutions.
 \end{lema}
 
 \begin{proof}
 	
-Back on \autoref{chapter:definitions}, real trigonometric polynomials were introduced. It was stated that a $n$-degree polynomial can have up to $2n$ distinct roots. It turns out that $\xi$ is a real trigonometric polynomial of degree $6$ and it can be written in the format given by \autoref{eq:trig_poly_2}. This implies that $\xi$ can have up to $12$ distinct roots.
+Back on \autoref{chapter:definitions}, real trigonometric polynomials were introduced. It was stated that any $n$-degree polynomial can have up to $2n$ distinct roots. It turns out that $\xi$ is a real trigonometric polynomial of degree $6$ and it can be written in the format given by \autoref{eq:trig_poly_2}. This implies that $\xi$ can have up to $12$ distinct roots.
  To show that, just note that it is possible to write $\norm{\varphi(v, \theta)}^2$ and $A(\theta)^2$ in the same form as given by \autoref{eq:trig_poly_2}:
  
  \begin{align}\label{eq:dd}
@@ -86,7 +87,7 @@ Back on \autoref{chapter:definitions}, real trigonometric polynomials were intro
  		w_x\frac{b}{a}\cos\theta + w_y\frac{b}{a}\sin\theta&w_y\cos\theta - w_x\sin\theta
  	\end{array}\right)^2.
  \end{align}
-  It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $\{(0, 0), \varphi(v, \theta), \varphi(w, \theta)\}$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\norm{\varphi(v, \theta)}^2$ is $6$ which consequently is the degree of $\xi$.
+  It is also possible to see that the term of higher the degree of $\xi$ is the multiplication of the three squared lengths of the triangle formed by the points $(0, 0), \varphi(v, \theta), \varphi(w, \theta)$. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\norm{\varphi(v, \theta)}^2$ is $6$ which consequently is the degree of $\xi$.
 Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Therefore, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be dismissed.
 \end{proof}
 
@@ -98,19 +99,19 @@ Ax^2+Bxy+Cy^2+Dy+Ex+F=0.
 \end{equation}
 This equation actually represents any conic, for it to be an ellipse the condition $B^2 -4AC < 0$ must be satisfied.
 
-Setting the first point to be the origin, we get $F=0$, using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse and its major-axis and minor-axis have the predefined value. Let $\Delta=4AC-B^2=4AC-1$, and assume $F=0$, then the expressions for both major-axis and minor-axis respectively are
+Setting the first point to be the origin, we get $F=0$, using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal to $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse with the given shape parameters. Let $\Delta=4AC-B^2=4AC-1$, and assume $F=0$, then the expressions for both major-axis and minor-axis, respectively are
 \begin{align}\label{eq:gen_ellipse_a}
 a^2 = \dfrac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C - \sqrt{1 + (A-C)^2}}\\
 \label{eq:gen_ellipse_b}b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}.
 \end{align}
-These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. Finding this set was judged to be non-trivial and probably could be approximated numerically, however, we decided not to further pursue this approach.
+These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. This set can probably be done approximated numerically, however, we decided not to further pursue this approach.
 
 Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}$ which becomes an expression that allows $A$ to be written as a function of $C$. This function appeared, at first we thought, to be monotonic, we tried to develop a method based on that, however, cases where the function does not behave as nicely were found. It is likely that developing a method to approximate solutions working with this function is possible, but we decided not to continue on this track.
 
 
 \section{An approximation method}
 
-One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials which the roots can be found through determining the eigenvalues of a $n\times n$ matrix.
+One of the most useful techniques when dealing with complicated functions is approximation. They appear in various methods whenever a derivative or integral needs to be calculated or for example, in our case, when the roots of a function need to be determined. In general, one has a function $f$ that is part of a family of functions $\mathcal{A}$ and wants to select a simpler function $f^*$ from a set of functions $\mathcal{A^*}$, such that $f^*$ is close enough to $f$ \cite[p.~3]{powell}. For this problem, the approximation of $\xi$ on the interval $[0, \pi)$ is considered. The approximation set of functions is going to be the set of $n$-degree Chebyshev polynomials whose roots can be found through determining the eigenvalues of a $n\times n$ matrix.
 
 
 \subsection{Chebyshev polynomial}
@@ -162,9 +163,9 @@ Therefore, the whole process of interpolating and finding the roots can be done 
 
 The last question that needs to be addressed is how close the roots of the Chebyshev interpolant $f_n$ are to the roots of $\xi$?
 
-Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and  has infinitely many continuous and integrable derivatives. This satisfy all the requirements of the result in \citeonline[p.~28]{gottlieb} which says that if a function has $m$ continuous and integrable derivatives on a closed interval, then its absolute difference between the Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004} a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
+Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and has infinitely many continuous and integrable derivatives. This satisfies all the requirements of the result in \citeonline[p.~28]{gottlieb}, which says that if a function has $m$ continuous and integrable derivatives in a closed interval, its absolute difference to its respective Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004}, a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
 
-To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$, such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$, nonetheless, in practice, it is taken to be a good estimate for the error
+To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$, such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$, nonetheless, in practice, it is considered to be a good estimate for the error
 
 \begin{equation}
 r_n = \max_{0 \le \theta < \pi} |f_n(\theta) - \xi(\theta)|,
@@ -173,10 +174,10 @@ which measures how far the interpolation is at the point it worst approximates.
 
 \subsection{Numerical Experiments}
 
-In this section we run some experiments to verify how big the interpolation degree must be for a good precision to be achieved. 
-The interpolation was run for several degrees for every triplet of points present in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found; simply put we measure how close the roots are to zero.
+In this section, we run some experiments to verify how big the interpolation degree must be for good precision to be achieved. 
+The interpolation was run for several degrees, for every triplet of points in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found.
 
-The results are shown in \autoref{fig:interpolant_error} where the worst error found among every root found is plotted against the interpolant degree used. A parameter $K$ is also used in the experiments. This is an idea suggested in \citeonline{boyd:2013} to improve accuracy, this parameter represents the number of sub-intervals that $[0, \pi)$ is divided into. This way, $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when not so large degrees are used.
+The results are shown in \autoref{fig:interpolant_error}, where the worst error found among every root is plotted against the interpolant degree. To improve accuracy while keeping the interpolation degree low, we took a suggestion from \citeonline{boyd:2013}, and divided  $[0, \pi)$ into $K$ sub-intervals. That way, $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when degrees around $8$ are used.
 
 \begin{figure}
 	\centering
@@ -188,36 +189,42 @@ The results are shown in \autoref{fig:interpolant_error} where the worst error f
 
 \section{Converting $\xi$ into a polynomial}
 
-In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
+In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. The first one converts $\xi$ into a real polynomial and the second one into a complex polynomial. 
+
+%Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
 
 \subsection{Real polynomial}
 
-The first attempt was using the identity $x = \tan{\frac{\theta}{2}}$ from which it is possible to construct a $12$-degree polynomial. At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3PNT, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability. This issue made us abandon this approach and pursue a different way to convert $\xi$ into a polynomial.
+From $\xi$, a real polynomial can be obtained by using the identity $x = \tan{\frac{\theta}{2}}$. We do not go in detail, but it is possible to show that a degree-$12$ polynomial can be obtained using that substitution.
+Computing the actual coefficients can be done using symbolic computing. In practice, we utilized Python's external library SymPy (see \citeonline{sympy} for more details).
+
+At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3P, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability. This issue made us abandon this approach and pursue a different way to convert $\xi$ into a polynomial.
 
 \subsection{Complex polynomial}
 
-The second approach is based on a idea published in \citeonline{boyd:2006} which uses the identities on \autoref{eq:complex_trig} to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials. This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial--more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
-
+A complex polynomial can be obtained from $\xi$ by using an idea published in \citeonline{boyd:2006}. There, the author uses the identities
 \begin{align}\label{eq:complex_trig}
-\cos{\theta} = \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
-\sin{\theta} = \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
+	\cos{\theta} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
+	\sin{\theta} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
 \end{align}
+which relate complex numbers with trigonometric functions, to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials.
+This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial -- more details about this can be found in \citeonline{weidner} where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
 
 It is possible to show that with that substitution and changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit complex circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$):
 
 \begin{equation}
 g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
-for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, the function $g(e^{i\theta})$ and the function $\xi$ are equivalent since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, the function $g(e^{i\theta})$ and the $\xi$ are equivalent since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
 
-The function $g$ is still not a polynomial as $z$ shows up with negative exponents (up to $-6$), and its domain is the unit circle $\mathbb{S}$, not the whole complex set $\mathbb{C}$. 
-The first issue can be fixed by multiplying $g$ by $z^6$, note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$, as $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear which requires a further check for every root that is found.
+The first issue can be fixed by multiplying $g$ by $z^6$. Note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$. 
+As $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear in the new polynomial, but they can be ignored as they are not roots of $g$.
 Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as
 
 \begin{equation}\label{eq:h}
 h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
 \end{equation}
-By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle.
+By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle. As in the first case, symbolic computing can be put in practice to determine the coefficients of $h$ as functions of E3P's instance. For more information about the Python's external library utilized called SymPy see \citeonline{sympy}.
 
 \subsubsection{Further improvements}
 
@@ -248,15 +255,15 @@ c_k = \overline{c_{6-k}},
 \end{equation}
 for $k=0, \dots, 6$. For now, we neither have any ideas on how \autoref{eq:palindromic_pol} could be proved nor how it could be used to find the roots of $f$.
 
-Finally, in the next section we use this approach of converting $\xi$ into a complex polynomial to develop an algorithm for E3PNT.
+Finally, in the next section we use this approach of converting $\xi$ into a complex polynomial to develop an algorithm for E3P.
 
-\section{An algorithm for E3PNT}
+\section{An algorithm for E3P}
 
-Among the methods that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3PNT.
+Among the methods that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3P.
 The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately, this method requires finding the eigenvalues of a companion matrix, which is usually going to be larger than the $6\times 6$, which is the size of the companion matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
 
 Details about getting the eigenvalues of a companion matrix, and determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity. 
-Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of a E3PNT's instance.
+Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of a E3P's instance.
 
 
 \begin{algoritmo}
@@ -267,7 +274,7 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 		
 		\item[]
 		
-		\Procedure{$E3PNT$}{$u,v,w,a,b$}
+		\Procedure{$e3p$}{$u,v,w,a,b$}
 		
 		\State $\hat{u}\gets (0,0)$ \Comment{Translate the system, so $u$ is at the origin.}
 		\State $\hat{v} \gets v-u$
@@ -298,28 +305,18 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 \end{algoritmo}
 
 \begin{teorema}\label{th:e3p}
-	The \autoref{algoritmo:e3p} computes every solution of E3PNT in $\bigO(1)$ operations.
+	The \autoref{algoritmo:e3p} computes every solution of E3P in $\bigO(1)$ operations.
 \end{teorema}
 
 \begin{proof}
-	It has already been shown that computing every root of $\xi$ through the complex polynomial yields every solution of E3PNT, the only thing left to prove is the running time of the algorithm.
+	It has already been shown that computing every root of $\xi$ through the complex polynomial yields every solution of E3P, the only thing left to prove is the running time of the algorithm.
 	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$. Therefore, the whole algorithm runs in constant time.
 \end{proof}
 
-\subsection{Solutions for some instances}
+\subsection{Instances with six and four solutions}
 
-From \autoref{lema:e3p}, we know that any instance of E3P has at most six solutions. At first, though, it seemed like that bound was loose as we could not find any instances that made \autoref{algoritmo:e3p} return six solutions. 
-After some investigation, this turned out not to be the case. An example with six solutions is presented in \autoref{fig:e3p_6sols}. It is worth mentioning that the only instances that we found which produce six solutions have their three points form an equilateral triangle.
-
-\begin{figure}[H]
-	\centering
-	\caption{An instance of E3P with six solutions.}
-	\includegraphics[scale=.35]{tex/figures/e3p_6sols}
-	\fautor
-	\label{fig:e3p_6sols}
-\end{figure}
-
-Another example is shown in \autoref{fig:e3p_4sols} where an instance of E3P is displayed along with its four solutions.
+Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances like the ones generated by the model in the next section, only two solutions were returned by \autoref{algoritmo:e3p}.
+After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that every one of them has their three points form an isosceles triangle.
 
 \begin{figure}[H]
 	\centering
@@ -329,14 +326,28 @@ Another example is shown in \autoref{fig:e3p_4sols} where an instance of E3P is 
 	\label{fig:e3p_4sols}
 \end{figure}
 
+Obtaining six-solution instances, on the other hand, was done by taking a particular case of the isosceles-triangle approach.
+As it can be seen in \autoref{fig:e3p_6sols}, the three points on every one of the six ellipses' border form an equilateral triangle. 
+
+\begin{figure}[H]
+	\centering
+	\caption{An instance of E3P with six solutions.}
+	\includegraphics[scale=.35]{tex/figures/e3p_6sols}
+	\fautor
+	\label{fig:e3p_6sols}
+\end{figure}
+
+It should be pointed out that neither non-isosceles instances with four solutions nor non-equilateral instances with six solutions could be found. Further investigating these possible properties of E3P is left as future work.
+
+
 \subsection{Numerical Stability}
 
 In this section we show the results of an experiment that is developed to study the numerical stability of \autoref{algoritmo:e3p}. 
 
-We define $K\in\R_{>0}$ as an experiment parameter and consider instances that the ellipse has shape parameters $(K, \frac{K}{2})$. Then, random instances are created by setting the three points to be $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1..3$, with $t_j$ being uniformly distributed in the interval $[0, 2\pi]$.
+We define $K\in\R_{>0}$ as an experiment parameter and consider instances with the ellipse's shape parameters $(K, \frac{K}{2})$. The three points are generated randomly as $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1..3$, with $t_j$ being uniformly distributed in the interval $[0, 2\pi]$.
 To evaluate the stability of \autoref{algoritmo:e3p}, for any solution $(\hat{q}, \hat{\theta})$ found, we adopt its error measure to be $|\xi(\hat{\theta})|$.
 
-The experiment was run for various values of $K$. For each one of them, $100$ randomly generated instances were considered. The results are shown in \autoref{fig:e3p_error}, where the average and the maximum error are plotted.
+The experiment was run for various values of $K$. For each one of them, $100$ randomly generated instances were considered. The results are shown in \autoref{fig:e3p_error}, where the average and the maximum error are plotted for each value of $K$. Analyzing the results shown in \autoref{fig:e3p_error}, it is fair to say that \autoref{algoritmo:e3p} is numerically stable for this example, and, as long as the instances have values within the box $[-10^5, 10^5]$, a small error can be expected.
 
 \begin{figure}[H]
 	\centering
@@ -346,8 +357,5 @@ The experiment was run for various values of $K$. For each one of them, $100$ ra
 	\label{fig:e3p_error}
 \end{figure}
 
-From this experiment, it is possible to conclude that the accuray of \autoref{algoritmo:e3p} is acceptable when the instance of E3PNT has numerical values within the box $[-10^5, 10^5]^2$. A more rigorous study on the numerical stability of E3PNT is left as future work.
-
-
-
-
+This experiment served as a basis for us to define the precision constant as $10^{-7}$ for the implementation of \autoref{algoritmo:e3p}. 
+This constant is used floating point comparisons in situations like checking if a root of $h$ is in the unit circle, comparing if two roots of $\xi$ represent the same solution, and checking if the three points are in the border of an ellipse considered as a solution.
