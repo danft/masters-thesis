@@ -196,7 +196,9 @@ In \autoref{chapter:definitions}, a brief introduction is given on how to get th
 \subsection{Real polynomial}
 
 From $\xi$, a real polynomial can be obtained by using the identity $x = \tan{\frac{\theta}{2}}$. We do not go in detail, but it is possible to show that a degree-$12$ polynomial can be obtained using that substitution.
-Computing the actual coefficients can be done using symbolic computing. In practice, we utilized Python's external library SymPy (see \citeonline{sympy} for more details).
+Computing the actual coefficients can be done using symbolic computing. 
+
+%In practice, we utilized Python's external library SymPy (see \citeonline{sympy} for more details).
 
 At first,  the root-finding algorithm described on \autoref{chapter:definitions} seemed to work fine and return every solution of E3P, however, we later found out that for some instances, priorly known roots were not being found. The cause was not for sure identified, but a good guess would be that for angles which are greater than $\frac{\pi}{4}$, $x$ starts growing too rapidly which could lead to numerical instability. This issue made us abandon this approach and pursue a different way to convert $\xi$ into a polynomial.
 
@@ -224,30 +226,26 @@ Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined
 \begin{equation}\label{eq:h}
 h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
 \end{equation}
-By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle. As in the first case, symbolic computing can be put in practice to determine the coefficients of $h$ as functions of E3P's instance. For more information about the Python's external library utilized called SymPy see \citeonline{sympy}.
+By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle. As in the first approach, symbolic computing can be put in practice to determine the coefficients of $h$ as functions of E3P's instance.
 
 \subsubsection{Further improvements}
 
-It is possible to make another reduction to obtain a degree-$6$ polynomial.
-As it has been mentioned before, an ellipse is symmetric with respect to its own major or minor axis. 
-In other words, rotating an ellipse by $\theta \in [0, \pi)$ is the same as rotating the same ellipse by $\pi + \theta$.
-On the other hand, in \autoref{chapter:definitions}, it was stated that the angle of the complex numbers $z$ and $-z$ has the same symmetry with each other as the aforementioned symmetry of ellipses:
-\begin{equation*}
-angle(-z) = \pi + angle(z).
-\end{equation*}
-From that, as $g(e^{i\theta})=\xi(\theta)$ for every $\theta \in [0, 2\pi)$, we conclude that $g(-z)=g(z)$. This implies that $h$ is, in fact, an even polynomial, or that $h(-z) = h(z)$ is true for every $z\in\mathbb{C}$:
-\begin{align}
-h(-z) = (-z)^6g(-z) = z^6g(z).
-\end{align}
-Therefore, all the odd degree coefficients of $h$ are zero and we can define the $6$-degree polynomial $f : \mathbb{C} \mapsto \mathbb{C}$ with the substitution $y=z^2$ as follows
+It is possible to make another reduction and cut the size of the polynomial in half.
+As it has been mentioned in \autoref{chapter:definitions}, an ellipse is symmetric with respect to its axis, which implies that rotating it by $\theta \in [0, \pi)$ is equivalent to rotating it by $\pi + \theta$.
+On the other hand, very conveniently, as given by \autoref{eq:angle_op_sign}, angles of complex numbers of opposite signs are $\pi$ apart from each other, which means that $g$ has to produce the same output for both $z$ and $-z$ as they represent equivalent angles of rotation for ellipses.
+From that, for all $z\in \mathbb{S}$ we have
+\begin{align*}
+h(-z) = (-z)^6g(-z) = z^6g(z) = h(z).
+\end{align*}
+Therefore, every odd degree coefficients of $h$ must be zero and we can define the $6$-degree polynomial $f : \mathbb{C} \mapsto \mathbb{C}$ with the substitution $y=z^2$ as follows
 \begin{equation}
 f(y) = \sum_{k=0}^{6} c_{2k} y^k.
 \end{equation}
 Then from every root $\hat{y}$ of $f$, two roots of $h$ can be obtained: $\sqrt{\hat{y}}$ and $-\sqrt{\hat{y}}$. As the angle of one of the roots will not be between $[0, \pi)$ we can ignore one of them. 
 Note that the the square root of $\hat{y}$ does not need to be calculated, as only the angles are needed and they can be obtained by the identity
-\begin{equation}
+\begin{equation*}
 angle(\sqrt{z}) = angle(z)/2.
-\end{equation}
+\end{equation*}
 
 It is also worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe, for future work, it can be used for further improvements. Analyzing the polynomials produced for several instances, the following seems to be true:
 \begin{equation}\label{eq:palindromic_pol}
@@ -260,11 +258,12 @@ Finally, in the next section we use this approach of converting $\xi$ into a com
 \section{An algorithm for E3P}
 
 Among the methods that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3P.
-The other approach that showed good results was the numerical approximation one that uses Chebyshev interpolation. Ultimately, this method requires finding the eigenvalues of a companion matrix, which is usually going to be larger than the $6\times 6$, which is the size of the companion matrix needed to find the roots of the complex polynomial in \autoref{algoritmo:e3p}. 
+Despite the good results shown by the Chebyshev interpolation method,
+it can still be classified as a heuristic as none of the approaches to determine the interpolation degree ensures a good approximation in the whole interval.
+On top of that, ultimately, the roots of the Chebyshev polynomial are computed through determining the eigenvalues of a companion matrix, which, unless a lower-than-seven interpolation degree is utilized, is going to be larger than the companion matrix whose eigenvalues are the roots of the complex polynomial $h$.
 
 Details about getting the eigenvalues of a companion matrix, and determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity. 
-Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of a E3P's instance.
-
+Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of the E3P's instance. Then, basically, after building a companion matrix for the polynomial $h$, \autoref{algoritmo:e3p}, for every eigenvalue, applies the reverse transformations described by \autoref{eq:trpnts} to obtain a solution for E3P.
 
 \begin{algoritmo}
 	\caption{The algorithm for E3P.}\label{algoritmo:e3p}
@@ -305,12 +304,12 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 \end{algoritmo}
 
 \begin{teorema}\label{th:e3p}
-	The \autoref{algoritmo:e3p} computes every solution of E3P in $\bigO(1)$ operations.
+	The \autoref{algoritmo:e3p} computes every solution for an instance of E3P in $\bigO(1)$ operations.
 \end{teorema}
 
 \begin{proof}
 	It has already been shown that computing every root of $\xi$ through the complex polynomial yields every solution of E3P, the only thing left to prove is the running time of the algorithm.
-	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$. Therefore, the whole algorithm runs in constant time.
+	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$.
 \end{proof}
 
 \subsection{Instances with six and four solutions}
@@ -352,10 +351,10 @@ The experiment was run for various values of $K$. For each one of them, $100$ ra
 \begin{figure}[H]
 	\centering
 	\caption{The error measured on solutions found by \autoref{algoritmo:e3p}.}
-	\includegraphics[scale=.9]{tex/figures/e3p_error}
+	\includegraphics[scale=.8]{tex/figures/e3p_error}
 	\fautor
 	\label{fig:e3p_error}
 \end{figure}
 
 This experiment served as a basis for us to define the precision constant as $10^{-7}$ for the implementation of \autoref{algoritmo:e3p}. 
-This constant is used floating point comparisons in situations like checking if a root of $h$ is in the unit circle, comparing if two roots of $\xi$ represent the same solution, and checking if the three points are in the border of an ellipse considered as a solution.
+This constant is used in floating point comparisons in situations like checking if a root of $h$ is in the unit circle, comparing if two roots of $\xi$ represent the same solution, and checking if the three points are in the border of an ellipse considered as a solution.

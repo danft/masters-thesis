@@ -144,7 +144,7 @@ Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}
 	\includegraphics[scale=.6]{tex/figures/lema-3-points}
 	\fautor
 	\label{fig:lema-3-points}
-\end{figure}.
+\end{figure}
 
 Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. We will define a set $\Omega(\Pp, \Ww, \Rr)$ and show that there exists an equivalent solution $(Q', \Theta')$ to  $(Q^*, \Theta^*)$, such that $(Q', \Theta') \in \Omega(\Pp, \Ww, \Rr)$. This is the same thing as showing that $\Omega(\Pp, \Ww, \Rr)$ contains an optimal solution for the instance $(\Pp, \Ww, \Rr)$.
 The whole set $\Omega(\Pp, \Ww, \Rr)$ is constructed from a set of solutions for every ellipse. Let $j\in\{1, \dots, m\}$, we denote by $S_j$ the CLS for the $j$-th ellipse; its construction is broken into three separated cases denoted by $S_j^{(1)}$, $S_j^{(2)}$, and $S_j^{(3)}$. Next, we define them precisely.
@@ -242,7 +242,7 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
 		
-		\Ensure{An optimal solution of MCER.}
+		\Ensure{An optimal solution for the given instance of MCER.}
 		
 		\item[]
 		\Procedure{$MCER$}{$\Pp, \Ww, \Rr$}
@@ -314,7 +314,7 @@ Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \au
 		
 		\item[]
 		
-		\Procedure{MCE-$k$}{$\Pp, \Ww, \Rr, \Cc, k$}
+		\Procedure{MCER-$k$}{$\Pp, \Ww, \Rr, \Cc, k$}
 		\State $I^* = \{i_1^*, \dots, i_k^*\}\gets \{1, \dots, k\}$
 		\State $Q^* = (q_1^*, \dots, q_k^*) \gets (0, \dots, 0)$
 		\State $\Theta^* = (\theta_1^*, \dots, \theta_k^*) \gets (0, \dots, 0)$
@@ -353,4 +353,4 @@ OPT \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+
 \end{equation}
 This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be pre-processed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER$ procedure.
 
-I n the next section we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.
+In the next section we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.
