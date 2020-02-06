@@ -341,20 +341,30 @@ It should be pointed out that neither non-isosceles instances with four solution
 
 \subsection{Numerical Stability}
 
-In this section we show the results of an experiment that is developed to study the numerical stability of \autoref{algoritmo:e3p}. 
+In this section we show the results of some experiments made to study the numerical stability of \autoref{algoritmo:e3p}. For all the experiments, we define $K\in\R_{>0}$, and consider instances with ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$. Let $\delta\colon\R^2\to\R$ be a function defined as the left-hand-size of \autoref{eq:rotated_ellipse}, then, for an instance with three points $u, v, w \in \R^2$, we define the error associated with a solution for that instance as $\max\{|\delta(u)|, |\delta(v)|, |\delta(w)|\}$.
 
-We define $K\in\R_{>0}$ as an experiment parameter and consider instances with the ellipse's shape parameters $(K, \frac{K}{2})$. The three points are generated randomly as $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1..3$, with $t_j$ being uniformly distributed in the interval $[0, 2\pi]$.
-To evaluate the stability of \autoref{algoritmo:e3p}, for any solution $(\hat{q}, \hat{\theta})$ found, we adopt its error measure to be $|\xi(\hat{\theta})|$.
-
-The experiment was run for various values of $K$. For each one of them, $100$ randomly generated instances were considered. The results are shown in \autoref{fig:e3p_error}, where the average and the maximum error are plotted for each value of $K$. Analyzing the results shown in \autoref{fig:e3p_error}, it is fair to say that \autoref{algoritmo:e3p} is numerically stable for this example, and, as long as the instances have values within the box $[-10^5, 10^5]$, a small error can be expected.
-
+The first experiment considers instances where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. It is possible to see that such instances only have one solution, and therefore, roots with multiplicity greater than one are expected, which can be seen as a special case. 
+For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the closest solution to the priorly known one, and then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols1}, we considered the maximum and the average error.
 \begin{figure}[H]
+	\centering
+	\caption{The maximum and average error for instances with known solutions.}
+	\includegraphics[scale=.8]{tex/figures/e3p_known_sols1}
+	\fautor
+	\label{fig:e3p_known_sols1}
+\end{figure}
+The second experiment takes the same instances as the previous one, but this time, we analyze how close the roots corresponding to the priorly known solutions are to the unit circle. The distance of a root $\hat{x}$ of $h$ to the unit circle is taken to be $|\hat{x}-1|$. This experiment is utilized mostly to determine a good precision constant for floating point comparisons in the implementation. The results are shown in \autoref{fig:e3p_known_sols2}. As it can be seen that the distance always stays under $10^{-6}$ we concluded that a good precision constant would be $10^{-5}$.
+\begin{figure}
+	\centering
+	\caption{The distance of the roots to the unit circle.}
+	\includegraphics[scale=.8]{tex/figures/e3p_known_sols2}
+	\fautor
+	\label{fig:e3p_known_sols2}
+\end{figure}
+For the last experiment we considered $100$ instances for each $K$ with three points $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1\dots3$, generated randomly by sampling $t_j$ according to a uniform distribution in $[0, 2\pi]$. The average and the maximum error are plotted in \autoref{fig:e3p_error}, and analyzing it, it is fair to say that \autoref{algoritmo:e3p} is numerically stable for this example, and its error, in average, is expected to be small even if the instance's numerical values are big.
+\begin{figure}
 	\centering
 	\caption{The error measured on solutions found by \autoref{algoritmo:e3p}.}
 	\includegraphics[scale=.8]{tex/figures/e3p_error}
 	\fautor
 	\label{fig:e3p_error}
 \end{figure}
-
-This experiment served as a basis for us to define the precision constant as $10^{-7}$ for the implementation of \autoref{algoritmo:e3p}. 
-This constant is used in floating point comparisons in situations like checking if a root of $h$ is in the unit circle, comparing if two roots of $\xi$ represent the same solution, and checking if the three points are in the border of an ellipse considered as a solution.

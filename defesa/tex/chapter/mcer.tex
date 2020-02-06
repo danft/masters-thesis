@@ -15,7 +15,7 @@ Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be 
 In addition to that, we define an equivalence relation between solutions of MCER. We say that two solutions are equivalent if the set of points covered by them is the same. In other words, two solutions of MCER $(Q, \Theta)$ and $(Q', \Theta')$ are said to be equivalent if, and only if 
 $$\bigcup_{j=1}^m\Pp \cap E_j(q_j', \theta_j') = \bigcup_{j=1}^m\Pp \cap E_j(q_j, \theta_j).$$
 
-In the next section we present some results which ultimately lead up to the construction of a CLS that contains an optimal solution for MCER.
+In the next section we present some results which ultimately lead up to the construction of a CLS for each facility that contains an optimal solution for MCER.
 
 \section{Constructing a CLS}
 
@@ -290,6 +290,17 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 	For every $j\in\{1, \dots, m\}$, unless $Z=\{\}$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider any $(q_j, \theta_j) \in \R^2 \times \R$, such that $Z \cap E_j(q_j, \theta_j) = \{\}$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$.
 \end{proof}
 
+In \autoref{fig:AB120} a solution return by \autoref{algoritmo:mcer} for the instance AB120 taken from \citeonline{andreta} is displayed. The exact method developed by \citeonline{andreta}, for this instance, could not obtain an optimal solution within the established time limit, however, comparing with the solution obtained by our algorithm, their heuristic method does find an optimal solution. In the next chapter, we give more details about the solutions found by our algorithm, along with the proposal of some new instances for MCER and MCER-$k$.
+
+
+\begin{figure}[H]
+	\centering
+	\caption{An optimal solution for the instance AB120.}
+	\includegraphics[scale=.5]{tex/figures/AB120}
+	\fautor
+	\label{fig:AB120}
+\end{figure}
+
 \subsection{Adding facility cost}
 
 In this section, we consider the extended version of MCER where each facility has a cost assigned to it and exactly $k$ of them must be used in a solution. We refer to this version of the problem as \sigla{MCER-$k$}{Maximum Covering by Ellipses with Rotation and a $k$-constraint}. 
@@ -344,7 +355,7 @@ Instead of calling procedure CLS-MCER every time in the backtracking routine, it
 
 Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the CLS-MCER procedure in \autoref{algoritmo:mcer1}. 
 
-In our implementation we use the same approach used in \citeonline{andreta}. When constructing the CLS for the $j$-th ellipse, a tree-like data struct is utilized to verify if a solution $(q, \theta)$ covers a subset of another solution or not.
+In our implementation we use the same approach used in \citeonline{andreta}. When constructing the CLS for the $j$-th ellipse, a tree-like data structure is utilized to verify if a solution $(q, \theta)$ covers a subset of another solution or not.
 
 Keeping an upper-bound for the solution during the backtracking in \autoref{algoritmo:mcer} can also provide a good improvement in practice. Let $z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta))$, and $OPT$ the value of an optimal solution. When the algorithm chooses $(q_j, \theta_j) \in S_j$ as the solution for the $j$-th ellipse, we have
 
@@ -353,4 +364,4 @@ OPT \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+
 \end{equation}
 This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be pre-processed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER$ procedure.
 
-In the next section we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.
+In the next chapter, we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.
