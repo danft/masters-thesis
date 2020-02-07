@@ -4,32 +4,29 @@ This chapter introduces the elliptical PMCLP where there is no axis-parallel con
 
 An instance of the non-axis-parallel is defined exactly like the axis-parallel one on \autoref{chapter:mce}. It is given by a set of demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; a list of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the weight of point $p_j$;
 and $m$ ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
-Additionally, to make the text more clear, we define a set of $m$ ellipses as $\E = \{E_1, \dots, E_m\}$, with $E_j\colon \R^2\times\R \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
-Lastly, an instance of MCER is defined as a tuple $(\Pp, \Ww, \Rr)$.
+Additionally, to make the text more clear, we define a set of $m$ functions that represent the coverage regions of each ellipse as $\E = \{E_1, \dots, E_m\}$, with $E_j\colon \R^2\times\R \mapsto \R^2$ being a function that takes the center and angle of rotation where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
+Lastly, an instance of MCER is defined as the tuple $(\Pp, \Ww, \Rr)$.
 
-Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ to be the centers of each ellipse, $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ to be the angle of rotation of each ellipse and $E_i(q_i, \theta_i)$ to be the coverage region of ellipse $E_i$ with its center at point $q_i$ rotated by angle $\theta_i$, which is given by \autoref{eq:rotated_ellipse_co}. Therefore MCER is defined as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the weight of points covered by the $m$ ellipses, which is given by
-
+Given an instance of $MCER$, we define $Q:=(q_1, \dots, q_m) \in \R^{2m}$ as the centers of each ellipse, and $\Theta:=(\theta_1, \dots, \theta_m) \in [0, \pi)^m$ as the angles of rotation of each ellipse. Then, we define MCER as the problem of determining $Q$ and $\Theta$ (placing and rotating each ellipse) to maximize the weight of the points covered by the $m$ ellipses given by
 \begin{equation}\label{eq:optMCEn}
 \max_{Q, \Theta}{w\left(\bigcup_{i=1}^{m} \Pp \cap E_i(q_i, \theta_i)\right)}.
 \end{equation}
-In addition to that, we define an equivalence relation between solutions of MCER. We say that two solutions are equivalent if the set of points covered by them is the same. In other words, two solutions of MCER $(Q, \Theta)$ and $(Q', \Theta')$ are said to be equivalent if, and only if 
+In addition to that, we define an equivalence relation between solutions of MCER. We say that two solutions are equivalent if the set of points covered by them is the same. That is, two solutions of MCER $(Q, \Theta)$ and $(Q', \Theta')$ are said to be equivalent if, and only if 
 $$\bigcup_{j=1}^m\Pp \cap E_j(q_j', \theta_j') = \bigcup_{j=1}^m\Pp \cap E_j(q_j, \theta_j).$$
 
-In the next section we present some results which ultimately lead up to the construction of a CLS for each facility that contains an optimal solution for MCER.
+In the next section we present some results which ultimately lead up to the construction of a finite set that contains at least one optimal solution for MCER.
 
-\section{Constructing a CLS}
+\section{An optimal and finite set of solutions}
 
-The goal of this section is to construct a finite set of solutions, also referred to as CLS, for MCER that contains at least one optimal solution.
-The main idea for doing that is to take advantage of \autoref{lema:e3p} and use the fact that there are at most six solutions for any instance of E3P.
-This set of solutions is then used in the next section on the development of a $\bigO(n^{3m})$ runtime algorithm for MCER.
+In this section, we construct a finite list of centers and angles of rotation, also referred to as a CLS, for each ellipse and show that at least one optimal solution is in the set of solutions created from those lists. The results presented in this section are strongly based on \autoref{chapter:e3p}, more specifically on \autoref{lema:e3p}, which states that there exists at most six solutions for any instance of E3P.
 
-To begin with, a proposition is introduced which says that given an optimal solution of MCER, it is possible to find another optimal solution with two points on the border of every ellipse that is already covering at least two points.
+We start by introducing a lemma, which says that given an optimal solution of MCER, it is always possible to find an equivalent one, such that every ellipse covering more than one point has two of them on its border.
 
-\begin{proposicao}\label{lema:mce_2b}
+\begin{lema}\label{lema:mce_2b}
 	Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER. 
 	Then, for any $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, 
 	an equivalent solution $(Q', \Theta^*)$ exists, such that $|\Pp \cap \partial E_j(q_j', \theta_j^*)|\ge 2$.
-\end{proposicao}
+\end{lema}
 
 \begin{proof}
 	First, the angle of rotation can be ignored as it does not change.
@@ -40,16 +37,7 @@ To begin with, a proposition is introduced which says that given an optimal solu
 	
 \end{proof}
 
-What \autoref{lema:mce_2b} is saying is that any optimal solution for MCER can be transformed into an equivalent optimal solution where every ellipse that covers more than one point has two points on their border. Also, this equivalent optimal solution can be always achieved by just translating the ellipses. An example of that can be seen in \autoref{fig:ellipse-2-points}. 
-
-Next, a notation is defined for the set of equivalent solutions of an optimal solution that has at least two points on the border of every ellipse. This helps us make the text less cluttered.
-
-\begin{definicao}
-	Let $(Q^*, \Theta^*)$ be an optimal solution for an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $\Pi(Q^*, \Theta^*)$ as the set of every equivalent solution of $(Q^*, \Theta^*)$, such that for any $(Q, \Theta)\in\Pi(Q^*, \Theta^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
-\end{definicao}
-
-A lot of the ideas developed in this chapter are based on fixing two points on the border of an ellipse.
-Based on that, \autoref{def:feasible_angle} introduces a new notation for angles that, given two points and an ellipse, it is possible to find a center where the ellipse rotated by that angle is placed, such that the two given points lie on its border.
+What \autoref{lema:mce_2b} is saying is that transforming any optimal solution of MCER into an equivalent optimal solution where every ellipse that covers more than one point has two points on its border is possible (an example can be seen in \autoref{fig:ellipse-2-points}). \autoref{lema:mce_2b} also says that this equivalent optimal solution can always be achieved by just translating the ellipses; that is, no change in the angle of rotation is required. 
 
 \begin{figure}
 	\centering
@@ -59,17 +47,25 @@ Based on that, \autoref{def:feasible_angle} introduces a new notation for angles
 	\label{fig:ellipse-2-points}
 \end{figure}
 
+Next, a new notation is introduced for the set of equivalent solutions of an optimal one that has at least two points on the border of every ellipse.
+
+\begin{definicao}
+	Let $(Q^*, \Theta^*)$ be an optimal solution for an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $\Pi(Q^*, \Theta^*)$ as the set of every equivalent solution of $(Q^*, \Theta^*)$, such that for any $(Q, \Theta)\in\Pi(Q^*, \Theta^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
+\end{definicao}
+
+Next, we introduce a notation that helps us characterize angles which given an ellipse rotated by it and two points, it is possible to find a center for the ellipse, such that it contains the two points on its border.
+
 \begin{definicao}\label{def:feasible_angle}
 	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
 	In addition to that, given an instance  $(\Pp, \Ww, \Rr)$ of MCER, the set of $(E_j, u, v)$-feasible angles is referred to as 
 	
 	\begin{equation}
-	\Phi_j(u, v) := \{\theta \in [0, \pi] : \theta \textnormal{ is a } (E_j,u,v)\textnormal{-feasible angle}\}.
+	\Phi_j(u, v) := \{\theta \in [0, \pi) : \theta \textnormal{ is a } (E_j,u,v)\textnormal{-feasible angle}\}.
 	\end{equation}
 \end{definicao}
 
-In \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. The example with a solid contour shows two ellipses rotated by $\pi/4$ with the two given points on its border, making $\pi/4$ a $(E, u, v)$-feasible angle.
-The other example, with a dashed contour, presents a case where an ellipse rotated by $\pi/2$ is not able to have the two points on its border, no matter where it is placed; because of that, $\pi/2$ is said to be a not $(E, u, v)$-feasible angle.
+In \autoref{fig:feasible-angle} two examples for \autoref{def:feasible_angle} are shown. The example with a solid border shows two given points on the border of two ellipses rotated by $\pi/4$, making $\pi/4$ a $(E, u, v)$-feasible angle.
+The other example, with a dashed border, presents a case where an ellipse rotated by $\pi/2$ is not able to have the two points on its border, no matter where it is placed; because of that, $\pi/2$ is said to be a non $(E, u, v)$-feasible angle.
 
 \begin{figure}[H]
 	\centering
@@ -79,7 +75,9 @@ The other example, with a dashed contour, presents a case where an ellipse rotat
 	\label{fig:feasible-angle}
 \end{figure}
 
-Following that, we present a lemma that, given an optimal solution, it says that for any ellipse that covers more than two points, an equivalent solution exists with at least one of the two properties:
+Following that, we introduce a lemma that is responsible for connecting the developments of this chapter with the results of \autoref{chapter:e3p}.
+This lemma makes it possible to describe a type of solution which, for sure, is part of the equivalence class of any optimal solution.
+It says that, for any ellipse that covers more than two points in a given optimal solution, an equivalent solution exists with at least one of the two properties:
 \begin{itemize}
 	\item Three points lie on the ellipse's border.
 	\item Two points lie on the ellipse's border, for any feasible angle.
@@ -88,7 +86,7 @@ Following that, we present a lemma that, given an optimal solution, it says that
 \begin{lema}\label{lema:3pnts}
 Let $(Q^*, \Theta^*)$ be an optimal solution of an instance $(\Pp, \Ww, \Rr)$ of MCER; $j\in\{1, \dots, m\}$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|>2$; $(Q', \Theta')\in\Pi(Q^*, \Theta^*)$; and $\{u, v\}\subset \partial E_j(q_j', \theta_j')$.
 
-If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial E_j(\hat{q}_j, \hat{\theta}'_j)| < 3$, then for all $\theta\in\Phi_j(u,v)$, there exists $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.
+If, for all $(\hat{Q}, \hat{\theta})$ equivalent solution of $(Q^*, \Theta^*)$, $|\Pp\cap \partial E_j(\hat{q}_j, \hat{\theta}_j)| < 3$, then for all $\theta\in\Phi_j(u,v)$, there exists $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.
 
 \end{lema}
 
@@ -99,7 +97,7 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 	
 	In \autoref{chapter:definitions}, a function $L\colon \R \to \R_{\ge0}$ was defined in \autoref{eq:function-l}. This function takes the angular coefficient $m\in\R$ and, considering the family of lines parallel to the one described by $y=mx$, returns the maximum squared distance between two intersection points of a line in that family and an axis-parallel ellipse centered at the origin.
 	
-	To use those results here, we need to consider the ellipse to be fixed at the origin and axis-parallel, and instead, rotate the points in $\Pp$. 
+	To use those results here, we need to consider the ellipse to be fixed at the origin and axis-parallel, and consider the problem of rotating and translating the points in $\Pp$ instead. 
 	
 	Let $\theta \in [0, \pi]\setminus\{\pi/2\}$, and $u', v'$ be the points $u, v$ after a rotation by $\theta$. Then, if $L(\tan{\theta}) \ge ||v-u||_2^2$, it is possible to apply a translation to $u',v'$, such that they end up in the border of the fixed ellipse. This means that, it is possible to find an angle of rotation and a center to place $E_j$, such that it has $u, v$ on its border. 
 	
@@ -113,15 +111,16 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 	We then conclude that $\Phi_j(u, v) = [0, \alpha]\cup [\pi-\alpha, \pi]$, and, of course, in the case that there is no $\alpha\in[0, \pi/2)$, such that $l(\alpha)=||v-u||_2^2$, we have $\Phi_j(u,v)=[0, \pi]$.
 	From that, if we rotate every point in $\Pp$ by $\pi-\alpha$, we obtain $\Phi_j(u,v)=[0, 2\alpha]$.
 	
-	With this result in hands, we can use a continuity argument to complete our proof as follows.
-	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, and, from solution $(Q', \Theta')$, $\delta(\theta_j') = q_j'$.
-	In general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, as $\delta(\theta_j') = q_j'$, $\delta$ is well-defined. This is shown in \autoref{fig:lema-3-points} where $\delta$ is plotted for the whole interval $\Phi_j(u,v)$.
+	With this result in hand, we can use a continuity argument to complete our proof as follows.
+	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, and, from solution $(Q', \Theta')$, $\delta(\theta_j') = q_j'$. Notice that, in general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, imposing $\delta(\theta_j') = q_j'$ makes $\delta$ be a well-defined function. This is shown in \autoref{fig:lema-3-points} where $\delta$ is plotted for the whole interval $\Phi_j(u,v)$.
 	
-	Let $w\in \Pp \cap E_j(q_j^*, \theta_j^*) \setminus \{u,v\}$, then we define $f_w  : \R^3 \mapsto \R_{\ge0}$ to be a function that takes a center point $q$ and an angle of rotation $\theta$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$ as defined by the left-and-side of \autoref{eq:rotated_ellipse}.
+	Let $w\in \Pp \cap E_j(q_j^*, \theta_j^*) \setminus \{u,v\}$, then we define $f_w  : \R^2 \times [0, \pi) \mapsto \R_{\ge0}$ to be a function that takes a center $q \in \R^2$ and an angle of rotation $\theta\in [0, \pi)$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$ minus $1$ as defined by the left-and-side of \autoref{eq:rotated_ellipse}. Keep in mind that, for all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus \{u,v\}$, we have that $f_w(q_j', \theta_j') < 0$.
 	
-	For all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus \{u,v\}$, we have that $f_w(q_j', \theta_j^*) < 1$. We then define a function $g_w\colon \Phi_j(u,v) \mapsto \R_{\ge0}$ as $g_w(\theta) = f_w(\delta(\theta), \theta)$. As $g_w$ is a composition of continuous functions, it is also continuous.
+	For all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus \{u,v\}$, we have that $f_w(q_j', \theta_j^*) < 0$ as they are covered by the $j$-th ellipse.
+	Then, to evaluate $f_w$ for every center and feasible angle that maintains $u$ and $v$ on $E_j$'s border, we introduce a new function $g_w\colon \Phi_j(u,v) \mapsto \R_{\ge0}$, which is defined as $g_w(\theta) = f_w(\delta(\theta), \theta)$.
+	As $f_w$ and $\delta$ are continuous functions, $g_w$ is also continuous.
 	
-	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus\{u,v\}$ is not covered by $E_j(\delta(\theta), \theta)$, it must have $g_w(\theta)>1$. Then, by continuity, another angle $\hat{\theta} \in(\theta_j^*, \theta)$ must exist, such that $g_w(\hat{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis. The same can be said about a point that enters the coverage of $E_j(\delta(\theta), \theta)$.
+	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus\{u,v\}$ is not covered by $E_j(\delta(\theta), \theta)$, it must have $g_w(\theta)>1$. Then, by continuity, another angle $\bar{\theta} \in \Phi_j(u,v)$ must exist, such that $g_w(\bar{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis. The same can be said about the case where there exists an angle $\theta \in \Phi_j(u,v)$, such that a point $w \in \Pp \setminus E_j(q_j^*, \theta_j^*)$ enters the coverage of $E_j(\delta(\theta), \theta)$.
 \end{proof}
 
 %\begin{figure}[H]%
@@ -134,8 +133,8 @@ If, for every equivalent solution $(\hat{Q}, \hat{\theta})$, $|\Pp\cap \partial 
 
 What \autoref{lema:3pnts} is saying is that, for every ellipse in an instance of MCER, unless an equivalent optimal solution with three points on its border exits, the angle of rotation can practically be ignored. Because of that, it will be shown that we can construct a CLS which is finite and also contains an optimal solution.
 
-In \autoref{fig:lema-3-points} a visualization of \autoref{lema:3pnts} is presented.
-An initial optimal solution is given by the dashed-border ellipse, and its center, represented by a star point. From it, the continuous function $\delta$ is defined by moving the ellipse through the rotation angles in $\Phi_j(u,v)$ while maintaining $u, v$ on its border. Ten angles were chosen from $\Phi_j(u,v)$ to be shown in \autoref{fig:lema-3-points}, among those were $0$ and $\max\{\Phi_j(u,v)\}$; their corresponding ellipses are displayed with solid-line borders.
+In \autoref{fig:lema-3-points}, a visualization of \autoref{lema:3pnts} is presented.
+An initial optimal solution is given by the dashed-border ellipse and its center, represented by a star point. From it, the continuous function $\delta$ is defined by moving the ellipse through the rotation angles in $\Phi_j(u,v)$ while maintaining $u, v$ on its border. Ten angles were chosen from $\Phi_j(u,v)$ to be shown in \autoref{fig:lema-3-points}, among those were $0$ and $\max\{\Phi_j(u,v)\}$; their corresponding ellipses are displayed with solid-line borders.
 Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}$ stay within the ellipse's cover for any angle of rotation, and, for point $w$, there exists an angle, such that it is on the ellipse's border.  
 
 \begin{figure}[H]

@@ -1,11 +1,10 @@
-The problem of finding every center and angle of rotation of a fixed shape ellipse, which makes it have three points on its border, is presented in this section. 
-
-Even though its simple statement -- it is short and uses only basic mathematical concepts -- we were not able to find any work on it, or even on related problems.
+In this chapter, we introduce the problem of determining every center and angle of rotation of an ellipse with fixed shape parameters, such that it contains three given points.
+Even though its simple statement -- it is short and uses only basic mathematical concepts -- we were not able to find any work on it or even on related problems.
 As a result, starting from scratch, we ended up trying a handful of approaches, with most of them failing on the way. We try to give a review of some of those, going through the issues with the failing ones. In the end, we propose an algorithm that takes around $6^3$ operations to compute every solution for any instance of the problem and run some experiments to analyze its efficiency in terms of numerical precision and CPU time.
 
 \section{Definition}
 
-We call the problem introduced in this section \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, with $a > b$. 
+We call the problem of finding a center and an angle of rotation for an ellipse given its shape parameters and three points that have to be on its border \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the ellipse's shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$.
 
 Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement, of course, makes the problem more challenging.
 
