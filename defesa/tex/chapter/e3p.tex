@@ -44,7 +44,7 @@ This being said, we can go further and introduce a problem equivalent to E3P whi
 \begin{figure}
 	\centering
 	\caption{Transforming a solution of E3P into a solution of the circumradius problem.}
-	\includegraphics[scale=.43]{tex/figures/circumscribed-circle}
+	\includegraphics[scale=.5]{tex/figures/circumscribed-circle}
 	\fautor
 	\label{fig:circumscribed-circle}
 \end{figure}
@@ -173,26 +173,42 @@ The last question that needs to be addressed is: how close the are roots of the 
 Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and has infinitely many continuous and integrable derivatives. This satisfies all the requirements of the result in \citeonline[p.~28]{gottlieb}, which says that if a function has $m$ continuous and integrable derivatives in a closed interval, its absolute difference to its respective Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004}, a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
 
 To choose the degree of the interpolation we use the last coefficient rule-of-thumb introduced by \citeonline[p.~50]{boyd:2001}. There is no guarantee that this method will choose $n$ such that $f_n$ is close enough to $\xi$ everywhere on $[0, \pi)$. Nonetheless, in practice, it is considered to be a good estimate for the error
-
 \begin{equation}
 r_n = \max_{0 \le \theta < \pi} |f_n(\theta) - \xi(\theta)|,
 \end{equation}
 which measures how far the interpolation is at the point it worst approximates. 
-
+\clearpage
 \subsection{Testing different interpolant degrees}
 
-In this section, we run some experiments to verify how big the interpolation degree must be for good precision to be achieved. 
-The interpolation was run for several degrees, for every triplet of points in an instance from \citeonline{canbolat}. We considered the error to be $|\xi(\hat{\theta})|$ for every root $\hat{\theta}$ found.
-
-The results are shown in \autoref{fig:interpolant_error}, where the worst error found among every root is plotted against the interpolant degree. To improve accuracy while keeping the interpolation degree low, we took a suggestion from \citeonline{boyd:2013}, and divided  $[0, \pi)$ into $K$ sub-intervals. That way, $K$ interpolations are used to obtain every root in the whole interval. It can be seen in \autoref{fig:interpolant_error} that this strategy helps a lot in improving the accuracy even when degrees around $8$ are used.
+In this section, we describe the results of an experiment we made to verify the accuracy of solutions found by the Chebyshev Interpolation method for different interpolation degrees. 
+The main reason for doing this experiment was to obtain a practical lower-bound for the interpolation degree, which can be used later to decide whether to use this method or not. We also investigate if dividing the interpolation interval into $K$ sub-intervals, which is a suggestion given in \citeonline{boyd:2013}, yields an improvement in the accuracy of solutions. 
+ 
+Let $\delta : \R^2 \to \R_{>0}$ be a function defined as the left-hand-side of \autoref{eq:rotated_ellipse}, then, for an instance of E3P with three points $u, v, w$, we define the error of a solution as $$\max\{|\delta(u)|, |\delta(v)|, |\delta(w)| \}.$$
+We created instances of E3P taking every triplet of points, and every ellipse from an MCE's instance named CM3 proposed in \citeonline{canbolat}. We also tried dividing the interval $[0, \pi]$ into a different number of sub-intervals taking $K \in\{1, 2, 4, 8\}$.
 
 \begin{figure}
 	\centering
-	\caption{The interpolation error measured on roots that were found.}
-	\includegraphics[scale=.84]{tex/figures/interpolant_error}
+	\caption{The maximum interpolation error.}
+	\includegraphics[scale=.9]{tex/figures/error_roots}
 	\fautor
 	\label{fig:interpolant_error}
 \end{figure}
+
+In \autoref{fig:interpolant_error}, for each $K$, the maximum error observed among every instance of E3P for each interpolation degree is shown. It may be stated that adopting the strategy of dividing the interpolation interval into $K$ sub-intervals provides a significant improvement in accuracy.
+
+Also, as expected, in \autoref{fig:last-coeff}, using the same instances, we were able to observe that the maximum absolute value of the last coefficient among every instance has the same behavior as its corresponding error in \autoref{fig:interpolant_error}.
+
+\begin{figure}
+	\centering
+	\caption{The maximum absolute value of the last coefficient interpolation.}
+	\includegraphics[scale=.9]{tex/figures/last_coeff}
+	\fautor
+	\label{fig:last-coeff}
+\end{figure}
+
+Assuming that $K=4$, we can say that for a small error to be achieved, we need to take an interpolation degree of at least $10$, increasing it based on the last coefficient rule. A suggestion in \citeonline{boyd:2013} says that if the last coefficient is not small, the interpolation degree must be doubled. 
+This is only a suggestion of how to approach the problem of choosing a good interpolation degree. 
+This procedure could still fail as a small last coefficient does not necessarily imply a small error everywhere in the interpolation interval. 
 
 \section{Converting $\xi$ into a polynomial}
 
@@ -212,6 +228,7 @@ At first,  the root-finding algorithm described on \autoref{chapter:definitions}
 \subsection{Complex polynomial}
 
 A complex polynomial can be obtained from $\xi$ by using an idea published in \citeonline{boyd:2006}. There, the author uses the identities
+
 \begin{align}\label{eq:complex_trig}
 	\cos{\theta} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
 	\sin{\theta} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
@@ -324,7 +341,7 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances like the ones generated by the model in the next section, only two solutions were returned by \autoref{algoritmo:e3p}.
 After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that every one of them has their three points form an isosceles triangle.
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\caption{An instance of E3P with four solutions.}
 	\includegraphics[scale=.35]{tex/figures/e3p_4sols}
@@ -335,7 +352,7 @@ After some investigation, we were able to construct some four-solution instances
 Obtaining six-solution instances, on the other hand, was done by taking a particular case of the isosceles-triangle approach.
 As it can be seen in \autoref{fig:e3p_6sols}, the three points on every one of the six ellipses' border form an equilateral triangle. 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\caption{An instance of E3P with six solutions.}
 	\includegraphics[scale=.35]{tex/figures/e3p_6sols}
