@@ -1,0 +1,76 @@
+The goal of this chapter is to show in practice the results of the algorithms for MCE and MCER proposed by us. We first give some implementation details, then we start discuss the solutions obtained for instances proposed in past works, and finally we propose some new instances with the intention of finding the limits of our algorithms.
+
+\section{Implementation}
+
+All the algorithms were implemented using the C++ language, with compiler g++ (G++ 6.3.0). To activate the optimization of compilation we used the -O4 flag.. All the experiments were run in a computer with the following specification:
+\begin{itemize}
+	\item CPU Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz;
+	\item 16Gib of RAM memory;
+	\item Linux Operating System: Debian 4.19.5.
+\end{itemize}
+\subsection{Determining the eigenvalues of a matrix}
+
+In \autoref{algoritmo:e3p}, we assumed that a procedure which returns every eigenvalue of a given square matrix was available. In practice, we used the very famous linear algebra package LAPACK (see \citeonline{lapack} for more details).
+LAPACK is a library for the FORTRAN programming language. However, its routines can be made available in a C/C++ environment by simply adding the -llapack linking flag to the compilation. The only remarks, though, are that FORTAN represents matrices in a column-major fashion, and receives parameters only by reference. Therefore, matrices must be transposed before being passed to a routine, and every parameter must receive a pointer to a variable containing its value.
+
+LAPACK offers a routine called ZGEEV that computes every eigenvalue of a complex matrix by using an implementation of the QR algorithm. 
+This routine optionally can also be asked to compute the right or left eigenvectors depending on two of its parameters. 
+ZGEEV receives in total $14$ parameters, with $4$ of them being used for output. We show a brief description of them in \autoref{tab:zgeev} along with the specification of the value we set each parameter in our implementation.
+\renewcommand{\arraystretch}{1.5}
+
+\begin{table}[H]\label{tab:zgeev}
+	\begin{center}
+	\begin{tabular}{|c|m{18em}|m{8em}|}
+		
+		\hline
+		\textbf{Parameter} & \multicolumn{1}{|c|}{\textbf{Description}} & \multicolumn{1}{|c|}{\textbf{Value}}\\
+		\hline
+		JOBVL&  Indicates whether to compute the left eigenvalues&  'N' (no eigenvectors should be computed)\\
+		\hline
+		JOBVR&  Indicates whether to compute the right eigenvalues&  'N' (no eigenvectors should be computed)\\
+		\hline
+		N    &  Order of matrix A &  6\\
+		\hline
+		A    &  The square matrix whose eigenvalues are to be computed & The companion matrix \\
+		\hline
+		LDA  &  Leading dimension of A & 6 \\
+		\hline
+		W    &  The eigenvalues output array &  A complex array of size 6\\
+		\hline
+		VL   &  The left eigenvectors output array & A complex array of size 1 \\
+		\hline
+		LDVL &  Leading dimension of VL&  1\\
+		\hline
+		VR   &  The right eigenvectors output array&  A complex array of size 1\\
+		\hline
+		LDVR &  Leading dimension of VR&  1\\
+		\hline
+		WORK &  A workspace for the procedure to utilize&  A complex array of size 12\\
+		\hline
+		LWORK&  Dimension of WORK &  12\\
+		\hline
+		RWORK&  A real workspace of size 2N &  A double array of size 12\\
+		\hline
+		INFO &  An integer containing $0$ if the algorithm was able to compute every eigenvalue &  A pointer to an integer variable\\
+		\hline
+	\end{tabular}
+	\end{center}
+	\caption{The ZGEEV's parameter list.}
+\end{table}
+
+\subsection{Symbolic Computation}
+
+Symbolic computation is a vast topic, which deals with the problem of solving or manipulating mathematical expressions computationally. 
+
+Back in \autoref{chapter:e3p}, we were faced with the problem of writing the function $\xi$ defined in \autoref{eq:circumscribed_circle_b} as a complex polynomial in the power format by replacing the sine and cosine functions with the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
+
+As expected, computing the coefficients of that polynomial in terms of the E3P's instance by hand is very challenging; the expressions get too long, and it becomes humanly impossible not to make any mistake. 
+For that reason, we resort to Symbolic computation for this task.
+
+In practice, we utilized an external library for Python called SymPy (see \citeonline{sympy} for more information).
+This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we can write $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions with expressions for the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}, and then import it into our C++implementation of \autoref{algoritmo:e3p} by printing the polynomial's list of coefficients as C code.
+
+%This can be done by creating a composition of an expression for $\xi(\theta)(e^{i\theta})^6$ with the expressions for $\cos(\theta)$ and $\sin(\theta)$ defined by \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
+%After that, running a command, we can ask SymPy to transform that expression into a polynomial informing it that its variable is $z=e^{i\theta}$. Finally, very conveniently for us, SymPy has a function that outputs expressions directly as C code, which can be used to import the polynomial into our implementation of \autoref{algoritmo:e3p}.
+
+\subsection{Some details and improvements}

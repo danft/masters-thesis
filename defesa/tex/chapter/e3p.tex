@@ -229,8 +229,9 @@ At first,  the root-finding algorithm described on \autoref{chapter:definitions}
 
 A complex polynomial can be obtained from $\xi$ by using an idea published in \citeonline{boyd:2006}. There, the author uses the identities
 
-\begin{align}\label{eq:complex_trig}
+\begin{align}\label{eq:complex_trig_cos}
 	\cos{\theta} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
+	\label{eq:complex_trig_sin}
 	\sin{\theta} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
 \end{align}
 which relate complex numbers with trigonometric functions, to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials.
@@ -241,7 +242,7 @@ It is possible to show that with that substitution and changing the variable to 
 \begin{equation}
 g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
-for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig} are valid for any $\theta \in \R$, function $g(e^{i\theta})$ and $\xi$ are equivalent, since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin} are valid for any $\theta \in \R$, function $g(e^{i\theta})$ and $\xi$ are equivalent, since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
 
 The first issue can be fixed by multiplying $g$ by $z^6$. Note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$. 
 As $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear in the new polynomial, but they can be ignored as they are not roots of $g$.
