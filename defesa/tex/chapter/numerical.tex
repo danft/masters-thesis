@@ -23,7 +23,7 @@ ZGEEV receives in total $14$ parameters, with $4$ of them being used for output.
 	\begin{tabular}{|c|m{18em}|m{8em}|}
 		
 		\hline
-		\textbf{Parameter} & \multicolumn{1}{|c|}{\textbf{Description}} & \multicolumn{1}{|c|}{\textbf{Value}}\\
+		\textbf{Parameter} & \multicolumn{1}{c|}{\textbf{Description}} & \multicolumn{1}{c|}{\textbf{Value}}\\
 		\hline
 		JOBVL&  Indicates whether to compute the left eigenvalues&  'N' (no eigenvectors should be computed)\\
 		\hline
@@ -68,9 +68,20 @@ As expected, computing the coefficients of that polynomial in terms of the E3P's
 For that reason, we resort to Symbolic computation for this task.
 
 In practice, we utilized an external library for Python called SymPy (see \citeonline{sympy} for more information).
-This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we can write $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions with expressions for the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}, and then import it into our C++implementation of \autoref{algoritmo:e3p} by printing the polynomial's list of coefficients as C code.
+This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we can write $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions with expressions for the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}, and then import it into our C++ implementation of \autoref{algoritmo:e3p} by printing the polynomial's list of coefficients as C code.
 
 %This can be done by creating a composition of an expression for $\xi(\theta)(e^{i\theta})^6$ with the expressions for $\cos(\theta)$ and $\sin(\theta)$ defined by \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
 %After that, running a command, we can ask SymPy to transform that expression into a polynomial informing it that its variable is $z=e^{i\theta}$. Finally, very conveniently for us, SymPy has a function that outputs expressions directly as C code, which can be used to import the polynomial into our implementation of \autoref{algoritmo:e3p}.
 
 \subsection{Some details and improvements}
+
+\section{A greedy algorithm}
+
+In \citeonline{church:1974} a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. We do the same here and define a general greedy algorithm, which follows the same approach as the one in \citeonline{church:1974}, that works for both MCE and MCER.
+
+Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ is the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution an instance of MCE-1 or MCER-1 with demand points $Z_j$.
+That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$.
+
+\section{Results for known instances}
+
+In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances proposed by \citeonline{canbolat} and \citeonline{andreta}.
