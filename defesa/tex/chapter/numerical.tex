@@ -79,9 +79,30 @@ This tool can create expressions using arithmetic operators on predefined symbol
 
 In \citeonline{church:1974} a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. We do the same here and define a general greedy algorithm, which follows the same approach as the one in \citeonline{church:1974}, that works for both MCE and MCER.
 
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ is the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution an instance of MCE-1 or MCER-1 with demand points $Z_j$.
+Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ as the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution of an instance of MCE-1 or MCER-1 with demand points $Z_j$.
 That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$.
 
 \section{Results for known instances}
 
-In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances proposed by \citeonline{canbolat} and \citeonline{andreta}.
+In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances CM1-CM9, proposed by \citeonline{canbolat}, and for the instances AB001-AB120, proposed by \citeonline{andreta}.
+
+\subsection{MCE-$k$}
+
+\subsection{MCER-$k$}
+
+\begin{table}[H]\label{tab:mcer-results}
+	\begin{center}
+		\begin{tabular}[\textwidth]{|c c c c|m{4em} c|c|m{4em} m{4em} m{3em} m{5em}|}
+			\hline
+			\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & Greedy & \multicolumn{4}{c|}{Performance metrics}\\
+			\hline
+			Name & $n$ & $m$ & $k$ & 
+			Selected Ellipses & Income & Income 
+			& \parbox{4em}{\centering CLS\\avg. size }
+			& \parbox{4em}{\centering\# E3P\\ problems} 
+			& \# solutions 
+			& \parbox{5em}{\centering CPU Time\\ in secs.}\\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
