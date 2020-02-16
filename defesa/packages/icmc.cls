@@ -140,6 +140,11 @@
 \providecommand*{\exam}{}
 \providecommand*{\arealabel}{}
 
+\addto\captionsenglish{
+	\renewcommand{\sectionautorefname}{Section}
+	\renewcommand{\subsectionautorefname}{Section}
+}
+
 % Configuracao do texto do preambulo
 \addto\captionsenglish{% ingles
     \renewcommand{\exam}{ in accordance with the requirements of the \imprimirprograma, for the}

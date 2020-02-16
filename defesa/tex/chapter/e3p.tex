@@ -1,4 +1,4 @@
-In this chapter, we introduce the problem of determining every center and angle of rotation of an ellipse with fixed shape parameters, such that it contains three given points.
+In this chapter, we introduce the problem of determining every location, here defined as the center and angle of rotation, of an ellipse with fixed shape parameters, such that is contains three given points.
 This problem comes up in the development of an algorithm in \autoref{chapter:mcer}. The reason to have a whole chapter devoted to it is that we could not find any work that studies this problem or even related ones.
 As a result, starting from scratch, we ended up trying a handful of approaches, with most of them failing on the way. 
 We thought it would be a useful source for future works if we gave a review of some of those, going through the issues with the failing ones, and discussing the qualities of the successful ones. 
@@ -10,17 +10,18 @@ In the end, we propose an algorithm for the problem that involves determining th
 
 \section{Definition}
 
-We call the problem of finding a center and an angle of rotation for an ellipse given its shape parameters and three points that have to be on its border \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the ellipse's shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$.
+We call the problem of finding a center and an angle of rotation for an ellipse given its shape parameters and three points that have to be on it \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the ellipse's shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$.
 
-Let $E$ represent the coverage area of an ellipse with the given shape parameters $(a, b)$, then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement, of course, makes the problem more challenging.
+Let $E: \R^3 \to \R^2$ be a function that takes an ellipse's location with given shape parameters $(a, b)$, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
+Then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement makes the problem more challenging.
 
-\section{Transforming the problem}
+\section{Transforming the problem}\label{section:transforming-the-problem}
 
 Initially, E3P is a problem with three unknown variables: the two coordinates of the ellipse's center point, $q_x$ and $q_y$, and the angle of rotation $\theta$. In this section, we transform E3P into the problem of finding the roots of a univariate function using a known circumcircle problem. 
 This transformation, besides reducing the number of unknown variables to one, is later utilized in the demonstration that E3P has at most six distinct solutions, which is one of the most important properties of E3P.
 
 To make the problem simpler, let us assume that point $u$ is at the origin. If it is not, a simple translation by $-u$ applied to the three points can be made to put $u$ at the origin.
-Assume as well that $(q, \theta)$ is a solution of E3P, which means that an ellipse rotated by $\theta$, centered at $q$ has $u$, $v$, and $w$ on its border (see \autoref{fig:circumscribed-circle} for an example).
+Assume as well that $(q, \theta)$ is a solution of E3P, which means that an ellipse rotated by $\theta$, centered at $q$ contains $u$, $v$, and $w$ (see \autoref{fig:circumscribed-circle} for an example).
 From a solution of E3P, applying a rotation of $-\theta$ to the coordinate system, an axis-parallel ellipse can be obtained.
 After that, squeezing the $x$-axis by $\frac{b}{a}$ can be utilized to transform the ellipse into a circle of radius $b$. An example of this whole process is shown in \autoref{fig:circumscribed-circle}. These transformations can be written as a function $\varphi\colon \R^2 \to \R^2$ defined as
 
@@ -37,23 +38,23 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation}
-Notice that the transformations represented by $\varphi$ are invertible. This means that given a final state, where after applying $\varphi$, the three points are on the border of a radius-$b$ circle, a solution of E3P can be obtained by using the well-defined inverse function $\varphi^{-1}$.
+Notice that the transformations represented by $\varphi$ are invertible. This means that given a final state, where after applying $\varphi$, the three points are on the radius-$b$ circle, a solution of E3P can be obtained by using the well-defined inverse function $\varphi^{-1}$.
 Additionally, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $\varphi(u,\theta); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear. 
 This being said, we can go further and introduce a problem equivalent to E3P which is based on determining angles $\theta$ that make the triangle $\Lambda(\theta)$ be circumscribed in a circle of radius $b$.
 
 \begin{figure}
 	\centering
 	\caption{Transforming a solution of E3P into a solution of the circumradius problem.}
-	\includegraphics[scale=.5]{tex/figures/circumscribed-circle}
+	\includegraphics[scale=.4]{tex/figures/circumscribed-circle}
 	\fautor
 	\label{fig:circumscribed-circle}
 \end{figure}
 
 \subsection{A circumradius problem}
 
-The term circumradius, in this work, is used to describe the radius of a triangle's circumscribed circle, which is a circle that has the triangle's vertices on its border. Given an instance of E3P, we define the circumradius problem as the problem of determining an angle $\theta\in[0, \pi)$, such that the circumradius of $\Lambda(\theta)$ is equal to $b$.
+The term circumradius, in this work, is used to describe the radius of a triangle's circumscribed circle, which is a circle that contains the triangle's vertices. Given an instance of E3P, we define the circumradius problem as the problem of determining an angle $\theta\in[0, \pi)$, such that the circumradius of $\Lambda(\theta)$ is equal to $b$.
 
-As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3P and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$; a solution for E3P can be obtained using the inverse transformation $\varphi^{-1}$. 
+As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3P and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$, a solution for E3P can be obtained using the inverse transformation $\varphi^{-1}$. 
 With that in mind, it is possible to conclude that both problems are equivalent because, from a solution of one, a unique solution of the other can be obtained.
 
 The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with a radius $b$ is a convenient problem.
@@ -62,7 +63,7 @@ It turns out that, for three non-collinear points, there is always a unique circ
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
-with $A(\theta)$ being the area of the triangle $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle see \citeonline[p.~189]{johnson1960}). It should be pointed out that this transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
+with $A(\theta)$ being the area of the triangle $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle, see \citeonline[p.~189]{johnson1960}). It should be pointed out that this transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
 
 With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for the circumradius problem.
 Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
@@ -103,16 +104,17 @@ Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \
 
 The idea of this approach was to use the six-parameter conic equation to represent an ellipse. This equation is given by
 \begin{equation}\label{eq:gen_ellipse}
-Ax^2+Bxy+Cy^2+Dy+Ex+F=0.
+Ax^2+Bxy+Cy^2+Dy+Ex+F=0,
 \end{equation}
+with $A, B, C, D, E,F \in \R$ being fixed parameters.
 This equation actually represents any conic, for it to be an ellipse the condition $B^2 -4AC < 0$ must be satisfied.
 
-Setting the first point to be the origin, we get $F=0$. Using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal to $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse with the given shape parameters. Let $\Delta=4AC-B^2=4AC-1$, and assume $F=0$, then the expressions for both major-axis and minor-axis, respectively are
+Given an instance of E3P, assuming $u$ is at the origin, having that it satisfies \autoref{eq:gen_ellipse}, we get $F=0$. Using the other two points, it is possible to write $D$ and $E$ in terms of $A, B, C$. As any multiple of \autoref{eq:gen_ellipse} represents the same conic, we can set $B$ to be equal to $1$. Then, we end up with two variables, $A$ and $C$, and still need to impose that the final equation represents an ellipse with the given shape parameters. Let $\Delta=4AC-B^2=4AC-1$, and assume $F=0$, then the expressions for both major-axis and minor-axis, respectively are
 \begin{align}\label{eq:gen_ellipse_a}
 a^2 = \dfrac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C - \sqrt{1 + (A-C)^2}}\\
 \label{eq:gen_ellipse_b}b^2 = \frac{2\dfrac{AE^2 -BDE +CD^2}{\Delta}}{A + C + \sqrt{1 + (A-C)^2}}.
 \end{align}
-These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. This set can probably be done approximated numerically, however, we decided not to further pursue this approach.
+These two equations define two curves in $\R^2$ with $A$ and $C$ being the chosen variables. The solutions lie in the set of intersection of these curves. This set can probably be approximated numerically, however, we decided not to further pursue this approach.
 
 Another idea which has been explored was working with the ratio $\frac{a^2}{b^2}$, which becomes an expression that allows $A$ to be written as a function of $C$. At first, this function appeared to be monotonic, so we tried to develop a method based on that. However, cases where the function does not behave as nicely were found. It is likely that developing a method to approximate solutions working with this function is possible, but we decided not to continue on this track.
 
@@ -130,7 +132,7 @@ Because of the scope of this work, only a brief introduction of Chebyshev polyno
 
 We refer to $T_n : [-1, 1] \mapsto [-1, 1]$ as the $n$-degree Chebyshev polynomial of the first kind, and it is defined as
 \begin{equation}
-T_n(x) = \cos({n\arccos x}).
+T_n(x) = \cos({n\arccos (x)}).
 \end{equation}
 It is important to mention that this definition can be extended to the whole real line. Using some trigonometric identities, $T_n$ can also be expressed as a recurrence relation
 \begin{equation}
@@ -142,7 +144,7 @@ An important property worth bringing up is that Chebyshev polynomials are orthog
 p_n(x) = \sum_{j=0}^{n} a_j T_j(x).
 \end{equation}
 
-One of the greatest qualities of Chebyshev polynomials is its numerical stability. \citeonline{gautschi:1979} showed that the matrix that maps polynomials onto its coefficients written in the power form has a condition number that grows exponentially with $n$. On the other hand, the matrix that converts polynomials to the Chebyshev basis as \autoref{eq:chebseries} has a linear condition number bounded by $\sqrt{2}n$.
+One of the greatest qualities of Chebyshev polynomials is their numerical stability. \citeonline{gautschi:1979} showed that the matrix that maps polynomials onto its coefficients written in the power form has a condition number that grows exponentially with $n$. On the other hand, the matrix that converts polynomials to the Chebyshev basis as \autoref{eq:chebseries} has a linear condition number bounded by $\sqrt{2}n$.
 
 \subsection{Chebyshev interpolation}
 Polynomial interpolation is a form of approximating a function by a polynomial of degree $n$ that passes through $n+1$ chosen points. In fact, this polynomial is unique and it is determined by Lagrange's formula
@@ -163,12 +165,12 @@ Note that, if the domain of the function to be interpolated is defined on a rang
 can be done to map it to the Chebyshev Nodes' domain $[-1, 1]$.
 
 Then, the Chebyshev interpolation of a function $f: [a, b] \mapsto \R$ can be determined using Lagrange's formula and the points $\hat{x}_1, \dots, \hat{x}_n$. 
-As it was mentioned in \autoref{chapter:definitions}, finding the roots of a polynomial written in the monomial form can be done by determining the eigenvalues of a so-called Frobenius companion matrix. For small $n$ this works fine, however, converting the polynomial obtained by \autoref{eq:lagrange} to the power form, as $n$ grows, becomes a very ill-conditioned problem. 
+As it was mentioned in \autoref{chapter:definitions}, finding the roots of a polynomial written in the monomial form can be done by determining the eigenvalues of a so-called Frobenius companion matrix. For small values of $n$ this works fine, however, converting the polynomial obtained by \autoref{eq:lagrange} to the power form, as $n$ grows, becomes a very ill-conditioned problem. 
 An alternative method can be found in \citeonline{boyd:2013}, where the Chebyshev interpolation is calculated directly as a truncated Chebyshev series, as in \autoref{eq:chebseries}, in $\bigO(n^2)$. Also, given a polynomial written in the Chebyshev basis, a $n\times n$ matrix can be constructed, such that its eigenvalues are the roots of that polynomial. \citeonline{boyd:2013} refers to this matrix as the Chebyshev-Frobenius companion matrix.
 
 Therefore, the whole process of interpolating and finding the roots can be done using only Chebyshev polynomials, which have great numerical stability. Also, Chebyshev-Frobenius matrices have the same property as companion matrices, which allows their eigenvalues to be found by a QR algorithm. Summing the two steps, a $\bigO(n^3)$ algorithm can be achieved, with $n$ being the degree of the interpolation.
 
-The last question that needs to be addressed is: how close the are roots of the Chebyshev interpolant $f_n$ to the roots of $\xi$?
+The last question that needs to be addressed is: how close are the roots of the Chebyshev interpolant $f_n$ to the roots of $\xi$?
 
 Even though $\xi$ is complicated enough, in a sense that finding its roots directly is no trivial task, it is a very well-behaved function: it is analytic and has infinitely many continuous and integrable derivatives. This satisfies all the requirements of the result in \citeonline[p.~28]{gottlieb}, which says that if a function has $m$ continuous and integrable derivatives in a closed interval, its absolute difference to its respective Chebyshev truncate series is $\bigO(n^{-m})$. Also, in \citeonline{battles:2004}, a theorem is presented stating that if a function is analytic on a neighborhood of $[-1, 1]$, then the convergence is $\bigO(C^n)$, for some $C<1$.
 
@@ -182,6 +184,8 @@ which measures how far the interpolation is at the point it worst approximates.
 
 In this section, we describe the results of an experiment we made to verify the accuracy of solutions found by the Chebyshev Interpolation method for different interpolation degrees. 
 The main reason for doing this experiment was to obtain a practical lower-bound for the interpolation degree, which can be used later to decide whether to use this method or not. We also investigate if dividing the interpolation interval into $K$ sub-intervals, which is a suggestion given in \citeonline{boyd:2013}, yields an improvement in the accuracy of solutions. 
+
+We used the Python programming language in the implementation of this approach for E3P. More specifically, we utilized the external library SciPy, which has routines already implemented for Chebyshev interpolation, and finding the roots of a Chebyshev polynomial. More information about SciPy can be found in \cite{scipy}.
  
 Let $\delta : \R^2 \to \R_{>0}$ be a function defined as the left-hand-side of \autoref{eq:rotated_ellipse}, then, for an instance of E3P with three points $u, v, w$, we define the error of a solution as $$\max\{|\delta(u)|, |\delta(v)|, |\delta(w)| \}.$$
 We created instances of E3P taking every triplet of points, and every ellipse from an MCE's instance named CM3 proposed in \citeonline{canbolat}. We also tried dividing the interval $[0, \pi]$ into a different number of sub-intervals taking $K \in\{1, 2, 4, 8\}$.
@@ -218,8 +222,8 @@ In \autoref{chapter:definitions}, a brief introduction is given on how to get th
 
 \subsection{Real polynomial}
 
-From $\xi$, a real polynomial can be obtained by using the identity $x = \tan{\frac{\theta}{2}}$. We do not go in detail, but it is possible to show that a degree-$12$ polynomial can be obtained using that substitution.
-Computing the actual coefficients can be done using symbolic computing. 
+From $\xi$, a real polynomial can be obtained by using the identity $x = \tan{(\frac{\theta}{2})}$. We do not go in detail, but it is possible to show that a degree-$12$ polynomial can be obtained using that substitution.
+Computing the actual coefficients can be done using symbolic computing.
 
 %In practice, we utilized Python's external library SymPy (see \citeonline{sympy} for more details).
 
@@ -230,9 +234,9 @@ At first,  the root-finding algorithm described on \autoref{chapter:definitions}
 A complex polynomial can be obtained from $\xi$ by using an idea published in \citeonline{boyd:2006}. There, the author uses the identities
 
 \begin{align}\label{eq:complex_trig_cos}
-	\cos{\theta} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
+	\cos{(\theta)} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2}\\
 	\label{eq:complex_trig_sin}
-	\sin{\theta} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
+	\sin{(\theta)} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
 \end{align}
 which relate complex numbers with trigonometric functions, to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials.
 This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial -- more details about this can be found in \citeonline{weidner}, where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
@@ -282,13 +286,15 @@ Finally, in the next section we use this approach of converting $\xi$ into a com
 
 \section{An algorithm for E3P}
 
-Among the methods that have been described here, converting $\xi$ into a complex polynomial was the chosen one as the basis of the algorithm for E3P.
+Among the methods that have been described here, converting $\xi$ into a complex polynomial, and then obtaining its roots by determining the eigenvalues of a companion matrix was the chosen one as the basis of the \autoref{algoritmo:e3p} for E3P.
 Despite the good results shown by the Chebyshev interpolation method,
 it can still be classified as a heuristic as none of the approaches to determine the interpolation degree ensures a good approximation in the whole interval.
 On top of that, ultimately, the roots of the Chebyshev polynomial are computed through determining the eigenvalues of a companion matrix, which, unless a lower-than-seven interpolation degree is utilized, is going to be larger than the companion matrix whose eigenvalues are the roots of the complex polynomial $h$.
 
 Details about getting the eigenvalues of a companion matrix, and determining the center of a circumscribed circle of a triangle are omitted from \autoref{algoritmo:e3p} for the sake of clarity. 
-Computing the coefficients of the complex polynomial $h$ is done in our implementation using a symbolic computation library for Python called Sympy (for more information about it see \citeonline{sympy}). This way, $c_0, \dots, c_{12}$ can be written as functions of the E3P's instance. Then, basically, after building a companion matrix for the polynomial $h$, \autoref{algoritmo:e3p}, for every eigenvalue, applies the reverse transformations described by \autoref{eq:trpnts} to obtain a solution for E3P.
+In our implementation, we use symbolic computation to determine the coefficients of $h$ in terms of the parameters of a E3P's instance. This way, we only need to compute once separately from the main algorithm. We get into more detail about that in \autoref{chapter:numerical}.
+
+Having all the coefficients of $h$ available, basically, after building a companion matrix, \autoref{algoritmo:e3p} applies the reverse transformations described by \autoref{eq:trpnts} to every eigenvalue of that companion matrix to obtain a solution for E3P.
 
 \begin{algoritmo}
 	\caption{The algorithm for E3P.}\label{algoritmo:e3p}
@@ -333,7 +339,7 @@ Computing the coefficients of the complex polynomial $h$ is done in our implemen
 \end{teorema}
 
 \begin{proof}
-	It has already been shown that computing every root of $\xi$ through the complex polynomial yields every solution of E3P, the only thing left to prove is the running time of the algorithm.
+	It has already been shown in \autoref{section:transforming-the-problem} that computing every root of $\xi$ through the complex polynomial yields every solution of E3P. The only thing left to prove is the running time of the algorithm.
 	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$.
 \end{proof}
 
@@ -385,6 +391,7 @@ The second experiment takes the same instances as the previous one, but this tim
 	\fautor
 	\label{fig:e3p_known_sols2}
 \end{figure}
+
 For the last experiment we considered $100$ instances for each $K$ with three points $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1\dots3$, generated randomly by sampling $t_j$ according to a uniform distribution in $[0, 2\pi]$. The average and the maximum error are plotted in \autoref{fig:e3p_error}, and analyzing it, it is fair to say that \autoref{algoritmo:e3p} is numerically stable for this example, and its error, in average, is expected to be small even if the instance's numerical values are big.
 \begin{figure}
 	\centering
