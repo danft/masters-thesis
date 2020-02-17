@@ -1,29 +1,26 @@
-In this chapter, we introduce the problem of determining every location, here defined as the center and angle of rotation, of an ellipse with fixed shape parameters, such that is contains three given points.
-This problem comes up in the development of an algorithm in \autoref{chapter:mcer}. The reason to have a whole chapter devoted to it is that we could not find any work that studies this problem or even related ones.
-As a result, starting from scratch, we ended up trying a handful of approaches, with most of them failing on the way. 
-We thought it would be a useful source for future works if we gave a review of some of those, going through the issues with the failing ones, and discussing the qualities of the successful ones. 
-In the end, we propose an algorithm for the problem that involves determining the eigenvalues of a $6\times6$ matrix. We also analyze its efficiency in terms of numerical accuracy and display solutions that it found.
-
-
-%Even though its simple statement -- it is short and uses only basic mathematical concepts -- we were not able to find any work on it or even on related problems.
+In this chapter, we introduce the problem of determining every location, here defined as the center and angle of rotation, of an ellipse with fixed shape parameters, such that it contains three given points.
+This problem comes up in the development of an algorithm in \autoref{chapter:mcer} as a subproblem. Because no studies were found on it, or even on related problems, we decide to devote a whole chapter to presenting a handful of approaches we attempted, going through the issues with the failing ones, as well as discussing the qualities of the ones that shown to be successful.
+In the end, we propose an algorithm for the problem that involves determining the eigenvalues of a $6\times6$ complex matrix. We also analyze its efficiency in terms of numerical accuracy and display some solutions that it was able to obtain.
 
 
 \section{Definition}
 
-We call the problem of finding a center and an angle of rotation for an ellipse given its shape parameters and three points that have to be on it \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$ and the ellipse's shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$.
+We call the problem of finding a center and an angle of rotation for an ellipse given its shape parameters and three points that have to be on it \sigla{E3P}{Ellipse by Three Points}. An instance of it is given by three points $u, v, w \in \R^2$, along with the ellipse's shape parameters $(a, b) \in \R^2_{>0}$, with $a > b$.
 
-Let $E: \R^3 \to \R^2$ be a function that takes an ellipse's location with given shape parameters $(a, b)$, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
-Then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement makes the problem more challenging.
+Let $E: \R^2\times[0, \pi) \to \R^2$ be a function that takes the location of an ellipse with given shape parameters, and returns its coverage region as defined by \autoref{eq:rotated_ellipse_co}.
+Then a solution of E3P can be defined as a pair $(q, \theta) \in \R^2\times[0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$. 
+
+As a last remark, because of its application on \autoref{chapter:mcer}, a method would only be useful for our case if it can encounter every solution of E3P. This requirement makes the problem more challenging.
 
 \section{Transforming the problem}\label{section:transforming-the-problem}
 
 Initially, E3P is a problem with three unknown variables: the two coordinates of the ellipse's center point, $q_x$ and $q_y$, and the angle of rotation $\theta$. In this section, we transform E3P into the problem of finding the roots of a univariate function using a known circumcircle problem. 
-This transformation, besides reducing the number of unknown variables to one, is later utilized in the demonstration that E3P has at most six distinct solutions, which is one of the most important properties of E3P.
+This transformation, besides reducing the number of unknown variables to one, is later utilized in the demonstration that E3P has at most six distinct solutions.
 
 To make the problem simpler, let us assume that point $u$ is at the origin. If it is not, a simple translation by $-u$ applied to the three points can be made to put $u$ at the origin.
 Assume as well that $(q, \theta)$ is a solution of E3P, which means that an ellipse rotated by $\theta$, centered at $q$ contains $u$, $v$, and $w$ (see \autoref{fig:circumscribed-circle} for an example).
-From a solution of E3P, applying a rotation of $-\theta$ to the coordinate system, an axis-parallel ellipse can be obtained.
-After that, squeezing the $x$-axis by $\frac{b}{a}$ can be utilized to transform the ellipse into a circle of radius $b$. An example of this whole process is shown in \autoref{fig:circumscribed-circle}. These transformations can be written as a function $\varphi\colon \R^2 \to \R^2$ defined as
+Taking this solution and applying a rotation of $-\theta$ to the coordinate system makes the ellipse become axis-parallel.
+After that, we can transform that axis-parallel ellipse into a circle of radius $b$ by squeezing the $x$-axis by $\frac{b}{a}$. This two-step transformation can be written as a function $\varphi\colon \R^2 \to \R^2$ defined as
 
 \begin{equation}\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
@@ -38,9 +35,11 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation}
-Notice that the transformations represented by $\varphi$ are invertible. This means that given a final state, where after applying $\varphi$, the three points are on the radius-$b$ circle, a solution of E3P can be obtained by using the well-defined inverse function $\varphi^{-1}$.
-Additionally, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $\varphi(u,\theta); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear. 
-This being said, we can go further and introduce a problem equivalent to E3P which is based on determining angles $\theta$ that make the triangle $\Lambda(\theta)$ be circumscribed in a circle of radius $b$.
+An example of this two-step transformation being applied to a solution of E3P is shown in \autoref{fig:circumscribed-circle}. 
+Notice that $\varphi$ is a linear transformation. This means that given a final state, where after applying $\varphi$, the three points are on the radius-$b$ circle, a solution of E3P can be obtained by using the well-defined inverse function $\varphi^{-1}$.
+
+Additionally, to make the notation more clear, we denote by $\Lambda(\theta)$ the triangle formed by the points $\varphi(u,\theta); \varphi(v, \theta); \varphi(w, \theta)$, as long as they are not collinear.
+This being said, we can move forward and introduce a problem equivalent to E3P which is based on determining angles $\theta$ that make the triangle $\Lambda(\theta)$ be circumscribed in a circle of radius $b$.
 
 \begin{figure}
 	\centering
@@ -57,27 +56,26 @@ The term circumradius, in this work, is used to describe the radius of a triangl
 As it can be seen on \autoref{fig:circumscribed-circle}, given an instance of E3P and an angle of rotation $\theta\in[0, \pi)$ that makes $\Lambda(\theta)$ have a circumradius $b$, a solution for E3P can be obtained using the inverse transformation $\varphi^{-1}$. 
 With that in mind, it is possible to conclude that both problems are equivalent because, from a solution of one, a unique solution of the other can be obtained.
 
-The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with a radius $b$ is a convenient problem.
-It turns out that, for three non-collinear points, there is always a unique circumscribed circle. Also, finding this unique circle can be done analytically, and its radius $R$ can be computed through the following expression
+The main reason to work with this problem is the reduction in the number of unknown variables from three to just one. This idea, however, would only be useful if checking the existence of a circumscribed circle with a radius $b$ given a triangle is a convenient problem.
+It turns out that, for any triangle, there is always a unique circumscribed circle, which can be determined analytically. Given an instance of E3P and an angle of rotation $\theta \in [0, 2\pi]$, the circumradius $R$ of $\Lambda(\theta)$ can be computed through the following expression
 
 \begin{equation}\label{eq:circumscribed_circle}
 R = \dfrac{\norm{\varphi(v, \theta)}\norm{\varphi(w, \theta)}\norm{\varphi(v, \theta)-\varphi(w, \theta)}   }{4A(\theta)},
 \end{equation}
-with $A(\theta)$ being the area of the triangle $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle, see \citeonline[p.~189]{johnson1960}). It should be pointed out that this transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
+with $A(\theta)$ being the area of $\Lambda(\theta)$ (for more details about \autoref{eq:circumscribed_circle}, or on how to determine the center of a circumscribed circle, see \citeonline[p.~189]{johnson1960}). It should be pointed out that this transformation does not preserve distance or area; if that was true, the radius defined by \autoref{eq:circumscribed_circle} would be constant.
 
-With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for the circumradius problem.
+With the formula for the circumradius in hands, a function can be defined, such that its roots provide solutions for the circumradius problem, and consequently, solutions for E3P.
 Imposing the radius $R$ to be equal $b$ and squaring to eliminate the square roots present in the Euclidean distance, a function $\xi : [0, 2\pi) \mapsto \mathbb{R}_{>0}$ is defined as 
-
 \begin{equation}\label{eq:circumscribed_circle_b}
 \xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2.
 \end{equation}
-Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3P.
+Any root of $\xi$ produces a triangle whose circumradius is $b$ and subsequently provides a solution for E3P. 
 
 Before attempting to develop an algorithm to find every root of $\xi$, we address the question about the number of roots of $\xi$ in the interval $[0, \pi)$.
 
 \subsection{The number of solutions of E3P}
 
-One of the steps of the method developed in \autoref{chapter:mcer} is to iterate over every solution of E3P for every triplet of points. Of course, doing that is only possible for a finite number of solutions. Moreover, even if the number of solutions is finite, discovering an upper-bound for that is essential for determining the algorithm's efficiency.
+One of the steps of the method developed in \autoref{chapter:mcer} is to iterate over every solution of E3P. Of course, doing that is only possible if E3P has a finite number of solutions. Moreover, even if the number of solutions is finite, discovering an upper-bound for that is essential for determining the algorithm's efficiency.
 
 \begin{lema}\label{lema:e3p}
 	Any instance of E3P has at most $6$ solutions.
@@ -97,7 +95,7 @@ Back on \autoref{chapter:definitions}, real trigonometric polynomials were intro
  	\end{array}\right)^2.
  \end{align}
   It is also possible to see that the term which has $\xi$'s highest degree is the multiplication of the three squared lengths of $\Lambda(\theta)$'s sides. This multiplication has the same degree of $(\norm{\varphi(v, \theta)}^2)^3$, and because $\norm{\varphi(v, \theta)}^2$ has degree $2$, the degree of $\norm{\varphi(v, \theta)}^2$ is $6$, which consequently is $\xi$'s degree.
-Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Therefore, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be dismissed.
+Going from $12$ solutions to $6$ is done by using the symmetry of ellipses. In \autoref{chapter:definitions}, it was stated that any rotation in the interval $[0, \pi)$ is identical to a rotation in $[\pi, 2\pi)$. Because of that, half of the roots of $\xi$ are in $[\pi, 2\pi)$ and can be dismissed.
 \end{proof}
 
 \section{An attempt using the conic general equation}
@@ -216,14 +214,13 @@ This procedure could still fail as a small last coefficient does not necessarily
 
 \section{Converting $\xi$ into a polynomial}
 
-In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. The first one converts $\xi$ into a real polynomial and the second one into a complex polynomial. 
+In \autoref{chapter:definitions}, a brief introduction is given on how to get the roots of a polynomial. For that reason, we discuss two ways of converting $\xi$ into a polynomial in this section. The first one converts $\xi$ into a real polynomial and the second one into a complex polynomial. For these two approaches we put symbolic computation into practice to obtain the coefficients of the polynomials in terms of the E3P's instance. 
 
 %Symbolic computing was used to compute the polynomials, the Python external library called SymPy was utilized (see \citeonline{sympy} for more details).
 
 \subsection{Real polynomial}
 
 From $\xi$, a real polynomial can be obtained by using the identity $x = \tan{(\frac{\theta}{2})}$. We do not go in detail, but it is possible to show that a degree-$12$ polynomial can be obtained using that substitution.
-Computing the actual coefficients can be done using symbolic computing.
 
 %In practice, we utilized Python's external library SymPy (see \citeonline{sympy} for more details).
 
@@ -239,23 +236,23 @@ A complex polynomial can be obtained from $\xi$ by using an idea published in \c
 	\sin{(\theta)} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i},
 \end{align}
 which relate complex numbers with trigonometric functions, to convert real trigonometric polynomials, which is the case of $\xi$, into univariate complex polynomials.
-This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial -- more details about this can be found in \citeonline{weidner}, where it is said that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
+This approach is preferable as it preserves the numerical stability of the original real trigonometric polynomial -- more details about this can be found in \citeonline{weidner}, where it is stated that computing the roots of a real trigonometric polynomial through this transformation does not yield loss of accuracy.
 
 It is possible to show that with that substitution and changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit complex circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$):
 
 \begin{equation}
 g(z)=\sum_{k=0}^{12} c_k z^{k-6},
 \end{equation}
-for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin} are valid for any $\theta \in \R$, function $g(e^{i\theta})$ and $\xi$ are equivalent, since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi)$. 
+for some $c_0, \dots, c_{12} \in \mathbb{C}$. As the equalities on \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin} are valid for any $\theta \in \R$, function $g(e^{i\theta})$ and $\xi$ are equivalent, since $g(e^{i\theta}) = \xi(\theta)$ for any $\theta \in [0, 2\pi]$. Notice that $g$ is not a complex polynomial it has negative exponents and its domain is not $\mathbb{C}$.
 
-The first issue can be fixed by multiplying $g$ by $z^6$. Note that this does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$. 
+We can get rid of negative exponents by multiplying $g$ by $z^6$. This does not create further problems as $0\not\in \mathbb{S}$. The second issue is removed by simply extending the domain from $\mathbb{S}$ to $\mathbb{C}$. 
 As $\mathbb{S} \subset \mathbb{C}$, roots outside the unit circle could appear in the new polynomial, but they can be ignored as they are not roots of $g$.
 Finally, from $g$, the polynomial $h : \mathbb{C} \mapsto \mathbb{C}$ is defined as
 
 \begin{equation}\label{eq:h}
 h(z) = z^6 g(z) = \sum_{k=0}^{12} c_k z^k.
 \end{equation}
-By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle. As in the first approach, symbolic computing can be put in practice to determine the coefficients of $h$ as functions of E3P's instance.
+By its definition it is possible to see that every root of $g$ is also a root of $h$, and conversely, every root of $h$ which is in $\mathbb{S}$, is also a root of $g$. Lastly, every root of $g$ will correspond to a root of $\xi$ through their angles on the unit circle.
 
 \subsubsection{Further improvements}
 
@@ -348,10 +345,10 @@ Having all the coefficients of $h$ available, basically, after building a compan
 Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances like the ones generated by the model in the next section, only two solutions were returned by \autoref{algoritmo:e3p}.
 After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that every one of them has their three points form an isosceles triangle.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\caption{An instance of E3P with four solutions.}
-	\includegraphics[scale=.35]{tex/figures/e3p_4sols}
+	\includegraphics[scale=.33]{tex/figures/e3p_4sols}
 	\fautor
 	\label{fig:e3p_4sols}
 \end{figure}
@@ -362,7 +359,7 @@ As it can be seen in \autoref{fig:e3p_6sols}, the three points on every one of t
 \begin{figure}
 	\centering
 	\caption{An instance of E3P with six solutions.}
-	\includegraphics[scale=.35]{tex/figures/e3p_6sols}
+	\includegraphics[scale=.33]{tex/figures/e3p_6sols}
 	\fautor
 	\label{fig:e3p_6sols}
 \end{figure}
@@ -379,7 +376,7 @@ For each value of $K$, we ran the algorithm for $100$ instances generated random
 \begin{figure}[H]
 	\centering
 	\caption{The maximum and average error for instances with known solutions.}
-	\includegraphics[scale=.8]{tex/figures/e3p_known_sols1}
+	\includegraphics[scale=.75]{tex/figures/e3p_known_sols1}
 	\fautor
 	\label{fig:e3p_known_sols1}
 \end{figure}
@@ -387,16 +384,16 @@ The second experiment takes the same instances as the previous one, but this tim
 \begin{figure}
 	\centering
 	\caption{The distance of the roots to the unit circle.}
-	\includegraphics[scale=.8]{tex/figures/e3p_known_sols2}
+	\includegraphics[scale=.75]{tex/figures/e3p_known_sols2}
 	\fautor
 	\label{fig:e3p_known_sols2}
 \end{figure}
 
 For the last experiment we considered $100$ instances for each $K$ with three points $(K\cos(t_j), \frac{K\sin{(t_j)}}{2})$, $j=1\dots3$, generated randomly by sampling $t_j$ according to a uniform distribution in $[0, 2\pi]$. The average and the maximum error are plotted in \autoref{fig:e3p_error}, and analyzing it, it is fair to say that \autoref{algoritmo:e3p} is numerically stable for this example, and its error, in average, is expected to be small even if the instance's numerical values are big.
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\caption{The error measured on solutions found by \autoref{algoritmo:e3p}.}
-	\includegraphics[scale=.8]{tex/figures/e3p_error}
+	\includegraphics[scale=.75]{tex/figures/e3p_error}
 	\fautor
 	\label{fig:e3p_error}
 \end{figure}
