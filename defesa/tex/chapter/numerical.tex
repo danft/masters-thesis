@@ -16,7 +16,7 @@ LAPACK is a library for the FORTRAN programming language. However, its routines 
 LAPACK offers a routine called ZGEEV that computes every eigenvalue of a complex matrix by using an implementation of the QR algorithm. 
 This routine optionally can also be asked to compute the right or left eigenvectors depending on two of its parameters. 
 ZGEEV receives in total $14$ parameters, with $4$ of them being used for output. We show a brief description of them in \autoref{tab:zgeev} along with the specification of the value we set each parameter in our implementation.
-\renewcommand{\arraystretch}{1.5}
+%\renewcommand{\arraystretch}{1.1}
 
 \begin{table}[H]\label{tab:zgeev}
 	\begin{center}
@@ -75,6 +75,31 @@ This tool can create expressions using arithmetic operators on predefined symbol
 
 \subsection{Some details and improvements}
 
+To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language was not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
+Therefore, we present here, some improvements that can be applied to the implementation of those algorithms, which can result in a significant improvement in performance, especially in terms of CPU time.
+
+In both algorithms, a subroutine to construct an ellipse's CLS is called inside the backtracking routine. This can potentially make the same combination of points be considered multiple times.
+To avoid this unnecessary computation, points that have already been considered for an ellipse's CLS can be stored, and only new combinations can then be taken into account each time the CLS subroutine is called. 
+
+Another improvement that can be made in the construction of an ellipse's CLS is the elimination of redundant solutions.
+Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, then we can for sure dismiss solution $(Q', \Theta')$.
+In our implementation, we use the same tree-like data structure as the one described by \citeonline{andreta} to only keep solutions that are not redundant.
+
+Also, to avoid solving the subproblem E3P in the algorithm for MCER, we can check if the maximum distance between any of the three points is greater than $2a$, where $a$ is an ellipse's semi-major. This is useful because calling \autoref{algoritmo:e3p} for every triplet of points of an instance of MCER can be very expensive.
+
+The last implementation improvement was obtained by keeping an upper-bound for the optimal solution during the backtracking in both \autoref{algoritmo:mce} and \autoref{algoritmo:mcer}.
+Let us consider the case for the MCER's algorithm (the MCE's case is analogous). Let $$z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta)),$$ and $OPT_j$ be the value of the best solution which has the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$.
+Then, as $z_k$ considers the best possible location for each ellipse, we have that
+\begin{equation*}\label{eq:upper-bound}
+OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
+\end{equation*}
+Let $OPT$ be the current optimal solution, we have that if
+\begin{equation}
+w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k \le OPT,
+\end{equation}
+then $OPT_j \le OPT$, which means that we can skip every solution with the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$.
+This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be preprocessed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER_{bt}$ procedure.
+
 \section{A greedy algorithm}
 
 In \citeonline{church:1974} a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. We do the same here and define a general greedy algorithm, which follows the same approach as the one in \citeonline{church:1974}, that works for both MCE and MCER.
@@ -89,43 +114,36 @@ In this section, we present the results of \autoref{algoritmo:mce-k} and \autore
 \subsection{MCE-$k$}
 
 \subsection{MCER-$k$}
-
-\begin{table}[H]\label{tab:mcer-results}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-		\begin{tabular}{|c c c c|m{4em} c|c|m{4em} m{4em} m{4em} m{4.5em}|}
-			\hline
-			\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & Greedy & \multicolumn{4}{c|}{Performance metrics}\\
-			\hline
-			Name & $n$ & $m$ & $k$ & 
-			Selected Ellipses& Income & Income 
-			& \centering CLS avg. size
-			& \parbox{4em}{\centering\# E3P\\problems} 
-			& \parbox{4em}{\centering\# Eval.\\solutions}
-			& \parbox{4.5em}{\centering CPU Time\\ in secs.}\\
-			\hline
-		\end{tabular}
-	}
-	\end{center}
-\end{table}
+\clearpage
 
 \begin{table}[H]\label{tab:mcer-results2}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|c c c c|m{4em} c|c|m{4em} m{4em} m{4em} m{4.5em}|}
+			\begin{tabular}{|cccc|cc|cccccc|}
 				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & Greedy & \multicolumn{4}{c|}{Performance metrics}\\
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 				\hline
-				\multirow{2}{*}{Name} & \multirow{2}{*}{$n$} & $m$ & $k$ & Selected&Income & Income 
-				& CLS avg.
-				& \# E3P
-				& \# Eval.
-				& CPU Time\\
-				& & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				Average CLS&
+				\multicolumn{2}{c}{\# E3P subproblems}&
+				\# evaluated & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & size & \centering feasible & \centering unfeasible & solutions & E3P & Total\\
 				\hline
+				\input{tex/table_mcerk_ab_1.tex}
+
+					
 			\end{tabular}
  		}
+ 	\caption{Solutions for AB001-AB060}
 	\end{center}
 \end{table}
