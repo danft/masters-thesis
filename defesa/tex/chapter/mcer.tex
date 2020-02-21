@@ -186,10 +186,7 @@ Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)
 In this section we describe an algorithm for MCER that does a complete search on the CLS of each ellipse.
 Firstly, in \autoref{algoritmo:mcer1}, we present a procedure called CLS-MCER which returns the CLS for an ellipse with shape parameters $(a, b)$. Then, in \autoref{algoritmo:mcer} we describe the procedure that returns an optimal solution for MCER.
 
-Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse.
-
-
-This procedure can be defined using the results of \autoref{section:ellipses_intersection}.
+Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse. This can be done using the results of \autoref{section:ellipses_intersection}.
 
 \begin{algoritmo}
 	\caption{An algorithm that constructs a CLS for a given ellipse.}\label{algoritmo:mcer1}

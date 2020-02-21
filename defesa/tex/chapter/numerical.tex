@@ -73,7 +73,7 @@ This tool can create expressions using arithmetic operators on predefined symbol
 %This can be done by creating a composition of an expression for $\xi(\theta)(e^{i\theta})^6$ with the expressions for $\cos(\theta)$ and $\sin(\theta)$ defined by \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
 %After that, running a command, we can ask SymPy to transform that expression into a polynomial informing it that its variable is $z=e^{i\theta}$. Finally, very conveniently for us, SymPy has a function that outputs expressions directly as C code, which can be used to import the polynomial into our implementation of \autoref{algoritmo:e3p}.
 
-\subsection{Some details and improvements}
+\subsection{Some details and improvements}\label{section:improvements}
 
 To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language was not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
 Therefore, we present here, some improvements that can be applied to the implementation of those algorithms, which can result in a significant improvement in performance, especially in terms of CPU time.
@@ -87,18 +87,23 @@ In our implementation, we use the same tree-like data structure as the one descr
 
 Also, to avoid solving the subproblem E3P in the algorithm for MCER, we can check if the maximum distance between any of the three points is greater than $2a$, where $a$ is an ellipse's semi-major. This is useful because calling \autoref{algoritmo:e3p} for every triplet of points of an instance of MCER can be very expensive.
 
-The last implementation improvement was obtained by keeping an upper-bound for the optimal solution during the backtracking in both \autoref{algoritmo:mce} and \autoref{algoritmo:mcer}.
-Let us consider the case for the MCER's algorithm (the MCE's case is analogous). Let $$z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta)),$$ and $OPT_j$ be the value of the best solution which has the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$.
-Then, as $z_k$ considers the best possible location for each ellipse, we have that
-\begin{equation*}\label{eq:upper-bound}
+The last implementation improvement was obtained by keeping an upper-bound, which can be used to skip solutions that are surely not better than the current best solution.
+When the backtracking algorithm has the location for the first $j$ ellipses fixed, we want to have an upper-bound for the best solution that can still be found by choosing the location of the $m-j$ remaining ellipses.
+Let us consider the case for the MCER's algorithm (the MCE's case is analogous). Let $$z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta)),$$ and $OPT_j$ be the value of the best solution which has the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. Then, as $z_k$ is the best value that the $k$-th ellipse can contribute to any solution, we get the following inequality
+\begin{equation*}
 OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
 \end{equation*}
+This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be preprocessed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER_{bt}$ procedure.
 Let $OPT$ be the current optimal solution, we have that if
 \begin{equation}
+\label{eq:upper-bound}
 w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k \le OPT,
 \end{equation}
 then $OPT_j \le OPT$, which means that we can skip every solution with the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$.
-This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be preprocessed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER_{bt}$ procedure.
+
+It is worth pointing out that these improvement suggestions do not have an effect in a possible worst case scenario. We are adopting them in our implementation because they showed good results in practice.
+For example, without taking the suggestion given by \autoref{eq:upper-bound}, \autoref{algoritmo:mcer-k} takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions.
+In \autoref{tab:mcer-results-ab1}, we show the results of \autoref{algoritmo:mcer-k} implemented with all the improvement suggestions given here; for the instance AB060, the algorithm takes less than one second to return an optimal solution, and evaluates only \num{1809} solutions.
 
 \section{A greedy algorithm}
 
@@ -109,18 +114,122 @@ That is the same as choosing, among all the possibilities in the $j$-th ellipse'
 
 \section{Results for known instances}
 
-In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances CM1-CM9, proposed by \citeonline{canbolat}, and for the instances AB001-AB120, proposed by \citeonline{andreta}.
+In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances CM1,CM2, CM4, CM5, CM7, CM8 proposed by \citeonline{canbolat}, and for the instances CM3,CM6,CM9 and AB001-AB120 proposed by \citeonline{andreta}.
+
+For every instance, we present some information about the obtained optimal solution, along with some performance metrics.
+For the optimal solution we present the selected ellipses, and the value of the optimal solution, which we denoted as Income.
+As performance metrics we have: the maximum CLS size, the number of nodes in the backtracking tree, the number of leaves that contain a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
+For the algorithms for MCER we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which are dismissed by the improvements suggestions given in \autoref{section:improvements}.
+
 
 \subsection{MCE-$k$}
 
-\subsection{MCER-$k$}
-\clearpage
+In \autoref{tab:mce-results-cm}, the results for instances CM1-CM9. 
+The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than a second for every one of the instances CM1-CM9.
+Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \citeonline{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \citeonline{andreta} took more than thirty minutes.
+In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.15 seconds.
 
-\begin{table}[H]\label{tab:mcer-results2}
+In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves in the backtrack tree should be close to $n^{3m} = (10^2)^{3\times 3} = 10^{18}$, which is very far from the actual number of $5243$ leaves obtained in practice.
+
+\begin{table}\label{tab:mce-results-cm}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cc|cccccc|}
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				Max CLS&
+				\multicolumn{2}{c}{Backtrack Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & size & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tex/table_mcek_cm.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCE-$k$ for instances CM1-CM9.}
+	\end{center}
+\end{table}
+
+\begin{table}\label{tab:mce-results-ab1}
+	\begin{center}
+		\resizebox{0.85\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|rrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+			\multirow{2}{*}{Name} & 
+			\multirow{2}{*}{$n$} & 
+			\multirow{2}{*}{$m$} & 
+			\multirow{2}{*}{$k$} & 
+			Selected & 
+			\multirow{2}{*}{Income} & 
+			Max CLS&
+			\multicolumn{2}{c}{Backtrack Tree} & 
+			\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+			& & & & \centering Ellipses & & size & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tex/table_mcek_ab_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCE-$k$ for instances AB001-AB060.}
+	\end{center}
+\end{table}
+
+\begin{table}\label{tab:mce-results-ab2}
+	\begin{center}
+		\resizebox{0.85\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|rrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+\multirow{2}{*}{Name} & 
+\multirow{2}{*}{$n$} & 
+\multirow{2}{*}{$m$} & 
+\multirow{2}{*}{$k$} & 
+Selected & 
+\multirow{2}{*}{Income} & 
+Max CLS&
+\multicolumn{2}{c}{backtrack tree} & 
+\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+& & & & \centering Ellipses & & size & \# nodes & \#sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tex/table_mcek_ab_2.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCE-$k$ for instances AB061-AB120.}
+	\end{center}
+\end{table}
+
+\subsection{MCER-$k$}
+
+\begin{table}\label{tab:mcer-results-cm}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|rrrrrr|}
 				\hline
 				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 				\hline
@@ -133,17 +242,95 @@ In this section, we present the results of \autoref{algoritmo:mce-k} and \autore
 				\multirow{2}{*}{$k$} & 
 				Selected & 
 				\multirow{2}{*}{Income} & 
-				Average CLS&
-				\multicolumn{2}{c}{\# E3P subproblems}&
-				\# evaluated & 
+				Max CLS&
+				\# E3P&
+				\multicolumn{2}{c}{backtrack tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & size & \centering feasible & \centering unfeasible & solutions & E3P & Total\\
+				& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%
+				%%%
+				
+				\hline
+				\input{tex/table_mcerk_cm.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCER-$k$ for instances CM1-CM9.}
+	\end{center}
+\end{table}
+
+\begin{table}\label{tab:mcer-results-ab1}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|rrrrrr|}
+				\hline
+\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+\hline
+
+%%% Second line of header
+
+\multirow{2}{*}{Name} & 
+\multirow{2}{*}{$n$} & 
+\multirow{2}{*}{$m$} & 
+\multirow{2}{*}{$k$} & 
+Selected & 
+\multirow{2}{*}{Income} & 
+Max CLS&
+\# E3P&
+\multicolumn{2}{c}{backtrack tree} & 
+\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%
+				%%%
+				
+				
 				\hline
 				\input{tex/table_mcerk_ab_1.tex}
-
+				\hline
 					
 			\end{tabular}
  		}
- 	\caption{Solutions for AB001-AB060}
+ 	\caption{Solutions of MCER-$k$ for instances AB001-AB060.}
+	\end{center}
+\end{table}
+
+\begin{table}\label{tab:mcer-results-ab2}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|rrrrrr|}
+				\hline
+\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+\hline
+
+%%% Second line of header
+
+\multirow{2}{*}{Name} & 
+\multirow{2}{*}{$n$} & 
+\multirow{2}{*}{$m$} & 
+\multirow{2}{*}{$k$} & 
+Selected & 
+\multirow{2}{*}{Income} & 
+Max CLS&
+\# E3P&
+\multicolumn{2}{c}{backtrack tree} & 
+\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tex/table_mcerk_ab_2.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCER-$k$ for instances AB061-AB120.}
 	\end{center}
 \end{table}
