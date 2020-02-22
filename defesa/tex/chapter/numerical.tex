@@ -116,22 +116,22 @@ That is the same as choosing, among all the possibilities in the $j$-th ellipse'
 
 In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for the instances CM1,CM2, CM4, CM5, CM7, CM8 proposed by \citeonline{canbolat}, and for the instances CM3,CM6,CM9 and AB001-AB120 proposed by \citeonline{andreta}.
 
-For every instance, we present some information about the obtained optimal solution, along with some performance metrics.
-For the optimal solution we present the selected ellipses, and the value of the optimal solution, which we denoted as Income.
-As performance metrics we have: the maximum CLS size, the number of nodes in the backtracking tree, the number of leaves that contain a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
-For the algorithms for MCER we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which are dismissed by the improvements suggestions given in \autoref{section:improvements}.
+For each instance, we display the selected ellipses and the income of the found optimal solution. 
+We also display some performance metrics with the intention of giving an idea of how much computation had to be done for the algorithms to find an optimal solution. These metrics are: 
+the CLS size of every ellipse, the number of nodes in the backtracking tree, the number of leaves corresponding to a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
+For the algorithms for MCER, we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which are dismissed by the improvements suggestions given in \autoref{section:improvements}.
 
 
 \subsection{MCE-$k$}
 
-In \autoref{tab:mce-results-cm}, the results for instances CM1-CM9. 
-The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than a second for every one of the instances CM1-CM9.
+In \autoref{tab:mce-results-cm}, the results for instances CM1-CM9 are shown. 
+The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than one second for every one of the instances CM1-CM9.
 Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \citeonline{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \citeonline{andreta} took more than thirty minutes.
-In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.15 seconds.
+In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.08 second.
 
-In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves in the backtrack tree should be close to $n^{3m} = (10^2)^{3\times 3} = 10^{18}$, which is very far from the actual number of $5243$ leaves obtained in practice.
-
-\begin{table}\label{tab:mce-results-cm}
+In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves corresponding to a solution in the backtracking tree should be close to $n^{3m} = (10^2)^{3\times 3} = 10^{18}$, which is very far from the actual number of $649$ such leaves obtained in practice.
+This is also the case for the size of the CLSs, which are all very far away from its $\bigO(n^2)$ bound. The greatest CLS size observed was $174$ for instance CM9, which is still very far away from $n^2$, which in this case is $10^4$.
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -148,10 +148,10 @@ In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the alg
 				\multirow{2}{*}{$k$} & 
 				Selected & 
 				\multirow{2}{*}{Income} & 
-				Max CLS&
-				\multicolumn{2}{c}{Backtrack Tree} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & size & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
 				\hline
 				\input{tex/table_mcek_cm.tex}
 				\hline
@@ -159,14 +159,15 @@ In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the alg
 			\end{tabular}
 		}
 		\caption{Solutions of MCE-$k$ for instances CM1-CM9.}
+		\label{tab:mce-results-cm}
 	\end{center}
 \end{table}
 
-\begin{table}\label{tab:mce-results-ab1}
+\begin{table}
 	\begin{center}
 		\resizebox{0.85\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|rrrrr|}
+			\begin{tabular}{|cccc|cr|crrrr|}
 				\hline
 				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
 				\hline
@@ -179,10 +180,10 @@ In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the alg
 			\multirow{2}{*}{$k$} & 
 			Selected & 
 			\multirow{2}{*}{Income} & 
-			Max CLS&
-			\multicolumn{2}{c}{Backtrack Tree} & 
+			CLS size&
+			\multicolumn{2}{c}{Backtracking Tree} & 
 			\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-			& & & & \centering Ellipses & & size & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+			& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
 				\hline
 				\input{tex/table_mcek_ab_1.tex}
 				\hline
@@ -190,14 +191,15 @@ In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the alg
 			\end{tabular}
 		}
 		\caption{Solutions of MCE-$k$ for instances AB001-AB060.}
+		\label{tab:mce-results-ab1}
 	\end{center}
 \end{table}
 
-\begin{table}\label{tab:mce-results-ab2}
+\begin{table}
 	\begin{center}
 		\resizebox{0.85\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|rrrrr|}
+			\begin{tabular}{|cccc|cr|crrrr|}
 				\hline
 				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
 				\hline
@@ -209,10 +211,10 @@ In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the alg
 \multirow{2}{*}{$k$} & 
 Selected & 
 \multirow{2}{*}{Income} & 
-Max CLS&
-\multicolumn{2}{c}{backtrack tree} & 
+CLS size&
+\multicolumn{2}{c}{Backtracking Tree} & 
 \multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & size & \# nodes & \#sol. leaves & CLS-MCE & Total\\
+& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol. leaves & CLS-MCE & Total\\
 				\hline
 				\input{tex/table_mcek_ab_2.tex}
 				\hline
@@ -220,16 +222,24 @@ Max CLS&
 			\end{tabular}
 		}
 		\caption{Solutions of MCE-$k$ for instances AB061-AB120.}
+		\label{tab:mce-results-ab2}
 	\end{center}
 \end{table}
 
 \subsection{MCER-$k$}
 
-\begin{table}\label{tab:mcer-results-cm}
+Two methods for MCER-$k$ were developed in \citeonline{andreta}: a deterministic method using global optimization, and a heuristic-stochastic method also using a global optimization, but taking the first found solution as a global optimizer.
+The deterministic method could not find solutions for every instance within a specified time limit, however, comparing with the results of our algorithm, which are displayed in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for isntances AB001-AB120, we could observe that the heuristic method did find an optimal solution for every instance.
+
+In general, our algorithm took much lower CPU time to return an optimal solution when compared with the heuristic method developed by \citeonline{andreta}. For example, for instance CM9 it ran for more than six hours, while our implementation of \autoref{algoritmo:mcer-k} obtained an optimal solution in less than twenty seconds.
+
+We can give the same remarks about the bounds for the algorithm and the CLS size as we did when analyzing the numerical results of MCE-$k$. Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of solutions that need to be considered for an optimal one to be found is $\bigO(n^{3m})$, in instance AB120, for example, the number of visited solutions is only $120$, which is way lower than $100^{15}$.
+
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|rrrrrr|}
+			\begin{tabular}{|cccc|cr|crrrrr|}
 				\hline
 				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 				\hline
@@ -242,11 +252,11 @@ Max CLS&
 				\multirow{2}{*}{$k$} & 
 				Selected & 
 				\multirow{2}{*}{Income} & 
-				Max CLS&
+				CLS size&
 				\# E3P&
-				\multicolumn{2}{c}{backtrack tree} & 
+				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
 				
 				%%%
 				%%%
@@ -258,14 +268,15 @@ Max CLS&
 			\end{tabular}
 		}
 		\caption{Solutions of MCER-$k$ for instances CM1-CM9.}
+		\label{tab:mcer-results-cm}
 	\end{center}
 \end{table}
 
-\begin{table}\label{tab:mcer-results-ab1}
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|rrrrrr|}
+			\begin{tabular}{|cccc|cr|crrrrr|}
 				\hline
 \multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 \hline
@@ -278,11 +289,11 @@ Max CLS&
 \multirow{2}{*}{$k$} & 
 Selected & 
 \multirow{2}{*}{Income} & 
-Max CLS&
+CLS size&
 \# E3P&
-\multicolumn{2}{c}{backtrack tree} & 
+\multicolumn{2}{c}{Backtracking Tree} & 
 \multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
 				
 				%%%
 				%%%
@@ -295,14 +306,15 @@ Max CLS&
 			\end{tabular}
  		}
  	\caption{Solutions of MCER-$k$ for instances AB001-AB060.}
+ 	\label{tab:mcer-results-ab1}
 	\end{center}
 \end{table}
 
-\begin{table}\label{tab:mcer-results-ab2}
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|rrrrrr|}
+			\begin{tabular}{|cccc|cr|crrrrr|}
 				\hline
 \multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 \hline
@@ -315,11 +327,11 @@ Max CLS&
 \multirow{2}{*}{$k$} & 
 Selected & 
 \multirow{2}{*}{Income} & 
-Max CLS&
+CLS size&
 \# E3P&
-\multicolumn{2}{c}{backtrack tree} & 
+\multicolumn{2}{c}{Backtracking Tree} & 
 \multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & size & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -332,5 +344,6 @@ Max CLS&
 			\end{tabular}
 		}
 		\caption{Solutions of MCER-$k$ for instances AB061-AB120.}
+		\label{tab:mcer-results-ab2}
 	\end{center}
 \end{table}
