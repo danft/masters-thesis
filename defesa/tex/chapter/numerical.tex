@@ -73,7 +73,18 @@ This tool can create expressions using arithmetic operators on predefined symbol
 %This can be done by creating a composition of an expression for $\xi(\theta)(e^{i\theta})^6$ with the expressions for $\cos(\theta)$ and $\sin(\theta)$ defined by \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
 %After that, running a command, we can ask SymPy to transform that expression into a polynomial informing it that its variable is $z=e^{i\theta}$. Finally, very conveniently for us, SymPy has a function that outputs expressions directly as C code, which can be used to import the polynomial into our implementation of \autoref{algoritmo:e3p}.
 
-\subsection{Some details and improvements}\label{section:improvements}
+
+\section{A greedy algorithm}
+
+In \citeonline{church:1974}, a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. 
+Here we introduce a very similar algorithm for both MCE and MCER with the intention of using it in the development of a sufficient condition to skip non-optimal solutions.
+
+Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ as the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution of an instance of MCE-1 or MCER-1 with demand points $Z_j$.
+That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$. This algorithm can be implemented, such that it takes $\bigO(n^4m)$ operations to construct a solution.
+
+
+
+\section{Some details and improvements}\label{section:improvements}
 
 To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language was not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
 Therefore, we present here, some improvements that can be applied to the implementation of those algorithms, which can result in a significant improvement in performance, especially in terms of CPU time.
@@ -87,30 +98,30 @@ In our implementation, we use the same tree-like data structure as the one descr
 
 Also, to avoid solving the subproblem E3P in the algorithm for MCER, we can check if the maximum distance between any of the three points is greater than $2a$, where $a$ is an ellipse's semi-major. This is useful because calling \autoref{algoritmo:e3p} for every triplet of points of an instance of MCER can be very expensive.
 
-The last implementation improvement was obtained by keeping an upper-bound, which can be used to skip solutions that are surely not better than the current best solution.
+The last implementation improvement was obtained by keeping an upper-bound, which can be used to skip solutions that are surely non-optimal.
 When the backtracking algorithm has the location for the first $j$ ellipses fixed, we want to have an upper-bound for the best solution that can still be found by choosing the location of the $m-j$ remaining ellipses.
-Let us consider the case for the MCER's algorithm (the MCE's case is analogous). Let $$z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta)),$$ and $OPT_j$ be the value of the best solution which has the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. Then, as $z_k$ is the best value that the $k$-th ellipse can contribute to any solution, we get the following inequality
+Let us consider the case for the MCER's algorithm (the MCE's case is analogous). 
+
+Given an instance $(\Pp, \Ww, \Rr)$ of MCER, assume that the first $j$ ellipses are fixed at the locations $(q_1, \theta_1); \dots; (q_m, \theta_m)$. We will use the solution returned by the greedy algorithm defined earlier as an upper-bound for the solution considering only the $m-j$ remaining ellipses. 
+Let 
 \begin{equation*}
-OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
+Z_j=\Pp\setminus \cup_{k=1}^j E_k(q_k, \theta_k),
 \end{equation*}
-This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be preprocessed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER_{bt}$ procedure.
-Let $OPT$ be the current optimal solution, we have that if
+be the points from the demand set which are not covered by the first $j$ ellipses, and $(q_{j+1}', \dots, q_m')\in \R^{2(m-j)}$, $(\theta_{j+1}, \dots, \theta_m) \in [0, \pi)^{m-j}$ be the solution returned by the greedy algorithm for the instance $(Z_j, \{w_k \in \Ww: p_k \in Z_j\}, \{(a_{j+1}, b_{j+1}); \dots; (a_m, b_m)\})$ of MCER. That is, the instance with demand points that are not covered by the first $j$ ellipses. Then, let $OPT_j$ be the value of the best solution for the instance $(\Pp, \Ww, \Rr)$ with the first $j$ ellipses with location fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. Then, we have the following inequality
+
+\begin{equation}
+OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right)
+\end{equation}
+This upper-bound for $OPT_j$ can then be used in the backtracking process to skip solutions that are not better. Let $OPT_{lo}$ be a lower bound for the optimal solution, then the inequality
 \begin{equation}
 \label{eq:upper-bound}
-w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k \le OPT,
+w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) +w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right) \le OPT_{lo},
 \end{equation}
-then $OPT_j \le OPT$, which means that we can skip every solution with the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$.
+defines a sufficient condition for us to dismiss every solution which have the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_m, \theta_m)$. In practice, we can use the value of the best solution found so far by the backtracking process as the lower-bound $OPT_{lo}$.
 
 It is worth pointing out that these improvement suggestions do not have an effect in a possible worst case scenario. We are adopting them in our implementation because they showed good results in practice.
 For example, without taking the suggestion given by \autoref{eq:upper-bound}, \autoref{algoritmo:mcer-k} takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions.
 In \autoref{tab:mcer-results-ab1}, we show the results of \autoref{algoritmo:mcer-k} implemented with all the improvement suggestions given here; for the instance AB060, the algorithm takes less than one second to return an optimal solution, and evaluates only \num{1809} solutions.
-
-\section{A greedy algorithm}
-
-In \citeonline{church:1974} a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. We do the same here and define a general greedy algorithm, which follows the same approach as the one in \citeonline{church:1974}, that works for both MCE and MCER.
-
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ as the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution of an instance of MCE-1 or MCER-1 with demand points $Z_j$.
-That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$.
 
 \section{Results for known instances}
 
@@ -231,9 +242,11 @@ CLS size&
 Two methods for MCER-$k$ were developed in \citeonline{andreta}: a deterministic method using global optimization, and a heuristic-stochastic method also using a global optimization, but taking the first found solution as a global optimizer.
 The deterministic method could not find solutions for every instance within a specified time limit, however, comparing with the results of our algorithm, which are displayed in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for isntances AB001-AB120, we could observe that the heuristic method did find an optimal solution for every instance.
 
-In general, our algorithm took much lower CPU time to return an optimal solution when compared with the heuristic method developed by \citeonline{andreta}. For example, for instance CM9 it ran for more than six hours, while our implementation of \autoref{algoritmo:mcer-k} obtained an optimal solution in less than twenty seconds.
+In general, our algorithm took much lower CPU time to return an optimal solution when compared with the heuristic method developed by \citeonline{andreta}. For example, for instance, CM9 it ran for more than six hours, while our implementation of \autoref{algoritmo:mcer-k} obtained an optimal solution in less than five seconds. 
+One peculiarity that can be observed in the results for these instances is that the time spent in the backtracking phase is always very small, especially if compared to the time spent in the construction of the CLSs. 
 
-We can give the same remarks about the bounds for the algorithm and the CLS size as we did when analyzing the numerical results of MCE-$k$. Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of solutions that need to be considered for an optimal one to be found is $\bigO(n^{3m})$, in instance AB120, for example, the number of visited solutions is only $120$, which is way lower than $100^{15}$.
+As it was said for the results of MCE-$k$, in practice, the bounds for the CLS size and the number of operations taken by the algorithm is very loose.
+Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of computations that \autoref{algoritmo:mcer-k} takes is $\bigO(n^{4m})$. In instance AB120, for example, the size of the backtracking tree is only $7102$, which is way lower than $100^{15}$.
 
 \begin{table}
 	\begin{center}
@@ -347,3 +360,7 @@ CLS size&
 		\label{tab:mcer-results-ab2}
 	\end{center}
 \end{table}
+
+\section{Other instances}
+
+In this section, we describe some new instances which were created with the intention of further analyzing the algorithms developed by our work. We introduce larger instances and try to create cases which our algorithm does not perform as well as it does for the instances CM1-CM9 and AB001-AB120.
