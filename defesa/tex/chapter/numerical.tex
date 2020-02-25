@@ -90,34 +90,31 @@ To achieve the results that are shown later in this chapter, an efficient implem
 Therefore, we present here, some improvements that can be applied to the implementation of those algorithms, which can result in a significant improvement in performance, especially in terms of CPU time.
 
 In both algorithms, a subroutine to construct an ellipse's CLS is called inside the backtracking routine. This can potentially make the same combination of points be considered multiple times.
-To avoid this unnecessary computation, points that have already been considered for an ellipse's CLS can be stored, and only new combinations can then be taken into account each time the CLS subroutine is called. 
+To avoid this unnecessary computation, we compute the CLS for every ellipse beforehand in a preprocessing phase for the whole demand set. Then, in the backtracking, we only consider the options of locations that makes the ellipse cover points that have not been covered before.
 
 Another improvement that can be made in the construction of an ellipse's CLS is the elimination of redundant solutions.
-Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, then we can for sure dismiss solution $(Q', \Theta')$.
+Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER (the same can be said about MCE). If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, then we can for sure dismiss solution $(Q', \Theta')$.
 In our implementation, we use the same tree-like data structure as the one described by \citeonline{andreta} to only keep solutions that are not redundant.
 
-Also, to avoid solving the subproblem E3P in the algorithm for MCER, we can check if the maximum distance between any of the three points is greater than $2a$, where $a$ is an ellipse's semi-major. This is useful because calling \autoref{algoritmo:e3p} for every triplet of points of an instance of MCER can be very expensive.
+Calling \autoref{algoritmo:e3p} for E3P for every triplet of points in an instance of MCER can be expensive. To avoid that, given three points and an ellipse with shape parameters $(a, b)$, we can skip calling \autoref{algoritmo:e3p} if the maximum distance between any of the points is greater than $2a$, or if the triangle's area with vertices on these three points have area greater than the ellipse's area, $\pi ab$.
 
-The last implementation improvement was obtained by keeping an upper-bound, which can be used to skip solutions that are surely non-optimal.
-When the backtracking algorithm has the location for the first $j$ ellipses fixed, we want to have an upper-bound for the best solution that can still be found by choosing the location of the $m-j$ remaining ellipses.
-Let us consider the case for the MCER's algorithm (the MCE's case is analogous). 
+Without any improvement, backtracking through every possible combination in the CLS of every ellipse can take a very long time, while most of those combinations are easy-to-spot non-optimal solutions. 
+Because of that, we introduce a sufficient condition, based on the algorithm for only one ellipse, which can be used to skip solutions that for sure are non-optimal.
+We are going to do that for the MCER's case (the MCE's case is analogous).
 
-Given an instance $(\Pp, \Ww, \Rr)$ of MCER, assume that the first $j$ ellipses are fixed at the locations $(q_1, \theta_1); \dots; (q_m, \theta_m)$. We will use the solution returned by the greedy algorithm defined earlier as an upper-bound for the solution considering only the $m-j$ remaining ellipses. 
-Let 
-\begin{equation*}
-Z_j=\Pp\setminus \cup_{k=1}^j E_k(q_k, \theta_k),
-\end{equation*}
-be the points from the demand set which are not covered by the first $j$ ellipses, and $(q_{j+1}', \dots, q_m')\in \R^{2(m-j)}$, $(\theta_{j+1}, \dots, \theta_m) \in [0, \pi)^{m-j}$ be the solution returned by the greedy algorithm for the instance $(Z_j, \{w_k \in \Ww: p_k \in Z_j\}, \{(a_{j+1}, b_{j+1}); \dots; (a_m, b_m)\})$ of MCER. That is, the instance with demand points that are not covered by the first $j$ ellipses. Then, let $OPT_j$ be the value of the best solution for the instance $(\Pp, \Ww, \Rr)$ with the first $j$ ellipses with location fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. Then, we have the following inequality
+Given an instance $(\Pp, \Ww, \Rr)$ of MCER, suppose that the first $j$ ellipses are fixed at the locations $(q_1, \theta_1); \dots; (q_m, \theta_m)$.
+Let $Z_j$ be the points that are not covered by the first $j$ ellipses, and $OPT_j$ the value of the best solution with the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_m, \theta_m)$.
 
+Then, we can obtain an upper-bound for $OPT_j$ by using, for $k\in\{j+1, \dots, m\}$, the solutions $(q_k', \theta_k')$ of MCER for instances with demand set $Z_j$ and only one ellipse with shape parameters $(a_k, b_k)$. As these solutions only consider the best cover individually for each ellipse, we have the following inequality
 \begin{equation}
-OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right)
+OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right).
 \end{equation}
-This upper-bound for $OPT_j$ can then be used in the backtracking process to skip solutions that are not better. Let $OPT_{lo}$ be a lower bound for the optimal solution, then the inequality
+This upper-bound for $OPT_j$ can then be used in the backtracking process to skip solutions that are not better than any optimal solution. Let $OPT_{lo}$ be a lower bound for the optimal solution, we have that if
 \begin{equation}
 \label{eq:upper-bound}
 w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) +w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right) \le OPT_{lo},
 \end{equation}
-defines a sufficient condition for us to dismiss every solution which have the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_m, \theta_m)$. In practice, we can use the value of the best solution found so far by the backtracking process as the lower-bound $OPT_{lo}$.
+then $OPT_j \le OPT_{lo}$, which implies that $OPT_j$ is less than or equal the value of any optimal solution. This defines a sufficient condition for us to dismiss every solution which have the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_m, \theta_m)$. In practice, we can use the value of the best solution found so far as the lower-bound $OPT_{lo}$.
 
 It is worth pointing out that these improvement suggestions do not have an effect in a possible worst case scenario. We are adopting them in our implementation because they showed good results in practice.
 For example, without taking the suggestion given by \autoref{eq:upper-bound}, \autoref{algoritmo:mcer-k} takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions.
@@ -252,7 +249,7 @@ Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, whi
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|crrrrr|}
+			\begin{tabular}{|cccc|cr|ccrrrr|}
 				\hline
 				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 				\hline
@@ -289,7 +286,7 @@ Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, whi
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|crrrrr|}
+			\begin{tabular}{|cccc|cr|ccrrrr|}
 				\hline
 \multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 \hline
@@ -327,7 +324,7 @@ CLS size&
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|crrrrr|}
+			\begin{tabular}{|cccc|cr|ccrrrr|}
 				\hline
 \multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 \hline
@@ -366,4 +363,82 @@ CLS size&
 In this section, we describe some new instances which were created with the intention of further analyzing the algorithms developed by our work.
 
 To generate the demand set, for each point, we had its coordinates follow a normal distribution $\mathcal{N}(0, 1)$. This way, most of the points are expected to be near the origin, making optimal solutions cover bigger portions of the demand set when compared to the previously analyzed instances.
-We constructed eight instances with $n=100$ and $m=8$, and generated the ellipse's shapes uniformly randomly in the interval $[0.5, 1.5]$, setting the cost for the $i$-th ellipse as $c_i=10 \times a_i\times b_i$, and the weight of every point as its distance to the origin.
+We constructed seven instances with $n=100$ and $m=7$, and generated the ellipse's shapes uniformly randomly in the interval $[0.5, 1.5]$, setting the cost for the $i$-th ellipse as $c_i=10 \times a_i\times b_i$, and the weight of every point as its distance to the origin. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta1}.
+
+\begin{table}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tex/table_mcek_ta_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCE-$k$ for instances TA001-TA007.}
+		\label{tab:mce-results-ta1}
+	\end{center}
+\end{table}
+
+
+\begin{table}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tex/table_mcerk_ta_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Solutions of MCER-$k$ for instances TA001-TA007.}
+		\label{tab:mcer-results-ta1}
+	\end{center}
+\end{table}
+
+For the next instances, we kept the number of ellipses at five, and increased the size of the demand set.
