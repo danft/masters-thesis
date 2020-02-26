@@ -1,8 +1,10 @@
-The goal of this chapter is to show in practice the results of the algorithms for MCE and MCER proposed by us. We first give some implementation details, then we start discuss the solutions obtained for instances proposed in past works, and finally we propose some new instances with the intention of finding the limits of our algorithms.
+The goal of this chapter is to show the results of the algorithms for MCE and MCER proposed by us for instances proposed by other works as well as instances created by us. 
+We also give implementation details and suggestions to improve performance, which we adopted in our implementations.
+All the tables containing results referenced in this chapter are presented in \autoref{chapter:tables}.
 
 \section{Implementation}
 
-All the algorithms were implemented using the C++ language, with compiler g++ (G++ 6.3.0). To activate the optimization of compilation we used the -O4 flag.. All the experiments were run in a computer with the following specification:
+All the algorithms were implemented using the C++ language, compiled with g++ (G++ 6.3.0) with the optimization flag -O3. All the experiments were run in a computer with the following specification:
 \begin{itemize}
 	\item CPU Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz;
 	\item 16Gib of RAM memory;
@@ -11,14 +13,14 @@ All the algorithms were implemented using the C++ language, with compiler g++ (G
 \subsection{Determining the eigenvalues of a matrix}
 
 In \autoref{algoritmo:e3p}, we assumed that a procedure which returns every eigenvalue of a given square matrix was available. In practice, we used the very famous linear algebra package LAPACK (see \citeonline{lapack} for more details).
-LAPACK is a library for the FORTRAN programming language. However, its routines can be made available in a C/C++ environment by simply adding the -llapack linking flag to the compilation. The only remarks, though, are that FORTAN represents matrices in a column-major fashion, and receives parameters only by reference. Therefore, matrices must be transposed before being passed to a routine, and every parameter must receive a pointer to a variable containing its value.
+Even though LAPACK is a library for the FORTRAN programming language, its routines can be made available in a C/C++ environment by simply adding the -llapack linking flag to the compilation. The only remarks, though, are that FORTAN represents matrices in a column-major fashion, and receives parameters only by reference. Therefore, matrices must be transposed before being passed to a routine, and every parameter must receive a pointer to a variable containing its value.
 
 LAPACK offers a routine called ZGEEV that computes every eigenvalue of a complex matrix by using an implementation of the QR algorithm. 
 This routine optionally can also be asked to compute the right or left eigenvectors depending on two of its parameters. 
 ZGEEV receives in total $14$ parameters, with $4$ of them being used for output. We show a brief description of them in \autoref{tab:zgeev} along with the specification of the value we set each parameter in our implementation.
 %\renewcommand{\arraystretch}{1.1}
 
-\begin{table}[H]\label{tab:zgeev}
+\begin{table}[H]
 	\begin{center}
 	\begin{tabular}{|c|m{18em}|m{8em}|}
 		
@@ -56,12 +58,12 @@ ZGEEV receives in total $14$ parameters, with $4$ of them being used for output.
 	\end{tabular}
 	\end{center}
 	\caption{The ZGEEV's parameter list.}
+	\label{tab:zgeev}
 \end{table}
 
 \subsection{Symbolic Computation}
 
 Symbolic computation is a vast topic, which deals with the problem of solving or manipulating mathematical expressions computationally. 
-
 Back in \autoref{chapter:e3p}, we were faced with the problem of writing the function $\xi$ defined in \autoref{eq:circumscribed_circle_b} as a complex polynomial in the power format by replacing the sine and cosine functions with the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}.
 
 As expected, computing the coefficients of that polynomial in terms of the E3P's instance by hand is very challenging; the expressions get too long, and it becomes humanly impossible not to make any mistake. 
@@ -74,20 +76,22 @@ This tool can create expressions using arithmetic operators on predefined symbol
 %After that, running a command, we can ask SymPy to transform that expression into a polynomial informing it that its variable is $z=e^{i\theta}$. Finally, very conveniently for us, SymPy has a function that outputs expressions directly as C code, which can be used to import the polynomial into our implementation of \autoref{algoritmo:e3p}.
 
 
-\section{A greedy algorithm}
+%\section{A greedy algorithm}
 
-In \citeonline{church:1974}, a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. 
-Here we introduce a very similar algorithm for both MCE and MCER with the intention of using it in the development of a sufficient condition to skip non-optimal solutions.
+%In \citeonline{church:1974}, a simple greedy algorithm was introduced to compare the results obtained by the other algorithms developed by them. 
+%Here we introduce a very similar algorithm for both MCE and MCER with the intention of using it in the development of a sufficient condition to skip non-optimal solutions.
 
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ as the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution of an instance of MCE-1 or MCER-1 with demand points $Z_j$.
-That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$. This algorithm can be implemented, such that it takes $\bigO(n^4m)$ operations to construct a solution.
+%Let $(\Pp, \Ww, \Rr)$ be an instance of MCE or MCER. Then, at the $j$-th iteration of the algorithm we choose the solution for the first ellipse. Considering $Z_j \subset \Pp$ as the set of uncovered points before the $j$-th iteration. Then, we set the solution for the $j$-th ellipse, as the solution of an instance of MCE-1 or MCER-1 with demand points $Z_j$.
+%That is the same as choosing, among all the possibilities in the $j$-th ellipse's CLS, the solution which maximizes the weight of covered points in $Z_j$. This algorithm can be implemented, such that it takes $\bigO(n^4m)$ operations to construct a solution.
 
 
 
 \section{Some details and improvements}\label{section:improvements}
 
-To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language was not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
-Therefore, we present here, some improvements that can be applied to the implementation of those algorithms, which can result in a significant improvement in performance, especially in terms of CPU time.
+To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language is not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
+Therefore, we present here some improvements that can be applied to the implementation of those algorithms, which can result in significant growth of performance, especially in terms of CPU time.
+
+\subsection{CLS construction}
 
 In both algorithms, a subroutine to construct an ellipse's CLS is called inside the backtracking routine. This can potentially make the same combination of points be considered multiple times.
 To avoid this unnecessary computation, we compute the CLS for every ellipse beforehand in a preprocessing phase for the whole demand set. Then, in the backtracking, we only consider the options of locations that makes the ellipse cover points that have not been covered before.
@@ -97,6 +101,8 @@ Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER (the same can be 
 In our implementation, we use the same tree-like data structure as the one described by \citeonline{andreta} to only keep solutions that are not redundant.
 
 Calling \autoref{algoritmo:e3p} for E3P for every triplet of points in an instance of MCER can be expensive. To avoid that, given three points and an ellipse with shape parameters $(a, b)$, we can skip calling \autoref{algoritmo:e3p} if the maximum distance between any of the points is greater than $2a$, or if the triangle's area with vertices on these three points have area greater than the ellipse's area, $\pi ab$.
+
+\subsection{Backtracking}
 
 Without any improvement, backtracking through every possible combination in the CLS of every ellipse can take a very long time, while most of those combinations are easy-to-spot non-optimal solutions. 
 Because of that, we introduce a sufficient condition, based on the algorithm for only one ellipse, which can be used to skip solutions that for sure are non-optimal.
@@ -137,226 +143,27 @@ The algorithm proposed here showed great results as it was able to obtain optima
 Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \citeonline{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \citeonline{andreta} took more than thirty minutes.
 In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.08 second.
 
-In practice, at least for these instances, the bound $\bigO(n^{3m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves corresponding to a solution in the backtracking tree should be close to $n^{3m} = (10^2)^{3\times 3} = 10^{18}$, which is very far from the actual number of $649$ such leaves obtained in practice.
+In practice, at least for these instances, the bound $\bigO(2^mn^{2m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves corresponding to a solution in the backtracking tree should be close to $2^mn^{2m} = 2^3(10^2)^{2\times 3} = 8\times10^{12}$, which is very far from the actual number of $649$ such leaves obtained in practice.
 This is also the case for the size of the CLSs, which are all very far away from its $\bigO(n^2)$ bound. The greatest CLS size observed was $174$ for instance CM9, which is still very far away from $n^2$, which in this case is $10^4$.
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|crrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
-				\hline
-				\input{tex/table_mcek_cm.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCE-$k$ for instances CM1-CM9.}
-		\label{tab:mce-results-cm}
-	\end{center}
-\end{table}
-
-\begin{table}
-	\begin{center}
-		\resizebox{0.85\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|crrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-			\multirow{2}{*}{Name} & 
-			\multirow{2}{*}{$n$} & 
-			\multirow{2}{*}{$m$} & 
-			\multirow{2}{*}{$k$} & 
-			Selected & 
-			\multirow{2}{*}{Income} & 
-			CLS size&
-			\multicolumn{2}{c}{Backtracking Tree} & 
-			\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-			& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
-				\hline
-				\input{tex/table_mcek_ab_1.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCE-$k$ for instances AB001-AB060.}
-		\label{tab:mce-results-ab1}
-	\end{center}
-\end{table}
-
-\begin{table}
-	\begin{center}
-		\resizebox{0.85\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|crrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-\multirow{2}{*}{Name} & 
-\multirow{2}{*}{$n$} & 
-\multirow{2}{*}{$m$} & 
-\multirow{2}{*}{$k$} & 
-Selected & 
-\multirow{2}{*}{Income} & 
-CLS size&
-\multicolumn{2}{c}{Backtracking Tree} & 
-\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol. leaves & CLS-MCE & Total\\
-				\hline
-				\input{tex/table_mcek_ab_2.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCE-$k$ for instances AB061-AB120.}
-		\label{tab:mce-results-ab2}
-	\end{center}
-\end{table}
 
 \subsection{MCER-$k$}
 
-Two methods for MCER-$k$ were developed in \citeonline{andreta}: a deterministic method using global optimization, and a heuristic-stochastic method also using a global optimization, but taking the first found solution as a global optimizer.
-The deterministic method could not find solutions for every instance within a specified time limit, however, comparing with the results of our algorithm, which are displayed in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for isntances AB001-AB120, we could observe that the heuristic method did find an optimal solution for every instance.
+The numerical results obtained by our implementation of \autoref{algoritmo:mcer-k} are shown in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for instances AB001-AB120. 
+An optimal solution was obtained for every instance, and overall, at most six seconds of CPU time was taken.
 
-In general, our algorithm took much lower CPU time to return an optimal solution when compared with the heuristic method developed by \citeonline{andreta}. For example, for instance, CM9 it ran for more than six hours, while our implementation of \autoref{algoritmo:mcer-k} obtained an optimal solution in less than five seconds. 
-One peculiarity that can be observed in the results for these instances is that the time spent in the backtracking phase is always very small, especially if compared to the time spent in the construction of the CLSs. 
+Looking at the numerical results of the heuristic method proposed in \citeonline{andreta}, the only non-optimal solutions it encountered were for instances AB105-AB108. For these instances, our algorithm obtained an optimal solution covering one more point. In \autoref{fig:AB108}, the optimal solution for AB108 is displayed.
+In general, our algorithm took much lower CPU time compared to the methods developed in \citeonline{andreta}. For example, for instance CM9, their heuristic method took more than six hours to return a solution, our implementation of \autoref{algoritmo:mcer-k}, on the other hand, obtained an optimal solution in less than five seconds.
+
+\begin{figure}[!htb]
+	\centering
+	\caption{An optimal solution for the instance AB108.}
+	\includegraphics[scale=.5]{tex/figures/AB108}
+	\fautor
+	\label{fig:AB108}
+\end{figure}
 
 As it was said for the results of MCE-$k$, in practice, the bounds for the CLS size and the number of operations taken by the algorithm is very loose.
-Notice that, the greatest CLS size was $701$ obtained for instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of computations that \autoref{algoritmo:mcer-k} takes is $\bigO(n^{4m})$. In instance AB120, for example, the size of the backtracking tree is only $7102$, which is way lower than $100^{15}$.
-
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\# E3P&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
-				
-				%%%
-				%%%
-				
-				\hline
-				\input{tex/table_mcerk_cm.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCER-$k$ for instances CM1-CM9.}
-		\label{tab:mcer-results-cm}
-	\end{center}
-\end{table}
-
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-\hline
-
-%%% Second line of header
-
-\multirow{2}{*}{Name} & 
-\multirow{2}{*}{$n$} & 
-\multirow{2}{*}{$m$} & 
-\multirow{2}{*}{$k$} & 
-Selected & 
-\multirow{2}{*}{Income} & 
-CLS size&
-\# E3P&
-\multicolumn{2}{c}{Backtracking Tree} & 
-\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
-				
-				%%%
-				%%%
-				
-				
-				\hline
-				\input{tex/table_mcerk_ab_1.tex}
-				\hline
-					
-			\end{tabular}
- 		}
- 	\caption{Solutions of MCER-$k$ for instances AB001-AB060.}
- 	\label{tab:mcer-results-ab1}
-	\end{center}
-\end{table}
-
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-\hline
-
-%%% Second line of header
-
-\multirow{2}{*}{Name} & 
-\multirow{2}{*}{$n$} & 
-\multirow{2}{*}{$m$} & 
-\multirow{2}{*}{$k$} & 
-Selected & 
-\multirow{2}{*}{Income} & 
-CLS size&
-\# E3P&
-\multicolumn{2}{c}{Backtracking Tree} & 
-\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				
-				\hline
-				\input{tex/table_mcerk_ab_2.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCER-$k$ for instances AB061-AB120.}
-		\label{tab:mcer-results-ab2}
-	\end{center}
-\end{table}
+Notice that, the greatest CLS size was $730$ obtained for the third ellipse in instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of computations that \autoref{algoritmo:mcer-k} takes is $\bigO(2^mn^{3m})$. In instance AB120, for example, the size of the backtracking tree is only $7102$, which is way lower than $2^5100^{15}$.
 
 \section{Other instances}
 
@@ -365,80 +172,8 @@ In this section, we describe some new instances which were created with the inte
 To generate the demand set, for each point, we had its coordinates follow a normal distribution $\mathcal{N}(0, 1)$. This way, most of the points are expected to be near the origin, making optimal solutions cover bigger portions of the demand set when compared to the previously analyzed instances.
 We constructed seven instances with $n=100$ and $m=7$, and generated the ellipse's shapes uniformly randomly in the interval $[0.5, 1.5]$, setting the cost for the $i$-th ellipse as $c_i=10 \times a_i\times b_i$, and the weight of every point as its distance to the origin. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta1}.
 
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|crrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				
-				\hline
-				\input{tex/table_mcek_ta_1.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCE-$k$ for instances TA001-TA007.}
-		\label{tab:mce-results-ta1}
-	\end{center}
-\end{table}
 
 
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\# E3P&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				
-				\hline
-				\input{tex/table_mcerk_ta_1.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Solutions of MCER-$k$ for instances TA001-TA007.}
-		\label{tab:mcer-results-ta1}
-	\end{center}
-\end{table}
+
 
 For the next instances, we kept the number of ellipses at five, and increased the size of the demand set.

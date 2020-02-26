@@ -300,7 +300,7 @@ A solution for MCER-$k$ is given by $(I, Q, \Theta)$, with $I:=\{i_1, \dots, i_k
 	\max_{I, Q, \Theta} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j, \theta_j)\right).
 \end{equation*}
 
-Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \autoref{algoritmo:mcer-k} for MCER-$k$ that uses \autoref{algoritmo:mcer} for every $I:=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$. Therefore, \autoref{algoritmo:mcer-k} returns an optimal solution for MCER-$k$ in $\bigO(\binom{m}{k}n^{3k}) = \bigO(n^{4m})$ time.
+Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \autoref{algoritmo:mcer-k} for MCER-$k$ that uses \autoref{algoritmo:mcer} for every $I:=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$. Therefore, \autoref{algoritmo:mcer-k} returns an optimal solution for MCER-$k$ in $\bigO(\binom{m}{k}n^{3k}) = \bigO(2^mn^{3m})$ time.
 
 \begin{algoritmo}
 	\caption{Algorithm for MCER-$k$}\label{algoritmo:mcer-k}
