@@ -1,24 +1,13 @@
-To take advantage of the great amount of work found in the literature,
- we decided to first introduce the planar maximal covering by disks problem, develop a method for it, and just then adapt it for the ellipses case. It turned out that because of the similarities between the two problems, adapting was possible and actually very simple. This made the method developed by us have a very different approach than the ones in \cite{andreta} and \cite{canbolat}. The next step is to implement it and compare the results that \cite{andreta} obtained.
- 
-For the next step of our master's research we set the following objectives as primary:
+In this work, we studied two problems of maximum planar covering using ellipses, with most of the substantial results being for the less previously-studied problem where the ellipses can be freely rotated, which we referred to as MCER. We devoted \autoref{chapter:e3p} and \autoref{chapter:mcer} of our work for the development of an exact algorithm for this problem, which depended on the development of an algorithm for a never-studied-before geometric subproblem, which we referred to as E3P. 
 
-\begin{itemize}
-    \item Study the $(1-\epsilon)$-approximation method for the planar covering with disks in \cite{cabello:2006} and develop an adapted version of the algorithm for ellipses with the same time complexity of $\bigO(n\log{n})$.
-    
-    \item Develop an exact method for the version of the problem introduced in \cite{andreta} where the ellipses can be freely rotated.
-    
-\end{itemize}
+An exact algorithm was also developed for the other problem studied in this work, which the ellipse could not be rotated. We created an algorithm for it in \autoref{chapter:mce} based on an algorithm for maximum covering using disks, which we introduced in \autoref{chapter:pmclp}.
 
-The following goals are set as secondary:
+In \autoref{chapter:numerical}, numerical experiments were run for both algorithms. We first used instances found in the literature, and then proposed new instances to further analyze the performance of our algorithms.
+Even though the exponential nature of both algorithms proposed by us, 
+in \autoref{chapter:numerical}, we gave several improvements suggestions, which allowed our implementations to obtain optimal solutions for every previously published instance, including instances that no optimal solutions were obtained before, plus some fairly large new ones.
 
-\begin{itemize}
-    \item Develop a probabilistic approximation algorithm based on \cite{aronov:2008} which proposed a Monte Carlo approximation for the problem of finding the deepest point in a arrangement of regions. The method runs in $\bigO(n\epsilon^2\log{n})$ and can be applied to solve the case with one ellipse. The case with more than one ellipse is left as a challenge for us for the next steps of our research.
-    
-    \item In \cite{zhou}, the task of finding every center candidate, after eliminating all the non-essential ones, is done in $\bigO(n^5)$ run-time complexity. We want to generalize this for the elliptical distance function and achieve a better run-time complexity. We also intend to use the mean-shift algorithm to try to develop a greedy version for the ellipses version.
-\end{itemize}
 
-%Also, the version of the problem where every ellipse can be freely rotated is set as a primary goal for this master's research. In \cite{andreta}, the deterministic method developed by them could not obtain solutions for moderate-to-large instances within reasonable time. Because of that, a stochastic global optimization method was proposed, it performed well and was able to obtain an optimal solution for small cases. The goal we have in mind for the future is to develop an exact method that takes into consideration the algorithm we developed for the axis-parallel version of the problem and compare the results.
-
-%Finally, as a secondary goal, we want to 
-
+We believe there is plenty of room for furtherly working on these problems.
+Back in \autoref{chapter:e3p}, we raised the attention for some possible properties which could be used in the development of an improved version of our algorithm for E3P.
+In \autoref{chapter:numerical}, we observed that the bounds for the algorithms proposed by us might be a little loose, obtaining tighter bounds might be possible.
+Some other suggestions for future work are: modeling the problems as Linear Integer Programming problems, which could be an alternative to backtracking the optimal solution, done in the algorithms for both problems; adapting the probabilistic  approximation algorithm for the maximum covering by disks problem developed in \citeonline{cabello:2006} for the ellipses case; and developing and analyzing heuristics which avoid the backtracking phase of both algorithms.

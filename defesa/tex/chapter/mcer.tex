@@ -333,22 +333,3 @@ Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \au
 		\EndProcedure
 	\end{algorithmic}
 \end{algoritmo}
-
-
-\subsection{Improvements and implementation details}
-
-Some improvements can be made in the implementation of \autoref{algoritmo:mcer}.
-Instead of calling procedure CLS-MCER every time in the backtracking routine, it is suggested that it is done outside in a pre-processing phase.
-
-Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER. If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, solution $(Q', \Theta')$ can be dismissed. This can be done in the CLS-MCER procedure in \autoref{algoritmo:mcer1}. 
-
-In our implementation we use the same approach used in \citeonline{andreta}. When constructing the CLS for the $j$-th ellipse, a tree-like data structure is utilized to verify if a solution $(q, \theta)$ covers a subset of another solution or not.
-
-Keeping an upper-bound for the solution during the backtracking in \autoref{algoritmo:mcer} can also provide a good improvement in practice. Let $z_j = \max_{(q, \theta) \in S_j} w(\Pp \cap E_j(q, \theta))$, and $OPT$ the value of an optimal solution. When the algorithm chooses $(q_j, \theta_j) \in S_j$ as the solution for the $j$-th ellipse, we have
-
-\begin{equation}
-OPT \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + \sum_{k=j+1}^m z_k.
-\end{equation}
-This upper-bound is easy to compute as $\{z_1, \dots, z_m\}$ can be pre-processed, and the weight of every point covered so far in the backtrack can be obtained by adding another parameter to the $MCER$ procedure.
-
-In the next chapter, we present the results of numerical experiments for MCER and MCER-$k$ and compare them with the results published in \citeonline{andreta}.
