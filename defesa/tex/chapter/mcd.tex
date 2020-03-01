@@ -215,12 +215,12 @@ obviously $|S_j|=\bigO(n^2)$.
 \end{proof}
 
 Then, with \autoref{algoritmo:mcd_cls}, an algorithm for MCD that checks every possible center for every disk yields a $\bigO(n^{2m})$ run-time complexity.
-This algorithm is described in \autoref{chapter:ellipses} for the axis-parallel ellipses case.
+This algorithm is described in \autoref{chapter:mce} for the axis-parallel ellipses case.
 
 It is worth mentioning that the choice of developing a different method for the problem, instead of using the one from \citeonline{cabello:2006}, is taken for the sake of simplicity, considering both algorithms achieve similar bounds.
 
 \begin{algoritmo}
-	\caption{Algorithm for MCD1 that returns a CLS.}\label{algoritmo:mcd_cls}
+	\caption{Algorithm for that returns a CLS given a radius and a demand set.}\label{algoritmo:mcd_cls}
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$, and a radius $r\in\R_{>0}$.}
 		\Ensure{A CLS for the disk given by radius $r$.}
