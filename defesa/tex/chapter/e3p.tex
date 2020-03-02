@@ -294,7 +294,7 @@ In our implementation, we use symbolic computation to determine the coefficients
 Having all the coefficients of $h$ available, basically, after building a companion matrix, \autoref{algoritmo:e3p} applies the reverse transformations described by \autoref{eq:trpnts} to every eigenvalue of that companion matrix to obtain a solution for E3P.
 
 \begin{algoritmo}
-	\caption{The algorithm for E3P.}\label{algoritmo:e3p}
+	\caption{Algorithm for E3P.}\label{algoritmo:e3p}
 	\begin{algorithmic}[1]
 		\Require{$u, v, w\in\R^2$, and $a, b\in\R_{>0}$, with $a>b$.}
 		\Ensure{Every solution of E3P.}
@@ -336,7 +336,7 @@ Having all the coefficients of $h$ available, basically, after building a compan
 \end{teorema}
 
 \begin{proof}
-	It has already been shown in \autoref{section:transforming-the-problem} that computing every root of $\xi$ through the complex polynomial yields every solution of E3P. The only thing left to prove is the running time of the algorithm.
+	It has already been shown in Section~\ref{section:transforming-the-problem} that computing every root of $\xi$ through the complex polynomial yields every solution of E3P. The only thing left to prove is the running time of the algorithm.
 	Computing every eigenvalue of a matrix can be done in $\bigO(n^3)$, but as for our case $n$ is fixed at $6$, it can be stated that computing the eigenvalues for the companion matrix of $f$ can be done in $\bigO(1)$.
 \end{proof}
 

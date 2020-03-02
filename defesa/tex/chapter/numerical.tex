@@ -136,7 +136,7 @@ In this section, we present the results of \autoref{algoritmo:mce-k} and \autore
 For each instance, we display the selected ellipses and the income of the found optimal solution. 
 We also display some performance metrics with the intention of giving an idea of how much computation had to be done for the algorithms to find an optimal solution. These metrics are: 
 the CLS size of every ellipse, the number of nodes in the backtracking tree, the number of leaves corresponding to a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
-For the algorithms for MCER, we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which are dismissed by the improvements suggestions given in \autoref{section:improvements}. All the tables containing results referenced in this section are presented in \autoref{chapter:tables}. 
+For the algorithms for MCER, we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which are dismissed by the improvements suggestions given in Section~\ref{section:improvements}. All the tables containing results referenced in this section are presented in \autoref{chapter:tables}. 
 We also made available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/} every instance used here, along with the graphical representation of every obtained solution.
 
 
@@ -147,8 +147,8 @@ The algorithm proposed here showed great results as it was able to obtain optima
 Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \citeonline{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \citeonline{andreta} took more than thirty minutes.
 In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.08 second.
 
-In practice, at least for these instances, the bound $\bigO(2^mn^{2m})$ for the algorithm for MCE-$k$ seems to be loose. In instance CM9, for example, this bound says that the number of leaves corresponding to a solution in the backtracking tree should be close to $2^mn^{2m} = 2^3(10^2)^{2\times 3} = 8\times10^{12}$, which is very far from the actual number of $649$ such leaves obtained in practice.
-This is also the case for the size of the CLSs, which are all very far away from its $\bigO(n^2)$ bound. The greatest CLS size observed was $174$ for instance CM9, which is still very far away from $n^2$, which in this case is $10^4$.
+Back in \autoref{chapter:mce}, it was shown that the size of a CLS in an instance of MCE is less than or equal $n^2$. This bound, at least for these instances, seems to be very loose. Notice that the biggest CLS observed, which is $174$ in instance CM9, is very far away from $n^2$, which in this case is $10^4$.
+The same can be said about the bound for the running time of the algorithm, using the size of the backtracking tree times $n$ (the number of steps needed to evaluate an option in a CLS) as an estimate for the number of computations, it can be seen that the asymptotic bound of $\bigO(m2^mn^{2m+1})$ is very far from the actual number of computations.
 
 \subsection{MCER-$k$}
 
@@ -167,7 +167,9 @@ In general, our algorithm took much lower CPU time compared to the methods devel
 \end{figure}
 
 As it was said for the results of MCE-$k$, in practice, the bounds for the CLS size and the number of operations taken by the algorithm is very loose.
-Notice that, the greatest CLS size was $730$ obtained for the third ellipse in instances CM7-CM9, which is very far away from its bound $\bigO(n^3)$, which in this case is $10^6$. By \autoref{th:mcer}, for MCER, the bound for the number of computations that \autoref{algoritmo:mcer-k} takes is $\bigO(2^mn^{3m})$. In instance AB120, for example, the size of the backtracking tree is only $7102$, which is way lower than $2^5100^{15}$.
+Notice that, the greatest CLS size was $730$ obtained for the third ellipse in instances CM7-CM9. Notice that $730$ is very distance from its upper-bound $n^3$, which in this case is $10^6$.
+Also, looking at the size of the backtracking tree times $n$ as an estimate for the number of computations taken by the algorithm, for example, for instance AB120, this number is $1579 \times 100$, which is very distant from its asymptotic upper-bound of $\bigO(m2^mn^{3m+1})$, which in this case would be $5\times 2^5 \times 100 ^ {16}$.
+
 
 \section{New instances}
 
@@ -220,7 +222,7 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances with $k=2$, wh
 	\begin{subfigure}{.5\textwidth}
 			\centering
 		\caption{TA44}
-		\includegraphics[scale=.6]{tex/figures/TA044}
+		\includegraphics[scale=.8]{tex/figures/TA044}
 
 		%\fautor
 		\label{fig:TA043}
@@ -228,7 +230,7 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances with $k=2$, wh
 	\begin{subfigure}{.5\textwidth}
 			\centering
 		\caption{TA45}
-		\includegraphics[scale=.6]{tex/figures/TA045}
+		\includegraphics[scale=.8]{tex/figures/TA045}
 		%\fautor
 		\label{fig:TA044}
 	\end{subfigure}

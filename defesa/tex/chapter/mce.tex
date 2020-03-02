@@ -98,7 +98,7 @@ Lastly, the case where that angle is equal to $\pi$ happens only when both ellip
 The same procedure defined in \autoref{algoritmo:mcd_cls} can be used to get a CLS for every ellipse in MCE. We refer to the elliptical version of that procedure as CLS-MCE (we do not define it in this chapter because it would look the same as CLS-MCD defined in \autoref{algoritmo:mcd_cls}, apart from the name, of course). 
 
 Then, with the algorithm to construct a CLS for every ellipse in hands, an algorithm for MCE naturally comes into existence. In \autoref{algoritmo:mce}, a complete search is done backtracking every possibility in the CLS of every ellipse. This strategy is backed-up by \autoref{lema:mcd}, which says that there is an optimal solution in the CLS of each ellipse. 
-Following this, counting every possibility that the algorithm goes through, we arrive at the run-time complexity of $\bigO(n^{2m})$.
+Following this, counting every possibility that the algorithm goes through, an algorithm with run-time complexity of $\bigO(mn^{2m + 1})$ can be implemented.
 
 It is worth mentioning that, even though we call CLS-MCE every time in the recursion, in practice, it is probably best to pre-process this step, and only call it $m$ times for the whole set of points.
 Some other easy improvements can also be made in the implementation. For example, if an ellipse covers two sets of points $X$ and $Y$, with $X \subset Y$, then set $X$ can be ignored by the algorithm because of the non-negative weights constraint. Also, if two ellipses have their centers with Euclidean distance greater than their semi-major parameter, they for sure do not intersect. Depending on the input, this observation can make the algorithm not go through the whole list of ellipses every time it needs to determine the ellipses pairwise intersections.
@@ -119,7 +119,7 @@ We refer to this version of the problem as  \sigla{MCE-$k$}{Maximum Covering by 
 Finally, \autoref{algoritmo:mce} can serve as basis for MCE-$k$'s \autoref{algoritmo:mce-k}. 
 Firstly, for every subset $I \subset \{1, \dots, m\}$, such that $|I| = k$, the algorithm for MCE is invoked for the instance $(\Pp, \Ww, \{(a_j, b_j) : j \in I\})$; that is, an instance where only the ellipses in $I$ are present.
 After that, by keeping track of the utilized ellipses' costs for every $I \subset \{1, \dots, m\}$, an optimal solution can be obtained.
-This simple adjustment achieves a run-time complexity of $\bigO(\binom{m}{k} \times n^{2k}) = \bigO(2^mn^{2m})$. 
+This simple adjustment achieves a run-time complexity of $\bigO(k\binom{m}{k} \times n^{2k}) = \bigO(m2^mn^{2m+1})$. 
 
 \begin{algoritmo}
     \caption{Algorithm for MCE}\label{algoritmo:mce}

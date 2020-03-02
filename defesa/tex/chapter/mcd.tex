@@ -206,21 +206,24 @@ Notice also that MCD1 is defined only for unit disks, however, this constraint c
 
 \begin{lema}\label{lema:mcd}
 	Suppose that an instance of MCD and an index $j\in\{1, \dots, m\}$ are given.
-	Then \autoref{algoritmo:mcd_cls}, when given the instance $(\Pp, \Ww, r_j)$ as input, returns a CLS $S_j$ of size $\bigO(n^2)$, such that $q^*_j\in S_j$, with $(q^*_1, \dots, q^*_m)$ being an optimal solution of the given MCD's instance.
+	Then \autoref{algoritmo:mcd_cls}, when given the instance $(\Pp, \Ww, r_j)$ as input, returns a CLS $S_j$ of size less than or equal to $n^2$, such that $q^*_j\in S_j$, with $(q^*_1, \dots, q^*_m)$ being an optimal solution of the given MCD's instance.
 \end{lema}
 
 \begin{proof}
-It can be seen that in any solution of MCD, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the Maximum Weight Clique Problem: the point $q$ is inside an intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by \autoref{algoritmo:mcd_cls} as a candidate to be an optimal solution. The number of points \autoref{algoritmo:mcd_cls} goes through is $\bigO(n^2)$, then
-obviously $|S_j|=\bigO(n^2)$.
+It can be seen that in any solution of MCD, a disk placed at a point $q$ that covers at least one point $p \in \Pp$ has a correspondence to the Maximum Weight Clique Problem: the point $q$ is inside an intersection area of at least one disk and that area is bounded by some disk, which means it will be checked by \autoref{algoritmo:mcd_cls} as a candidate to be an optimal solution.
+We have that the number of opening angles that CLS-MCD goes through is greater than or equal to $|S_j|$, then
+\begin{eqnarray*}
+|S_j| \le \binom{n}{1} + \binom{n}{2} = \dfrac{n^2 + n}{2} \le n^2
+\end{eqnarray*}
 \end{proof}
 
-Then, with \autoref{algoritmo:mcd_cls}, an algorithm for MCD that checks every possible center for every disk yields a $\bigO(n^{2m})$ run-time complexity.
+Then, with \autoref{algoritmo:mcd_cls}, an algorithm for MCD that checks every possible center for every disk can be implemented with a $\bigO(mn^{2m+1})$ run-time complexity.
 This algorithm is described in \autoref{chapter:mce} for the axis-parallel ellipses case.
 
 It is worth mentioning that the choice of developing a different method for the problem, instead of using the one from \citeonline{cabello:2006}, is taken for the sake of simplicity, considering both algorithms achieve similar bounds.
 
 \begin{algoritmo}
-	\caption{Algorithm for that returns a CLS given a radius and a demand set.}\label{algoritmo:mcd_cls}
+	\caption{Algorithm that returns a CLS for a disk.}\label{algoritmo:mcd_cls}
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$ with weights $\Ww=\{w_1, \dots, w_n\}$, and a radius $r\in\R_{>0}$.}
 		\Ensure{A CLS for the disk given by radius $r$.}

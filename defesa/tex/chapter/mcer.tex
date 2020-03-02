@@ -163,21 +163,26 @@ This definition breaks the construction of the CLS $S_j$ into three separated ca
 	\begin{equation*}\label{eq:omega}
 	\Omega(\Pp, \Ww, \Rr) = \{(Q, \Theta)\in \R^{2m}\times\R^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\},
 	\end{equation*}
-Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)$, and $|\Omega(\Pp, \Ww, \Rr)|=\bigO(n^{3m})$.
+Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)$, and $|\Omega(\Pp, \Ww, \Rr)|\le n^{3m}$.
 \end{theorem}
 \begin{proof}
 	The first thing to notice is that $\Omega(\Pp, \Ww, \Rr)$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $(Q^*, \Theta^*)$, we only need to prove that for all $j\in\{1, \dots, m\}$, there exists $(q_j, \theta_j)\in S_j$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) \subset \Pp \cap E_j(q_j, \theta_j)$. That is, we only need to show that the CLS of every ellipse contains a center and angle of rotation that makes the ellipse cover the same points (possibly some additional ones) that it covers in an optimal solution. To do that, we use \autoref{lema:3pnts} and break the possible optimal solutions into three cases.
 	
-	 In the first case, we consider solutions where the $j$-th ellipse covers less than one point, that is, $|\Pp \cap E_j(q_j^*, \theta_j^*)|\le1$. It is possible to see that $S_j^{(1)}$ takes this possibility into account as it includes in $\Omega(\Pp, \Ww, \Rr)$ every solution that has an ellipse centered at a point from $\Pp$. From that, we can also conclude that $|S_j^{(1)}| = n$.
+	 In the first case, we consider solutions where the $j$-th ellipse covers less than one point, that is, $|\Pp \cap E_j(q_j^*, \theta_j^*)|\le1$. It is possible to see that $S_j^{(1)}$ takes this possibility into account as it includes in $\Omega(\Pp, \Ww, \Rr)$ every solution that has an ellipse centered at a point from $\Pp$. From that, we can also conclude that $|S_j^{(1)}| \le n$.
 	
 	In the second case, we consider solutions where the $j$-th ellipse covers at least two points, and no equivalent solution exists, such that three points are on it. This case is addressed by \autoref{lema:3pnts}, which says that an optimal solution $(Q^*, \Theta^*)$ of this type has equivalent solutions with two points $u, v \in \Pp \cap E_j(q_j^*, \theta_j^*)$ on the ellipse, for any angle of rotation $\theta_j \in \Phi_j(u, v)$.
 	As $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$, we have that there exists $(q_j, \theta_j) \in S_j^{(2)}$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) = \Pp \cap E_j(q_j, \theta_j)$. 
-	Moreover, in \autoref{section:ellipses_intersection}, we discuss the problem of determining the intersections between two ellipses. This problem is equivalent to the problem of determining every center and angle of rotation that puts two points on an ellipse, which is the problem used in the definition of $S_j^{(2)}$ for every pair of points. In \autoref{section:ellipses_intersection}, it is shown that this problem has at most two solutions. Therefore, we have that $|S_j^{(2)}| = 2\binom{n}{2}$.
+	Moreover, in Section~\ref{section:ellipses_intersection}, we discuss the problem of determining the intersections between two ellipses. This problem is equivalent to the problem of determining every center and angle of rotation that puts two points on an ellipse, which is the problem used in the definition of $S_j^{(2)}$ for every pair of points. In \autoref{section:ellipses_intersection}, it is shown that this problem has at most two solutions. Therefore, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
 	
 	For the last case, we are left with solutions where the $j$-th ellipse covers more than two points, and there exists an equivalent solution with three points on it. 
-	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega(\Pp, \Ww, \Rr)$. Also, in \autoref{lema:3pnts} it is stated that the number of centers and angles of rotation that make an ellipse contain three given points is at most six. Therefore, we have that $|S_j^{(3)}| = 6\binom{n}{3}$.
-	
-	Finally, as $|S_j| \le |S_j^{(1)}| +  |S_j^{(2)}| +  |S_j^{(3)}| = \bigO(n^{3})$, it follows that $|\Omega(\Pp, \Ww, \Rr)| = |S_1|\times \dots \times |S_m| = \bigO(n^{3m})$.
+	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega(\Pp, \Ww, \Rr)$. Also, in \autoref{lema:3pnts} it is stated that the number of centers and angles of rotation that make an ellipse contain three given points is at most six. Therefore, we have that $|S_j^{(3)}| \le 6\binom{n}{3}$.
+
+	Combining the three cases, as $S_j=S_j^{(1)}\cup S_j^{(2)} \cup S_j^{(3)}$, we get the following bound
+	\begin{eqnarray*}
+	|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n(n-1)(n-2) + n(n-1) + n\\
+	|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n((n-1)^2+1) \le n^3.
+	\end{eqnarray*}	
+	Therefore, we conclude that  $|\Omega(\Pp, \Ww, \Rr)| \le |S_1|\times \dots \times |S_m| \le n^{3m}$.
 \end{proof}
 
 
@@ -186,10 +191,10 @@ Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)
 In this section we describe an algorithm for MCER that does a complete search on the CLS of each ellipse.
 Firstly, in \autoref{algoritmo:mcer1}, we present a procedure called CLS-MCER which returns the CLS for an ellipse with shape parameters $(a, b)$. Then, in \autoref{algoritmo:mcer} we describe the procedure that returns an optimal solution for MCER.
 
-Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse. This can be done using the results of \autoref{section:ellipses_intersection}.
+Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse. This can be done using the results of Section~\ref{section:ellipses_intersection}.
 
 \begin{algoritmo}
-	\caption{An algorithm that constructs a CLS for a given ellipse.}\label{algoritmo:mcer1}
+	\caption{Algorithm that constructs a CLS for an ellipse.}\label{algoritmo:mcer1}
 	\begin{algorithmic}[1]
 		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and an ellipse's shape parameters $(a, b)$.}
 		
@@ -270,11 +275,11 @@ Two procedures are defined in \autoref{algoritmo:mcer}. The first one, called $M
 \end{algoritmo}
 
 \begin{corolario}
-	\autoref{algoritmo:mcer} takes $\bigO(n^{3m})$ operations and returns an optimal solution for an instance of MCER.
+	\autoref{algoritmo:mcer} takes $\bigO(mn^{3m+1})$ operations and returns an optimal solution for an instance of MCER.
 \end{corolario}
 
 \begin{proof}
-	For every $j\in\{1, \dots, m\}$, unless $Z=\{\}$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider any $(q_j, \theta_j) \in \R^2 \times \R$, such that $Z \cap E_j(q_j, \theta_j) = \{\}$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$. As evaluating each solution can be done in $\bigO(n)$, we get the overall runtime complexity of $\bigO(n^{3m+1})$ which is $\bigO(n^{3m})$.
+	For every $j\in\{1, \dots, m\}$, unless $Z=\{\}$, when choosing the center and angle of rotation for the $j$-th ellipse, \autoref{algoritmo:mcer} does not consider any $(q_j, \theta_j) \in \R^2 \times \R$, such that $Z \cap E_j(q_j, \theta_j) = \{\}$. Apart from those solutions, which are non-optimal, \autoref{algoritmo:mcer} considers every solution in $\Omega(\Pp, \Ww, \Rr)$. As evaluating each solution can be done in $\bigO(nm)$, we get the overall runtime complexity of $\bigO(mn^{3m+1})$.
 \end{proof}
 
 In \autoref{fig:AB120}, a solution returned by \autoref{algoritmo:mcer} for the instance AB120 taken from \citeonline{andreta} is displayed. The exact method developed by \citeonline{andreta}, for this instance, could not obtain an optimal solution within the established time limit, however, comparing with the solution obtained by our algorithm, their heuristic method does find an optimal solution. In the next chapter, we give more details about the solutions found by our algorithm, along with the proposal of some new instances for MCER.
@@ -300,7 +305,7 @@ A solution for MCER-$k$ is given by $(I, Q, \Theta)$, with $I:=\{i_1, \dots, i_k
 	\max_{I, Q, \Theta} w\left(\bigcup_{j=1}^k \Pp \cap E_{i_j}(q_j, \theta_j)\right).
 \end{equation*}
 
-Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \autoref{algoritmo:mcer-k} for MCER-$k$ that uses \autoref{algoritmo:mcer} for every $I:=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$. Therefore, \autoref{algoritmo:mcer-k} returns an optimal solution for MCER-$k$ in $\bigO(\binom{m}{k}n^{3k}) = \bigO(2^mn^{3m})$ time.
+Then, in the same way that it is done in \autoref{chapter:mce}, we introduce \autoref{algoritmo:mcer-k} for MCER-$k$ that uses \autoref{algoritmo:mcer} for every $I:=\{i_1, \dots, i_k\} \subset \{1, \dots, m\}$. Therefore, \autoref{algoritmo:mcer-k} returns an optimal solution for MCER-$k$ in $\bigO(k\binom{m}{k}n^{3k+1}) = \bigO(m2^mn^{3m+1})$ time.
 
 \begin{algoritmo}
 	\caption{Algorithm for MCER-$k$}\label{algoritmo:mcer-k}
