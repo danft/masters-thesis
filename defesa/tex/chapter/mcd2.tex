@@ -47,7 +47,8 @@ Then, in \citeonline{bi}, two results are stated about that set: its boundary is
 Based on that, we introduce the next definition.
 
 \begin{definicao}
-	Let $D_i(p_i)$ and $D_j(p_j)$ be two unit disk in a strictly convex normed space, and $\{\alpha_{ij}^+, \alpha_{ij}^-\}=\partial D_i(p_i) \cap \partial D_j(p_j)$, we denote by $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ the minimal counter-clockwise arc of $D_i(p_i)$ starting in $\alpha_{ij}^+$ and ending in $\alpha_{ij}^-$. We also refer to $\alpha_{ij}^+$ as an opening intersection point, and to $\alpha_{ij}^-$ as a closing intersection point.
+	Let $D_i(p_i)$ and $D_j(p_j)$ be two unit disk in a strictly convex normed space, and $\{\alpha_{ij}^+, \alpha_{ij}^-\} \subset \partial D_i(p_i) \cap \partial D_j(p_j)$,
+	 we denote by $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ the minimal counter-clockwise arc of $D_i(p_i)$ starting in $\alpha_{ij}^+$ and ending in $\alpha_{ij}^-$. We also refer to $\alpha_{ij}^+$ as an opening intersection point, and to $\alpha_{ij}^-$ as a closing intersection point.
 \end{definicao}
 Let $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ and $\widehat{\alpha_{ij}^-, \alpha_{ij}^+}$ be the two arcs of $\partial D_i$ with respect to the endpoints $\alpha_{ij}^-, \alpha_{ij}^+$.
 From \citeonline[Lemma 2]{bi}, we can state that, $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\subset D_j$, and\\ $\widehat{\alpha_{ij}^-, \alpha_{ij}^+} \cap D_j = \{\alpha_{ij}^-, \alpha_{ij}^+\}$. That is, only the minimal arc is contained in the interior of $D_j$.
@@ -83,6 +84,58 @@ B_i = A_i\cup\bigcup_{j\neq i} \{2\pi+\alpha_{ij}^+ \colon j\neq i, D_i \cap D_j
 Assuming $B_i$ is sorted with the same criteria as $A_i$, a simple traversal, starting at the first element and going until the last one, simulates a traversal on the circular list $A_i$.
 This works because for any pair of disks $D_i$, $D_j$; $B_i$ contains $\alpha_{ij}^+ < \alpha_{ij}^- + 2\pi$. That is, the algorithm encounters an opening intersection point before reaching a closing one for any circle.
 
+In \autoref{fig:array_disks2}, the intersection points between $\partial D_1$ (solid border) with $\partial D_2, \partial D_3$, and $\partial D_4$ (dashed border) are shown with a plus or minus sign indicating opening or closing intersection points. 
+The intersection list $B_1$ is also displayed in \autoref{fig:array_disks2} along with the size of the set of active disks $Q$ after processing a point in $B_1$.
+It is possible to see that the optimal clique highlighted in \autoref{fig:array_disks2} is enclosed by the arcs defined by $\alpha_{14}^+$ and $\alpha_{14}^-$, and can also be identified by following $B_1$ while keeping track of $Q$.
+The special intersection point of $\partial D_1$ with itself can also be seen in \autoref{fig:array_disks2}. Its usage is very convenient as with $\alpha_{11}^+$ and $\alpha_{11}^-$  in $B_1$, the algorithm inserts $D_1$ in the set of active disks before processing any point, and removes $D_1$ only after every point has been processed.
+
+\begin{figure}[!htb]
+	\centering
+	
+	\caption{The intersection list of a disk with three other disks.}
+	%\input{tex/figures/array_disks.tex}
+	\includegraphics[scale=.3]{tex/figures/3_disks_intersect_.pdf}
+	\fautor
+	\label{fig:array_disks2}
+\end{figure}
+
+%\begin{algoritmo}[!htb]
+%	\caption{Algorithm for MWC.}\label{algoritmo:mwc}
+%	\begin{algorithmic}[1]
+%		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, and a set of weights $\Ww=\{w_1, \dots, w_n\}$.}
+%		\Ensure{A point that is inside the maximum weight clique of unit disks.}
+		
+%		\item[]
+		
+%		\Procedure{$MWC$}{$\Pp, \Ww$}
+%		\State Let $\D=\{D_1, \dots, D_n\}$ be a set of unit disks, with centers in $\Pp$ and weights in $\Ww$
+		
+%		\State $Q_{best} \gets \{\}$
+%		\State $q^* \gets$ $p_1$
+%		\ForAll{$D_i \in \D$}
+%		\State Let $B_i$ be the list of intersection angles of $D_i$ as defined by \autoref{eq:b_i}
+		
+%		\State $Q \gets \{\}$ \Comment{The set of active disks.}
+%		\For{$\alpha \in B_i$}\Comment{Assuming $B_i$ is sorted.}
+%		\State Let $D_j$ be the disk, such that $\theta \in D_j\cap D_i$
+%		\If{$\theta$ is a opening angle}
+%		\State $Q \gets Q \cup \{D_j\}$
+%		\Else
+%		\State $Q \gets Q \setminus \{D_j\}$
+%		\EndIf
+%		\If{$w(Q_{best}) < w(Q)$} 
+%		\State $Q_{best} \gets Q$
+%		\State $q^* \gets$ point corresponding to the intersection angle $\theta$
+%		\EndIf
+%		
+%		\EndFor
+%		\EndFor
+		
+%		\State \Return $q^*$
+%		\EndProcedure
+%	\end{algorithmic}
+%\end{algoritmo}
+
 \section{From MWC to MCE}
 
 Now we are going to modify the algorithm for MWC to work as a basis for the algorithm for multiple disks.
@@ -108,9 +161,9 @@ Based on this, we introduce a theorem that allows us to develop an algorithm for
 		Notice that $\Omega(\Pp, \Ww, \Rr)$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $Q^*$, it is enough to prove that for all $j\in\{1, \dots, m\}$, there exists $q_j\in S_j$, such that $\Pp \cap E_j(q_j^*) \subset \Pp \cap E_j(q_j)$. That is, we only need to show that the CLS of every ellipse contains a center that makes the ellipse cover the same points (possibly some additional ones) that it covers in an optimal solution.
 		We ignore the case where an ellipse does not cover any points.
 		
-		First case, the $|\Pp \cap E_j(q_j^*)|=1$ covers only one point. This case is included in $S_j$ as it contains the possible solutions where the center of the ellipse is the actual points in $\Pp$.
+		First case: $|\Pp \cap E_j(q_j^*)|=1$. This case is included in $S_j$ as it contains the possible solutions where the center of the ellipse is the actual points in $\Pp$.
 		
-		Second case, $|\Pp \cap E_j(q_j^*)| > 1$. Let $X = \{i \colon p_i \in \Pp \cap E_j(q_j^*)$. In the equivalent instance of MWC, we have that $\cap_{i\in X} D_i \neq \emptyset$ is a region bounded by arcs of circles with centers in $\Pp \cap E_j(q_j^*)$ with vertices being pairwise intersections of $\partial \D$, with at least one of them being an opening intersection point.
+		Second case: $|\Pp \cap E_j(q_j^*)| > 1$. Let $X = \{i \colon p_i \in \Pp \cap E_j(q_j^*)$. In the equivalent instance of MWC, we have that $\cap_{i\in X} D_i \neq \emptyset$ is a region bounded by arcs of circles with centers in $\Pp \cap E_j(q_j^*)$ with vertices being pairwise intersections of $\partial \D$, with at least one of them being an opening intersection point.
 		
 		Lastly, we have that $|S_j| \le \binom{n}{2} + n = \frac{n(n+1)}{2} \le n^2$. Therefore,
 		$|\Omega(\Pp, \Ww, \Rr)| \le |S_1|\times \dots \times |S_m| \le n^{2m}$.
@@ -147,6 +200,37 @@ First, we describe, based on \autoref{th:mce2}, an algorithm to return the CLS f
 \end{algoritmo}
 
 Then, we define in \autoref{algoritmo:mce2}, an algorithm for MCE, which backtracks to find an optimal solution taking into account every possibility in the CLS of every ellipse. This way, we obtain a $\bigO(mn^{2m+1})$ algorithm for MCE.
+
+\section{Determining $\alpha_{ij}^+$ and $\alpha_{ij}^-$}\label{section:ellipses_intersection2}
+
+Let $E_1(q_1)$, and $E_2(q_2)$ be two coverage region of ellipses centered at $q_1, q_2\in\R^2$ respectively, with shape parameters $(a, b)\in\R^2_{>0}$. After changing the coordinates to make the center of the first ellipse be at the origin, the intersection points between the two ellipses are defined by
+
+\begin{align}
+	\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 && (E_1) \label{eq:ell_inter_1}\\
+	\frac{(x-h)^2}{a^2} + \frac{(y-k)^2}{b^2} = 1 && (E_2), \nonumber
+\end{align}
+where $(h,k)\in\R^2$ is the center of the second ellipse after the coordinates were translated by $-q_1$. As both equations are equal to $1$, we have
+\begin{align}
+	b^2x^2 + a^2y^2 &= b^2(x-h)^2 + a^2(y-k)^2 \nonumber\\
+	x &= y\frac{-2ka^2}{2hb^2} + \frac{b^2h^2 + a^2k^2}{2hb^2} \nonumber\\
+	x &= y\alpha + \beta.\label{eq:ell_inter_2}
+\end{align}
+Replacing \autoref{eq:ell_inter_2} into \autoref{eq:ell_inter_1}, we get
+\begin{align}\label{eq:ell_inter_3}
+	y^2(b^2\alpha^2 + a^2) + y(2\beta\alpha b^2) + b^2\beta^2 -a^2b^2 = 0,
+\end{align}
+which is a second degree polynomial. Then, $\partial E_1(q_1) \cap \partial E_2(q_2) \neq \{\}$ if, and only if the roots of \autoref{eq:ell_inter_3} are real. The intersection points itself can be obtained by solving the polynomial for $y$ and plugging its value back into the $x=y\alpha + \beta$ equation.
+
+Suppose that $\partial E_1(q_1) \cap \partial E_2(q_2) = \{p_1, p_2\}$, with $p_1 \neq p_2$. To determine $\Gamma_+(1,2)$ and $\Gamma_-(1,2)$, we need to first determine the intersection angles corresponding to $p_1$ and $p_2$ on $E_1(q_1)$. 
+
+Let $\gamma_1$ and $\gamma_2$ be two curves defined as \autoref{eq:parametric_ellipse} for $E_1(q_1)$ and $E_2(q_2)$ respectively. 
+The intersection angle of $p_i$ in $E_j(q_j)$ is defined as $t_i^{(j)} \in [0, 2\pi)$, such that $\gamma_j(t_i^{(j)}) = p_i$, for $i, j \in \{1, 2\}$. Obtaining $t_i^{(j)}$ can be done analytically solving the equation
+
+\begin{equation}\label{eq:angle_inter}
+	\dfrac{a}{b}\dfrac{p_{iy}-q_{jy}}{p_{ix}-q_{jx}} = \tan{(t_i^{(j)})}.
+\end{equation}
+
+Determining which one of the points is $\alpha_{ij}^+$, we just need to use the assumption that $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ is minimal. This can be done using the angle of the intersection points obtained from \autoref{eq:angle_inter}. 
 
 \begin{algoritmo}
 	\caption{Algorithm for MCE}\label{algoritmo:mce2}

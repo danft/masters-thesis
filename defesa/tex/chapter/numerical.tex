@@ -1,18 +1,20 @@
 The goal of this chapter is to show the results of the algorithms for MCE-$k$ and MCER-$k$ proposed by us for instances proposed by other works as well as instances created by us. 
-We also give implementation details and suggestions to improve performance, which we adopted in our implementations.
-
-\section{Implementation}
-
-All the algorithms were implemented using the C++ language, compiled with g++ (G++ 6.3.0) with the optimization flag -O3. All the experiments were run in a computer with the following specification:
+We also give implementation details and suggestions to improve performance, which we adopted in our implementations. All the experiments were run in a computer with the following specification:
 \begin{itemize}
 	\item CPU Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz;
 	\item 16Gib of RAM memory;
 	\item Linux Operating System: Debian 4.19.5.
 \end{itemize}
 
+\section{Implementation}
+
+In this section, we give more details about the implementation of the algorithms developed in our work.
+
+All the algorithms were implemented using the C++ language, compiled with g++ (G++ 6.3.0) with the optimization flag -O3. The actual code is available in \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
+
 \subsection{Determining the eigenvalues of a matrix}
 
-In \autoref{algoritmo:e3p}, we assumed that a procedure which returns every eigenvalue of a given square matrix was available. In practice, we used the very famous linear algebra package LAPACK (see \citeonline{lapack} for more details).
+In \autoref{algoritmo:e3p} for E3P, we assumed that a procedure which returns every eigenvalue of a given square matrix was available. In practice, we used the very famous linear algebra package LAPACK (see \citeonline{lapack} for more details).
 Even though LAPACK is a library for the FORTRAN programming language, its routines can be made available in a C/C++ environment by simply adding the -llapack linking flag to the compilation. The only remarks, though, are that FORTRAN represents matrices in a column-major fashion, and receives parameters only by reference. Therefore, matrices must be transposed before being passed to a routine, and every parameter must receive a pointer to a variable containing its value.
 
 LAPACK offers a routine called ZGEEV that computes every eigenvalue of a complex matrix by using an implementation of the QR algorithm. 
@@ -72,7 +74,7 @@ As expected, computing the coefficients of that polynomial in terms of the E3P's
 For that reason, we resort to Symbolic computation for this task.
 
 In practice, we utilized an external library for Python called SymPy (see \citeonline{sympy} for more information).
-This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we can write $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions with expressions for the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}, and then import it into our C++ implementation of \autoref{algoritmo:e3p} by printing the polynomial's list of coefficients as C code.
+This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we can write $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions with expressions for the identities given by  \autoref{eq:complex_trig_cos} and \autoref{eq:complex_trig_sin}, and then import it into our C++ implementation of E3P's algorithm by printing the polynomial's list of coefficients as C code.
 The actual coefficients of that polynomial are presented in \autoref{chapter:poly} in terms of a generic E3P's instance.
 
 
@@ -92,7 +94,7 @@ The actual coefficients of that polynomial are presented in \autoref{chapter:pol
 
 \section{Some details and improvements}\label{section:improvements}
 
-To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} and \autoref{algoritmo:mcer} had to be done. Just translating those algorithms into a programming language is not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
+To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} for MCE and \autoref{algoritmo:mcer} for MCER had to be done. Just translating those algorithms into a programming language is not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
 Therefore, we present here some improvements that can be applied to the implementation of those algorithms, which can result in significant growth of performance, especially in terms of CPU time.
 
 \subsection{CLS construction}
@@ -104,7 +106,7 @@ Another improvement that can be made in the construction of an ellipse's CLS is 
 Let $(Q, \Theta)$ and $(Q', \Theta')$ be two solutions of MCER (the same can be said about MCE). If, for any $j \in \{1, \dots, m\}$, we have $\Pp \cap E_j(q_j', \theta_j') \subset \Pp \cap E(q_j, \theta_j)$, then we can for sure dismiss solution $(Q', \Theta')$.
 In our implementation, we use the same tree-like data structure as the one described in \citeonline{andreta} to only keep solutions that are not redundant.
 
-Calling \autoref{algoritmo:e3p} for E3P for every triplet of points in an instance of MCER can be expensive. To avoid that, given three points and an ellipse with shape parameters $(a, b)$, we can skip calling \autoref{algoritmo:e3p} if the maximum distance between any of the points is greater than $2a$, or if the triangle's area with vertices on these three points have area greater than $\frac{3\sqrt{3}}{4}\pi ab$, which can be proved to be the greatest area of an inscribed triangle in an ellipse with shape parameters $(a, b)$.
+Calling E3P's algorithm for every triplet of points in an instance of MCER can be expensive. To avoid that, given three points and an ellipse with shape parameters $(a, b)$, we can skip calling E3P's algorithm if the maximum distance between any of the points is greater than $2a$, or if the triangle's area with vertices on these three points have area greater than $\frac{3\sqrt{3}}{4}\pi ab$, which can be proved to be the greatest area of an inscribed triangle in an ellipse with shape parameters $(a, b)$.
 
 \subsection{Backtracking}
 
@@ -126,12 +128,13 @@ w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) +w\left(\bigcup_{k=j
 then $OPT_j \le OPT_{lo}$, which implies that $OPT_j$ is less than or equal the value of any optimal solution. This defines a sufficient condition for us to dismiss every solution which have the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. In practice, we can use the value of the best solution found so far as the lower-bound for the optimal solution.
 
 It is worth pointing out that these improvement suggestions do not have an effect in a possible worst case scenario. We are adopting them in our implementation because they showed good results in practice.
-For example, without taking the suggestion given by \autoref{eq:upper-bound}, \autoref{algoritmo:mcer-k} takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions.
-In \autoref{tab:mcer-results-ab1}, we show the results of \autoref{algoritmo:mcer-k} implemented with all the improvement suggestions given here; for instance AB060, the algorithm takes less than one second to return an optimal solution, and evaluates only \num{1809} solutions.
+For example, without taking the suggestion given by \autoref{eq:upper-bound}, 
+MCER-$k$'s algorithm takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions.
+In \autoref{tab:mcer-results-ab1}, we show the results of MCER-$k$'s algorithm implemented with all the improvement suggestions given here; for instance AB060, the algorithm takes less than one second to return an optimal solution, and evaluates only \num{1809} solutions.
 
 \section{Results for known instances}
 
-In this section, we present the results of \autoref{algoritmo:mce-k} and \autoref{algoritmo:mcer-k} for instances CM1,CM2, CM4, CM5, CM7, CM8 proposed by \citeonline{canbolat}, and for instances CM3,CM6,CM9 and AB001-AB120 proposed by \citeonline{andreta}. 
+In this section, we present the results of \autoref{algoritmo:mce-k} for MCE-$k$ and \autoref{algoritmo:mcer-k} for MCER-$k$ for instances CM1,CM2, CM4, CM5, CM7, CM8 proposed by \citeonline{canbolat}, and for instances CM3,CM6,CM9 and AB001-AB120 proposed by \citeonline{andreta}. 
 
 For each instance, we display the selected ellipses and the income of the found optimal solution. 
 We also display some performance metrics with the intention of giving an idea of how much computation had to be done for the algorithms to find an optimal solution. These metrics are: 
@@ -152,11 +155,11 @@ The same can be said about the bound for the running time of the algorithm, usin
 
 \subsection{MCER-$k$}
 
-The numerical results obtained by our implementation of \autoref{algoritmo:mcer-k} are shown in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for instances AB001-AB120. 
+The numerical results obtained by our implementation of \autoref{algoritmo:mcer-k} for MCER-$k$ are shown in \autoref{tab:mcer-results-cm} for instances CM1-CM9, and in \autoref{tab:mcer-results-ab1} and \autoref{tab:mcer-results-ab2} for instances AB001-AB120. 
 An optimal solution was obtained for every instance, and overall, at most six seconds of CPU time was taken.
 
 Looking at the numerical results of the heuristic method proposed in \citeonline{andreta}, the only non-optimal solutions it encountered were for instances AB105-AB108. For these instances, our algorithm obtained an optimal solution covering one more point. In \autoref{fig:AB108}, the optimal solution for AB108 is displayed.
-In general, our algorithm took much lower CPU time compared to the methods developed in \citeonline{andreta}. For example, for instance CM9, their heuristic method took more than six hours to return a solution, our implementation of \autoref{algoritmo:mcer-k}, on the other hand, obtained an optimal solution in less than five seconds.
+In general, our algorithm took much lower CPU time compared to the methods developed in \citeonline{andreta}. For example, for instance CM9, their heuristic method took more than six hours to return a solution, our implementation of MCER-$k$'s algorithm, on the other hand, obtained an optimal solution in less than five seconds.
 
 \begin{figure}[!htb]
 	\centering
@@ -202,7 +205,7 @@ For the second set of instances, we used the same process used for the first set
 	\label{fig:TA021}
 \end{figure}
 
-The third set of instances were constructed generating the demand set following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for the first two set of instances. We created instances with $m=5$, $n\in \{400, 450, 500\}$, and $k\in\{1, \dots, m\}$, with a total of $15$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution of MCER-$k$ returned by \autoref{algoritmo:mcer-k} for the instance with $n=500$ and $k=5$ is shown in \autoref{fig:TA037}.
+The third set of instances were constructed generating the demand set following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for the first two set of instances. We created instances with $m=5$, $n\in \{400, 450, 500\}$, and $k\in\{1, \dots, m\}$, with a total of $15$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance with $n=500$ and $k=5$ is shown in \autoref{fig:TA037}.
 
 \begin{figure}[!htb]
 	\centering

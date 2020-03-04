@@ -177,7 +177,7 @@ Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)
 	For the last case, we are left with solutions where the $j$-th ellipse covers more than two points, and there exists an equivalent solution with three points on it. 
 	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega(\Pp, \Ww, \Rr)$. Also, in \autoref{lema:3pnts} it is stated that the number of centers and angles of rotation that make an ellipse contain three given points is at most six. Therefore, we have that $|S_j^{(3)}| \le 6\binom{n}{3}$.
 
-	Combining the three cases, as $S_j=S_j^{(1)}\cup S_j^{(2)} \cup S_j^{(3)}$, we get the following bound
+	Combining the three cases, as $S_j=S_j^{(1)}\cup S_j^{(2)} \cup S_j^{(3)}$, we get the following bound for its size:
 	\begin{eqnarray*}
 	|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n(n-1)(n-2) + n(n-1) + n\\
 	|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n((n-1)^2+1) \le n^3.

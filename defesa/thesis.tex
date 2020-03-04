@@ -12,7 +12,7 @@
 %   Curso                 = doutorado/mestrado
 %   Situação do trabalho  = pre-defesa/pos-defesa (exceto para qualificação)
 %   Versão para impressão = impressao
-\documentclass[mestrado]{packages/icmc}
+\documentclass[pre-defesa]{packages/icmc}
 
 % ---------------------------------------------------------------------------
 % Pacotes Opcionais
@@ -75,8 +75,8 @@
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
 % Tanto na capa quanto nas folhas de rosto apenas a primeira letra da primeira palavra (ou nomes próprios) devem estar em letra maiúscula, todas as demais devem ser em letra minúscula.
-\tituloPT{Cobertura Maxima por Elipses}
-\tituloEN{Maximum Covering by Ellipses}
+\tituloPT{Algoritmos para Problemas de Cobertura Máxima por Elipses}
+\tituloEN{Algorithms for Maximum Covering by Ellipses Problems}
 \autor[Tedeschi, D. F.]{Danilo Françoso Tedeschi}
 \genero{M} % Gênero do autor (M = Masculino / F = Feminino)
 \orientador[Orientadora]{Profa. Dra.}{Marina Andretta}
@@ -105,7 +105,8 @@
 \textoresumo[english]{
    Maximum covering by ellipses is an optimization problem where one wants to place fixed shape ellipses on the plane to cover demand points
    maximizing a function depending on the value of covered points.
-   We propose new algorithms for two versions of this problem, one where the ellipses have to be parallel to the coordinate axis, and another where they can be freely rotated. We also analyze the efficiency of the proposed algorithms and compare them with previous works.
+   We propose new exact algorithms for two versions of this problem, one where the ellipses have to be parallel to the coordinate axis, and another where they can be freely rotated. 
+   Besides finding optimal solutions for previously published instances, including the ones where no optimal solution was known, both algorithms proposed by us were able to obtain optimal solutions for some new larger instances having with up to seven hundred demand points and five ellipses.
     }{Optimization, Planar Maximal Covering Location Problem, Maximum Covering by Ellipses}
 
 % ----------------------------------------------------------
@@ -178,7 +179,7 @@
 \label{chapter:e3p}
 \input{tex/chapter/e3p.tex}
 
-\chapter{Maximum Covering by Ellipses with Rotation}
+\chapter{Maximum Covering by Ellipses with Rotation Problem}
 \label{chapter:mcer}
 \input{tex/chapter/mcer.tex}
 

@@ -27,7 +27,7 @@ In \citeonline{church:1984}, a CLS is set to be the \sigla{CIPS}{circle intersec
 
 We introduce, in this chapter, a $\bigO(n^2\lg{n})$ algorithm that returns a CLS for each facility, which is based on the idea presented in \citeonline{church:1984} and in the works for the one disk case by \citeonline{chazelle:1986} and \citeonline{cabello:2006}. We refer to the CLS for the $j$-th facility as $S_j$ and prove that, indeed, an optimal solution can be found by just considering the centers in $S_j$ for each facility.
 
-\section{Related Work}
+\section{Related work}
 In \citeonline{cabello:2006}, a $\bigO(n^{2m-1}\log{n})$ algorithm for $MCD$ is developed as a sub-routine for its $(1-\epsilon)$-approximation algorithm. Firstly, they solve a sub-problem for two disks in $\bigO(n^3\log{n})$. Then, for the rest of the points that are not in that solution, it uses the algorithm developed in \citeonline{chazelle:1986} for the one-disk case, checking every possible solution for every one of the disks left.
 
 Also, in \citeonline{zhou} an heuristic method for large-scale $MCD$ is proposed. It uses a probabilistic algorithm called mean-shift which is a gradient ascent method proven to converge to a local density maxima of any probability distribution. The mean-shift is utilized to find good candidates of centers for the unit disks, then the method backtracks to find the best assignment. The results showed that the greedy algorithm achieves an optimal coverage in some instances, but for some other ones it has a 15 percent worse coverage ratio.
