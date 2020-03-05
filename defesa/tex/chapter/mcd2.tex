@@ -29,10 +29,12 @@ Based on the results of \citeonline{bi}, instead of developing an algorithm for 
 A strictly convex normed space is defined in \citeonline{wada} as a space whose every chord of its unit sphere has its midpoint in the interior of its unit ball.
 Thus, $(\R^2, ||\cdot||)$ is a strictly convex normed plane if the unit disk defined by $||\cdot||$ is a strictly convex body. For more details about convexity and strictly convexity see \citeonline{conv}.
 
-For example, the norms $||\cdot||_p$, $p\in \mathbb{N}, p>1$, define strictly convex unit disks, while $||\cdot||_1$ and $||\cdot||_{\infty}$ do not.
-Ellipses are also strictly convex bodies, given an axis-parallel ellipse with shape parameters $(a, b)$, a norm $||\cdot||_{a,b}$ can be defined, such that its unit disk is the coverage region of that ellipse.
+For example, the norms $||\cdot||_p$, $p\in \mathbb{N}, p>1$ define strictly convex unit disks, while $||\cdot||_1$ and $||\cdot||_{\infty}$ do not.
+Given the shape parameters $(a, b)$ of an ellipse, it is possible to define a norm $||\cdot||_{a,b}$, such that the unit circle $\{x \in \R^2\colon ||x||_{a, b} = 1\}$ is the axis-parallel ellipse with shape parameters $(a, b)$ centered at the origin.
 
-From now on, since ellipses are just unit circles in a strictly convex normed space $(\R^2, ||\cdot||_{a,b})$, with $||\cdot||_{a, b}$ being an elliptical norm whose unit disk is an ellipse with shape parameters $(a, b)$, we will develop this work for any set of strictly convex unit disks. 
+%In the next section we introduce a problem equivalent to MCE with only one facility.
+
+%This way, from now on we will consider a more general version of MCE whose instance is composed by a set of strictly convex norms $\F:=\{f_1, \dots, f_m\}$, instead of the list of shape parameters $\Rr$, and the list $\E:=\{E_1, \dots, E_m\}$ having $ . 
 
 %The following notation is adopted: $D(x)$ represents a unit disk centered at $x\in \R^2$, which is the set of points $\{y \in \R^2 \colon ||y-x|| \le 1 \}$, for any strictly convex plane $(\R^2, ||.||)$, and we denote by $\partial D(x)$, the circle correspondent to that disk, that is, the boundary of $D(x)$.
 
