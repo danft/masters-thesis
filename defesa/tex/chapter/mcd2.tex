@@ -1,5 +1,4 @@
-In this section, we consider the problem which we refer to as \sigla{MCE}{Maximum Covering by Ellipses}. We introduce an algorithm for it, which in fact, works not only for ellipses, but for any disk in a strictly convex normed plane.
-
+In this chapter, we consider the problem, which we refer to as \sigla{MCE}{Maximum Covering by Ellipses}. We introduce an algorithm for it, which in fact, works not only for ellipses but for any disk in a strictly convex normed plane.
 \section{Definition}
 
 Axis-parallel ellipses are defined as the set of points that satisfy \autoref{equation:pellipse}. All it takes to describe one is a pair of positive real numbers $(a,b) \in \R_{>0}^2$, with $a>b$, also called its shape parameters, and a center $q \in \R^2$.
@@ -9,58 +8,100 @@ a set of weights $\Ww:=\{w_1, \dots, w_n\}$, with $w_j\in\R_{\ge0}$ being the we
 and a set of $m$ axis-parallel ellipses given by their shape parameters $\Rr:=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{>0}^2$ and $a_j>b_j$.
 Additionally, to make the text more clear, we define a set $\E = \{E_1, \dots, E_m\}$, with $E_j : \R^2 \mapsto \R^2$ being a function that takes the center where the $j$-th ellipse is located as input, and returns its coverage region as defined by \autoref{equation:cover_pellipse}.
 
-A solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse. Let $w : 2^\Pp \mapsto \R_{\ge0}$ as defined by \autoref{eq:subset_w}, then an optimal solution of MCE is given by the optimization problem
-
+A solution for MCE is given by $Q:=(q_1, \dots, q_m)\in\R^{2m}$, with $q_j$ being the center of $j$-th ellipse.  Let $w: 2^{\Pp} \mapsto \R_{\ge0}$ be a function, which takes a subset of $\Pp$ and returns the sum of the weights of every point in it, defined as
+\begin{equation*}
+w(A) = \sum_{j : p_j \in A} w_j,
+\end{equation*}
+then an optimal solution of MCE is given by the optimization problem
 \begin{equation*}
 	\max_q w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right).
 \end{equation*}
-
-From now on, since ellipses are just unit circles in a strictly convex normed space $(\R^2, ||.||_Q)$, with $||.||_{a, b}$ being an elliptical norm whose unit disk is an ellipse with shape parameters $(a, b)$, we will develop this work for any set of strictly convex unit disks. The following notation is adopted: $D(x)$ represents a unit disk centered at $x\in \R^2$, which is the set of points $\{y \in \R^2 \colon ||y-x|| \le 1 \}$, for any strictly convex plane $(\R^2, ||.||)$, and we denote by $\partial D(x)$, the circle correspondent to that disk.
 
 \section{Related work}
 The maximal planar covering using axis-parallel ellipses was first introduced in \citeonline{canbolat} which proposed a mixed integer non-linear programming method for the problem. This first approach showed to be not that efficient as it could not find an optimal solution for some instances within a timeout defined by them. To obtain solutions, not necessarily optimal ones, for the instances which the exact method showed inefficiency, a heuristic technique called Simulated Annealing was used to develop another method. Comparisons were made, which showed that the second approach was able to obtain good solutions, compared to the optimal ones found for some of the instances, within a good run-time.
 
 The second work found in the literature was \citeonline{andreta}, which developed a method that breaks the problem into smaller ones fixing the set of points an ellipse is going to cover. For each set of points fixed as the points an ellipse is going to cover, a small optimization problem is solved to find out if there is a location where the ellipse can be placed, so to cover the set of fixed points. To enumerate the possible solutions and then find an optimal one, the method defined a data structure that stores every set of points an ellipse can cover. This method showed better results and was able to find optimal solutions for the instances that the first method could not get as well as for new created instances.
 
+\section{Strictly Convex Normed Plane}
+
+Based on the results of \citeonline{bi}, instead of developing an algorithm for MCE, we are going to consider a more general case and develop an algorithm that works for any set of facilities with a strictly convex coverage region.
+
+A strictly convex normed space is defined in \citeonline{wada} as a space whose every chord of its unit sphere has its midpoint in the interior of its unit ball.
+Thus, $(\R^2, ||\cdot||)$ is a strictly convex normed plane if the unit disk defined by $||\cdot||$ is a strictly convex body. For more details about convexity and strictly convexity see \citeonline{conv}.
+
+For example, the norms $||\cdot||_p$, $p\in \mathbb{N}, p>1$, define strictly convex unit disks, while $||\cdot||_1$ and $||\cdot||_{\infty}$ do not.
+Ellipses are also strictly convex bodies, given an axis-parallel ellipse with shape parameters $(a, b)$, a norm $||\cdot||_{a,b}$ can be defined, such that its unit disk is the coverage region of that ellipse.
+
+From now on, since ellipses are just unit circles in a strictly convex normed space $(\R^2, ||\cdot||_{a,b})$, with $||\cdot||_{a, b}$ being an elliptical norm whose unit disk is an ellipse with shape parameters $(a, b)$, we will develop this work for any set of strictly convex unit disks. 
+
+%The following notation is adopted: $D(x)$ represents a unit disk centered at $x\in \R^2$, which is the set of points $\{y \in \R^2 \colon ||y-x|| \le 1 \}$, for any strictly convex plane $(\R^2, ||.||)$, and we denote by $\partial D(x)$, the circle correspondent to that disk, that is, the boundary of $D(x)$.
+
 \section{Maximum Weight Clique}
 
 We introduce in this section a problem equivalent to MCE with only one facility. We refer to this equivalent problem as \sigla{MWC}{Maximum Weight Clique}. This equivalence is also used in the works for MCD in \citeonline{chazelle:1986} and \citeonline{cabello:2006}.
 
 An instance of the \sigla{MWC}{Maximum Weight Clique} is given by a list of points \mbox{$\Pp:=\{p_1,\dots,p_n\}$}, with $p_i \in \R^2$; 
-a set of unit disks $\D:=\{D_1(p_1), \dots, D_n(p_n)\}$, with $D_i(p_i)$ being a unit disk in any strictly convex plane; and a set of weights \mbox{$\Ww:=\{w_1, \dots, w_n\}$}, with $w_i\in \R_{>0}$ being the weight of the $i$-th unit disk. We omit the center of a unit disk whenever we are referring to an instance of MWC, that is, $D_i:=D_i(p_i)$.
+a norm $||\cdot||$, such that $(\R^2, ||\cdot||)$ is a strictly convex normed plane; and a set of weights \mbox{$\Ww:=\{w_1, \dots, w_n\}$}, with $w_i\in \R_{>0}$. 
+Then, we define a set of unit disks $\D:=\{D_1, \dots, D_n\}$, with $D_i:=\{x \in \R^2 \colon ||x-p_i|| \le 1\}$ being a unit disk centered at $p_i$; we also denote by $\partial D_i$ as the circle correspondent to the $i$-th unit disk, and that $w_i$ is the weight of $D_i$.
+Having said all that, we define an instance of MWC as a tuple $(\Pp, \Ww, ||\cdot||)$.
 
-A clique, in this context, is a non-empty intersection region of one or more disks, and its weight is the sum of the weights of those disks in the intersection.
-Following this, a solution for MWC can be defined as just a point $q\in\cup_{j=1}^n D_j$, which is inside any of the given disks in $\D$.
+A clique, in this context, is a non-empty intersection region of one or more disks. The weight of a clique is the sum of every disk's weight in it.
+Following this, we define a solution for MWC as just a point $q\in\cup_{j=1}^n D_j$, which is inside any of the given disks in $\D$.
 From a solution $q$, the corresponding clique $S$ can be obtained by intersecting every disk that contains $q$ as follows
 \begin{equation*}
 	S = \bigcap_{j : q \in D_j} D_j.
 \end{equation*}
-Therefore, an optimal solution of MWC is defined by	$\max_{q} \sum_{D_k \cap q \neq \emptyset} w_k$. 
+Therefore, an optimal solution of MWC is defined as	$\max_{q} \sum_{D_k \cap q \neq \emptyset} w_k$.
 
-Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE with only one facility, and $(\Pp, \D, \Ww)$ an instance of MWC, with $\D$ being a set of unit disks in the strictly convex normed space $(\R^2, ||.||_{a,b})$.
-If $q_1$ be a solution for the MCE's instance. Then, the disks with centers in $\Pp \cap E_1(q_1)$ have non-empty intersection.
+
+Let $D$ be a unit disk in a strictly convex normed plane $(\R^2, ||\cdot||)$, and $p, q \in \partial D$. Then we denote by $\widehat{p, q}$ as the counter-clockwise arc of $D$ starting at $p$ and ending at $q$. This is represented in \autoref{fig:disk_arc} where the arc $\widehat{p,q}$ is shown with a solid line, and the arc $\widehat{q, p}$ is shown by a dashed line.
+
+\begin{figure}[!htb]
+	\centering
+	
+	\caption{The definition of arcs of a circle.}
+	%\input{tex/figures/array_disks.tex}
+	\includegraphics[scale=.3]{tex/figures/disk_arc.pdf}
+	\fautor
+	\label{fig:disk_arc}
+\end{figure}
+
+Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE with only one facility, and $(\Pp, \Ww, ||\cdot||_{a,b})$ an instance of MWC, with the unit circle defined by $||\cdot||_{a,b}$ being an axis-parallel ellipse with shape parameters $(a,b)$.
+If $q_1$ be a solution for the MCE's instance. Then, the disks with centers in $\Pp \cap E_1(q_1)$ have a non-empty intersection.
 Also, suppose that $q$ is a solution of MWC. Then, the ellipse with shape parameters $(a, b)$ centered at $q$ covers the points, which are the centers of disks, such that $q \in D_j$.
 Therefore, both problems are equivalent.
 
-Let us consider the intersection set of $k$ unit disks $\cap_{j=1}^k D_j(x_j)$, for any strictly convex normed space, with $x_j \in \R^2$ being all distinct.
-Then, in \citeonline{bi}, two results are stated about that set: its boundary is formed by arcs of unit circles whose centers are in $\{x_1, \dots, x_k\}$, its vertices are in the set $\partial D_i(x_i) \cap \partial D_j(x_j)$, for any $i \neq j$; and $|\partial D_i(x_i) \cap \partial D_j(x_j)| \le 2$, for any $i\neq j$. 
+Let us consider the intersection set of $k$ unit disks $\cap_{j=1}^k D_j(x_j)$, for any strictly convex normed space, with $x_j \in \R^2$, $j\in \{1, \dots, k\}$ being all distinct.
+Then, in \citeonline{bi}, the following results are stated about that set: its boundary is formed by arcs of unit circles whose centers are in $\{x_1, \dots, x_k\}$, its vertices are in the set $\partial D_i(x_i) \cap \partial D_j(x_j)$, for any $i \neq j$; and $|\partial D_i(x_i) \cap \partial D_j(x_j)| \le 2$, for any $i\neq j$. 
 Based on that, we introduce the next definition.
 
 \begin{definicao}
-	Let $D_i(p_i)$ and $D_j(p_j)$ be two unit disk in a strictly convex normed space, and $\{\alpha_{ij}^+, \alpha_{ij}^-\} \subset \partial D_i(p_i) \cap \partial D_j(p_j)$,
-	 we denote by $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ the minimal counter-clockwise arc of $D_i(p_i)$ starting in $\alpha_{ij}^+$ and ending in $\alpha_{ij}^-$. We also refer to $\alpha_{ij}^+$ as an opening intersection point, and to $\alpha_{ij}^-$ as a closing intersection point.
+	Let $D_i$ and $D_j$ be two unit disk in a strictly convex normed space, and\\ \mbox{$\{\alpha_{ij}^+, \alpha_{ij}^-\} = \partial D_i(p_i) \cap \partial D_j(p_j)$},
+	 we denote by $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ the minimal counter-clockwise arc of $\partial D_i$ starting in $\alpha_{ij}^+$ and ending in $\alpha_{ij}^-$. We also refer to $\alpha_{ij}^+$ as an opening intersection point, and to $\alpha_{ij}^-$ as a closing intersection point.
+	 If $\partial D_i$ and $\partial D_j$ intersect at exactly one point, we define $\alpha_{ij}^+ = \alpha_{ij}^- = \partial D_i \cap \partial D_j$.
 \end{definicao}
 Let $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}$ and $\widehat{\alpha_{ij}^-, \alpha_{ij}^+}$ be the two arcs of $\partial D_i$ with respect to the endpoints $\alpha_{ij}^-, \alpha_{ij}^+$.
-From \citeonline[Lemma 2]{bi}, we can state that, $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\subset D_j$, and\\ $\widehat{\alpha_{ij}^-, \alpha_{ij}^+} \cap D_j = \{\alpha_{ij}^-, \alpha_{ij}^+\}$. That is, only the minimal arc is contained in the interior of $D_j$.
+From \citeonline[Lemma 2]{bi}, we can state that, $\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\subset D_j$, and\\ $\widehat{\alpha_{ij}^-, \alpha_{ij}^+} \cap D_j = \{\alpha_{ij}^-, \alpha_{ij}^+\}$. That is, only the minimal arc is contained in the interior of $D_j$. In \autoref{fig:disk_arc_inter}, the minimal arcs are highlighted with a solid border, and it is possible to see that they are the only ones that are in the intersection's interior.
+
+\begin{figure}[!htb]
+	\centering
+	
+	\caption{The intersection between two circles, and the arcs .}
+	%\input{tex/figures/array_disks.tex}
+	\includegraphics[scale=.3]{tex/figures/disk_arc_inter.pdf}
+	\fautor
+	\label{fig:disk_arc_inter}
+\end{figure}
 
 
-Based on that, we are going to develop an algorithm that finds the best clique that $\partial D_i$ is part of, for each $i=1, \dots, n$. Let \mbox{$q_i \in \partial D_i$} be an optimal solution of $\max_{q_i} \sum_{D_k \cap q_i} w_k$. Then, an optimal solution of MWC is just
-$\max_{i=1}^n \max_{q_i} \sum_{D_k \cap q_i} w_k$. Notice that this is enough by the results in \citeonline{bi}.
+Based on that, we are going to develop an algorithm that finds the best clique that $\partial D_i$ is part of, for each $i=1, \dots, n$, and then combine the solutions to get an overall optimal one. Notice that this is enough because, by \citeonline{bi}, the arcs of the circles in $\partial \D$ form the boundary of any clique.
+For each $i\in \{1, \dots, m\}$, let $q_i$ be an optimal solution of MWC with an additional constraint that $q_i \in \partial D_i$.
+Then, an optimal solution of MWC can be obtained by just taking a solution of
+$\max_{i=1}^n \max_{q \in \partial D_i} \sum_{D_k \cap q} w_k$.
 
-\begin{lema}
-	Let $(\Pp, \D, \Ww)$ be an instance of MWC. For each $i\in \{1, \dots, n\}$,
-	if there is \mbox{$j \in \{1, \dots, n\}$}, $j\neq i$, such that $D_i \cap D_j \neq \emptyset$, then, for any solution $q_i \in \partial D_i$, let $J=\{j \colon q_i \in D_j\}$,
-	$q_i \in \cap_{j \in J, j\neq i}\{\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\}$.
+\begin{lema}\label{lema:mwc}
+	Let $(\Pp, \Ww, ||\cdot||)$ be an instance of MWC. For each $i\in \{1, \dots, n\}$,
+	let $q_i$ be any solution, such that $q_i \in \partial D_i$; and $J=\{j \colon q_i \in D_j\}$. If there is \mbox{$j \in \{1, \dots, n\}$}, $j\neq i$, such that $D_i \cap D_j \neq \emptyset$, then $q_i \in \cap_{j \in J, j\neq i}\{\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\}$.
 \end{lema}
 
 \begin{proof}
@@ -68,21 +109,25 @@ $\max_{i=1}^n \max_{q_i} \sum_{D_k \cap q_i} w_k$. Notice that this is enough by
 	By definition $q_i \in \partial D_i$, and by \citeonline[Lemma 2]{bi}, we have that $q_i \in \widehat{\alpha_{ij}^-, \alpha_{ij}^+}$, which implies that $q_i \in \{\alpha_{ij}^-, \alpha_{ij}^+\}$, which would imply that  $q_i \in \widehat{\alpha_{ij}^+, \alpha_{ij}^-}$, contradicting the assumption we made.
 \end{proof}
 
-
-For the algorithm, for each $i$, instead of looking for $q_i$, we are going to construct the best subset $J \in \{1, \dots, n\}$. This idea is based on the algorithms proposed in \citeonline{drezner} and \citeonline{cabello:2006}. Let us consider the following circular list
+Given the set of indexes $J=\{j \colon q_i \in D_j\}$ of disks that contain a solution $q_i\in\partial D_i$, we have that there exists $l, k \in J\setminus \{i\}$, such that  $\cap_{j \in J, j\neq i}\{\widehat{\alpha_{ij}^+, \alpha_{ij}^-}\} = \widehat{\alpha_{il}^+, \alpha_{ik}^-}$. Therefore, by \autoref{lema:mwc}, we can just look for an index $l \in \{1, \dots, n\} \setminus \{i\}$, such that it is the solution of $$\max_{l \neq i} \sum_{D_k \cap \alpha_{il}^+} w_k.$$ 
+Then an optimal solution $q_i \in \partial D_i$ can be obtained by just setting $q_i = \alpha_{il}^+$. From that, a $\bigO(n^3)$ algorithm for MWC can be developed by just evaluating, for every pair $i, j \in \{1, \dots, n\}$, the solution defined by $\alpha_{ij}^+$. 
+Based on the algorithms for MCD proposed by \citeonline{drezner} and \citeonline{cabello:2006} though, we can develop a $\bigO(n^2\lg{n})$ algorithm for MWC.
+Let $A_i$ be a circular defined as 
 \begin{equation*}
-	A_i = \{\alpha_{ij}^+ \colon j\neq i, D_i \cap D_j \neq \emptyset\} \cup \{\alpha_{ij}^- \colon j\neq i, D_i \cap D_j \neq \emptyset \}.
+	A_i = \{\alpha_{ij}^+ \colon j\neq i, D_i \cap D_j \neq \emptyset\} \cup \{\alpha_{ij}^- \colon j\neq i, D_i \cap D_j \neq \emptyset \},
 \end{equation*}
-Suppose that $A_i$ is sorted by the angles of $D_i$ in $[0, 2\pi)$ corresponding to each intersection point, breaking ties by prioritizing opening ones.
+which contains all the intersection points of $\partial D_i$ with all the other disks. Assume that this list is sorted by the angles on $D_i$ in the interval $[0, 2\pi)$ corresponding to the intersection points, breaking ties prioritizing opening intersection points. 
 Finding the best solution which $D_i$ is part of can be done by traversing $A_i$ while keeping a set of active disks. When an opening intersection angle is reached, the corresponding disk is added to the active set; and when a closing one is seen, the corresponding disk is removed from the active set. This way, finding an optimal solution can be achieved by keeping the weight of the active disks as well as the best clique found so far.
 
 In practice, traversing a circular list can be emulated by traversing a regular list that has a copy of the original circular list added to its end. 
-Therefore, the list $B_i$ is defined here as a list that contains the elements of $A_i$ and a copy of it shifted to the interval $[2\pi, 4\pi]$. It is defined as
+Therefore, the list $B_i$ is defined here as a list that contains the elements of $A_i$, and a copy of it shifted to the interval $[2\pi, 4\pi]$. It is defined as
 \begin{equation}\label{eq:bi2}
 B_i = A_i\cup\bigcup_{j\neq i} \{2\pi+\alpha_{ij}^+ \colon j\neq i, D_i \cap D_j \neq \emptyset\} \cup \{2\pi+\alpha_{ij}^- \colon j\neq i, D_i \cap D_j \neq \emptyset \}.
 \end{equation}
 Assuming $B_i$ is sorted with the same criteria as $A_i$, a simple traversal, starting at the first element and going until the last one, simulates a traversal on the circular list $A_i$.
 This works because for any pair of disks $D_i$, $D_j$; $B_i$ contains $\alpha_{ij}^+ < \alpha_{ij}^- + 2\pi$. That is, the algorithm encounters an opening intersection point before reaching a closing one for any circle.
+
+If it is possible to find the intersection between two unit disks (it will be shown that it is possible for the case where the unit disk is an axis-parallel ellipse), for each disk, the runtime complexity of processing every intersection point and sorting the list $B_i$ is $\bigO(n\lg{n})$. Therefore, the overall runtime complexity of this algorithm for MWC is $\bigO(n^2\lg{n})$.
 
 In \autoref{fig:array_disks2}, the intersection points between $\partial D_1$ (solid border) with $\partial D_2, \partial D_3$, and $\partial D_4$ (dashed border) are shown with a plus or minus sign indicating opening or closing intersection points. 
 The intersection list $B_1$ is also displayed in \autoref{fig:array_disks2} along with the size of the set of active disks $Q$ after processing a point in $B_1$.
@@ -138,11 +183,11 @@ The special intersection point of $\partial D_1$ with itself can also be seen in
 
 \section{From MWC to MCE}
 
-Now we are going to modify the algorithm for MWC to work as a basis for the algorithm for multiple disks.
-Suppose that an instance $(\Pp, \Ww, \Rr)$ of MCE is given. For each ellipse with shape parameters $(a_j, b_j)$, we have the instance $(\Pp, \D, \Ww)$ of MWC, with $\D$ being a set of unit disks from a strictly convex normed space where the unit disk is an axis-parallel ellipse with shape parameters $(a_j, b_j)$.
+Based on the ideas developed for MWC, we are going to propose an algorithm for MCE in this section.
+Suppose that an instance $(\Pp, \Ww, \Rr)$ of MCE is given. For each ellipse with shape parameters $(a_j, b_j)$, we have the equivalent instance $(\Pp, \Ww, ||\cdot||_{a_j,b_j})$ of MWC.
 
 \begin{definicao}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCE. For each $j \in \{1, \dots, m\}$, let $(\Pp, \D, \Ww)$ be the equivalent instance of MWC using the $j$-th ellipse as their unit disk, we define as the \sigla{CLS}{Candidate List Set} $S_j$ for $j$-th ellipse as
+	Let $(\Pp, \Ww, \Rr)$ be an instance of MCE. For each $j \in \{1, \dots, m\}$, let \mbox{$(\Pp,  \Ww, ||\cdot||_{a_j,b_j})$} be the equivalent instance of MWC using the $j$-th ellipse as their unit disk, we define as the \sigla{CLS}{Candidate List Set} $S_j$ for $j$-th ellipse as
 	\begin{equation*}
 	S_j = \bigcup_{i=1}^n \{\alpha_{ik}^+ \colon k\neq i, D_i \cap D_k \neq \emptyset\}\cup \{p_i\}.
 	\end{equation*}
@@ -158,20 +203,23 @@ Based on this, we introduce a theorem that allows us to develop an algorithm for
 	Then there exists an optimal solution $Q^*\in \Omega(\Pp, \Ww, \Rr)$, and $|\Omega(\Pp, \Ww, \Rr)|\le n^{2m}$.
 \end{theorem}
 \begin{proof}
-		Notice that $\Omega(\Pp, \Ww, \Rr)$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $Q^*$, it is enough to prove that for all $j\in\{1, \dots, m\}$, there exists $q_j\in S_j$, such that $\Pp \cap E_j(q_j^*) \subset \Pp \cap E_j(q_j)$. That is, we only need to show that the CLS of every ellipse contains a center that makes the ellipse cover the same points (possibly some additional ones) that it covers in an optimal solution.
+		Notice that $\Omega(\Pp, \Ww, \Rr)$ is defined as the combination of every possible solution from each CLS. 
+		To prove that $\Omega(\Pp, \Ww, \Rr)$ contains an optimal solution, we just need to show that for any optimal solution $Q'$, for every $j \in \{1, \dots, m\}$, there exists $q_j \in S_j$, such that $\Pp \cap E_j(q_j') \subset \Pp \cap E_j(q_j)$.
+		That is, we only need to show that the CLS of every ellipse contains a center that makes the ellipse cover the same points (possibly some additional ones) that it covers in an optimal solution.
 		We ignore the case where an ellipse does not cover any points.
 		
-		First case: $|\Pp \cap E_j(q_j^*)|=1$. This case is included in $S_j$ as it contains the possible solutions where the center of the ellipse is the actual points in $\Pp$.
+		First case: $|\Pp \cap E_j(q_j')|=1$. This case is included in $S_j$ as it contains the possible solutions where the center of the ellipse is the actual points in $\Pp$.
 		
-		Second case: $|\Pp \cap E_j(q_j^*)| > 1$. Let $X = \{i \colon p_i \in \Pp \cap E_j(q_j^*)$. In the equivalent instance of MWC, we have that $\cap_{i\in X} D_i \neq \emptyset$ is a region bounded by arcs of circles with centers in $\Pp \cap E_j(q_j^*)$ with vertices being pairwise intersections of $\partial \D$, with at least one of them being an opening intersection point.
+		Second case: $|\Pp \cap E_j(q_j')| > 1$. Let $X = \{i \colon p_i \in \Pp \cap E_j(q_j')\}$. In the equivalent instance of MWC, we have that $\cap_{i\in X} D_i \neq \emptyset$ is a region bounded by arcs of circles with centers in $\Pp \cap E_j(q_j')$ with vertices being pairwise intersections of $\partial \D$. By \autoref{lema:mwc}, we have that at least one of the vertices of $\cap_{i\in X} D_i$ is an opening intersection point.
 		
 		Lastly, we have that $|S_j| \le \binom{n}{2} + n = \frac{n(n+1)}{2} \le n^2$. Therefore,
 		$|\Omega(\Pp, \Ww, \Rr)| \le |S_1|\times \dots \times |S_m| \le n^{2m}$.
 \end{proof}
 
-\section{An algorithm for MCE}
-
-First, we describe, based on \autoref{th:mce2}, an algorithm to return the CLS for every ellipse. This algorithm runs in $\bigO(n)$, and is based on the idea used on the development of the algorithm for MWC.
+Based on \autoref{th:mce2}, \autoref{algoritmo:mce_cls} describes a simple $\bigO(n^2)$ algorithm that returns a CLS for an ellipse given a set of points and the ellipse's shape parameters. 
+Then we define \autoref{algoritmo:mce2}, which backtracks the CLS returned by \autoref{algoritmo:mce_cls} of every ellipse to find an optimal solution given an instance of MCE. This algorithm can be implemented to have a $\bigO(mn^{2m+1})$ runtime complexity if the CLSs are constructed beforehand in a preprocessing phase. 
+\autoref{algoritmo:mce2} can go through every solution in $\Omega(\Pp, \Ww, \Rr)$, and taking $\bigO(mn)$ operations to evaluate each solution hence its runtime complexity.
+Next we give details on how to determine the intersection points between two ellipses.
 
 \begin{algoritmo}
 	\caption{Algorithm that returns a CLS for a disk.}\label{algoritmo:mce_cls}
@@ -199,9 +247,7 @@ First, we describe, based on \autoref{th:mce2}, an algorithm to return the CLS f
 	\end{algorithmic}
 \end{algoritmo}
 
-Then, we define in \autoref{algoritmo:mce2}, an algorithm for MCE, which backtracks to find an optimal solution taking into account every possibility in the CLS of every ellipse. This way, we obtain a $\bigO(mn^{2m+1})$ algorithm for MCE.
-
-\section{Determining $\alpha_{ij}^+$ and $\alpha_{ij}^-$}\label{section:ellipses_intersection2}
+\section{Determining $\alpha_{ij}^+$ and $\alpha_{ij}^-$ for axis-parallel ellipses}\label{section:ellipses_intersection2}
 
 Let $E_1(q_1)$, and $E_2(q_2)$ be two coverage region of ellipses centered at $q_1, q_2\in\R^2$ respectively, with shape parameters $(a, b)\in\R^2_{>0}$. After changing the coordinates to make the center of the first ellipse be at the origin, the intersection points between the two ellipses are defined by
 
