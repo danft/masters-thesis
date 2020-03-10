@@ -12,7 +12,7 @@
 %   Curso                 = doutorado/mestrado
 %   Situação do trabalho  = pre-defesa/pos-defesa (exceto para qualificação)
 %   Versão para impressão = impressao
-\documentclass[pre-defesa]{packages/icmc}
+\documentclass[mestrado,pre-defesa]{packages/icmc}
 
 % ---------------------------------------------------------------------------
 % Pacotes Opcionais
@@ -78,7 +78,7 @@
 % Tanto na capa quanto nas folhas de rosto apenas a primeira letra da primeira palavra (ou nomes próprios) devem estar em letra maiúscula, todas as demais devem ser em letra minúscula.
 \tituloPT{Algoritmos para Problemas de Cobertura Máxima por Elipses}
 \tituloEN{Algorithms for Planar Maximum Covering Location by Ellipses Problems}
-\autor[Tedeschi, D. F.]{Danilo Françoso Tedeschi}
+\autor[Tedeschi, D.]{Danilo Tedeschi}
 \genero{M} % Gênero do autor (M = Masculino / F = Feminino)
 \orientador[Orientadora]{Profa. Dra.}{Marina Andretta}
 %\coorientador{Prof. Dr.}{Fulano de Tal}
@@ -104,18 +104,18 @@
 % conter no máximo 500 palavras
 % conter no mínimo 1 e no máximo 5 palavras-chave
 \textoresumo[english]{
-   Planar maximum covering location by ellipses is an optimization problem where one wants to place fixed shape ellipses on the plane to cover demand points
+   Planar Maximum Covering Location by Ellipses is an optimization problem where one wants to place fixed shape ellipses on the plane to cover demand points
    maximizing a function depending on the value of covered points.
    We propose new exact algorithms for two versions of this problem, one where the ellipses have to be parallel to the coordinate axis, and another where they can be freely rotated. 
    Besides finding optimal solutions for previously published instances, including the ones where no optimal solution was known, both algorithms proposed by us were able to obtain optimal solutions for some new larger instances having with up to seven hundred demand points and five ellipses.
-    }{Optimization, Planar Maximal Covering Location Problem, Maximum Covering by Ellipses}
+    }{Optimization, Planar Maximal Covering Location Problem, Planar Maximum Covering Location by Ellipses}
 
 % ----------------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS
 % ----------------------------------------------------------
 
 % Inserir a ficha catalográfica
-%\incluifichacatalografica{tex/pre-textual/ficha-catalografica.pdf}
+\incluifichacatalografica{tex/pre-textual/ficha-catalografica.pdf}
 
 % DEDICATÓRIA / AGRADECIMENTO / EPÍGRAFE
 %\textodedicatoria*{tex/pre-textual/dedicatoria}
@@ -257,7 +257,7 @@
 	\label{chapter:poly}
 	\input{tex/appendix/poly.tex}
     
-    \chapter{Tables of results}
+    \chapter{Tables of numerical results}
     \label{chapter:tables}
     \input{tex/chapter/tables.tex}
        

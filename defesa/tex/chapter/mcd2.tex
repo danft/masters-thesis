@@ -43,17 +43,17 @@ We also refer to norms that induce strictly convex normed spaces as strictly con
 Restricting this definition to $\R^2$, we get a strictly convex normed plane, and we refer to its ball as disk, and to its sphere as circle.
 For more details about convexity and strictly convexity see \citeonline{conv}.
 
-For example, the norms $||x||_p=(\sum_{i} |x_i|^p)^{\frac{1}{p}}$, $p\in \mathbb{N}, p>1$ define strictly convex unit disks, while $||\cdot||_1$ and $||\cdot||_{\infty}$ do not.
-Given the shape parameters $(a, b)$ of an ellipse, it is possible to define a strictly convex normed space $(\R^2,||\cdot||_{a,b})$, such that the unit circle $\{x \in \R^2\colon ||x||_{a, b} = 1\}$ is the axis-parallel ellipse with shape parameters $(a, b)$ centered at the origin.
+For example, the norms $||x||_p=(\sum_{i} |x_i|^p)^{\frac{1}{p}}$, $p\in \mathbb{N}, p>1$, define strictly convex unit disks, while $||\cdot||_1$ and $||\cdot||_{\infty}$ do not.
+Given the shape parameters $(a, b)$ of an ellipse, it is possible to define a strictly convex normed space $(\R^2,||\cdot||_{a,b})$ such that the unit circle $\{x \in \R^2\colon ||x||_{a, b} = 1\}$ is the axis-parallel ellipse with shape parameters $(a, b)$ centered at the origin.
 
 Instead of developing an algorithm for ellipses only, based on the results of \citeonline{bi}, we describe a more general method that only assumes that the facilities have a strictly convex coverage area, and it is possible to determine the intersection between the boundaries of two of them.
-We refer to this more general version of MCE as \sigla{MCSCD}{Planar Maximum Covering Location by Strictly Convex Disks}, and instead of having a list of shape parameters, a list of strictly convex norm functions $\F=\{f_1, \dots, f_m\}$ is given, and an instance of MCSCD is defined as the tuple $(\Pp, \Ww, \F)$. Also, we define for MCSCD the set $\E=\{E_1, \dots, E_m\}$, with $E_j\colon \R^2 \to \R^2$ being a function that takes a center where the $j$-th disk is located and returns the unit disk corresponding to the the norm $f_i$.
+We refer to this more general version of MCE as \sigla{MCSCD}{Planar Maximum Covering Location by Strictly Convex Disks Problem}, and instead of having a list of shape parameters, a list of strictly convex norm functions $\F=\{f_1, \dots, f_m\}$ is given, and an instance of MCSCD is defined as the tuple $(\Pp, \Ww, \F)$. Also, we define for MCSCD the set $\E=\{E_1, \dots, E_m\}$, with $E_j\colon \R^2 \to \R^2$ being a function that takes a center where the $j$-th disk is located and returns the unit disk corresponding to the the norm $f_i$.
 
 \section{Maximum Weight Clique}
 
 We introduce in this section a problem which is equivalent to the version of MCSCD with only one facility. We refer to this equivalent problem as \sigla{MWC}{Maximum Weight Clique}. This equivalence is also used in the works for MCD in \citeonline{chazelle:1986} and \citeonline{cabello:2006}. Later we use the developments for this problem to construct a CLS for each disk in an instance of MCSCD.
 
-An instance of the \sigla{MWC}{Maximum Weight Clique} is given by a list of points \mbox{$\Pp:=\{p_1,\dots,p_n\}$}, with $p_i \in \R^2$; 
+An instance of the MWC is given by a list of points \mbox{$\Pp:=\{p_1,\dots,p_n\}$}, with $p_i \in \R^2$; 
 a norm $||\cdot||$, such that $(\R^2, ||\cdot||)$ is a strictly convex normed plane; and a set of weights \mbox{$\Ww:=\{w_1, \dots, w_n\}$}, with $w_i\in \R_{>0}$. 
 Then, we define a set of unit disks $\D:=\{D_1, \dots, D_n\}$, with $D_i:=\{x \in \R^2 \colon ||x-p_i|| \le 1\}$ being a unit disk centered at $p_i$; we also denote by $\partial D_i$ as the circle correspondent to the $i$-th unit disk, and that $w_i$ is the weight of $D_i$.
 All that being said, we define an instance of MWC as a tuple $(\Pp, \Ww, ||\cdot||)$.

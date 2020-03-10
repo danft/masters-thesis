@@ -33,7 +33,7 @@ We start by introducing a lemma, which says that given an optimal solution of MC
 	
 	Let $A=\Pp \cap E_j(q_j^*, \theta_j)$ be the set of points covered by the $j$-th ellipse and $X=\cap_{p \in A}E_j(p, \theta_j)$ be the region of intersection of ellipses centered at each point in $A$.
 
-	As it was shown on \autoref{chapter:mce}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point, creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
+	As it was shown in \autoref{chapter:mcd2}, $X$ is a region that is limited by arcs of ellipses. As this region is the non-empty intersection of more than one ellipse, there are at least two of these arcs that encounter at one point, creating a vertex. Selecting any of these vertices as $q_j'$ will make $|\Pp \cap \partial E_j(q_j', \theta_j)| \ge 2$.
 	
 \end{proof}
 
@@ -172,7 +172,7 @@ Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)
 	
 	In the second case, we consider solutions where the $j$-th ellipse covers at least two points, and no equivalent solution exists, such that three points are on it. This case is addressed by \autoref{lema:3pnts}, which says that an optimal solution $(Q^*, \Theta^*)$ of this type has equivalent solutions with two points $u, v \in \Pp \cap E_j(q_j^*, \theta_j^*)$ on the ellipse, for any angle of rotation $\theta_j \in \Phi_j(u, v)$.
 	As $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$, we have that there exists $(q_j, \theta_j) \in S_j^{(2)}$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) = \Pp \cap E_j(q_j, \theta_j)$. 
-	Moreover, in Section~\ref{section:ellipses_intersection}, we discuss the problem of determining the intersections between two ellipses. This problem is equivalent to the problem of determining every center and angle of rotation that puts two points on an ellipse, which is the problem used in the definition of $S_j^{(2)}$ for every pair of points. In \autoref{section:ellipses_intersection}, it is shown that this problem has at most two solutions. Therefore, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
+	Moreover, in Section~\ref{section:ellipses_intersection2}, we discuss the problem of determining the intersections between two ellipses. This problem is equivalent to the problem of determining every center and angle of rotation that puts two points on an ellipse, which is the problem used in the definition of $S_j^{(2)}$ for every pair of points. In \autoref{section:ellipses_intersection}, it is shown that this problem has at most two solutions. Therefore, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
 	
 	For the last case, we are left with solutions where the $j$-th ellipse covers more than two points, and there exists an equivalent solution with three points on it. 
 	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega(\Pp, \Ww, \Rr)$. Also, in \autoref{lema:3pnts} it is stated that the number of centers and angles of rotation that make an ellipse contain three given points is at most six. Therefore, we have that $|S_j^{(3)}| \le 6\binom{n}{3}$.
@@ -191,7 +191,7 @@ Then there exists an optimal solution $(Q^*, \Theta^*) \in \Omega(\Pp, \Ww, \Rr)
 In this section we describe an algorithm for MCER that does a complete search on the CLS of each ellipse.
 Firstly, in \autoref{algoritmo:mcer1}, we present a procedure called CLS-MCER which returns the CLS for an ellipse with shape parameters $(a, b)$. Then, in \autoref{algoritmo:mcer} we describe the procedure that returns an optimal solution for MCER.
 
-Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse. This can be done using the results of Section~\ref{section:ellipses_intersection}.
+Let $E$ be the coverage region of an ellipse with shape parameters $(a, b)$. We assume that in \autoref{algoritmo:mcer1}, the procedure $e2p(u, v, a, b)$ returns every $(q, \tilde{\Phi}_j(u,v)) \in \R^2\times[0, \pi)$, such that, $\{u, v\}\subset \partial E(q, \tilde{\Phi}_j(u,v))$. That is, this procedure returns every location for the ellipse with shape parameters $(a, b)$, such that its angle of rotation is $\tilde{\Phi}_j(u,v)$, and the points $u$, $v$ are on the ellipse. This can be done using the results of Section~\ref{section:ellipses_intersection2}.
 
 \begin{algoritmo}
 	\caption{Algorithm that constructs a CLS for an ellipse.}\label{algoritmo:mcer1}
