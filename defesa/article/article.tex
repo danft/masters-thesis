@@ -20,6 +20,7 @@
 %%
 \documentclass[a4]{elsarticle}
 
+
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
 
@@ -34,6 +35,7 @@
 
 %% The graphicx package provides the includegraphics command.
 \usepackage{graphicx}
+\usepackage{hyperref}
 %% The amssymb package provides various useful mathematical symbols
 \usepackage{amssymb}
 %% The amsthm package provides extended theorem environments
@@ -67,6 +69,9 @@
 
 \journal{EJOR}
 
+\usepackage[utf8]{inputenc}
+
+
 \usepackage[mathscr]{eucal}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Co}{\mathbb{Co}}
@@ -79,6 +84,18 @@
 \newcommand{\Rr}{\mathscr{R}}
 \newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
 \newcommand{\bigO}{\mathscr{O}}
+\usepackage{amsmath}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newdefinition{rmk}{Remark}
+\newdefinition{definition}{Definition}
+\newproof{pf}{Proof}
+
+\RequirePackage{algorithm, algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 
 \begin{document}
 	
@@ -122,7 +139,7 @@
 		\author[2]{Marina Andretta}
 		\ead{andretta@gmail.com}
 					
-		\address{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
+		%\address{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
 		%\author{John Smith}
 		
 		%address{California, United States}
@@ -203,7 +220,7 @@ and similarly MCER as
 \max_{(q_1, \theta_1), \dots, (q_m, \theta_m)} \sum_{j=1}^m w(\Pp \cap E_j(q_j, \theta_j)).
 \end{equation}
 
-To make the notation more clear, we denote an instance of MCE or MCER as the tuple $(\Pp, \Ww, \Rr)$, and a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$.
+To make the notation more clear, we denote an instance of MCE or MCER as the tuple $(\Pp, \Ww, \Rr)$, and a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. We also use $\partial$ as the boundary operator, for example, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$ given an instance of MCE.
 
 \section{An algorithm for MCE}
 
@@ -212,19 +229,98 @@ We first describe a Candidate List set (CLS) for each facility, which is finite 
 
 %\subsection{An equivalent problem}
 
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE, then for each $j=1\dots m$, consider $n$ ellipses with shape parameters $(a_j, b_j)$ centered at each one of the points in $\Pp$. Then, if we have $q_j\in\R^2$ and $X \subset \{1, \dots, n\}$, such that $q_j \in \cap_{i\in X}E_j(p_i)$. That is $q_j$ lies in the intersection of a subset of the ellipses centered at $\Pp$. Then $\Pp \cap E_j(q_j) = \{p_i \colon i \in X\}$, that is, if we place an ellipse at $q_j$, it will cover the points which are centers of the ellipses centered at $\Pp$ that contain $q_j$.
+Let $(\Pp, \Ww, \Rr)$ be an instance of MCE, then for each $j=1\dots m$, consider $n$ ellipses with shape parameters $(a_j, b_j)$ centered at each one of the points in $\Pp$. If we have $q_j\in\R^2$ in a subset of the coverage areas of those ellipses, then $q_j$ is a solution of MCE covering the centers of those ellipses. In other words, if $q_j \in \R^2$, and $X \subset \{1, \dots, n\}$, $X \neq \emptyset$, such that $q_j \in \cap_{i\in X}E_j(p_i)$, then $\Pp \cap E_j(q_j) = \{p_i \colon i \in X\}$.
 From that observation, we can constrain each $q_j$ to be in $\cap_{i\in X} E_j(p_i)$, for some $X \subset \{1, \dots,n\}$, $X \neq \emptyset$.
 
-Let $(\R^2, ||\cdot||)$ be a strictly convex normed plane, and $\D=\{D_1(p_1), \dots, D_n(p_n)\}$ be a set of $n$ unit disks in that space, with the condition that  $\cap_{D\in\D} D \neq \emptyset$. In \cite{bi}, we have the following results about $\cap_{D \in \D} D$:
+In \cite{bi}, an algorithm is proposed for the problem of determining the intersection of disks of fixed radii from a strictly convex normed plane. 
+We say that $(\R^2, ||\cdot||)$ is a strictly convex normed plane if the unit disk given by the norm $||\cdot||$ is strictly convex. Note that for any ellipse, there is a strictly convex normed plane whose unit circle is that ellipse.
+For that reason, we state some results from \cite{bi} here, which we use on the development of an algorithm for MCE.
+
+
+Let $(\R^2, ||\cdot||)$ be a strictly convex normed plane, and $\D=\{D_1, \dots, D_n\}$ be a set of $n$ unit disks in that space centered at different points, with the condition that  $\cap_{i=1}^n D_i \neq \emptyset$. In \cite{bi}, an algorithm was developed to construct this intersection in $\bigO(n\lg{n})$, some of its preliminary results are:
 \begin{itemize}
-	\item The $\partial \cap_{D \in \D} D$ is formed by arcs of $D_1(p_1), \dots, D_n(p_n)$.
-	\item The vertices of $\partial \cap_{D \in \D} D$ is contained in the set of pairwise-intersection of the circles $\partial D_1(p_1), \dots, \partial D_n(p_n)$.
+	\item $\partial \cap_{i=1}^n D_i$ is formed by arcs of $\partial D_1, \dots, \partial D_n$.
+	\item The vertices of $\partial \cap_{i=1}^n D_i$ is contained in the set of pairwise-intersection of the circles $\partial D_1, \dots, \partial D_n$.
+	\item $|\partial D_i \cap \partial D_j| \le 2$.
 \end{itemize}
+
+Based on those, we introduce the next definition for the $k$-th ellipse's CLS, which we refer to as $S_k$.
+
+\begin{definition}\label{def:cls_mce}
+	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
+	\begin{equation}
+	S_k = \bigcup_{1 \le i < j \le n} \partial E_k(p_i) \cap \partial E_k(p_j) \bigcup \Pp.
+	\end{equation}
+\end{definition}
+
+The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the intersections between two axis-parallel ellipses can be done analytically. 
+
+\begin{lem}
+	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
+\end{lem}
+\begin{pf}
+	Let $Q^*$ be an optimal solution of MCE for the given instance. Then, we are going to prove that there exists $Q' \in \Omega$, which is also optimal.
 	
+	For each $k=1, \dots, m$, let $X_k = \{p_i \in \Pp\colon p_i \in E_k(q_k^*)\}$.
+	
+	If $|X_k| = 0$, then any $q_k \in S_k$ makes $X_k \subset \Pp \cap E_k(q_k)$.
+	
+	if $|X_k| = 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
+	
+	if $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$, by the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
+	
+	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
+\end{pf}
+
+With all this in hand, we can go ahead and define an algorithm for MCE.
+
+\begin{algorithm}
+	\caption{Algorithm for MCE}\label{algoritmo:mce}
+	
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
+		
+		\Ensure{An optimal solution for MCE.}
+		
+		\item[]
+		\Procedure{$MCE$}{$\Pp, \Ww, \Rr$}
+		\State \Return $MCE_{bt}(\Pp, \Ww, \Rr, 1)$
+		\EndProcedure
+		\State
+		\Procedure{$MCE_{bt}$}{$Z, \Ww, \Rr, j$}
+		\If{$j = m+1$}
+		\State \Return $0$
+		\EndIf
+		
+		\State $(q_j^*, \dots, q_m^*) \gets (0, \dots, 0)$
+		\State Let $S_j$ be the CLS for the $j$-th ellipse as defined by \autoref{def:cls_mce}.
+		%\State $S_j \gets \textnormal{CLS-MCE}(Z, a_j, b_j)$
+		\For{$q_j \in S_j$}
+		\State $Cov \gets \Pp \cap E_j(q_j)$
+		\State $(q_{j+1}, \dots, q_m) \gets MCE_{bt}(Z \setminus Cov, \Ww, \Rr, j+1)\}$
+		
+		\If{$w(\cup_{k=j}^m Z \cap E_k(q_k)) >  w(\cup_{k=j}^m Z \cap E_k(q_k^*))$}
+		\State $(q_j^*, \dots, q_m^*) \gets(q_j, \dots, q_m)$
+		\EndIf
+		\EndFor
+		
+		\State \Return $(q_j^*, \dots, q_m^*)$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\autoref{algoritmo:mce} can be proved to have a runtime complexity of $\bigO(mn^{2m+1})$.
+
+\section{Determining every location of an ellipse given its shape and three points}
+	
+\input{e3p.tex}
+
+\section{An Algorithm for MCER}\label{section:mcer}
+
 \section{References}
 	%% New version of the num-names style
 	\bibliographystyle{elsarticle-num-names}
-	\bibliography{../references.bib}
+	\bibliography{../references}
 	
 \end{document}
 
