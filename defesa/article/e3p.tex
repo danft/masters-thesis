@@ -47,7 +47,7 @@ whose roots determine solutions of E3P.
 	\label{fig:circumscribed-circle}
 \end{figure}
 
-\begin{lem}
+\begin{lem}\label{lema:e3p}
 	E3P has at most six solutions.
 \end{lem}
 
@@ -59,16 +59,78 @@ whose roots determine solutions of E3P.
 
 \subsection{Converting $\xi$ into a polynomial}
 
-In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate polynomial of degree $n$, there exists a companion matrix which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial. Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory (a very complete introduction to it can be found in \cite{watkins:2008}). Therefore, finding the roots of a univariate polynomial of degree $n$ can be done in $\bigO(n^3)$. Because of that, we use an approach published in  \cite{boyd:2006} to convert real trigonometric polynomials into complex polynomials to convert $\xi$ into a complex polynomial of degree $12$.
+In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate polynomial of degree $n$, there exists a companion matrix, which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial. Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory (a very complete introduction to it can be found in \cite{watkins:2008}). For example, for a degree-$4$ polynomial $\sum_{k=0}^4 a_k x^4$, a possible companion matrix is given by
 
-Replacing $\cos{\theta}$ and $\sin{\theta}$ by their identities defined as follows
-\begin{align}\label{eq:complex_trig_cos}
-\cos{\theta} &= \dfrac{e^{i\theta} + e^{-i\theta}}{2},\\
-\label{eq:complex_trig_sin}
-\sin{\theta} &= \dfrac{e^{i\theta} - e^{-i\theta}}{2i}.
-\end{align}
+ \begin{equation*}
+\left[\begin{array}{ccccc}
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1\\
+-\dfrac{a_0}{a_4} & -\dfrac{a_1}{a_4} & -\dfrac{a_2}{a_4} & -\dfrac{a_3}{a_4}
+\end{array}\right].
+\end{equation*}
+In practice, we can use the very well-known LAPACK software library to obtain the eigenvalues of a matrix; for more information about LAPACK see \cite{lapack}.
+This approach works for both real or complex polynomials, because of that, based on \cite{weidner}, we describe a way of converting $\xi$ into a complex polynomial.
 
-It is possible to show that with that substitution, plus changing the variable to $z=e^{i\theta}$, we obtain the following function $g : \mathbb{S} \mapsto \mathbb{C}$, with $\mathbb{S}$ being the unit complex circle ($\mathbb{S} = \{z \in \mathbb{C} : |z|=1\}$, and $g(z) = \sum_{k=0}^{12} c_k z^{k-6}$. Multiplying $g$ by $z^6$, and extending the domain to $\mathbb{C}$, we obtain the degree-$12$ complex polynomial $h(z) = z^6g(z)$.
+By using the two identities $\cos{\theta} = (e^{i\theta} + e^{-i\theta})/2$, and $\sin{\theta} = (e^{i\theta} - e^{-i\theta})/(2i)$, which relate trigonometric functions with complex numbers in the unit circle $\mathbb{S}=\{z\in \mathbb{C}\colon |z|=1\}$, we can rewrite $\xi$ as a function of the new variable $z=e^{i\theta}\in\mathbb{S}$. In \cite{weidner}, it is stated that this substitution when utilized for the task of determining the roots of a real trigonometric polynomial does not yield loss of accuracy.
 
-We can cut in half the degree of the complex polynomial by observing that $angle(-z) = \pi + angle(z)$, which implies, because of the symmetry of ellipses, that $g(z) = g(-z)$. Therefore, every odd degree coefficient of $h$ is zero. Using the substitution $y = z^2$, we obtain a degree-$6$ complex polynomial $f(y) = \sum_{k=0}^{6} c_{2k} y^{k}$. Then, from the roots of $f$ we obtain the set of solutions of E3P:
-$\{(u + \varphi^{-1}(\hat{q}, angle(\hat{y})/2), angle(\hat{y})/2) \colon f(\hat{y})=0\}$.
+As $\xi$ is a real trigonometric polynomial of degree $6$, $z$ appears with exponents from $-6$ up to $6$. Multiplying $\xi$ by $z^6$ and extending the domain of $z$ to $\mathbb{C}$, we obtain a complex polynomial $g(z)=\sum_{k=0}^{12} c_k z^k$, for some $c_0, \dots, c_{12} \in \mathbb{C}$. In practice, symbolic computation can be used to obtain the actual coefficients of $g$ in terms of an instance of E3P.
+
+Let $angle \colon \mathbb{C} \colon [0, 2\pi)$ be a function that returns the angle of a complex number, then given a root $\hat{z}$ of $g$, if $|\hat{z}|=1$ and $angle(\hat{z}) \in [0, \pi)$, then $\hat{\theta} = angle(\hat{z})$ is a root of $\xi$. Observing that for any $z\in \mathbb{C}$, $angle(-z)=\pi+angle(z)$, which is the same symmetry ellipses have, we conclude that $g(-z)=g(z)$, implying that all the odd-degree coefficients of $g$ are zero. Using the substitution $y=z^2$, we can obtain a degree-$6$ polynomial $f(y)=\sum_{k=1}^6 c_{2k} y^k$. Then, from a root $\hat{y}$ of $f$, we obtain a root $\hat{\theta} = angle(\hat{y})/2$ of $\xi$.
+Lastly, let $C(\theta)\in \R^2$ be the center of the circumcircle of $\Lambda(\theta)$, then from a root $\hat{\theta}$ of $\xi$, we obtain the solution $(\varphi^{-1}(C(\hat{\theta})) + u, \hat{\theta})$ of E3P.
+
+It worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe it can be used for further improvements. Analyzing the polynomials produced for several instances, we observed that $c_k = \overline{c_{6-k}}$, for all $k=0\dots 6$.
+
+\subsection{Choosing a precision constant}
+
+We developed an experiment to choose a precision constant for comparing if a root of $f$ is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of the polynomial $f$, more information about the implementation is given in \autoref{section:implementation}. For the experiment, we defined $K\in\R$, $K>0$, and consider instances with ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
+
+The experiment considers instances of E3P where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected, which can be seen as a special case.
+For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the root $\hat{z}$ which produced the closest solution to the priorly known one. Then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols2}, we considered the maximum and the average distance to the unit circle $|1-|\hat{z}||$; and, as it can be seen in \autoref{fig:e3p_known_sols1}, the maximum and average error $|f(\hat{z})|$.
+
+From this experiment, we decided to adopt a precision constant of $10^{-6}$ to consider a root of $f$ to be in the unit circle, and as an additional check, we adopted a precision constant of $10^{-9}$ to consider a root to be a solution of E3P.
+
+\begin{figure}
+	
+	\begin{subfigure}{.5\textwidth}
+		\centering
+
+		\includegraphics[scale=.5]{../tex/figures/e3p_known_sols2}
+		\caption{}
+		\label{fig:e3p_known_sols2}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+	\centering
+	
+	\includegraphics[scale=.5]{../tex/figures/e3p_known_sols1}
+	\caption{}
+	\label{fig:e3p_known_sols1}
+	\end{subfigure}
+\caption{(a) shows the maximum and average distance to the unit circle $|1-|\hat{z}||$. (b) shows the maximum and average error $|f(\hat{z})|$, where $\hat{z}$ is a root of $f$ returned by our algorithm.}
+\end{figure}
+
+\subsection{Instances with four and six solutions}
+
+Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances, we were not able to obtain instances with more than two solutions.
+
+After some investigation, though, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that every one of them has their three points form an isosceles triangle.
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.28]{../tex/figures/e3p_4sols}
+		\caption{An instance of E3P with four solutions.}
+		\label{fig:e3p_4sols}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.28]{../tex/figures/e3p_6sols}
+		\caption{An instance of E3P with six solutions.}
+		\label{fig:e3p_6sols}
+	\end{subfigure}
+\end{figure}
+
+Obtaining six-solution instances, on the other hand, was done by taking a particular case of the isosceles-triangle approach.
+As it can be seen in \autoref{fig:e3p_6sols}, the three points on every one of the six ellipses' border form an equilateral triangle.
+
+It should be pointed out that neither non-isosceles instances with four solutions nor non-equilateral instances with six solutions could be found. Further investigating these possible properties of E3P is left as future work.
