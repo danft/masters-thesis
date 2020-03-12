@@ -114,159 +114,22 @@
 		
 	\end{frontmatter}
 	
-	%%
-	%% Start line numbering here if you want
-	%%
-	%\linenumbers
-	
-	%% main text
-	\section{Introduction}
-	
-	The Planar Maximum Covering Location Problem (PMCLP) was first introduced in \cite{church:1984}, and can be seen as a category of problems where the coverage of a demand set, a collection of subsets of $\R^2$, is to be maximized by determining the location of facilities in $\R^2$, with coverage being determined by a distance function.
-	In \cite{church:1984}, methods for Euclidean and Rectilinear distances versions of the problem were proposed.
-	In \cite{drezner, chazelle:1986}, exact algorithms for the Euclidean PMCLP with only one facility are proposed; and in \cite{cabello:2006} an approximation algorithm is proposed for the version with multiple unit disks as facilities.
-	A property of the Euclidean PMCLP, which is utilized in the algorithms developed in \cite{drezner, chazelle:1986, cabello:2006}, and in the method proposed in \cite{church:1984}, is that there is an optimal solution which every facility is located in the demand points, or in the intersection of two circles centered at two demand points; we will prove a similar property for ellipses in our work.
-	
-	It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \cite{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to the problem. For some instances, the method took too long and did not find an optimal solution. Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
-	The problem was further explored in \cite{andreta}, which introduced the version where the ellipses can be freely rotated, to which an exact and a heuristic method was proposed, and developed a new method for the axis-parallel version of the problem, which was able to obtain optimal solutions for instances that the method proposed by \cite{canbolat} could not.
-	The exact method for the version with rotation could not obtain optimal solutions within a predefined time limit for several instances, the heuristic method though returned solutions for every instance, and impressively enough, obtained optimal solutions for every verifiable instance.
-	
-	We study two versions of PMCLP with elliptical coverage facilities in this work. For both of them, each ellipse is defined to have a fixed shape and an undefined location, which is part of the solution.
-	In the first version, introduced in \cite{canbolat}, all the ellipses are restricted to be axis-parallel, while in the second version, introduced in \cite{andreta}, this constraint is dropped, and all the ellipses can be freely rotated.
-	The first version will be referred to as Planar Maximum Covering Location by Ellipses Problem (MCE) and the second one as  Planar Maximum Covering Location by Ellipses with Rotation Problem (MCER).
-	
-	\section{Problem Definition}
-	
-	An instance of MCE and MCER is given by $n$ demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; $n$ weights $\Ww=\{w_1, \dots, w_n\}$, with $w_j\in\R$, $w_j>0$ being the weight of the $j$-th point; and $m$ shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)$ being the semi-major and semi-minor of the $j$-th ellipse, with $a_j > b_j$. We define a list of functions $\E=\{E_1, \dots, E_m\}$ representing the coverage area of each facility. For MCE $E_j\colon\R^2\to\R^2$ is defined as
-	\begin{equation}
-	E_j(q) = \{p \in \R^2 \colon (p_x-q_x)^2/a_j^2 + (p_y-q_y)^2/b_j^2 \le 1\}.
-	\end{equation}
-	For MCER, we define $E_j \colon \R^2 \to \R^2 \times [0, \pi)$ as
-	\begin{equation}
-		E_j(q, \theta) = \left\{p \in \R^2 \colon 
-		\left|\left|
-		\left(
-		\begin{array}{rr}
-		\cos{\theta}/a_j & \sin{\theta}/a_j\\
-		\sin{\theta}/b_j & -\cos{\theta}/b_j
-		\end{array}
-		\right)
-		\left(
-		\begin{array}{c}
-		p_x-q_x\\
-		p_y-q_y
-		\end{array}
-		\right)
-		\right|\right|_2
-		\le 1
-		\right\}.
-	\end{equation}
-	
-Let $w : A \subset \Pp \to \R$ be a function which takes a subset of the demand set and returns the sum of the weights of the points in $A$. Then, we define MCE as the optimization problem 
-\begin{equation}
-\max_{q_1, \dots, q_m} \sum_{j=1}^m w(\Pp \cap E_j(q_j)),
-\end{equation}
-and similarly MCER as
-\begin{equation}
-\max_{(q_1, \theta_1), \dots, (q_m, \theta_m)} \sum_{j=1}^m w(\Pp \cap E_j(q_j, \theta_j)).
-\end{equation}
 
-To make the notation more clear, we denote an instance of MCE or MCER as the tuple $(\Pp, \Ww, \Rr)$, and a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. We also use $\partial$ as the boundary operator, for example, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$ given an instance of MCE.
+\section{Introduction}\label{section:introduction}
 
-\section{An algorithm for MCE}
+\input{introduction.tex}
 
-We will develop a method which is similar to the one developed in \cite{drezner} for only one euclidean disk, and the exact algorithm developed for multiple Euclidean disks in \cite{cabello:2006}. 
-We first describe a Candidate List set (CLS) for each facility, which is finite set of possible locations for each ellipse, which we use to converting MCE into a discrete optimization problem. We, then prove that using the possible solutions obtained from the combination of every ellipse's CLS an optimal solution can be obtained.
+\section{An algorithm for MCE}\label{section:mce}
 
-%\subsection{An equivalent problem}
+\input{mce.tex}
 
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE, then for each $j=1\dots m$, consider $n$ ellipses with shape parameters $(a_j, b_j)$ centered at each one of the points in $\Pp$. If we have $q_j\in\R^2$ in a subset of the coverage areas of those ellipses, then $q_j$ is a solution of MCE covering the centers of those ellipses. In other words, if $q_j \in \R^2$, and $X \subset \{1, \dots, n\}$, $X \neq \emptyset$, such that $q_j \in \cap_{i\in X}E_j(p_i)$, then $\Pp \cap E_j(q_j) = \{p_i \colon i \in X\}$.
-From that observation, we can constrain each $q_j$ to be in $\cap_{i\in X} E_j(p_i)$, for some $X \subset \{1, \dots,n\}$, $X \neq \emptyset$.
-
-In \cite{bi}, an algorithm is proposed for the problem of determining the intersection of disks of fixed radii from a strictly convex normed plane. 
-We say that $(\R^2, ||\cdot||)$ is a strictly convex normed plane if the unit disk given by the norm $||\cdot||$ is strictly convex. Note that for any ellipse, there is a strictly convex normed plane whose unit circle is that ellipse.
-For that reason, we state some results from \cite{bi} here, which we use on the development of an algorithm for MCE.
-
-
-Let $(\R^2, ||\cdot||)$ be a strictly convex normed plane, and $\D=\{D_1, \dots, D_n\}$ be a set of $n$ unit disks in that space centered at different points, with the condition that  $\cap_{i=1}^n D_i \neq \emptyset$. In \cite{bi}, an algorithm was developed to construct this intersection in $\bigO(n\lg{n})$, some of its preliminary results are:
-\begin{itemize}
-	\item $\partial \cap_{i=1}^n D_i$ is formed by arcs of $\partial D_1, \dots, \partial D_n$.
-	\item The vertices of $\partial \cap_{i=1}^n D_i$ is contained in the set of pairwise-intersection of the circles $\partial D_1, \dots, \partial D_n$.
-	\item $|\partial D_i \cap \partial D_j| \le 2$.
-\end{itemize}
-
-Based on those, we introduce the next definition for the $k$-th ellipse's CLS, which we refer to as $S_k$.
-
-\begin{definition}\label{def:cls_mce}
-	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
-	\begin{equation}
-	S_k = \bigcup_{1 \le i < j \le n} \partial E_k(p_i) \cap \partial E_k(p_j) \bigcup \Pp.
-	\end{equation}
-\end{definition}
-
-The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the intersections between two axis-parallel ellipses can be done analytically. 
-
-\begin{lem}
-	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
-\end{lem}
-\begin{pf}
-	Let $Q^*$ be an optimal solution of MCE for the given instance. Then, we are going to prove that there exists $Q' \in \Omega$, which is also optimal.
-	
-	For each $k=1, \dots, m$, let $X_k = \{p_i \in \Pp\colon p_i \in E_k(q_k^*)\}$.
-	
-	If $|X_k| = 0$, then any $q_k \in S_k$ makes $X_k \subset \Pp \cap E_k(q_k)$.
-	
-	if $|X_k| = 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
-	
-	if $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$, by the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
-	
-	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
-\end{pf}
-
-With all this in hand, we can go ahead and define an algorithm for MCE.
-
-\begin{algorithm}
-	\caption{Algorithm for MCE}\label{algoritmo:mce}
-	
-	\begin{algorithmic}[1]
-		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
-		
-		\Ensure{An optimal solution for MCE.}
-		
-		\item[]
-		\Procedure{$MCE$}{$\Pp, \Ww, \Rr$}
-		\State \Return $MCE_{bt}(\Pp, \Ww, \Rr, 1)$
-		\EndProcedure
-		\State
-		\Procedure{$MCE_{bt}$}{$Z, \Ww, \Rr, j$}
-		\If{$j = m+1$}
-		\State \Return $0$
-		\EndIf
-		
-		\State $(q_j^*, \dots, q_m^*) \gets (0, \dots, 0)$
-		\State Let $S_j$ be the CLS for the $j$-th ellipse as defined by \autoref{def:cls_mce}.
-		%\State $S_j \gets \textnormal{CLS-MCE}(Z, a_j, b_j)$
-		\For{$q_j \in S_j$}
-		\State $Cov \gets \Pp \cap E_j(q_j)$
-		\State $(q_{j+1}, \dots, q_m) \gets MCE_{bt}(Z \setminus Cov, \Ww, \Rr, j+1)\}$
-		
-		\If{$w(\cup_{k=j}^m Z \cap E_k(q_k)) >  w(\cup_{k=j}^m Z \cap E_k(q_k^*))$}
-		\State $(q_j^*, \dots, q_m^*) \gets(q_j, \dots, q_m)$
-		\EndIf
-		\EndFor
-		
-		\State \Return $(q_j^*, \dots, q_m^*)$
-		\EndProcedure
-	\end{algorithmic}
-\end{algorithm}
-
-\autoref{algoritmo:mce} can be proved to have a runtime complexity of $\bigO(mn^{2m+1})$.
-
-\section{Determining every location of an ellipse given its shape and three points}
+\section{Determining every location of an ellipse given its shape and three points}\label{section:e3p}
 	
 \input{e3p.tex}
 
 \section{An Algorithm for MCER}\label{section:mcer}
+
+\input{mcer.tex}
 
 \section{Implementation Details}\label{section:implementation}
 

@@ -33,19 +33,23 @@ p_y
 
 An example of this transformation can be seen in \autoref{fig:circumscribed-circle}. As $\varphi^{-1}$ is well-defined, instead of solving E3P, we can work with the univariate problem of determining an angle of rotation $\theta \in [0, \pi)$ that makes the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ be circumscribed in a circle of radius $b$. To make the notation less cluttered, we denote by $\Lambda(\theta)$ the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
 
-Let $A(\theta)$ denote the area of the triangle $\Lambda(\theta)$. Using the formula given in \cite[p.~189]{johnson1960} for the radius of the circumscribed circle of a triangle, we can obtain a function $\xi \colon [0, \pi) \to \R$ given by
-\begin{equation}\label{eq:circumscribed_circle_b}
-\xi(\theta) = 16b^2A(\theta)^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
-\end{equation}
-whose roots determine solutions of E3P.
-
-\begin{figure}
+\begin{figure}[!htb]
 	\centering
-
-	\includegraphics[scale=.3]{../tex/figures/circumscribed-circle}
-	\caption{Transforming a solution of E3P into a solution of the circumradius problem.}
+	
+	\includegraphics[scale=.8]{figures/circumscribed-circle}
+	\caption{Transforming a solution of E3P into a solution of the circumcircle problem.}
 	\label{fig:circumscribed-circle}
 \end{figure}
+
+As circles are uniquely defined by three non-collinear points, the circumcircle of $\Lambda(\theta)$ is unique, and its radius and center can be determined analytically \cite{weisstein}.
+Let $|\Lambda(\theta)|$ denote the area of $\Lambda(\theta)$, using the formula from \cite[p.~189]{johnson1960} for the radius of a circumcircle of a triangle, and imposing that radius to be equal $b$, we define a function $\xi \colon [0, \pi) \to \R$ as
+\begin{equation}\label{eq:circumscribed_circle_b}
+\xi(\theta) = 16b^2|\Lambda(\theta)|^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
+\end{equation}
+whose roots are angles of rotation which determine solutions of E3P through the inverse transformation $\varphi^{-1}$.
+From a root $\hat{\theta}$ of $\xi$, let $\hat{q}$ be the center of the circumcircle of $\Lambda(\hat{\theta})$, the solution $(\varphi^{-1}(\hat{q}), \hat{\theta})$ of E3P is obtained. 
+
+The algorithm for MCER described in the next section, of which E3P is a subproblem, goes through every solution of several instances of E3P. This is only possible if the number of solutions of E3P is finite, and it is only viable if that number is small. Next we introduce a lemma regarding that matter.
 
 \begin{lem}\label{lema:e3p}
 	E3P has at most six solutions.
@@ -72,65 +76,68 @@ In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate
 In practice, we can use the very well-known LAPACK software library to obtain the eigenvalues of a matrix; for more information about LAPACK see \cite{lapack}.
 This approach works for both real or complex polynomials, because of that, based on \cite{weidner}, we describe a way of converting $\xi$ into a complex polynomial.
 
-By using the two identities $\cos{\theta} = (e^{i\theta} + e^{-i\theta})/2$, and $\sin{\theta} = (e^{i\theta} - e^{-i\theta})/(2i)$, which relate trigonometric functions with complex numbers in the unit circle $\mathbb{S}=\{z\in \mathbb{C}\colon |z|=1\}$, we can rewrite $\xi$ as a function of the new variable $z=e^{i\theta}\in\mathbb{S}$. In \cite{weidner}, it is stated that this substitution when utilized for the task of determining the roots of a real trigonometric polynomial does not yield loss of accuracy.
+By using the two identities $\cos{\theta} = (e^{i\theta} + e^{-i\theta})/2$, and $\sin{\theta} = (e^{i\theta} - e^{-i\theta})/(2i)$, which relate trigonometric functions with complex numbers in the unit circle $\mathbb{S}=\{z\in \mathbb{C}\colon |z|=1\}$, we can rewrite $\xi$ as a function of the variable $z=e^{i\theta}\in\mathbb{S}$. In \cite{weidner}, it is stated that this substitution when utilized for the task of determining the roots of a real trigonometric polynomial does not yield loss of accuracy.
 
-As $\xi$ is a real trigonometric polynomial of degree $6$, $z$ appears with exponents from $-6$ up to $6$. Multiplying $\xi$ by $z^6$ and extending the domain of $z$ to $\mathbb{C}$, we obtain a complex polynomial $g(z)=\sum_{k=0}^{12} c_k z^k$, for some $c_0, \dots, c_{12} \in \mathbb{C}$. In practice, symbolic computation can be used to obtain the actual coefficients of $g$ in terms of an instance of E3P.
+As $\xi$ is a real trigonometric polynomial of degree $6$, $z$ appears with exponents from $-6$ up to $6$. Multiplying $\xi$ by $z^6$ and extending the domain of $z$ to $\mathbb{C}$, we obtain a complex polynomial $g(z)=\sum_{k=0}^{12} c_k z^k$, for some $c_0, \dots, c_{12} \in \mathbb{C}$. In practice, we utilize symbolic computation to obtain the actual coefficients of $g$ in terms of an instance of E3P.
 
-Let $angle \colon \mathbb{C} \colon [0, 2\pi)$ be a function that returns the angle of a complex number, then given a root $\hat{z}$ of $g$, if $|\hat{z}|=1$ and $angle(\hat{z}) \in [0, \pi)$, then $\hat{\theta} = angle(\hat{z})$ is a root of $\xi$. Observing that for any $z\in \mathbb{C}$, $angle(-z)=\pi+angle(z)$, which is the same symmetry ellipses have, we conclude that $g(-z)=g(z)$, implying that all the odd-degree coefficients of $g$ are zero. Using the substitution $y=z^2$, we can obtain a degree-$6$ polynomial $f(y)=\sum_{k=1}^6 c_{2k} y^k$. Then, from a root $\hat{y}$ of $f$, we obtain a root $\hat{\theta} = angle(\hat{y})/2$ of $\xi$.
-Lastly, let $C(\theta)\in \R^2$ be the center of the circumcircle of $\Lambda(\theta)$, then from a root $\hat{\theta}$ of $\xi$, we obtain the solution $(\varphi^{-1}(C(\hat{\theta})) + u, \hat{\theta})$ of E3P.
+Let $angle \colon \mathbb{C} \colon [0, 2\pi)$ be a function that takes a complex number and returns its angle, then given a root $\hat{z}$ of $g$, if $|\hat{z}|=1$ and $angle(\hat{z}) \in [0, \pi)$, then $\hat{\theta} = angle(\hat{z})$ is a root of $\xi$. 
 
-It worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe it can be used for further improvements. Analyzing the polynomials produced for several instances, we observed that $c_k = \overline{c_{6-k}}$, for all $k=0\dots 6$.
+Observing that for any $z\in \mathbb{C}$, $angle(-z)=\pi+angle(z)$, and that for any ellipse the angles of rotation $\theta$ and $\theta + \pi$ are equivalent, we conclude that $g(-z)=g(z)$. This implies that all the odd-degree coefficients of $g$ are zero. Therefore, we can use the substitution $y=z^2$ to obtain a degree-$6$ polynomial $f(y)=\sum_{k=1}^6 c_{2k} y^k$ whose roots can be used to determine the roots of $\xi$: from a root $\hat{y}$ of $f$, $\hat{y}\in\mathbb{S}$, we have that $\hat{\theta}=angle(\hat{y})/2$ is a root of $\xi$.
+
+Therefore, using the QR algorithm to obtain the eigenvalues of a companion matrix of the polynomial $f$, we can conclude that an algorithm to obtain every solution of E3P can be implemented, and that such algorithm takes a constant number of operations to do so.
+
+%Lastly, It worth mentioning that a pattern on the coefficients of $f$ was identified, and maybe it can be used for further improvements. Analyzing the polynomials produced for several instances, we observed that $c_k = \overline{c_{6-k}}$, for all $k=0\dots 6$.
 
 \subsection{Choosing a precision constant}
 
-We developed an experiment to choose a precision constant for comparing if a root of $f$ is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of the polynomial $f$, more information about the implementation is given in \autoref{section:implementation}. For the experiment, we defined $K\in\R$, $K>0$, and consider instances with ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
+In this section, we describe an experiment we made to choose a precision constant for comparing if a root of $f$ returned as an eigenvalue of its companion matrix is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of $f$, more information about the implementation is given in \autoref{section:implementation}. For the experiment, we defined $K\in\R$, $K>0$, and considered instances with the ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
 
-The experiment considers instances of E3P where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected, which can be seen as a special case.
-For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the root $\hat{z}$ which produced the closest solution to the priorly known one. Then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols2}, we considered the maximum and the average distance to the unit circle $|1-|\hat{z}||$; and, as it can be seen in \autoref{fig:e3p_known_sols1}, the maximum and average error $|f(\hat{z})|$.
+The experiment considered instances of E3P where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected.
+For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the root $\hat{z}$ which produced the closest solution to the known one. Then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols2}, we considered the maximum and the average distance to the unit circle $|1-|\hat{z}||$; and, as it presented in \autoref{fig:e3p_known_sols1}, the maximum and average error $|f(\hat{z})|$.
 
 From this experiment, we decided to adopt a precision constant of $10^{-6}$ to consider a root of $f$ to be in the unit circle, and as an additional check, we adopted a precision constant of $10^{-9}$ to consider a root to be a solution of E3P.
 
-\begin{figure}
+\begin{figure}[!htb]
 	
 	\begin{subfigure}{.5\textwidth}
 		\centering
 
-		\includegraphics[scale=.5]{../tex/figures/e3p_known_sols2}
+		\includegraphics[scale=.8]{figures/e3p_known_sols2}
 		\caption{}
 		\label{fig:e3p_known_sols2}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
 	\centering
 	
-	\includegraphics[scale=.5]{../tex/figures/e3p_known_sols1}
+	\includegraphics[scale=.8]{figures/e3p_known_sols1}
 	\caption{}
 	\label{fig:e3p_known_sols1}
 	\end{subfigure}
-\caption{(a) shows the maximum and average distance to the unit circle $|1-|\hat{z}||$. (b) shows the maximum and average error $|f(\hat{z})|$, where $\hat{z}$ is a root of $f$ returned by our algorithm.}
+\caption{(a) shows the maximum and average distance to the unit circle $|1-|\hat{z}||$. (b) shows the maximum and average error $|f(\hat{z})|$.}
 \end{figure}
 
 \subsection{Instances with four and six solutions}
 
 Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances, we were not able to obtain instances with more than two solutions.
 
-After some investigation, though, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that every one of them has their three points form an isosceles triangle.
+After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is their three points form an isosceles triangle.
 
-\begin{figure}
+\begin{figure}[!htb]
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[scale=.28]{../tex/figures/e3p_4sols}
-		\caption{An instance of E3P with four solutions.}
+		\caption{}
 		\label{fig:e3p_4sols}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[scale=.28]{../tex/figures/e3p_6sols}
-		\caption{An instance of E3P with six solutions.}
+		\caption{}
 		\label{fig:e3p_6sols}
 	\end{subfigure}
+\caption{(a) The four solutions for an instance of E3P where the three points form an isosceles triangle. (b) The six solutions for an instance of E3P where the three points form an equilateral triangle.}
 \end{figure}
 
-Obtaining six-solution instances, on the other hand, was done by taking a particular case of the isosceles-triangle approach.
-As it can be seen in \autoref{fig:e3p_6sols}, the three points on every one of the six ellipses' border form an equilateral triangle.
+Six-solution instances were found by taking a particular case of the four-solution instances, we took the three points as the vertices of a equilateral triangle. An example of that is shown in \autoref{fig:e3p_6sols}.
 
 It should be pointed out that neither non-isosceles instances with four solutions nor non-equilateral instances with six solutions could be found. Further investigating these possible properties of E3P is left as future work.
