@@ -1,1 +1,81 @@
 The version of PMCLP where the facilities are ellipses that can be freely rotated was first introduced in \cite{andreta} where an exact and a heuristic method were developed for it. In comparison with MCE, this problem introduces a new variable that is responsible for determining the rotation angle of every ellipse, making MCER a more challenging problem. We propose an algorithm for MCER which is able to obtain optimal solutions for every instance proposed in \cite{andreta} including the ones its exact method could not, and its heuristic obtained non-optimal ones.
+
+\begin{definition}
+	Two solutions $Q$ and $Q'$ of MCER, are said to be equivalent to each other if \mbox{$\cup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) = \cup_{j=1}^m \Pp \cap E_j(q_j', \theta_j')$}.
+\end{definition}
+
+Next, we introduce a lemma which states that any optimal solution of MCER has an equivalent solution where every ellipse that covers at least two points has two points on its border.
+
+\begin{lem}\label{lema:mce_2b}
+	Let $Q^*$ be an optimal solution of MCER. 
+	Then, there exists an equivalent solution $Q'$ to $Q^*$, such that for any $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, $|\Pp \cap \partial E_j(q_j', \theta_j')|\ge 2$.
+\end{lem}
+
+\begin{pf}
+	First, let $q_j'=q_j^*$ and ignore the angle of rotation as it does not change, and assume that we are dealing with axis-parallel ellipses.
+	
+	Let $A=\Pp \cap E_j(q_j^*, \theta_j^*)$ be the set of points covered by the $j$-th ellipse and $X=\cap_{p \in A}E_j(p, \theta_j^*)$ be the region of intersection of ellipses centered at each point in $A$. By \cite{bi}, the vertices of $\partial X$ are in the set of pairwise intersections of $\{\partial E_j(p, \theta_j^*)\colon p \in A\}$. Setting $q_j'$ as any of these vertices makes $E_j(q_j', \theta_j^*)$ have two points on its border.	
+\end{pf}
+
+Next, we define, for an optimal solution, a set of equivalent solutions, such that any ellipse covering more than one point contains at least two points.
+
+\begin{definition}
+	Let $Q^*$ be an optimal solution of MCER. We define $\Pi(Q^*)$ as the set of every equivalent solution to $Q^*$, such that for any $Q \in\Pi(Q^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j')| \ge 2$.
+\end{definition}
+
+Next, we introduce a notation that helps us characterize angles which given an ellipse rotated by it and two points, it is possible to find a center for the ellipse, such that it contains both points.
+
+\begin{definition}\label{def:feasible_angle}
+	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
+	In addition to that, given an instance of MCER, the set of $(E_j, u, v)$-feasible angles is referred to as 
+	
+	\begin{equation}
+	\Phi_j(u, v) := \{\theta \in [0, \pi) : \theta \textnormal{ is a } (E_j,u,v)\textnormal{-feasible angle}\}.
+	\end{equation}
+	We also define $\tilde{\Phi}_j(u,v)$ as the angle which makes $E_j$'s major-axis be parallel to the line that passes through $u$ and $v$. Note that if $\Phi_j(u,v) \neq \emptyset$, then $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$ as the longest segment that crosses an ellipse is its major-axis.
+\end{definition}
+
+\begin{lem}\label{lema:3pnts}
+	Let $Q^*$ be an optimal solution of MCER; and $j\in\{1, \dots, m\}$, such that $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$.
+	If for all $Q'$ equivalent to $Q^*$, $|\Pp \cap E_j(q_j', \theta_j')| < 3$, then there exists $\{u, v\} \subset \Pp \cap E_j(q_j^*, \theta_j^*)$, such that for all $\theta_j\in \Phi_j(u,v)$ there exists $q_j \in \R^2$, such that $\Pp \cap E_j(q_j, \theta_j) = \Pp \cap E_j(q_j^*, \theta_j^*)$.
+	
+	%For any $Q'\in\Pi(Q^*)$ and $\{u, v\} \subset \Pp \cap \partial E_j(q_j', \theta_j')$,
+	%if there exists $\theta_j \in \Phi_j(u,v)$, such that for all $q_j \in\delta_j(u,v)$, $\Pp \cap E_j(q_j, \theta_j) \neq \Pp \cap E_j(q_j^*, \theta_j^*)$, then there exists an equivalent solution $\hat{Q}$ to $Q^*$, such that $|\Pp \cap \partial E_j(\hat{q}_j, \hat{\theta}_j)| \ge 3$.
+	
+	
+	 
+%	If, for all $\hat{Q}$ equivalent to $Q^*$, $|\Pp\cap \partial E_j(\hat{q}_j, \hat{\theta}_j)| < 3$, then for all $\theta\in\Phi_j(u,v)$, there exists $q\in\R^2$, such that $\{u, v\} \subset \partial E_j(q, \theta)$ and $\Pp \cap E_j(q^*_j, \theta^*_j) = \Pp \cap E_j(q, \theta)$.
+	
+\end{lem}
+
+\begin{pf}
+	According to \autoref{lema:mce_2b}, there exists $\{u, v\} \subset \Pp \cap E_j(q^*_j, \theta^*_j)$, such that an equivalent optimal solution $(Q', \Theta')$ exists with $u$ and $v$ on the border of $E_j(q_j', \theta_j^*)$. Therefore, $\theta_j^*\in\Phi_j(u,v)$.
+	
+	Now suppose that $u$ and $v$ have the same $y$-coordinate, if they do not, a rotation can be applied to make them have the same $y$-coordinate. Then, the first thing we are proving is that $\Phi_j(u, v) = [0, 2\alpha]$ for a specific case that any instance can be transformed into using translation and rotation on every element of $\Pp$.
+	
+	In \autoref{chapter:definitions}, a function $L\colon \R \to \R_{\ge0}$ was defined in \autoref{eq:function-l}. This function takes the angular coefficient $m\in\R$ and, considering the family of lines parallel to the one described by $y=mx$, returns the maximum squared distance between two intersection points of a line in that family and an axis-parallel ellipse centered at the origin.
+	
+	To use those results here, we need to consider the ellipse to be fixed at the origin and axis-parallel, and consider the problem of rotating and translating the points in $\Pp$ instead. 
+	
+	Let $\theta \in [0, \pi]\setminus\{\pi/2\}$, and $u', v'$ be the points $u, v$ after a rotation by $\theta$. Then, if $L(\tan{\theta}) \ge ||v-u||_2^2$, it is possible to apply a translation to $u',v'$, such that they end up on the fixed ellipse. This means that it is possible to find an angle of rotation and a center to place $E_j$, such that it has $u, v$ on its border. 
+	
+	Now we use some properties of function $L$ whose details are given in \autoref{chapter:definitions}.
+	Defining $l(\theta)=L(\tan{\theta})$, with $l:[0, \pi]\setminus\{\pi/2\}$, we can say that
+	
+	\begin{itemize}
+		\item $l$ is decreasing in $[0, \pi/2)$ because $L$ is decreasing in $[0, \infty)$. Therefore, if there is $\alpha\in[0, \pi/2)$, such that $l(\alpha) = ||v-u||_2^2$, then $l(\theta)>||v-u||_2^2$, for $\theta\in(\alpha, \pi/2)$. That implies $[0, \alpha] \subset \Phi_j(u,v)$.
+		\item $l(\theta) = l(\pi-\theta)$ because $L$ is an even function. Therefore, if there is $\alpha\in[0, \pi/2)$, such that $l(\alpha) = ||v-u||_2^2$, then $l(\theta)>||v-u||_2^2$, for $\theta\in(\pi/2,\pi-\alpha)$. That implies $[\pi-\alpha, \pi] \subset \Phi_j(u,v)$.
+	\end{itemize}
+	We then conclude that $\Phi_j(u, v) = [0, \alpha]\cup [\pi-\alpha, \pi]$, and, of course, in the case that there is no $\alpha\in[0, \pi/2)$, such that $l(\alpha)=||v-u||_2^2$, we have $\Phi_j(u,v)=[0, \pi]$.
+	From that, if we rotate every point in $\Pp$ by $\pi-\alpha$, we obtain $\Phi_j(u,v)=[0, 2\alpha]$.
+	
+	With this result in hand, we can use a continuity argument to complete our proof as follows.
+	Let $\delta : \Phi_j(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi_j(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$, and, from solution $(Q', \Theta')$, $\delta(\theta_j') = q_j'$. Notice that, in general, for any angle in $\Phi_j(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E_j(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, imposing $\delta(\theta_j') = q_j'$ makes $\delta$ be a well-defined function. This is shown in \autoref{fig:lema-3-points} where $\delta$ is plotted for the whole interval $\Phi_j(u,v)$.
+	
+	Let $w\in \Pp \setminus \{u,v\}$, then we define $f_w  : \R^2 \times [0, \pi) \mapsto \R_{\ge0}$ to be a function that takes a center $q \in \R^2$ and an angle of rotation $\theta\in [0, \pi)$, and returns the elliptical distance between $w$ and $E_j(q, \theta)$ minus $1$ as defined by the left-hand-side of \autoref{eq:rotated_ellipse}. Keep in mind that, for all $w\in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus \{u,v\}$, we have that $f_w(q_j', \theta_j') < 0$ as they are covered by the $j$-th ellipse.
+	
+	Then, to evaluate $f_w$ for every center and feasible angle that maintains $u$ and $v$ on $E_j$'s border, we introduce a new function $g_w\colon \Phi_j(u,v) \mapsto \R_{\ge0}$, which is defined as $g_w(\theta) = f_w(\delta(\theta), \theta)$.
+	As $f_w$ and $\delta$ are both continuous functions, $g_w$ is also continuous.
+	
+	Therefore, for any $\theta\in\Phi_j(u,v)$, if a point $w \in \Pp \cap E_j(q_j^*, \theta_j^*)\setminus\{u,v\}$ is not covered by $E_j(\delta(\theta), \theta)$, it must have $g_w(\theta)>0$. Then, by continuity, another angle $\bar{\theta} \in \Phi_j(u,v)$ must exist, such that $g_w(\bar{\theta})=1$, which means that $w\in \partial E_j(\delta(\hat{\theta}), \hat{\theta})$, contradicting the hypothesis. The same can be said about the case where there exists an angle $\theta \in \Phi_j(u,v)$, such that a point $w \in \Pp \setminus E_j(q_j^*, \theta_j^*)$ enters the coverage of $E_j(\delta(\theta), \theta)$.
+\end{pf}
