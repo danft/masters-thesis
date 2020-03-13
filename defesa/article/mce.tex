@@ -32,7 +32,7 @@ The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the i
 \begin{lem}
 	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
 \end{lem}
-\begin{pf}
+\begin{proof}
 	Let $Q^*$ be an optimal solution of MCE for the given instance. Then, we are going to prove that there exists $Q' \in \Omega$, which is also optimal.
 	
 	For each $k=1, \dots, m$, let $X_k = \{p_i \in \Pp\colon p_i \in E_k(q_k^*)\}$.
@@ -44,7 +44,7 @@ The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the i
 	if $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$, by the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
 	
 	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
-\end{pf}
+\end{proof}
 
 With all this in hand, we can go ahead and define an algorithm for MCE.
 

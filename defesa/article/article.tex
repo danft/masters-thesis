@@ -19,6 +19,7 @@
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{subcaption}
 \journal{EJOR}
 
@@ -35,10 +36,12 @@
 \newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
 \newcommand{\bigO}{\mathscr{O}}
 \newtheorem{thm}{Theorem}
-\newtheorem{lem}[thm]{Lemma}
+\newtheorem{lem}{Lemma}
 \newdefinition{rmk}{Remark}
 \newdefinition{definition}{Definition}
-\newproof{pf}{Proof}
+%\newproof{pf}{Proof}
+%\renewcommand\qedsymbol{$\blacksquare$}
+
 
 \RequirePackage{algorithm, algpseudocode}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
