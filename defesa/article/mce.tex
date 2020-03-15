@@ -1,24 +1,13 @@
-We will develop a method which is similar to the one developed in \cite{drezner} for only one euclidean disk, and the exact algorithm developed for multiple Euclidean disks in \cite{cabello:2006}. 
-We first describe a Candidate List set (CLS) for each facility, which is finite set of possible locations for each ellipse, which we use to converting MCE into a discrete optimization problem. We, then prove that using the possible solutions obtained from the combination of every ellipse's CLS an optimal solution can be obtained.
+Similarly to the method developed in \cite{church:1984} for the Euclidean PMCLP, we will describe a Candidate List Set (CLS) of possible locations for each ellipse and then propose an algorithm that constructs solutions combining the possible locations in each ellipse's CLS.
+Based on the approach of \cite{chazelle:1986,cabello:2006}, we will construct the CLS for each ellipse by working with a problem equivalent to MCE for only one facility.
 
-%\subsection{An equivalent problem}
+Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE, then consider the problem where $n$ ellipses\\ $E(p_1), \dots, E(p_n)$ are given, and a solution is defined as a point $q\in\R^2$, with an optimal one maximizing 
+$w(\{p_i\in\Pp \colon q\in E(p_i)\})$.
+These two problems are equivalent as, let $q\in\R^2$, and $A\subset\Pp$; then $q\in\cap_{p\in A}E(p)$ if, and only if $\Pp \cap E(q) = A$.
 
-Let $(\Pp, \Ww, \Rr)$ be an instance of MCE, then for each $j=1\dots m$, consider $n$ ellipses with shape parameters $(a_j, b_j)$ centered at each one of the points in $\Pp$. If we have $q_j\in\R^2$ in a subset of the coverage areas of those ellipses, then $q_j$ is a solution of MCE covering the centers of those ellipses. In other words, if $q_j \in \R^2$, and $X \subset \{1, \dots, n\}$, $X \neq \emptyset$, such that $q_j \in \cap_{i\in X}E_j(p_i)$, then $\Pp \cap E_j(q_j) = \{p_i \colon i \in X\}$.
-From that observation, we can constrain each $q_j$ to be in $\cap_{i\in X} E_j(p_i)$, for some $X \subset \{1, \dots,n\}$, $X \neq \emptyset$.
-
-In \cite{bi}, an algorithm is proposed for the problem of determining the intersection of disks of fixed radii from a strictly convex normed plane. 
-We say that $(\R^2, ||\cdot||)$ is a strictly convex normed plane if the unit disk given by the norm $||\cdot||$ is strictly convex. Note that for any ellipse, there is a strictly convex normed plane whose unit circle is that ellipse.
-For that reason, we state some results from \cite{bi} here, which we use on the development of an algorithm for MCE.
-
-
-Let $(\R^2, ||\cdot||)$ be a strictly convex normed plane, and $\D=\{D_1, \dots, D_n\}$ be a set of $n$ unit disks in that space centered at different points, with the condition that  $\cap_{i=1}^n D_i \neq \emptyset$. In \cite{bi}, an algorithm was developed to construct this intersection in $\bigO(n\lg{n})$, some of its preliminary results are:
-\begin{itemize}
-	\item $\partial \cap_{i=1}^n D_i$ is formed by arcs of $\partial D_1, \dots, \partial D_n$.
-	\item The vertices of $\partial \cap_{i=1}^n D_i$ is contained in the set of pairwise-intersection of the circles $\partial D_1, \dots, \partial D_n$.
-	\item $|\partial D_i \cap \partial D_j| \le 2$.
-\end{itemize}
-
-Based on those, we introduce the next definition for the $k$-th ellipse's CLS, which we refer to as $S_k$.
+To construct the CLS for each ellipse, let us consider the intersection region $\cap_{p\in A} E(p)$, for some $A\subset \Pp$, $|A|>1$. In \cite{church:1984}, this region 
+is said to have vertices that are in the set of pairwise intersections of the circles with centers in $A$.
+Using the results of \cite{bi}, which develops an algorithm to determine the intersection region of $n$ fixed-radii disks in an strictly convex normed space, it is possible to prove that this is also true for ellipses. Based on that, given an instance of MCE, we define the CLS for each ellipse considering also the case where an ellipse could cover only one point in an optimal solution.
 
 \begin{definition}\label{def:cls_mce}
 	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
@@ -27,11 +16,11 @@ Based on those, we introduce the next definition for the $k$-th ellipse's CLS, w
 	\end{equation}
 \end{definition}
 
-The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the intersections between two axis-parallel ellipses can be done analytically. 
+The CLS for each ellipse can be computed in $\bigO(n^2)$ as two axis-parallel ellipses centered at distinct points intersect at most on two points, and those intersections can be determined analytically. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
 
-\begin{lem}
+\begin{thm}
 	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
-\end{lem}
+\end{thm}
 \begin{proof}
 	Let $Q^*$ be an optimal solution of MCE for the given instance. Then, we are going to prove that there exists $Q' \in \Omega$, which is also optimal.
 	
@@ -46,7 +35,7 @@ The set of solutions $S_k$, can be computed in $\bigO(n^2)$ as determining the i
 	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
 \end{proof}
 
-With all this in hand, we can go ahead and define an algorithm for MCE.
+With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has a $\bigO(mn^{2m+1})$ runtime complexity. In \autoref{section:implementation}, we give more details about the implementation of \autoref{algoritmo:mce}, along with some improvements that can be made. In \autoref{section:numerical}, we analyze some numerical experiments for instances proposed in \cite{canbolat, andreta}, and for some new ones.
 
 \begin{algorithm}
 	\caption{Algorithm for MCE}\label{algoritmo:mce}
@@ -82,5 +71,3 @@ With all this in hand, we can go ahead and define an algorithm for MCE.
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
-
-\autoref{algoritmo:mce} can be proved to have a runtime complexity of $\bigO(mn^{2m+1})$.
