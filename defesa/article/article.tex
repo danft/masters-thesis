@@ -21,6 +21,9 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{subcaption}
+\usepackage{siunitx}
+\sisetup{group-separator = {,}}
+
 \journal{EJOR}
 
 \usepackage[mathscr]{eucal}
@@ -136,7 +139,11 @@
 
 \input{mcer.tex}
 
-\section{Implementation Details}\label{section:implementation}
+\section{Reducing the CLS size}\label{section:reducing_cls}
+\input{reducing_cls.tex}
+
+\section{Prunning the Backtracking Tree}\label{section:prunning}
+\input{prunning.tex}
 
 \section{Numerical Experiments}\label{section:numerical}
 

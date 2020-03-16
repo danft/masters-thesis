@@ -15,7 +15,7 @@
 	\section{Problem Definition}
 	
 	An instance of MCE and MCER is given by $n$ distinct demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; $n$ weights $\Ww=\{w_1, \dots, w_n\}$, with $w_j\in\R_{>0}$ being the weight of the $j$-th point; and $m$ shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)$ being the semi-major and semi-minor of the $j$-th ellipse, with $a_j > b_j > 0$. We define a list of functions $\E=\{E_1, \dots, E_m\}$ representing the coverage area of each facility, with $E_j \colon \R^2 \to \R^2$ for MCE, and $E_j \colon \R^2\times [0, \pi)\to \R^2$. Let $||\cdot||_{a,b, \theta} \colon \R^2 \to \R_{\ge0}$ denote the elliptical norm given by
-	\begin{equation}
+	\begin{equation*}
 	||x||_{a,b, \theta}=\left|\left|
 	\left(\begin{array}{rr}
 	\cos{\theta} & \sin{\theta}\\
@@ -26,17 +26,17 @@
 	a_j & 0\\
 	0 & b_j
 	\end{array}\right) x \right|\right|_2,
-	\end{equation}
+	\end{equation*}
 	then, for MCE we define $E_j(q)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j,0} \le 1\}$; and for MCER we define $E_j(q, \theta)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j, \theta} \le 1\}$.
 	
 Let $w : A \subset \Pp \to \R$ be a function which takes a subset of the demand set and returns the sum of the weights of the points in $A$. Then, we define MCE as the optimization problem 
-\begin{equation}
+\begin{equation*}
 \max_{q_1, \dots, q_m} \sum_{j=1}^m w(\Pp \cap E_j(q_j)),
-\end{equation}
+\end{equation*}
 and similarly MCER as
-\begin{equation}
+\begin{equation*}
 \max_{(q_1, \theta_1), \dots, (q_m, \theta_m)} \sum_{j=1}^m w(\Pp \cap E_j(q_j, \theta_j)).
-\end{equation}
+\end{equation*}
 
 To make the notation more clear, we denote an instance of MCE or MCER as the tuple $(\Pp, \Ww, \Rr)$, and a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. Additionally, whenever we have an instance with only one ellipse, we omit the index referring to the facility, and define a solution of MCE as $q\in\R^2$, and of MCER as $(q, \theta) \in \R^2\times [0, \pi)$.
 We also use $\partial$ as the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$.
@@ -48,5 +48,5 @@ Additionally, in \cite{canbolat, andreta}, two other parameters are present in t
 We refer to this version of the problem as  MCE-$k$, and MCER-$k$. An instance of it is given by the same parameters as MCE and MCER, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost, and $k\in\mathbb{N}$, $k\le m$.
 A solution needs another set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$ to express the indexes of the utilized ellipses.
 
-Solving MCE-$k$ (MCER-$k$) can be done by considering the $\binom{m}{k}$ instances of MCE (MCER-$k$), and then taking the best one as the optimal solution, taking into account the cost of each utilized ellipse. 
+Solving MCE-$k$ (MCER-$k$) can be done by considering the $\binom{m}{k}$ instances of MCE (MCER), and then taking the best one as the optimal solution, taking into account the cost of each utilized ellipse. 
 As this step can be seen as trivial, we propose algorithms for MCE and MCER, and then in \autoref{section:numerical}, as we use the instances from \cite{canbolat, andreta} in the numerical experiments, we analyze the results obtained by our implementations of the algorithms proposed in this work for MCE-$k$ and MCER-$k$.

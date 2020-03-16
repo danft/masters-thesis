@@ -29,9 +29,9 @@ Next, we introduce a notation that helps us characterize angles which given an e
 	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
 	In addition to that, the set of $(E, u, v)$-feasible angles is referred to as 
 	
-	\begin{equation}
+	\begin{equation*}
 	\Phi(u, v) := \{\theta \in [0, \pi) : \theta \textnormal{ is a } (E,u,v)\textnormal{-feasible angle}\}.
-	\end{equation}
+	\end{equation*}
 	%We also define $\tilde{\Phi}_j(u,v)$ as the angle which makes $E_j$'s major-axis be parallel to the line that passes through $u$ and $v$. Note that if $\Phi_j(u,v) \neq \emptyset$, then $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$ as the longest segment that crosses an ellipse is its major-axis.
 \end{definition}
 
@@ -59,9 +59,9 @@ Next we open a parenthesis to discuss the problem of deciding for what angles of
 	If $D(m, c) = ||u-v||_2$, then there exists $q_1, q_2 \in \R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$ and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$.  
 	Following that, we define a function $L:\R\mapsto\R$ as
 	
-	\begin{equation}\label{eq:function-l}
+	\begin{equation*}
 	L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2},
-	\end{equation}
+	\end{equation*}
 	which describes the maximum distance between points of an ellipse-line intersection considering all lines with $m$ angular coefficient. From that, if $L(m) \ge ||v-u||_2^2$, then there exists $q_1, q_2\in\R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$, and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$.
 	
 	It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $m=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
@@ -122,15 +122,27 @@ Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}
 \end{figure}
 
 \begin{definition}\label{def:Sj}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER. Then, for all $k\in\{1, \dots, m\}$, we define the CLS of the $k$-th ellipse as $S_k = S_k^{(1)} \cup S_k^{(2)} \cup S_k^{(3)}$ with
-	\begin{align}
-	S_k^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\}\\
-	S_k^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, \angle(u-v))\in \R^2\times[0, \pi): \{u,v\} \subset \partial E_j(q, \angle(u-v))\}\\
-	S_k^{(3)} &= \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times[0, \pi): \{u, v, w\} \subset \partial E_j(q, \theta)\}.
-	\end{align}
+	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER. Then, for all $j\in\{1, \dots, m\}$, we define the CLS of the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}$ with
+	\begin{align*}
+	S_j^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\}\\
+	S_j^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, \angle(u-v))\in \R^2\times[0, \pi): \{u,v\} \subset \partial E_j(q, \angle(u-v))\}\\
+	S_j^{(3)} &= \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times[0, \pi): \{u, v, w\} \subset \partial E_j(q, \theta)\}.
+	\end{align*}
 \end{definition}
 
-This definition breaks the construction of the CLS $S_j$ into three separated cases. The first one, $S_j^{(1)}$, represents solutions where the $j$-th ellipse covers only one point. The second one, $S_j^{(2)}$, takes into account solutions where the $j$-th ellipse covers at least two points, and no equivalent solution with three points on the ellipse exists. The last case, $S_j^{(3)}$, considers solutions where there exists an equivalent one with three points on the $j$-th ellipse. Following this, we move forward and introduce the main result of this section. 
+This definition breaks the construction of the CLS into three separated cases. The first one, $S_j^{(1)}$, represents solutions where the $j$-th ellipse covers only one point. The second one, $S_j^{(2)}$, takes into account solutions where the $j$-th ellipse covers at least two points, and no equivalent solution with three points on the ellipse exists. The last case, $S_j^{(3)}$, considers solutions where there exists an equivalent one with three points on the $j$-th ellipse. 
+
+To compute $S_j^{(2)}$, we can observe that, given two points $u, v$, determining every $q\in\R^2$, such that $\{u,v\}\subset\partial E_j(q, \angle(u-v))$ can be transformed into the problem of determining the set $\partial E_j(u, \angle(u-v)) \cap \partial E_j(v, \angle(u-v))$, which, by \autoref{lema:e2p}, is composed of at most two points, which can be determined analytically. Therefore, we have that $S_j^{(2)}$ can be computed in $\bigO(n^2)$ operations.
+
+To compute $S_j^{(3)}$, we have to call the algorithm described in \autoref{section:e3p} to determine every solution of E3P for every triplet of points in $\Pp$. Even though that algorithm is $\bigO(1)$, it has a high constant factor, thus skipping it, in practice, is a good suggestion.
+Given three points and an ellipse with shape parameters $(a, b)$, the following two conditions are sufficient for E3P to have no solutions, and therefore, if any of them is true, we can skip calling the algorithm to determine every solution of E3P for that instance:
+\begin{itemize}
+	\item The maximum distance between any of the points is greater than $2a$;
+	\item The triangle's area with vertices on these three points have area greater than $\frac{3\sqrt{3}}{4}\pi ab$, which can be proved to be the greatest area of an inscribed triangle in an ellipse with shape parameters $(a, b)$.
+\end{itemize}
+
+Overall, constructing every ellipse's CLS can be implemented to have a $\bigO(n^3)$ runtime complexity.
+Following this, we introduce a theorem, which connects the results for MCER so far, to prove that the set of solutions constructed using the CLSs described by \autoref{def:Sj} contains an optimal solution.
 
 
 \begin{thm}\label{th:mcer}
@@ -141,21 +153,74 @@ This definition breaks the construction of the CLS $S_j$ into three separated ca
 	Then there exists an optimal solution $Q^* \in \Omega$, and $|\Omega|\le n^{3m}$.
 \end{thm}
 \begin{proof}
-	The first thing to notice is that $\Omega$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $Q^*$, we only need to prove that for all $j\in\{1, \dots, m\}$, there exists $(q_j, \theta_j)\in S_j$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) \subset \Pp \cap E_j(q_j, \theta_j)$. That is, we only need to show that the CLS of every ellipse contains a center and angle of rotation that makes the ellipse cover the same points (possibly some additional ones) that it covers in an optimal solution. To do that, we use \autoref{lema:3pnts} and break the possible optimal solutions into three cases.
+	The first thing to notice is that $\Omega$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $Q^*$, we only need to prove that for all $j\in\{1, \dots, m\}$, there exists $(q_j, \theta_j)\in S_j$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) \subset \Pp \cap E_j(q_j, \theta_j)$. To do that, we use \autoref{lema:3pnts} and break the possible optimal solutions into three cases.
 	
 	In the first case, we consider solutions where the $j$-th ellipse covers less than one point, that is, $|\Pp \cap E_j(q_j^*, \theta_j^*)|\le1$. It is possible to see that $S_j^{(1)}$ takes this possibility into account as it includes in $\Omega$ every solution that has an ellipse centered at a point from $\Pp$. From that, we can also conclude that $|S_j^{(1)}| \le n$.
 	
-	In the second case, we consider solutions where the $j$-th ellipse covers at least two points, and no equivalent solution exists, such that three points are on it. This case is addressed by \autoref{lema:3pnts}, which says that an optimal solution $Q^*$ of this type has equivalent solutions with two points $u, v \in \Pp \cap E_j(q_j^*, \theta_j^*)$ on the ellipse, for any angle of rotation $\theta_j \in \Phi_j(u, v)$.
-	As $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$, we have that there exists $(q_j, \theta_j) \in S_j^{(2)}$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) = \Pp \cap E_j(q_j, \theta_j)$. 
-	Moreover, in Section~\ref{section:mce}, we discuss the problem of determining the intersections between two ellipses. This problem is equivalent to the problem of determining every center and angle of rotation that puts two points on an ellipse, which is the problem used in the definition of $S_j^{(2)}$ for every pair of points. In \autoref{section:mce}, it is shown that this problem has at most two solutions. Therefore, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
+	In the second case, we consider solutions where the $j$-th ellipse covers at least two points, and there is no $Q' \succ Q^*$, such that $|\Pp \cap \partial E_j(q_j', \theta_j')| \ge 3$.
+	This case is addressed by \autoref{lema:3pnts}, which states that there are equivalent solutions to $Q^*$ with two points $u, v \in \Pp \cap E_j(q_j^*, \theta_j^*)$ on the $j$-th ellipse for every $(E_j, u, v)$-feasible angle.
+	As $\angle(u-v)$ is a $(E_j, u, v)$-feasible angle, we have that there exists $(q_j, \theta_j) \in S_j^{(2)}$, such that $\Pp \cap E_j(q_j, \theta_j) = \Pp \cap E_j(q_j^*, \theta_j^*)$.
+	Also, by \autoref{lema:e2p}, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
+	
+%	Moreover, as determining every $q\in\R^2$, such that $\{u,v\}\subset \partial E_j(q, \angle(u-v))$ can be transformed into the problem of determining the set $\partial E_j(u, \angle(u-v)) \cap \partial E_j(v, \angle(u-v))$, which, as discussed in \autoref{section:mce}, contains at most two points, we can conclude that $|S_j^{(2)}| \le 2 \binom{n}{2}$.
 	
 	For the last case, we are left with solutions where the $j$-th ellipse covers more than two points, and there exists an equivalent solution with three points on it. 
-	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega$. Also, in \autoref{lema:3pnts} it is stated that the number of centers and angles of rotation that make an ellipse contain three given points is at most six. Therefore, we have that $|S_j^{(3)}| \le 6\binom{n}{3}$.
+	As $S_j^{(3)}$ contains every center and angle of rotation that puts three points on the $j$-th ellipse, an equivalent solution for this case is present in the set of solutions $\Omega$. Also, by \autoref{lema:e3p} we can conclude that $|S_j^{(3)}| \le 6\binom{n}{3}$.
 	
-	Combining the three cases, as $S_j=S_j^{(1)}\cup S_j^{(2)} \cup S_j^{(3)}$, we get the following bound for its size:
+	Combining the three cases, as $S_j=S_j^{(1)}\cup S_j^{(2)} \cup S_j^{(3)}$, we get the following bound for $|S_j|$:
 	\begin{eqnarray*}
 		|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n(n-1)(n-2) + n(n-1) + n\\
 		|S_j| &\le 6\binom{n}{3} + 2\binom{n}{2} + n &= n((n-1)^2+1) \le n^3.
 	\end{eqnarray*}	
 	Therefore, we conclude that  $|\Omega| \le |S_1|\times \dots \times |S_m| \le n^{3m}$.
 \end{proof}
+
+Finally, we define \autoref{algoritmo:mcer}, which backtracks every possible combination of solutions considering the CLS of every ellipse.
+As evaluating each solution can be implemented to take $\bigO(nm)$ operations, we have that \autoref{algoritmo:mcer} has a $\bigO(mn^{3m+1})$ runtime complexity.
+In the next section, we describe some implementation details and improvements that, in practice, can lower the size of $S_j$ significantly, and also can make the backtracking process described in \autoref{algoritmo:mcer} skip many non-optimal solutions.
+
+\begin{algorithm}
+	\caption{Algorithm for MCER}\label{algoritmo:mcer}
+	\begin{algorithmic}[1]
+		\Require{A set of points $\Pp=\{p_1,\dots,p_n\}$, a list of weights $\Ww=\{w_1, \dots, w_n\}$, and a list of shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$.}
+		
+		\Ensure{An optimal solution for the given instance of MCER.}
+		
+		\item[]
+		\Procedure{$MCER$}{$\Pp, \Ww, \Rr$}
+		\State \Return $MCER_{bt}(\Pp, \Ww, \Rr, 1)$
+		\EndProcedure
+		
+		\item[]
+		
+		\Procedure{$MCER_{bt}$}{$Z, \Ww, \Rr, j$}
+		%\If{$j = m+1$}
+		%\State \Return $0$
+		%\EndIf
+		
+		%\State $ans \gets 0$
+		\State $(q_{j}^*,\theta_j*); \dots; (q_m^*, \theta_m^*) \gets (0,0); \dots; (0, 0)$ \Comment{Setting to $0$ as a default value.}
+		
+		%\State $S_j \gets \textnormal{CLS-MCER}(Z, a_j, b_j)$
+		\State Let $S_j$ be the CLS for the $j$-th ellipse as defined in \autoref{def:Sj}
+		
+		\ForAll{$(q_j, \theta_j) \in S_j$}
+		%\State $Cov \gets \Pp \cap E_j(q_j, \theta_j)$
+		
+		\If{$j < m$}
+		\State $(q_{j+1},\theta_{j+1}); \dots; (q_m,\theta_m) \gets  MCER_{bt}(Z\setminus Cov, \Ww, \Rr, j+1)$
+		\EndIf
+		
+		%\State $Cov \gets \bigcup_{k=j}^m \Pp \cap E_k(q_k, \theta_k)$
+		\If {$w(\bigcup_{k=j}^m \Pp \cap E_k(q_k, \theta_k)) > w(\bigcup_{k=j}^m \Pp \cap E_k(q_k^*, \theta_k^*))$}
+		%\State $ans \gets w(Cov)$
+		%\State $((q_{j}^*,\theta_{j}^*); \dots; (q_m^*, \theta_m^*)) \gets ((q_{j},\theta_{j}); \dots; (q_m, \theta_m))$
+		
+		\State $(q_{j}^*,\theta_j*); \dots; (q_m^*, \theta_m^*) \gets  (q_{j},\theta_{j}); \dots; (q_m,\theta_m) $
+		\EndIf
+		\EndFor
+		
+		\State \Return $(q_{j}^*,\theta_j*); \dots; (q_m^*, \theta_m^*)$
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}

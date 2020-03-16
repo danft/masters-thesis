@@ -17,7 +17,7 @@ Assume as well that $(q, \theta)$ is a solution of E3P.
 Applying a rotation of $-\theta$ to the coordinate system makes the ellipse in the original solution become axis-parallel.
 Then, that ellipse can be transformed into a circle of radius $b$ by squeezing the $x$-axis by $b/a$. This two-step transformation can be written as a function $\varphi\colon \R^2 \to \R^2$ defined as
 
-\begin{equation}\label{eq:trpnts}
+\begin{equation*}%\label{eq:trpnts}
 \varphi(p, \theta)=\left[\begin{array}{cc}
 \frac{b}{a}&0\\
 0&1
@@ -29,7 +29,7 @@ Then, that ellipse can be transformed into a circle of radius $b$ by squeezing t
 p_x\\
 p_y
 \end{array}\right].
-\end{equation}
+\end{equation*}
 
 An example of this transformation can be seen in \autoref{fig:circumscribed-circle}. As $\varphi^{-1}$ is well-defined, instead of solving E3P, we can work with the univariate problem of determining an angle of rotation $\theta \in [0, \pi)$ that makes the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ be circumscribed in a circle of radius $b$. To make the notation less cluttered, we denote by $\Lambda(\theta)$ the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
 
@@ -43,9 +43,9 @@ An example of this transformation can be seen in \autoref{fig:circumscribed-circ
 
 As circles are uniquely defined by three non-collinear points, the circumcircle of $\Lambda(\theta)$ is unique, and its radius and center can be determined analytically \cite{weisstein}.
 Let $|\Lambda(\theta)|$ denote the area of $\Lambda(\theta)$, using the formula from \cite[p.~189]{johnson1960} for the radius of a circumcircle of a triangle, and imposing that radius to be equal $b$, we define a function $\xi \colon [0, \pi) \to \R$ as
-\begin{equation}\label{eq:circumscribed_circle_b}
+\begin{equation*}
 \xi(\theta) = 16b^2|\Lambda(\theta)|^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
-\end{equation}
+\end{equation*}
 whose roots are angles of rotation which determine solutions of E3P through the inverse transformation $\varphi^{-1}$.
 From a root $\hat{\theta}$ of $\xi$, let $\hat{q}$ be the center of the circumcircle of $\Lambda(\hat{\theta})$, the solution $(\varphi^{-1}(\hat{q}), \hat{\theta})$ of E3P is obtained. 
 

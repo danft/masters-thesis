@@ -9,6 +9,16 @@ To construct the CLS for each ellipse, let us consider the intersection region $
 is said to have vertices that are in the set of pairwise intersections of the circles with centers in $A$.
 Using the results of \cite{bi}, which develops an algorithm to determine the intersection region of $n$ fixed-radii disks in an strictly convex normed space, it is possible to prove that this is also true for ellipses. Based on that, given an instance of MCE, we define the CLS for each ellipse considering also the case where an ellipse could cover only one point in an optimal solution.
 
+\begin{lem}\label{lema:e2p}
+	Let $E$ be the coverage region of an axis-parallel ellipse with shape parameters $(a,b)$; and $v \in \R^2$, $v\neq0$, then $|\partial E(0) \cap \partial E(v)| \le 2$, and $\partial E(0) \cap \partial E(v)$ can be determined analytically.
+\end{lem}
+
+\begin{proof}
+	By \cite{bi}, we have that the number of intersections between two strictly convex circles of fixed radii is at most two. To determine the intersection points, consider the equality between the equations of $\partial E(0)$ and $\partial E(v)$:
+	$x^2/a^2 + y^2/b^2 = (x-v_x)^2/a^2 + (y-v_y)^2/b^2.$
+	This expression can be reduced to $y=\alpha x + \beta$, for some $\alpha, \beta$. Using $\partial E(0)$'s equation, we obtain at most two values for $x$, which consequently, by $y=\alpha x + \beta$, determine the intersection points between the two ellipses.
+\end{proof}
+
 \begin{definition}\label{def:cls_mce}
 	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
 	\begin{equation}
@@ -16,7 +26,7 @@ Using the results of \cite{bi}, which develops an algorithm to determine the int
 	\end{equation}
 \end{definition}
 
-The CLS for each ellipse can be computed in $\bigO(n^2)$ as two axis-parallel ellipses centered at distinct points intersect at most on two points, and those intersections can be determined analytically. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
+By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
 
 \begin{thm}
 	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
@@ -26,16 +36,17 @@ The CLS for each ellipse can be computed in $\bigO(n^2)$ as two axis-parallel el
 	
 	For each $k=1, \dots, m$, let $X_k = \{p_i \in \Pp\colon p_i \in E_k(q_k^*)\}$.
 	
-	If $|X_k| = 0$, then any $q_k \in S_k$ makes $X_k \subset \Pp \cap E_k(q_k)$.
+	%If $|X_k| = 0$, then any $q_k \in S_k$ makes $X_k \subset \Pp \cap E_k(q_k)$.
 	
-	if $|X_k| = 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
+	if $|X_k| \le 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
 	
 	if $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$, by the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
 	
 	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
 \end{proof}
 
-With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has a $\bigO(mn^{2m+1})$ runtime complexity. In \autoref{section:implementation}, we give more details about the implementation of \autoref{algoritmo:mce}, along with some improvements that can be made. In \autoref{section:numerical}, we analyze some numerical experiments for instances proposed in \cite{canbolat, andreta}, and for some new ones.
+With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has a $\bigO(mn^{2m+1})$ runtime complexity. 
+In \autoref{section:numerical}, we give more details about the implementation of \autoref{algoritmo:mce} and analyze some numerical experiments for instances proposed in \cite{canbolat, andreta}, and for some new ones.
 
 \begin{algorithm}
 	\caption{Algorithm for MCE}\label{algoritmo:mce}

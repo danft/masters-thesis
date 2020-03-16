@@ -1,0 +1,3 @@
+
+
+In the CLS construction for MCER, calling the algorithm to determine every solution of E3P for every triplet of points can become expensive. To avoid that, given three points and an ellipse with shape parameters $(a, b)$, we can skip calling that  algorithm if the maximum distance between any of the points is greater than $2a$, or if the triangle's area with vertices on these three points have area greater than $\frac{3\sqrt{3}}{4}\pi ab$, which can be proved to be the greatest area of an inscribed triangle in an ellipse with shape parameters $(a, b)$.
