@@ -28,7 +28,7 @@ Using the results of \cite{bi}, which develops an algorithm to determine the int
 
 By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
 
-\begin{thm}
+\begin{thm}\label{thm:mce}
 	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 
 \end{thm}
 \begin{proof}

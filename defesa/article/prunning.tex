@@ -1,20 +1,20 @@
-Without any improvement, backtracking through every possible combination of every ellipse's CLS can take a very long time, possibly going through a lot of non-optimal solutions. 
-For this reason, we introduce a sufficient condition for the MCER's case (the MCE's case is analogous), based on MCER for one ellipse, which can be used to skip solutions that for sure are non-optimal.
+In this section, we introduce a condition for skipping solutions in the backtracking process in the algorithms for MCE and MCER.
+The idea is to prune the backtracking tree by observing that any solution constructed going down the current branch will have a value less than or equal to the current best solution.
+As this condition can be applied for both problems, and their notation differs very little, we describe it only for MCE.
 
-\begin{definition}
-	Given an instance $(\Pp, \Ww, \Rr)$ of MCER. We define $OPT_j$ as the value of the best solution with the first $j$ ellipses fixed at locations $(q_1, \theta_1); \dots; (q_j, \theta_j)$, and $Z_j=\Pp \setminus \cup_{k=1}^j E_k(q_k, \theta_k)$.
-\end{definition}
-
-Then, we can obtain an upper-bound for $OPT_j$ by using, for each $k\in\{j+1, \dots, m\}$, the solution $(q_k', \theta_k')$ of MCER for instance $(Z_k, \{w_i\colon p_i \in Z_k\}, \{(a_k, b_k)\})$. As these solutions only consider the best cover individually for each ellipse, we have the following inequality
-\begin{equation*}
-OPT_j \le w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) + w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right).
-\end{equation*}
-This upper-bound for $OPT_j$ can then be used in the backtracking process to skip solutions that are not better than any optimal solution. Let $OPT_{lo}$ be a lower bound for the optimal solution, we have that if
-\begin{equation}\label{eq:upper-bound}
-w\left(\bigcup_{k=1}^{j} \Pp \cap E_k(q_k, \theta_k)\right) +w\left(\bigcup_{k=j+1}^{m} \Pp \cap E_k(q_k', \theta_k')\right) \le OPT_{lo},
+Given an instance $(\Pp, \Ww, \Rr)$ of MCE, an upper-bound for the value of an optimal solution is the sum of the optimal solutions for each ellipse individually:
+\begin{equation}\label{eq:upper-1}
+\max_{Q} w\left(\bigcup_{j=1}^m \Pp \cap E_j(q_j)\right) \le \sum_{j=1}^m \max_{q_j} w(\Pp \cap E_j(q_j)).
 \end{equation}
-then $OPT_j \le OPT_{lo}$, which implies that $OPT_j$ is less than or equal the value of any optimal solution. This defines a sufficient condition for us to dismiss every solution which have the location of the first $j$ ellipses fixed at $(q_1, \theta_1); \dots; (q_j, \theta_j)$. In practice, we can use the value of the best solution found so far as the lower-bound for the optimal solution.
 
-It is worth pointing out that these improvement suggestions do not have an effect in a possible worst case scenario. We are adopting them in our implementation because they showed good results in practice.
-For example, without taking the suggestion given by \autoref{eq:upper-bound}, 
-MCER-$k$'s algorithm takes nine seconds to obtain an optimal solution for instance AB060, going through \num{336494451} solutions, while the implementation using \autoref{eq:upper-bound} to prune the backtracking tree for the same instance takes less than one second, and evaluates only \num{1809} solutions in total.
+Suppose that the first $k$ ellipses are fixed at locations $(q_1,\dots, q_k)$, and that we have an lower-bound $L$ for the value of an optimal solution. Let $Z_k=\Pp\setminus \cup_{j=1}^k E_j(q_j)$ be the points not covered by the first $k$ ellipses, then we can use \autoref{eq:upper-1} to verify if we can skip every solution where the first $k$ ellipses are fixed at  $(q_1,\dots, q_k)$ or not.
+If
+\begin{equation}\label{eq:upper}
+w\left(\bigcup_{j=1}^{k} \Pp \cap E_j(q_j)\right)+
+\sum_{j=k+1}^m \max_{q_j} w(Z_j \cap E_j(q_j)) \le L,
+\end{equation}
+then, any solution with the first $k$ ellipses fixed at $(q_1,\dots, q_k)$ will have value less than or equal to the value of an optimal solution, therefore, we can cut the backtracking tree there. In practice, we can use the value of the best solution found at the moment as the lower-bound $L$.
+
+It is worth mentioning that this improvement do not have an effect in a possible worst case scenario. We decided to adopt it in our implementation because it showed good results in practice.
+For example, without it, 
+MCER-$k$'s algorithm takes nine seconds to obtain an optimal solution for instance AB060 developed by \cite{andreta}, going through \num{336494451} solutions, while the implementation using \autoref{eq:upper} to prune the backtracking tree for the same instance takes less than one second to return an optimal solution, and evaluates only \num{1809} solutions in total.

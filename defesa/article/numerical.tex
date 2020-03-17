@@ -1,0 +1,564 @@
+The goal of this chapter is to show the results of the algorithms for MCE-$k$ and MCER-$k$ proposed by us for instances proposed by other works as well as instances created by us. All the experiments were run in a computer with the following specification:
+\begin{itemize}
+	\item CPU Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz;
+	\item 16Gib of RAM memory;
+	\item Linux Operating System: Debian 4.19.5.
+\end{itemize}
+
+\subsection{Numerical Results for known instances}
+
+In this section, we present the results of our algorithms for MCE-$k$ and MCER-$k$ 
+for some instances proposed by \cite{canbolat, andreta}. 
+We present here the numerical results for the instances CM6-CM9, and AB097-AB120. 
+For each instance, we display the selected ellipses and the income, which is the weight of every covered point minus the cost of the selected ellipses, of the found optimal solution. 
+We also display some performance metrics with the intention of giving an idea of how much computation had to be done for the algorithms to find an optimal solution. These metrics are: 
+the CLS size of every ellipse, the number of nodes in the backtracking tree, the number of leaves corresponding to a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
+For the algorithms for MCER, we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which were skipped.
+We made available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/} every instance used here, along with the graphical representation of every obtained solution.
+
+In \autoref{tab:mce-results-cm}, the results for instances CM7-CM9 are shown for MCE-$k$. 
+The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than one second for every one of the instances CM7-CM9.
+Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \cite{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \cite{andreta} took more than thirty minutes.
+In \autoref{tab:mce-results-ab}, we present the results for instances AB097-AB120.
+We can also observe here, that in practice, the bound for the CLS size of $n^2$ given by \autoref{thm:mce} seems to be very loose. The closest we got to this number was in instances CM7-CM9 where $|S_3|=174$, which is still very far from $n^2=100^2=\num{10000}$.
+
+For MCER-$k$, the numerical results obtained by our implementation are shown in \autoref{tab:mcer-results-cm} for instances CM7-CM9, and in \autoref{tab:mcer-results-ab} for instances AB097-AB120. 
+An optimal solution was obtained for every instance, and overall, at most six seconds of CPU time was taken.
+
+Looking at the numerical results of the heuristic method proposed in \cite{andreta}, the only non-optimal solutions it encountered were for instances AB105-AB108. For these instances, our algorithm obtained an optimal solution covering one more point. In \autoref{fig:AB108}, the optimal solution for AB108 is displayed.
+In general, our algorithm took much lower CPU time compared to the methods developed in \cite{andreta}. For example, for instance CM9, their heuristic method took more than six hours to return a solution, and their deterministic one exceeded the predefined time limit of twelve hours, while our implementation of the MCER-$k$'s algorithm took less than five seconds of CPU time.
+
+\begin{figure}[!htb]
+	
+\begin{subfigure}{.5\textwidth}
+	\centering
+	\includegraphics[scale=.85]{figures/AB108}
+	\caption{}
+	\label{fig:AB108}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+	\centering
+	\includegraphics[scale=.85]{figures/AB120}
+	\caption{}
+	\label{fig:AB120}
+\end{subfigure}
+	\caption{An optimal solution of MCER-$k$ for the instance AB108 (a), and for the instance AB120 (b).}
+\end{figure}
+
+\subsection{New instances}
+
+After examining the results obtained for the formerly known instances, we decided to construct new ones to analyze the algorithms proposed by our work more thoroughly.
+
+Besides increasing the size of the demand set and the number of ellipses, we also designed instances with non-unitary weights, which is something none of the previous instances had. 
+Moreover, for some instances, we used a different probability distribution, other than the uniform distribution, to generate the location of the points.
+We set a time limit of two hours of CPU time for every instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
+In total, we designed 46 new instances, which will be referred to as TA01, \dots, TA46, we made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
+
+The first set of instances were constructed sampling each demand point from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, with the most valuable ones located far away from it.
+
+We generated a set of $n=100$ points, with $m=7$ ellipses, making the $j$-th ellipse have shape parameters randomly taken from a uniform distribution in $[0.5, 1.5]$, and cost $c_j=10\times a_j \times b_j$. From that, we created seven instances for MCE-$k$ and MCER-$k$ taking $k \in \{1, \dots, m\}$. The results for MCE-$k$ are presented in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are displayed in \autoref{tab:mcer-results-ta1}.
+
+The optimal solution for the instance TA04 for MCE-$k$ and MCER-$k$ is displayed in \autoref{fig:TA04}. There it is possible to see that because of the normal distribution, most of the points are located close to each other, near the origin, making every ellipse's CLS end up being bigger compared to the previously introduced instances with the same number of demand points. 
+This, and the increase in the number of ellipses, made the algorithms for MCER-$k$ and MCE-$k$ time out for some instances. The algorithm for MCER-$k$ did not return an optimal solution within two hours for the instances TA05-TA07, while the algorithm for MCE-$k$ did not finish in time only for the instance TA07. 
+
+
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+	\centering
+	\includegraphics[scale=.9]{figures/MCE_TA04}
+	\caption{}
+	\label{fig:MCE_TA04}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+	\centering
+	\includegraphics[scale=.9]{figures/MCER_TA04}
+	\caption{}
+	\label{fig:MCER_TA04}
+\end{subfigure}
+	\caption{Two optimal solutions for the instance TA04: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA04}
+\end{figure}
+
+%%%% TABLE CM
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tables/table_mcek_cm.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances CM7-CM9.}
+		\label{tab:mce-results-cm}
+	\end{center}
+\end{table}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%
+				%%%
+				
+				\hline
+				\input{tables/table_mcerk_cm.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCER-$k$ for instances CM7-CM9.}
+		\label{tab:mcer-results-cm}
+	\end{center}
+\end{table}
+
+%%% FIM TABLE CM
+
+
+%%% TABLE AB
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{0.85\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tables/table_mcek_ab.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances AB097-AB120.}
+		\label{tab:mce-results-ab}
+	\end{center}
+\end{table}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcerk_ab.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCER-$k$ for instances AB097-AB120.}
+		\label{tab:mcer-results-ab}
+	\end{center}
+\end{table}
+
+%%% FIM TABLE AB
+%%%% NEW INSTANCES
+
+
+
+
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcek_ta_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances TA001-TA007.}
+		\label{tab:mce-results-ta1}
+	\end{center}
+\end{table}
+
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcerk_ta_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCER-$k$ for instances TA001-TA007.}
+		\label{tab:mcer-results-ta1}
+	\end{center}
+\end{table}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcek_ta_2.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances TA008-TA022.}
+		
+		\label{tab:mce-results-ta2}
+	\end{center}
+\end{table}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcerk_ta_2.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCER-$k$ for instances TA008-TA022.}
+		
+		\label{tab:mcer-results-ta2}
+	\end{center}
+\end{table}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcek_ta_4.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances TA023-TA042.}
+		\label{tab:mce-results-ta3}
+	\end{center}
+\end{table}
+
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcerk_ta_4.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCER-$k$ for instances TA023-TA042.}
+		\label{tab:mcer-results-ta3}
+	\end{center}
+\end{table}
+
+
+
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				%%%%
+				%%%%
+				
+				
+				\hline
+				\input{tables/table_mcek_ta_5.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances TA043-TA047.}
+		
+		\label{tab:mce-results-ta4}
+	\end{center}
+\end{table}
+
+
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				
+				%%%%
+				%%%%
+				
+				\hline
+				\input{tables/table_mcerk_ta_5.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical Results of MCE-$k$ for instances TA043-TA047.}
+		
+		\label{tab:mcer-results-ta4}
+	\end{center}
+\end{table}
+
+

@@ -1,1 +1,23 @@
+In this section, we give more details about the implementation of the algorithms developed in our work.
+
 All the algorithms were implemented using the C++ language, compiled with g++ (G++ 6.3.0) with the optimization flag -O3. The actual code is available in \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
+
+\subsection{Determining the eigenvalues of a matrix}
+
+In the algorithm to obtain every solution of E3P described in \autoref{section:e3p}, we assumed that a procedure which returns every eigenvalue of a given complex matrix was available. In practice, we used the famous linear algebra package LAPACK (see \cite{lapack} for more details).
+Even though LAPACK is a library for the FORTRAN programming language, its routines can be made available in a C/C++ environment by simply adding the -llapack linking flag to the compilation. The only remarks, though, are that FORTRAN represents matrices in a column-major fashion, and receives parameters only by reference. Therefore, matrices must be transposed before being passed to a routine, and every parameter must receive a pointer to a variable containing its value.
+
+To compute every eigenvalue of a complex matrix, LAPACK offers a routine called ZGEEV, which is an implementation of the QR algorithm.
+This routine optionally can also be asked to compute the right or left eigenvectors depending on two of its parameters. 
+
+% ZGEEV receives in total $14$ parameters, with $4$ of them being used for output. 
+
+\subsection{Symbolic computation}
+
+
+Back in \autoref{section:e3p}, we were faced with the problem of writing function $\xi$ defined in \autoref{eq:xi} as a complex polynomial in the new variable $z=e^{i\theta}$. We suggested that symbolic computation should be used for this task, as the expressions for that polynomial's coefficients become very long, and doing that by hand is, to say the least, a very tedious work.
+Symbolic computation is a vast topic, which deals with the problem of solving or manipulating mathematical expressions computationally. 
+In practice, we utilized an external library for Python called SymPy (see \cite{sympy} for more information).
+This tool can create expressions using arithmetic operators on predefined symbols, numbers, and other expressions. It can also convert expressions into polynomials in the power format, and output them directly into C code. Using these features, we wrote $\xi(\theta)(e^{i\theta})^6$ as a polynomial by replacing the sine and cosine functions by the identities $\cos\theta=(z+z^{-1})/2$ and $\sin\theta=(z+z^{-1})/(2i)$.
+
+The actual coefficients of that polynomial would take more than ten pages if they were to be presented here, because of that, we made them available elsewhere in \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
