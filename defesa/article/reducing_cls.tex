@@ -1,6 +1,8 @@
-As for the algorithms for both MCE and MCER, the number of solutions they go through is directly proportional to the size of each ellipse's CLS, reducing their size can significantly improve the performance of both algorithms. 
+As for the algorithms for both MCE and MCER, the number of solutions they go through is directly proportional to the size of each ellipse's CLS, reducing their size can significantly improve the performance of both algorithms.
 
-For MCE (the MCER's case is analogous), let $q, q' \in S_j$ be two possible locations in the CLS for the $j$-th ellipse. If $\Pp \cap E_j(q') \subset \Pp \cap E_j(q)$, then $q'$ is redundant and we can remove it from $S_j$, as it produces a solution which is either non-optimal or equivalent to an optimal one.
+For MCE (the MCER's case is analogous), let $q, q' \in S_j$ be two possible locations in the CLS for the $j$-th ellipse. If $\Pp \cap E_j(q') \subset \Pp \cap E_j(q)$, then $q'$ is redundant and we can remove it from $S_j$, as it produces a solution which is either non-optimal or equivalent to an optimal one. 
+
+In \cite{church:1984}, for the Euclidean PMCLP, this reduction to the CLSs is also employed, and after analyzing some experiments, they concluded that after the removal of redundant locations, the CLSs gets much smaller, and although the reduction step can be quite costly, in the end, it is worth it.
 
 To remove redundant elements from a CLS, we use the same tree-like data structure described in \cite{andreta}, which keeps every maximal subset of covered points by an ellipse, and supports a query operation to verify if a subset is maximal or not.
 First, we sort the elements in $S_j$ by the number of covered demand points, non-decreasingly. Then, we iterate over it, removing elements which make the ellipse cover non-maximal subsets of demand points, when compared to the elements of $S_j$ that have already been processed.

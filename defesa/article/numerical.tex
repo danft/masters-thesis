@@ -32,13 +32,13 @@ In general, our algorithm took much lower CPU time compared to the methods devel
 	
 \begin{subfigure}{.5\textwidth}
 	\centering
-	\includegraphics[scale=.85]{figures/AB108}
+	\includegraphics[scale=.9]{figures/MCER_AB108}
 	\caption{}
 	\label{fig:AB108}
 \end{subfigure}
 \begin{subfigure}{.5\textwidth}
 	\centering
-	\includegraphics[scale=.85]{figures/AB120}
+	\includegraphics[scale=.9]{figures/MCER_AB120}
 	\caption{}
 	\label{fig:AB120}
 \end{subfigure}
@@ -52,17 +52,26 @@ After examining the results obtained for the formerly known instances, we decide
 Besides increasing the size of the demand set and the number of ellipses, we also designed instances with non-unitary weights, which is something none of the previous instances had. 
 Moreover, for some instances, we used a different probability distribution, other than the uniform distribution, to generate the location of the points.
 We set a time limit of two hours of CPU time for every instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
-In total, we designed 46 new instances, which will be referred to as TA01, \dots, TA46, we made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
+In total, we designed 47 new instances, which will be referred to as TA01, \dots, TA47, we made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
 
-The first set of instances were constructed sampling each demand point from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, with the most valuable ones located far away from it.
-
+The first set of instances, TA01-TA07, were constructed sampling each demand point from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, with the most valuable ones located far away from it.
 We generated a set of $n=100$ points, with $m=7$ ellipses, making the $j$-th ellipse have shape parameters randomly taken from a uniform distribution in $[0.5, 1.5]$, and cost $c_j=10\times a_j \times b_j$. From that, we created seven instances for MCE-$k$ and MCER-$k$ taking $k \in \{1, \dots, m\}$. The results for MCE-$k$ are presented in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are displayed in \autoref{tab:mcer-results-ta1}.
-
-The optimal solution for the instance TA04 for MCE-$k$ and MCER-$k$ is displayed in \autoref{fig:TA04}. There it is possible to see that because of the normal distribution, most of the points are located close to each other, near the origin, making every ellipse's CLS end up being bigger compared to the previously introduced instances with the same number of demand points. 
+The optimal solutions for the instance TA04 for MCE-$k$ and MCER-$k$ are displayed in \autoref{fig:TA04}. There it is possible to see that because of the normal distribution, most of the points are located close to each other, near the origin, making every ellipse's CLS end up being bigger compared to the previously introduced instances with the same number of demand points. 
 This, and the increase in the number of ellipses, made the algorithms for MCER-$k$ and MCE-$k$ time out for some instances. The algorithm for MCER-$k$ did not return an optimal solution within two hours for the instances TA05-TA07, while the algorithm for MCE-$k$ did not finish in time only for the instance TA07. 
 
+For the second set of instances, TA08-TA22, we generated the demand set following the same process as for instances TA01-TA07.
+We kept the number of facilities at $3$ and created five demand sets with $n\in\{200, 250, 300, 350, 400\}$. In total, we had $15$ instances with $k\in\{1, \dots, m\}$. The results for MCE-$k$ are displayed in \autoref{tab:mce-results-ta2} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta2}.
+Our implementation of the algorithm for MCER-$k$ was not able to obtain a solution for the last instance TA22. Apart from instance TA13 for MCER-$k$, and instance TA22 for both algorithms, most of the CPU time was spent in constructing the CLSs.
+The graphical representation of solutions for the instance TA21 for MCE-$k$ and MCER-$k$ are shown in \autoref{fig:TA21}.
 
-\begin{figure}[H]
+The third set of instances, TA23-TA42, was constructed generating each demand point following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for instances TA01-TA23. We created instances with $m=5$, $n\in \{400, 500, 600, 700\}$, and $k\in\{1, \dots, m\}$, with a total of $20$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance TA37 with $n=500$ and $k=5$ is shown in \autoref{fig:TA37}.
+
+The last set of instances, TA43-TA47, were constructed using two bivariate normal distributions with distinct means $\mathcal{N}(\mu^{(1)}, \mathbb{I})$ and $\mathcal{N}(\mu^{(2)}, \mathbb{I})$, $\mu^{(1)}, \mu^{(2)} \in \R^2$. Half of the points were generated following $\mathcal{N}(\mu^{(1)}, \mathbb{I})$, and the other half $\mathcal{N}(\mu^{(2)}, \mathbb{I})$; the weight of every point was set as its squared distance to the mean of the distribution from which it was generated.
+The ellipses were also divided into two halves, taking their shape parameters from uniform distributions in the intervals $[0.5, 1.5]$, and $[3, 4]$; setting the $j$-th ellipse's weight as $c_j=a_j \times b_j$.
+The purpose of this last set of instances was to create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$. We created seven instances with $n=80$, $m=6$ and $k\in\{1, \dots, m\}$. We defined the values of $\mu^{(1)}$ and $\mu^{(2)}$ specifically to create such a counter-example. The results are shown in \autoref{tab:mce-results-ta4} for MCE-$k$ and in \autoref{tab:mce-results-ta4} for MCER-$k$.
+In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with $k=2$, where two of the bigger-sized ellipses are used, and $k=3$, where one of the bigger-sized ellipses is replaced by two small ones.
+
+\begin{figure}
 \begin{subfigure}{.5\textwidth}
 	\centering
 	\includegraphics[scale=.9]{figures/MCE_TA04}
@@ -79,9 +88,61 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\label{fig:TA04}
 \end{figure}
 
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCE_TA21}
+		\caption{}
+		\label{fig:MCE_TA21}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCER_TA21}
+		\caption{}
+		\label{fig:MCER_TA21}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA21 with $400$ points: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA21}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCE_TA37}
+		\caption{}
+		\label{fig:MCE_TA37}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCER_TA37}
+		\caption{}
+		\label{fig:MCER_TA37}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA37: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA37}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCER_TA44}
+		\caption{}
+		\label{fig:MCER_TA44}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{figures/MCER_TA45}
+		\caption{}
+		\label{fig:MCER_TA45}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA44: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA44-45}
+\end{figure}
+
 %%%% TABLE CM
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -113,7 +174,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\end{center}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -134,7 +195,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%
 				%%%
@@ -154,7 +215,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 
 
 %%% TABLE AB
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{0.85\textwidth}{!}{%
 			
@@ -173,7 +234,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				CLS size&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol. leaves & CLS-MCE & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
 				\hline
 				\input{tables/table_mcek_ab.tex}
 				\hline
@@ -185,7 +246,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\end{center}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -206,7 +267,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -230,7 +291,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 
 
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -250,7 +311,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				CLS size&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -268,7 +329,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 \end{table}
 
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -289,7 +350,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -306,7 +367,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\end{center}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -326,7 +387,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				CLS size&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -349,7 +410,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\end{center}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -370,7 +431,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -390,7 +451,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 	\end{center}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -410,7 +471,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				CLS size&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -433,7 +494,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 \end{table}
 
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -454,7 +515,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -476,7 +537,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 
 
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -496,7 +557,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				CLS size&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%
@@ -521,7 +582,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 
 
 
-\begin{table}[!htb]
+\begin{table}
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
@@ -542,7 +603,7 @@ This, and the increase in the number of ellipses, made the algorithms for MCER-$
 				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \#sol leaves & CLS-MCER & Total\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				%%%%
 				%%%%

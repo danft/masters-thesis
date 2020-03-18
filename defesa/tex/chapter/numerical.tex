@@ -94,7 +94,7 @@ The actual coefficients of that polynomial are presented in \autoref{chapter:pol
 
 \section{Some details and improvements}\label{section:improvements}
 
-To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce} for MCE and \autoref{algoritmo:mcer} for MCER had to be done. Just translating those algorithms into a programming language is not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
+To achieve the results that are shown later in this chapter, an efficient implementation of \autoref{algoritmo:mce2} for MCE and \autoref{algoritmo:mcer} for MCER had to be done. Just translating those algorithms into a programming language is not enough to obtain solutions for every instance previously published in \citeonline{andreta}.
 Therefore, we present here some improvements that can be applied to the implementation of those algorithms, which can result in significant growth of performance, especially in terms of CPU time.
 
 \subsection{CLS construction}
@@ -150,7 +150,7 @@ The algorithm proposed here showed great results as it was able to obtain optima
 Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \citeonline{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \citeonline{andreta} took more than thirty minutes.
 In \autoref{tab:mce-results-ab1} and \autoref{tab:mce-results-ab2}, we present the results for instances AB001-AB120. The only instance that our algorithm took more than one second to return an optimal solution was AB120, which it took 1.08 second.
 
-Back in \autoref{chapter:mce}, it was shown that the size of a CLS in an instance of MCE is less than or equal $n^2$. This bound, at least for these instances, seems to be very loose. Notice that the biggest CLS observed, which is $174$ in instance CM9, is very far away from $n^2$, which in this case is $10^4$.
+Back in \autoref{chapter:mcd2}, it was shown that the size of a CLS in an instance of MCE is less than or equal $n^2$. This bound, at least for these instances, seems to be very loose. Notice that the biggest CLS observed, which is $174$ in instance CM9, is very far away from $n^2$, which in this case is $10^4$.
 The same can be said about the bound for the running time of the algorithm, using the size of the backtracking tree times $n$ (the number of steps needed to evaluate an option in a CLS) as an estimate for the number of computations, it can be seen that the asymptotic bound of $\bigO(m2^mn^{2m+1})$ is very far from the actual number of computations.
 
 \subsection{MCER-$k$}
@@ -176,67 +176,94 @@ Also, looking at the size of the backtracking tree times $n$ as an estimate for 
 
 \section{New instances}
 
-After examining the results obtained by our algorithms for the formerly known instances, constructing new ones, more challenging for our work, can be taken as essential for further analyzing the algorithms proposed by us.
+After examining the results obtained for the formerly known instances, we decided to construct new ones to analyze the algorithms proposed by our work more thoroughly.
 Besides increasing the size of the demand set and the number of ellipses, we also designed instances with non-unitary weights, which is something none of the previous instances had. 
-Moreover, to create very distinct instances from the previously introduced ones, we used a different probability distribution, other than the uniform one, to generate the location of points.
-We set a time limit of two hours of running time for solving every instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
-In total, we designed 46 new instances, which will be referred to as TA01, \dots, TA46, and are available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}. The numerical results for every one of them are displayed in \autoref{chapter:tables}.
+Moreover, for some instances, we used a different probability distribution, other than the uniform distribution, to generate the location of the points.
+We set a time limit of two hours of CPU time for every instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
+In total, we designed 47 new instances, which will be referred to as TA01, \dots, TA47, we made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
 
-The first set of instances were construct sampling each demand points from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, but with the most valuable points located far away from it.
-We generated a set of $n=100$ points, with $m=7$ ellipses, making the $j$-th ellipse have shape parameters randomly taken from a uniform distribution in $[0.5, 1.5]$, and cost $c_j=10\times a_j \times b_j$. From that, we created seven instances taking $k \in \{1, \dots, m\}$. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta1}. 
-Because the normal distribution generates most of the points close to each other (see \autoref{fig:TA004} for an example), every ellipse's CLS's size ended up being significantly bigger if compared to previously introduced instances with $100$ points.
-This, and the subtle increase in the number of ellipses, made the algorithms for MCER-$k$ and MCE-$k$ time out for some instances. The algorithm for MCER-$k$ did not return an optimal solution within the predefined time limit for the last three instances ($k=5, 6, 7)$, while the algorithm for MCE-$k$ did not finish in time for the last instance ($k=7$). The optimal solution for MCER-$k$ for the instance with $k=4$ is displayed in \autoref{fig:TA004}. 
 
-\begin{figure}[H]
-	\centering
-	\caption{An optimal solution of MCER-$k$ for the instance TA04.}
-	\includegraphics[scale=.8]{tex/figures/TA004}
-	\fautor
-	\label{fig:TA004}
+The first set of instances, TA01-TA07, were constructed sampling each demand point from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, with the most valuable ones located far away from it.
+We generated a set of $n=100$ points, with $m=7$ ellipses, making the $j$-th ellipse have shape parameters randomly taken from a uniform distribution in $[0.5, 1.5]$, and cost $c_j=10\times a_j \times b_j$. From that, we created seven instances for MCE-$k$ and MCER-$k$ taking $k \in \{1, \dots, m\}$. The results for MCE-$k$ are presented in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are displayed in \autoref{tab:mcer-results-ta1}.
+The optimal solutions for the instance TA04 for MCE-$k$ and MCER-$k$ are displayed in \autoref{fig:TA04}. There it is possible to see that because of the normal distribution, most of the points are located close to each other, near the origin, making every ellipse's CLS end up being bigger compared to the previously introduced instances with the same number of demand points. 
+This, and the increase in the number of ellipses, made the algorithms for MCER-$k$ and MCE-$k$ time out for some instances. The algorithm for MCER-$k$ did not return an optimal solution within two hours for the instances TA05-TA07, while the algorithm for MCE-$k$ did not finish in time only for the instance TA07. 
+
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCE_TA04}
+		\caption{}
+		\label{fig:MCE_TA04}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCER_TA04}
+		\caption{}
+		\label{fig:MCER_TA04}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA04: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA04}
 \end{figure}
 
-For the second set of instances, we used the same process used for the first set to generate the demand points and the ellipses. We kept the number of ellipses at $3$ and created five demand sets with $n\in\{200, 250, 300, 350, 400\}$. In total, we had $15$ instances having $k\in\{1, \dots, m\}$. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta2} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta2}. The solution of MCER-$k$ for the instance with $n=400$, and $k=2$ is shown in \autoref{fig:TA021}.
+For the second set of instances, TA08-TA22, we generated the demand set following the same process as for instances TA01-TA07.
+We kept the number of facilities at $3$ and created five demand sets with $n\in\{200, 250, 300, 350, 400\}$. In total, we had $15$ instances with $k\in\{1, \dots, m\}$. The results for MCE-$k$ are displayed in \autoref{tab:mce-results-ta2} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta2}.
+Our implementation of the algorithm for MCER-$k$ was not able to obtain a solution for the last instance TA22. Apart from instance TA13 for MCER-$k$, and instance TA22 for both algorithms, most of the CPU time was spent in constructing the CLSs.
+The graphical representation of solutions for the instance TA21 for MCE-$k$ and MCER-$k$ are shown in \autoref{fig:TA21}.
 
-\begin{figure}[H]
-	\centering
-	\caption{An optimal solution of MCER-$k$ for the instance TA21.}
-	\includegraphics[scale=.8]{tex/figures/TA021}
-	\fautor
-	\label{fig:TA021}
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCE_TA21}
+		\caption{}
+		\label{fig:MCE_TA21}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCER_TA21}
+		\caption{}
+		\label{fig:MCER_TA21}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA21 with $400$ points: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA21}
 \end{figure}
 
-The third set of instances were constructed generating the demand set following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for the first two set of instances. We created instances with $m=5$, $n\in \{400, 450, 500\}$, and $k\in\{1, \dots, m\}$, with a total of $15$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance with $n=500$ and $k=5$ is shown in \autoref{fig:TA037}.
+The third set of instances, TA23-TA42, was constructed generating each demand point following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for instances TA01-TA23. We created instances with $m=5$, $n\in \{400, 500, 600, 700\}$, and $k\in\{1, \dots, m\}$, with a total of $20$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance TA37 with $n=500$ and $k=5$ is shown in \autoref{fig:TA37}.
 
-\begin{figure}[!htb]
-	\centering
-	\caption{An optimal solution of MCER-$k$ for the instance TA37.}
-	\includegraphics[scale=.8]{tex/figures/TA037}
-	\fautor
-	\label{fig:TA037}
+\begin{figure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCE_TA37}
+		\caption{}
+		\label{fig:MCE_TA37}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCER_TA37}
+		\caption{}
+		\label{fig:MCER_TA37}
+	\end{subfigure}
+	\caption{Two optimal solutions for the instance TA37: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA37}
 \end{figure}
 
-The last set of instances were constructed using two bivariate normal distributions with unitary variance $\mathcal{N}(\mu^{(1)}, \mathbb{I})$ and $\mathcal{N}(\mu^{(2)}, \mathbb{I})$, $\mu^{(1)}, \mu^{(2)} \in \R^2$. Half of the points were generated following $\mathcal{N}(\mu^{(1)}, \mathbb{I})$, and the other half $\mathcal{N}(\mu^{(2)}, \mathbb{I})$; the weight of every point was set as its squared distance to the mean of the distribution from which it was generated.
+The last set of instances, TA43-TA47, were constructed using two bivariate normal distributions with distinct means $\mathcal{N}(\mu^{(1)}, \mathbb{I})$ and $\mathcal{N}(\mu^{(2)}, \mathbb{I})$, $\mu^{(1)}, \mu^{(2)} \in \R^2$. Half of the points were generated following $\mathcal{N}(\mu^{(1)}, \mathbb{I})$, and the other half $\mathcal{N}(\mu^{(2)}, \mathbb{I})$; the weight of every point was set as its squared distance to the mean of the distribution from which it was generated.
 The ellipses were also divided into two halves, taking their shape parameters from uniform distributions in the intervals $[0.5, 1.5]$, and $[3, 4]$; setting the $j$-th ellipse's weight as $c_j=a_j \times b_j$.
-The purpose of this last set of instances was to create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$. We created seven instances with $n=80$, $m=6$ and $k\in\{1, \dots, m\}$, and defined the values of $\mu^{(1)}$ and $\mu^{(2)}$ specifically to create such counter-example. The results are shown in \autoref{tab:mce-results-ta4} for MCE-$k$ and in \autoref{tab:mce-results-ta4} for MCER-$k$.
-In \autoref{fig:TA44-45}, we show the solutions for the instances with $k=2$, where two of the bigger-sized ellipses are used, and $k=3$, where one of the bigger-sized ellipses is replaced by two small ones.
+The purpose of this last set of instances was to create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$. We created seven instances with $n=80$, $m=6$ and $k\in\{1, \dots, m\}$. We defined the values of $\mu^{(1)}$ and $\mu^{(2)}$ specifically to create such a counter-example. The results are shown in \autoref{tab:mce-results-ta4} for MCE-$k$ and in \autoref{tab:mce-results-ta4} for MCER-$k$.
+In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with $k=2$, where two of the bigger-sized ellipses are used, and $k=3$, where one of the bigger-sized ellipses is replaced by two small ones.
 
-\begin{figure}[!htb]
-	\caption{Optimal solutions for instances TA44 and TA45.}
+\begin{figure}
 	\begin{subfigure}{.5\textwidth}
-			\centering
-		\caption{TA44}
-		\includegraphics[scale=.8]{tex/figures/TA044}
-
-		%\fautor
-		\label{fig:TA043}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCER_TA44}
+		\caption{}
+		\label{fig:MCER_TA44}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
-			\centering
-		\caption{TA45}
-		\includegraphics[scale=.8]{tex/figures/TA045}
-		%\fautor
-		\label{fig:TA044}
+		\centering
+		\includegraphics[scale=.9]{tex/figures/MCER_TA45}
+		\caption{}
+		\label{fig:MCER_TA45}
 	\end{subfigure}
-\label{fig:TA44-45}
-	\fautor
+	\caption{Two optimal solutions for the instance TA44: (a) for MCE-$k$, and (b) for MCER-$k$.}
+	\label{fig:TA44-45}
 \end{figure}
