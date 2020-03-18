@@ -73,14 +73,14 @@ In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate
 -\dfrac{a_0}{a_4} & -\dfrac{a_1}{a_4} & -\dfrac{a_2}{a_4} & -\dfrac{a_3}{a_4}
 \end{array}\right].
 \end{equation*}
-In practice, we can use the very well-known LAPACK software library to obtain the eigenvalues of a matrix; for more information about LAPACK see \cite{lapack}.
-This approach works for both real or complex polynomials, because of that, based on \cite{weidner}, we describe a way of converting $\xi$ into a complex polynomial.
+In practice, we can use the very well-known LAPACK software library to obtain the eigenvalues of a matrix\cite{lapack}.
+This approach works for both real or complex polynomials, and, because of that, based on \cite{weidner}, we describe a way of converting $\xi$ into a complex polynomial.
 
-By using the two identities $\cos{\theta} = (e^{i\theta} + e^{-i\theta})/2$, and $\sin{\theta} = (e^{i\theta} - e^{-i\theta})/(2i)$, which relate trigonometric functions with complex numbers in the unit circle $\mathbb{S}=\{z\in \mathbb{C}\colon |z|=1\}$, we can rewrite $\xi$ as a function of the variable $z=e^{i\theta}\in\mathbb{S}$. In \cite{weidner}, it is stated that this substitution when utilized for the task of determining the roots of a real trigonometric polynomial does not yield loss of accuracy.
+By using the identities $\cos{\theta} = (e^{i\theta} + e^{-i\theta})/2$, and $\sin{\theta} = (e^{i\theta} - e^{-i\theta})/(2i)$, which relate trigonometric functions with complex numbers in the unit circle $\mathbb{S}=\{z\in \mathbb{C}\colon |z|=1\}$, we can rewrite $\xi$ as a function of the variable $z=e^{i\theta}\in\mathbb{S}$. In \cite{weidner}, it is stated that this substitution when utilized for the task of determining the roots of a real trigonometric polynomial does not yield loss of accuracy.
 
 As $\xi$ is a real trigonometric polynomial of degree $6$, $z$ appears with exponents from $-6$ up to $6$. Multiplying $\xi$ by $z^6$ and extending the domain of $z$ to $\mathbb{C}$, we obtain a complex polynomial $g(z)=\sum_{k=0}^{12} c_k z^k$, for some $c_0, \dots, c_{12} \in \mathbb{C}$. In practice, we utilize symbolic computation to obtain the actual coefficients of $g$ in terms of an instance of E3P.
 
-Let $angle \colon \mathbb{C} \colon [0, 2\pi)$ be a function that takes a complex number and returns its angle, then given a root $\hat{z}$ of $g$, if $|\hat{z}|=1$ and $angle(\hat{z}) \in [0, \pi)$, then $\hat{\theta} = angle(\hat{z})$ is a root of $\xi$. 
+Let $angle \colon \mathbb{C} \to [0, 2\pi)$ be a function that takes a complex number and returns its angle, then given a root $\hat{z}$ of $g$, if $|\hat{z}|=1$ and $angle(\hat{z}) \in [0, \pi)$, then $\hat{\theta} = angle(\hat{z})$ is a root of $\xi$. 
 
 Observing that for any $z\in \mathbb{C}$, $angle(-z)=\pi+angle(z)$, and that for any ellipse the angles of rotation $\theta$ and $\theta + \pi$ are equivalent, we conclude that $g(-z)=g(z)$. This implies that all the odd-degree coefficients of $g$ are zero. Therefore, we can use the substitution $y=z^2$ to obtain a degree-$6$ polynomial $f(y)=\sum_{k=1}^6 c_{2k} y^k$ whose roots can be used to determine the roots of $\xi$: from a root $\hat{y}$ of $f$, $\hat{y}\in\mathbb{S}$, we have that $\hat{\theta}=angle(\hat{y})/2$ is a root of $\xi$.
 
@@ -90,7 +90,7 @@ Therefore, using the QR algorithm to obtain the eigenvalues of a companion matri
 
 \subsection{Choosing a precision constant}
 
-In this section, we describe an experiment we made to choose a precision constant for comparing if a root of $f$ returned as an eigenvalue of its companion matrix is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of $f$, more information about the implementation is given in \autoref{section:implementation}. For the experiment, we defined $K\in\R$, $K>0$, and considered instances with the ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
+In this section, we describe an experiment we made to choose a precision constant for comparing if a root of $f$ returned as an eigenvalue of its companion matrix is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of $f$ (more information about the implementation is given in \autoref{section:implementation}). For the experiment, we defined $K\in\R$, $K>0$, and considered instances with the ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
 
 The experiment considered instances of E3P where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected.
 For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the root $\hat{z}$ which produced the closest solution to the known one. Then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols2}, we considered the maximum and the average distance to the unit circle $|1-|\hat{z}||$; and, as it presented in \autoref{fig:e3p_known_sols1}, the maximum and average error $|f(\hat{z})|$.
@@ -113,14 +113,14 @@ From this experiment, we decided to adopt a precision constant of $10^{-6}$ to c
 	\caption{}
 	\label{fig:e3p_known_sols1}
 	\end{subfigure}
-\caption{(a) shows the maximum and average distance to the unit circle $|1-|\hat{z}||$. (b) shows the maximum and average error $|f(\hat{z})|$.}
+\caption{(a) Shows the maximum and average distance to the unit circle $|1-|\hat{z}||$. (b) Shows the maximum and average error $|f(\hat{z})|$.}
 \end{figure}
 
 \subsection{Instances with four and six solutions}
 
-Any instance of E3P, as stated by \autoref{lema:e3p} can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances, we were not able to obtain instances with more than two solutions.
+Any instance of E3P, as stated by \autoref{lema:e3p}, can have up to six solutions. At first, though, this bound seemed to be loose as for randomly generated instances, we were not able to obtain instances with more than two solutions.
 
-After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is their three points form an isosceles triangle.
+After some investigation, we were able to construct some four-solution instances (an example is displayed in \autoref{fig:e3p_4sols}). An interesting property of those solutions is that their three points form an isosceles triangle.
 
 \begin{figure}[!htb]
 	\begin{subfigure}{.5\textwidth}

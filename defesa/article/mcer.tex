@@ -1,7 +1,7 @@
 The version of PMCLP where the facilities are ellipses that can be freely rotated was first introduced in \cite{andreta} where an exact and a heuristic method were developed for it. In comparison with MCE, this problem introduces a new variable that is responsible for determining the angle of rotation of every ellipse, making MCER a more challenging problem. We propose an algorithm for MCER which is able to obtain optimal solutions for every instance proposed in \cite{andreta} including the ones its exact method could not, and its heuristic obtained non-optimal ones.
 
 \begin{definition}
-	Two solutions $Q$ and $Q'$ of MCER, are said to be equivalent to each other if \mbox{$\cup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) = \cup_{j=1}^m \Pp \cap E_j(q_j', \theta_j')$}. Also, if $\cup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) \subset \cup_{j=1}^m \Pp \cap E_j(q_j', \theta_j')$, then we say that $Q' \succ Q$.
+	Two solutions $Q$ and $Q'$ of MCER, are said to be equivalent to each other if \mbox{$\Pp \cap \cup_{j=1}^m E_j(q_j, \theta_j) = \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$}. Also, if $\Pp \cap\cup_{j=1}^m E_j(q_j, \theta_j) \subset \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$, then we say that $Q' \succ Q$.
 \end{definition}
 
 Next, we introduce a lemma which states that any optimal solution of MCER has an equivalent solution where every ellipse that covers at least two points has two points on its border.
@@ -100,7 +100,7 @@ It states that, for any ellipse that covers more than two points in a given opti
 \begin{proof}
 	According to \autoref{lema:mce_2b}, there exists $\{u, v\} \subset \Pp \cap E(q^*, \theta^*)$, such that $Q' \succ Q^*$ exists, and $\{u, v\} \subset \partial E(q', \theta^*)$. Therefore, $\theta^*\in\Phi(u,v)$.
 	
-	Suppose that $u$ and $v$ have the same $y$-coordinate, if they do not, a rotation can be applied to make them do. Then, by \autoref{lema:l-function}, $\Phi(u,v)=[0, \alpha] \cup [\pi-\alpha, \pi)$, for some $\alpha \in [0, \pi/2]$. Then, if we rotate the coordinate system by $\pi-\alpha$, we obtain $\Phi(u,v)=[0, 2\alpha]$.
+	Suppose that $u$ and $v$ have the same $y$-coordinate (if they do not, a rotation can be applied to make them do). Then, by \autoref{lema:l-function}, $\Phi(u,v)=[0, \alpha] \cup [\pi-\alpha, \pi)$, for some $\alpha \in [0, \pi/2]$. Then, if we rotate the coordinate system by $\pi-\alpha$, we obtain $\Phi(u,v)=[0, 2\alpha]$.
 	
 	With this result in hand, we can use a continuity argument to complete our proof as follows.
 	Let $\delta : \Phi(u,v) \mapsto \R^2$ be a continuous function which takes an angle $\theta\in\Phi(u,v)$ and returns a center, such that $\{u,v\} \subset \partial E(\delta(\theta), \theta)$, and, from solution $Q'$, $\delta(\theta') = q'$. Notice that, in general, for any angle in $\Phi(u,v)$, there are two possible centers that make $\{u,v\} \subset \partial E(\delta(\theta), \theta)$ (see \autoref{fig:feasible-angle} for an example), however, imposing $\delta(\theta') = q'$ makes $\delta$ be a well-defined continuous function. This is shown in \autoref{fig:lema-3-points} where $\delta$ is plotted for the whole interval $\Phi(u,v)$.

@@ -10,7 +10,7 @@ is said to have vertices that are in the set of pairwise intersections of the ci
 Using the results of \cite{bi}, which develops an algorithm to determine the intersection region of $n$ fixed-radii disks in an strictly convex normed space, it is possible to prove that this is also true for ellipses. Based on that, given an instance of MCE, we define the CLS for each ellipse considering also the case where an ellipse could cover only one point in an optimal solution.
 
 \begin{lem}\label{lema:e2p}
-	Let $E$ be the coverage region of an axis-parallel ellipse with shape parameters $(a,b)$; and $v \in \R^2$, $v\neq0$, then $|\partial E(0) \cap \partial E(v)| \le 2$, and $\partial E(0) \cap \partial E(v)$ can be determined analytically.
+	Let $E$ be the coverage region of an axis-parallel ellipse with shape parameters $(a,b)$; and $v \in \R^2$, $v\neq0$. Then $|\partial E(0) \cap \partial E(v)| \le 2$, and $\partial E(0) \cap \partial E(v)$ can be determined analytically.
 \end{lem}
 
 \begin{proof}
@@ -22,7 +22,7 @@ Using the results of \cite{bi}, which develops an algorithm to determine the int
 \begin{definition}\label{def:cls_mce}
 	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
 	\begin{equation}
-	S_k = \bigcup_{1 \le i < j \le n} \partial E_k(p_i) \cap \partial E_k(p_j) \bigcup \Pp.
+	S_k = \Pp \cup \left(\bigcup_{1 \le i < j \le n} \partial E_k(p_i) \cap \partial E_k(p_j) \right).
 	\end{equation}
 \end{definition}
 
@@ -38,14 +38,14 @@ By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$.
 	
 	%If $|X_k| = 0$, then any $q_k \in S_k$ makes $X_k \subset \Pp \cap E_k(q_k)$.
 	
-	if $|X_k| \le 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
+	If $|X_k| \le 1$, then there is at least one element in $S_k$ that makes $X_k \subset \Pp \cap E_k(q_k)$.
 	
-	if $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$, by the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
+	If $|X_k| > 1$, then let $Y_k = \cap_{p \in X_k}E_k(p)$. By the results of \cite{bi}, we have that the boundary of $Y_k$ has vertices in the pairwise intersections of $\{\partial E_k(p) \colon p \in X_k\}$. Therefore, at least one vertex of $Y_k$ is in $S_k$, and any of those vertices produce a solution that covers at least the same points covered by $Q^*$.
 	
-	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$ hence $|\Omega| \le n^{2m}$.
+	Lastly, we have that $|S_k| \le 2\binom{n}{2} + n = n(n+1)/2 \le n^2$. Hence, $|\Omega| \le n^{2m}$.
 \end{proof}
 
-With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has a $\bigO(mn^{2m+1})$ runtime complexity. 
+With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has $\bigO(mn^{2m+1})$ runtime complexity. 
 In \autoref{section:numerical}, we give more details about the implementation of \autoref{algoritmo:mce} and analyze some numerical experiments for instances proposed in \cite{canbolat, andreta}, and for some new ones.
 
 \begin{algorithm}
@@ -62,7 +62,7 @@ In \autoref{section:numerical}, we give more details about the implementation of
 		\EndProcedure
 		\State
 		\Procedure{$MCE_{bt}$}{$Z, \Ww, \Rr, j$}
-		\If{$j = m+1$}
+		\If{$j = |\Rr|+1$}
 		\State \Return $0$
 		\EndIf
 		
