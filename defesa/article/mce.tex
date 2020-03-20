@@ -1,42 +1,53 @@
 Similarly to the method developed in \cite{church:1984} for the Euclidean PMCLP, we will describe a Candidate List Set (CLS) of possible locations for each ellipse and then propose an algorithm that constructs solutions combining the possible locations in each ellipse's CLS.
-Based on the approach of \cite{chazelle:1986,cabello:2006}, we will construct the CLS for each ellipse by working with a problem equivalent to MCE for only one facility.
+Also, based on the approach of \cite{church:1984} for the Euclidean PMCLP, and in \cite{chazelle:1986} for the problem of covering points by one unit disk, we will construct the CLS for each ellipse by using a property of the one-facility MCE.
+Although, it is intuitive that it is possible to adapt the ideas used for solving the problems involving Euclidean disks for axis-parallel ellipses, using the results of \cite{bi}, which studies the problem of determining the intersection of $n$ strictly convex disks with fixed radius, we will prove that for MCE, we have all the necessary geometric properties to develop an algorithm following those approaches.
 
-To define this equivalent problem, we need to first state an ellipse's property.
-Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE with one facility, and  $p, q \in \R^2$, we have that
-\begin{equation}\label{eq:mce-mwc}
-p \in E(q) \Leftrightarrow ||p-q||_{a, b, 0} \le 1 \Leftrightarrow q \in E(p).
-\end{equation}
-The equivalent problem is given by $n$ ellipses with shape parameters $(a, b)$ centered at $\Pp$. Let $q\in\R^2$ be a solution of MCE for one facility, by applying \autoref{eq:mce-mwc} to every point covered by $E(q)$, we obtain that
-\begin{equation}
-\Pp \cap E(q) = \{p_i\in\Pp \colon q\in E(p_i)\},
-\end{equation}
-which implies that the problem of determining $q\in\R^2$ to maximize $w(\{p_i\in\Pp \colon q\in E(p_i)\})$, is equivalent to MCE for one facility. This changes the problem from determining a location for an ellipse given $n$ points to the problem of finding a point given $n$ ellipses with fixed locations.
+We start by introducing a lemma stating that any solution of the one-facility MCE can be related to the intersection of coverage regions of ellipses centered at the points covered in that solution. 
 
-To construct the CLS for each ellipse, let us consider the intersection region $\cap_{p\in A} E(p)$, for some $A\subset \Pp$, $|A|>1$. In \cite{church:1984}, this region 
-is said to have vertices that are in the set of pairwise intersections of the circles with centers in $A$.
-Using the results of \cite{bi}, which develops an algorithm to determine the intersection region of $n$ fixed-radii disks in an strictly convex normed space, it is possible to prove that this is also true for ellipses. Based on that, given an instance of MCE, we define the CLS for each ellipse considering also the case where an ellipse could cover only one point in an optimal solution.
+\begin{lem}\label{lema:mce-mwc}
+	Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE, and $q\in \R^2$. If $\Pp \cap E(q) = A$, then $q \in \cap_{p\in A} E(p)$.
+\end{lem}
+\begin{proof}
+	Let $u, v \in \R^2$, then we have that $u \in E(v)$ if, and only if $v \in E(u)$, which is proved simply by observing that:
+	\begin{equation}\label{eq:peq}
+	u \in E(v) \Leftrightarrow ||u-v||_{a, b, 0} \le 1 \Leftrightarrow v \in E(u).
+	\end{equation}
+	As $\Pp \cap E(q) = A$ can be written as: for all $p \in A$, $p \in E(q)$. Then, using \autoref{eq:peq}, we get that for all $p \in A$, $q \in E(p)$, which implies that $q \in \cap_{p\in A} E(p)$.
+\end{proof}
 
 
-\begin{figure}[!htb]
 
-	\centering
-	
-	\includegraphics[scale=.3]{figures/MCE-vertices2}
-	\caption{Transforming a solution of E3P into a solution of the circumcircle problem.}
-	\label{fig:MCE-vertices}
-\end{figure}
+%To define this equivalent problem, we need to first state an ellipse's property.
+%Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE with one facility, and  $p, q \in \R^2$, we have that
 
+%The equivalent problem is given by $n$ ellipses with shape parameters $(a, b)$ centered at $\Pp$. Let $q\in\R^2$ be a solution of MCE for one facility, by applying \autoref{eq:peq} to every point covered by $E(q)$, we obtain that
+%\begin{equation}\label{eq:mce-mwc}
+%\Pp \cap E(q) = \{p_i\in\Pp \colon q\in E(p_i)\},
+%\end{equation}
+%which implies that the problem of determining $q\in\R^2$ to maximize $w(\{p_i\in\Pp \colon q\in E(p_i)\})$, is equivalent to MCE for one facility. This changes the problem from determining a location for an ellipse given $n$ points to the problem of finding a point given $n$ ellipses with fixed locations.
+
+%Let $A\subset \Pp$, from \autoref{eq:mce-mwc}, we have that if $\Pp \cap E(q) = A$ then $q \in \cap_{p\in A} E(p)$. 
+
+From , if we could identify every 
+
+Let $A \subset \Pp$, $|A|>1$, let us consider the intersection region $\cap_{p\in A} E(p) \neq \emptyset$. From \autoref{lema:mce-mwc}, we can also conclude that if $q \in \cap_{p\in A} E(p)$, then $A \subset \Pp \cap E(q)$.
+
+
+In \cite{church:1984}, for the Euclidean PMCLP, it was proved that the border of this region contains at least one point that is an intersection between two fixed-radius circles with centers in $A$. This, as it turns out, is also true for ellipses, and a proof can be obtained from \cite{bi} where the problem of determining the intersection region of $n$ fixed-radius disks in a strictly convex normed plane is studied.
+From that, we can conclude that there exists $u, v \in A$ and $q \in \partial E(u) \cap \partial E(v)$, such that $q \in \cap_{p\in A} E(p)$.
+Before defining the CLS for each ellipse, we introduce a lemma stating two basic, and yet important properties about the intersection between two axis-parallel ellipses that have the same shape and distinct locations.
 
 \begin{lem}\label{lema:e2p}
 	Let $E$ be the coverage region of an axis-parallel ellipse with shape parameters $(a,b)$; and $v \in \R^2$, $v\neq0$. Then $|\partial E(0) \cap \partial E(v)| \le 2$, and $\partial E(0) \cap \partial E(v)$ can be determined analytically.
 \end{lem}
 
 \begin{proof}
-	By \cite{bi}, we have that the number of intersections between two strictly convex circles of fixed radii is at most two. To determine the intersection points, consider the equality between the equations of $\partial E(0)$ and $\partial E(v)$:
+	To determine the intersection points, consider the equality between the equations of $\partial E(0)$ and $\partial E(v)$:
 	$x^2/a^2 + y^2/b^2 = (x-v_x)^2/a^2 + (y-v_y)^2/b^2.$
-	This expression can be reduced to $y=\alpha x + \beta$, for some $\alpha, \beta$. Using $\partial E(0)$'s equation, we obtain at most two values for $x$, which consequently, by $y=\alpha x + \beta$, determine the intersection points between the two ellipses.
+	This expression can be reduced to $y=\alpha x + \beta$, for some $\alpha, \beta$, which can then be plugged into $\partial E(0)$'s equation obtaining $x^2/a^2 + (\alpha x + \beta)^2/b^2 = 1$.
+	We obtain the intersection points by solving this quadratic equation for $x$, and then, for each value of $x$,  determining $y$ from $y=\alpha x + \beta$.
 \end{proof}
-
+Next, we define the CLS of each ellipse, considering also the case where, in an optimal solution, an ellipse covers only one point.
 \begin{definition}\label{def:cls_mce}
 	Given an instance of MCE, for all $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
 	\begin{equation}
