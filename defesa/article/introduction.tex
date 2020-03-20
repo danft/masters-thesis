@@ -1,52 +1,14 @@
-	
-	The Planar Maximum Covering Location Problem (PMCLP) was first introduced in \cite{church:1984}, and can be seen as a category of problems where the coverage of a demand set, a collection of subsets of $\R^2$, is to be maximized by determining the location of facilities in $\R^2$, with coverage being determined by a distance function.
-	In \cite{church:1984}, methods for Euclidean and Rectilinear distances versions of the problem were proposed.
-	In \cite{drezner, chazelle:1986}, exact algorithms for the Euclidean PMCLP with only one facility are proposed; and in \cite{cabello:2006} an approximation algorithm is proposed for the version with multiple unit disks as facilities.
-	A property of the Euclidean PMCLP, which is utilized in the algorithms developed in \cite{drezner, chazelle:1986, cabello:2006}, and in the method proposed in \cite{church:1984}, is that there is an optimal solution which every facility is located in the demand points, or in the intersection of two circles centered at two demand points; we will prove a similar property for ellipses in our work.
-	
-	It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \cite{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to the problem. For some instances, the method took too long and did not find an optimal solution. Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
-	The problem was further explored in \cite{andreta}, which introduced the version where the ellipses can be freely rotated, to which an exact and a heuristic method was proposed, and developed a new method for the axis-parallel version of the problem, which was able to obtain optimal solutions for instances that the method proposed by \cite{canbolat} could not.
-	The exact method for the version with rotation could not obtain optimal solutions within a predefined time limit for several instances, the heuristic method though returned solutions for every instance, and impressively enough, obtained optimal solutions for every verifiable instance.
-	
-	We study two versions of PMCLP with elliptical coverage facilities in this work. For both of them, each ellipse is defined to have a fixed shape and an undefined location, which is part of the solution.
-	In the first version, introduced in \cite{canbolat}, all the ellipses are restricted to be axis-parallel, while in the second version, introduced in \cite{andreta}, this constraint is dropped, and all the ellipses can be freely rotated.
-	The first version will be referred to as Planar Maximum Covering Location by Ellipses Problem (MCE) and the second one as  Planar Maximum Covering Location by Ellipses with Rotation Problem (MCER).
-	
-	\section{Problem Definition}
-	
-	An instance of MCE and MCER is given by $n$ distinct demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; $n$ weights $\Ww=\{w_1, \dots, w_n\}$, with $w_j\in\R_{>0}$ being the weight of the $j$-th point; and $m$ shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)$ being the semi-major and semi-minor axis of the $j$-th ellipse, with $a_j > b_j > 0$. We define a list of functions $\E=\{E_1, \dots, E_m\}$ representing the coverage area of each facility, with $E_j \colon \R^2 \to \R^2$ for MCE, and $E_j \colon \R^2\times [0, \pi)\to \R^2$. Let $||\cdot||_{a,b, \theta} \colon \R^2 \to \R_{\ge0}$ denote the elliptical norm given by
-	\begin{equation*}
-	||x||_{a,b, \theta}=\left|\left|
-	\left(\begin{array}{rr}
-	\cos{\theta} & \sin{\theta}\\
-	\sin{\theta} & -\cos{\theta}
-	\end{array}
-	\right)
-	\left(\begin{array}{cc}
-	a_j & 0\\
-	0 & b_j
-	\end{array}\right) x \right|\right|_2,
-	\end{equation*}
-	then, for MCE we define $E_j(q)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j,0} \le 1\}$; and for MCER we define $E_j(q, \theta)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j, \theta} \le 1\}$.
-	
-Let $w : A \subset \Pp \to \R$ be a function which takes a subset of the demand set and returns the sum of the weights of the points in $A$. Then, we define MCE as the optimization problem 
-\begin{equation*}
-\max_{q_1, \dots, q_m} \sum_{j=1}^m w(\Pp \cap E_j(q_j)),
-\end{equation*}
-and similarly MCER as
-\begin{equation*}
-\max_{(q_1, \theta_1), \dots, (q_m, \theta_m)} \sum_{j=1}^m w(\Pp \cap E_j(q_j, \theta_j)).
-\end{equation*}
+The Planar Maximum Covering Location Problem (PMCLP) was first introduced in \cite{church:1984}, and can be seen as a category of problems where the coverage of a demand set, a collection of subsets of $\R^2$, is to be maximized by determining the location of facilities in $\R^2$, with coverage being determined by a distance function.
+In \cite{church:1984}, methods for Euclidean and Rectilinear distances versions of the problem were proposed.
+In \cite{drezner, chazelle:1986}, exact algorithms for the Euclidean PMCLP with only one facility are proposed; and in \cite{cabello:2006} an approximation algorithm is proposed for the version with multiple unit disks as facilities.
+A property of the Euclidean PMCLP, which is utilized in the algorithms developed in \cite{drezner, chazelle:1986, cabello:2006}, and in the method proposed in \cite{church:1984}, is that there is an optimal solution which every facility is located in the demand points, or in the intersection of two circles centered at two demand points; we will prove a similar property for ellipses in our work.
 
-To make the notation more clear, we denote an instance of MCE or MCER as the tuple $(\Pp, \Ww, \Rr)$, and a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. Additionally, whenever we have an instance with only one ellipse, we omit the index referring to the facility, and define a solution of MCE as $q\in\R^2$, and of MCER as $(q, \theta) \in \R^2\times [0, \pi)$.
-We also use $\partial$ as the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$.
+It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \cite{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to the problem. For some instances, the method took too long and did not find an optimal solution. Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
+The problem was further explored in \cite{andreta}, which introduced the version where the ellipses can be freely rotated, to which an exact and a heuristic method was proposed, and developed a new method for the axis-parallel version of the problem, which was able to obtain optimal solutions for instances that the method proposed by \cite{canbolat} could not.
+The exact method for the version with rotation could not obtain optimal solutions within a predefined time limit for several instances, the heuristic method though returned solutions for every instance, and impressively enough, obtained optimal solutions for every verifiable instance.
 
-\subsection{Facility Cost}
+We study two versions of PMCLP with elliptical coverage facilities in this work. For both of them, each ellipse is defined to have a fixed shape and an undefined location, which is part of the solution.
+In the first version, introduced in \cite{canbolat}, all the ellipses are restricted to be axis-parallel, while in the second version, introduced in \cite{andreta}, this constraint is dropped, and all the ellipses can be freely rotated.
+The first version will be referred to as Planar Maximum Covering Location by Ellipses Problem (MCE) and the second one as  Planar Maximum Covering Location by Ellipses with Rotation Problem (MCER).
 
-Additionally, in \cite{canbolat, andreta}, two other parameters are present in the definition of the problem. This extension is the result of having costs associated with every facility hence, to create a decision about which ones are utilized, a new parameter $k\in\mathbb{N}$ is given limiting the number of utilized ellipses to be exactly $k$.
-
-We refer to this version of the problem as  MCE-$k$, and MCER-$k$. An instance of it is given by the same parameters as MCE and MCER, plus a list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost, and $k\in\mathbb{N}$, $k\le m$.
-A solution needs another set $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$ to express the indexes of the utilized ellipses.
-
-Solving MCE-$k$ (MCER-$k$) can be done by considering the $\binom{m}{k}$ instances of MCE (MCER), and then taking the best one as the optimal solution, taking into account the cost of each utilized ellipse. 
-As this step can be seen as trivial, we propose algorithms for MCE and MCER, and then in \autoref{section:numerical}, as we use the instances from \cite{canbolat, andreta} in the numerical experiments, we analyze the results obtained by our implementations of the algorithms proposed in this work for MCE-$k$ and MCER-$k$.
+	

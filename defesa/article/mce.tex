@@ -1,13 +1,31 @@
 Similarly to the method developed in \cite{church:1984} for the Euclidean PMCLP, we will describe a Candidate List Set (CLS) of possible locations for each ellipse and then propose an algorithm that constructs solutions combining the possible locations in each ellipse's CLS.
 Based on the approach of \cite{chazelle:1986,cabello:2006}, we will construct the CLS for each ellipse by working with a problem equivalent to MCE for only one facility.
 
-Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE, then consider the problem where $n$ ellipses\\ $E(p_1), \dots, E(p_n)$ are given, and a solution is defined as a point $q\in\R^2$, with an optimal one maximizing 
-$w(\{p_i\in\Pp \colon q\in E(p_i)\})$.
-These two problems are equivalent as, let $q\in\R^2$, and $A\subset\Pp$; then $q\in\cap_{p\in A}E(p)$ if, and only if $\Pp \cap E(q) = A$.
+To define this equivalent problem, we need to first state an ellipse's property.
+Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE with one facility, and  $p, q \in \R^2$, we have that
+\begin{equation}\label{eq:mce-mwc}
+p \in E(q) \Leftrightarrow ||p-q||_{a, b, 0} \le 1 \Leftrightarrow q \in E(p).
+\end{equation}
+The equivalent problem is given by $n$ ellipses with shape parameters $(a, b)$ centered at $\Pp$. Let $q\in\R^2$ be a solution of MCE for one facility, by applying \autoref{eq:mce-mwc} to every point covered by $E(q)$, we obtain that
+\begin{equation}
+\Pp \cap E(q) = \{p_i\in\Pp \colon q\in E(p_i)\},
+\end{equation}
+which implies that the problem of determining $q\in\R^2$ to maximize $w(\{p_i\in\Pp \colon q\in E(p_i)\})$, is equivalent to MCE for one facility. This changes the problem from determining a location for an ellipse given $n$ points to the problem of finding a point given $n$ ellipses with fixed locations.
 
 To construct the CLS for each ellipse, let us consider the intersection region $\cap_{p\in A} E(p)$, for some $A\subset \Pp$, $|A|>1$. In \cite{church:1984}, this region 
 is said to have vertices that are in the set of pairwise intersections of the circles with centers in $A$.
 Using the results of \cite{bi}, which develops an algorithm to determine the intersection region of $n$ fixed-radii disks in an strictly convex normed space, it is possible to prove that this is also true for ellipses. Based on that, given an instance of MCE, we define the CLS for each ellipse considering also the case where an ellipse could cover only one point in an optimal solution.
+
+
+\begin{figure}[!htb]
+
+	\centering
+	
+	\includegraphics[scale=.3]{figures/MCE-vertices2}
+	\caption{Transforming a solution of E3P into a solution of the circumcircle problem.}
+	\label{fig:MCE-vertices}
+\end{figure}
+
 
 \begin{lem}\label{lema:e2p}
 	Let $E$ be the coverage region of an axis-parallel ellipse with shape parameters $(a,b)$; and $v \in \R^2$, $v\neq0$. Then $|\partial E(0) \cap \partial E(v)| \le 2$, and $\partial E(0) \cap \partial E(v)$ can be determined analytically.
@@ -20,13 +38,13 @@ Using the results of \cite{bi}, which develops an algorithm to determine the int
 \end{proof}
 
 \begin{definition}\label{def:cls_mce}
-	Given an instance of MCE, for any $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
+	Given an instance of MCE, for all $k \in \{1, \dots, m\}$, we define the CLS for the $k$-th ellipse as
 	\begin{equation}
 	S_k = \Pp \cup \left(\bigcup_{1 \le i < j \le n} \partial E_k(p_i) \cap \partial E_k(p_j) \right).
 	\end{equation}
 \end{definition}
 
-By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
+By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$, and $|S_k| \le n + 2\binom{n}{2}$. Next, we establish a lemma stating that the set of solutions obtained by combining the possible locations in each ellipse's CLS contains at least one optimal solution.
 
 \begin{thm}\label{thm:mce}
 	Given an instance of MCE, and $S_1, \dots, S_m$ as defined by \autoref{def:cls_mce}, then the set $\Omega = \{(q_1, \dots, q_m) \colon \textnormal{ for all }q_k \in S_k \}$ contains an optimal solution of MCE and $|\Omega| \le n^{2m}$. 

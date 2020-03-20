@@ -1,0 +1,48 @@
+%Given $n$ demand points $\Pp:=\{p_1, \dots, p_n\}$, with weights $\Ww:=\{w_1, \dots, w_n\}$, $w_i\in\R_{\ge0}$; and $m$ shape parameters $\Rr:=\{(a_1, b_1); \dots; (a_m, b_m)\}$, with $(a_j, b_j) \in \R_{>0}^2$ being the semi-major and semi-minor axis of the $j$-th ellipse. 
+
+%For MCE, $\Rr$ describes the shape parameters of $m$ axis-parallel ellipses, and we want to determine a center $q_j\in\R^2$ for each one of them to maximize the weight of the covered points. For MCER, $\Rr$ describes the shape parameters of ellipses that not necessarily are axis-parallel, and we want to determine a center $q_j \in \R^2$, and an angle of rotation $\theta_j\in[0, \pi)$ for each ellipse to maximize the weight of the covered points. 
+
+
+An instance of MCE and MCER is given by $n$ distinct demand points $\Pp=\{p_1, \dots, p_n\}$, $p_j\in\R^2$; $n$ weights $\Ww=\{w_1, \dots, w_n\}$, with $w_j\in\R_{>0}$ being the weight of the $j$-th point; and $m$ shape parameters $\Rr=\{(a_1, b_1), \dots, (a_m, b_m)\}$, with $(a_j, b_j)\in\R_{\ge0}^2$ being the semi-major and semi-minor axis of the $j$-th ellipse, with $a_j > b_j > 0$.
+
+For MCE, the shape parameters describe axis-parallel ellipses, and the problem is to determine a center for each ellipse to maximize the weight of covered demand points. For MCER, besides the center, because the ellipses are not necessarily axis-parallel, for each facility, an angle of rotation is also part of the solution, and the problem is to maximize the weight of covered demand points as well.
+
+Let $\E=\{E_1, \dots, E_m\}$ be a list of functions representing the coverage area of each facility, with $E_j \colon \R^2 \to \R^2$ for MCE, and $E_j \colon \R^2\times [0, \pi)\to \R^2$. Let $||\cdot||_{a,b, \theta} \colon \R^2 \to \R_{\ge0}$ denote the elliptical norm given by
+\begin{equation*}
+||x||_{a,b, \theta}=\left|\left|
+\left(\begin{array}{rr}
+\cos{\theta} & \sin{\theta}\\
+\sin{\theta} & -\cos{\theta}
+\end{array}
+\right)
+\left(\begin{array}{cc}
+a_j & 0\\
+0 & b_j
+\end{array}\right) x \right|\right|_2,
+\end{equation*}
+then, for MCE we define $E_j(q)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j,0} \le 1\}$; and for MCER we define $E_j(q, \theta)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j, \theta} \le 1\}$.
+
+To make the notation more clear, we define a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. 
+Let $w : A \subset \Pp \to \R$ be a function which takes a subset of the demand set and returns the sum of the weights of the points in $A$. Then, we define MCE  as the optimization problem 
+\begin{equation*}
+\max_{Q}  w\left(\cup_{j=1}^m\Pp \cap E_j(q_j)\right),
+\end{equation*}
+and similarly MCER as
+\begin{equation*}
+\max_{Q} w\left(\cup_{j=1}^m\Pp \cap E_j(q_j, \theta_j)\right).
+\end{equation*}
+
+Additionally, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one ellipse, we omit the index referring to the facility, and we use $\partial$ as the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$.
+
+\subsection{Facility Cost}
+
+In \cite{canbolat, andreta}, as a result of having costs assigned to each facility, two other parameters are present in the definition of the problem.
+These new parameters are: the list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost; 
+and an integer $k\in\mathbb{N}$, $k\le m$, which introduces a constraint requiring that exactly $k$ facilities have to be utilized.
+Because of that, a solution also needs an additional parameter $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$ to express the indexes of the utilized ellipses. We refer to this version of the problem as  MCE-$k$ and MCER-$k$.
+
+From an algorithm for MCE (MCER), we can propose an algorithm for MCE-$k$ (MCER-$k$), which just takes the best overall solution among the $\binom{m}{k}$ instances $(\Pp, \Ww, \Rr')$, such that $\Rr' \subset \Rr$ and $|\Rr'| = k$. 
+Therefore, in our work, we focus on developing algorithms for MCE and MCER, and whenever we refer to an algorithm for MCE-$k$ (MCER-$k$), we mean an algorithm as described here, which considers all the $\binom{m}{k}$ instances of MCE (MCER).
+
+
+%Therefore, as this step can be seen as trivial, we focus on proposing algorithms for MCE and MCER, and in the section where we analyze the numerical experiments, as we use instances from \cite{andreta}, whenever we refer to an algorithm of MCE-$k$ (MCER-$k$), see it as an algorithm based on the approach described here, which uses $\binom{m}{k}$ instances of MCE (MCER) to obtain an optimal solution.
