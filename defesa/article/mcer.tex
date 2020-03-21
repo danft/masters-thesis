@@ -1,29 +1,10 @@
 The version of PMCLP where the facilities are ellipses that can be freely rotated was first introduced in \cite{andreta} where an exact and a heuristic method were developed for it. In comparison with MCE, this problem introduces a new variable that is responsible for determining the angle of rotation of every ellipse, making MCER a more challenging problem. We propose an algorithm for MCER which is able to obtain optimal solutions for every instance proposed in \cite{andreta} including the ones its exact method could not, and its heuristic obtained non-optimal ones.
 
-\begin{definition}
-	Two solutions $Q$ and $Q'$ of MCER, are said to be equivalent to each other if \mbox{$\Pp \cap \cup_{j=1}^m E_j(q_j, \theta_j) = \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$}. Also, if $\Pp \cap\cup_{j=1}^m E_j(q_j, \theta_j) \subset \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$, then we say that $Q' \succ Q$.
-\end{definition}
+%To make the text more clear, we introduce an equivalence relation for the set of solutions of MCER, and also a order relation making the set of solutions partially ordered.
 
-Next, we introduce a lemma which states that any optimal solution of MCER has an equivalent solution where every ellipse that covers at least two points has two points on its border.
+Let $(\Pp, \Ww, \{(a,b)\})$ be an instance of MCER, then given a solution $Q$ for it, with $|\Pp \cap E(q, \theta)| \ge 2$, if we rotate the coordinate system by $-\theta$, and use the result given by \autoref{lema:mce} for an axis-parallel ellipse, we can conclude that another solution $Q'$ exists, such that $Q' \succ Q$ and $|\Pp \cap \partial E(q', \theta)| \ge 2$. That is, given a solution for the one-facility MCER, we can obtain another one that covers the same points (possibly more) and the ellipse contains two demand points.
 
-\begin{lem}\label{lema:mce_2b}
-	Let $Q^*$ be a solution of MCER for an instance $(\Pp, \Ww, \{(a,b)\})$.
-	If $|\Pp \cap E(q^*, \theta^*)| \ge 2$, then there exists a solution $Q$ for the same instance, such that $Q \succ Q^*$, and $|\Pp \cap \partial E(q, \theta)|\ge 2$.
-\end{lem}
-
-\begin{proof}
-	First, let $\theta=\theta^*$ and ignore the angle of rotation as it does not change, and assume that we are dealing with an axis-parallel ellipse.
-	
-	Let $A=\Pp \cap E(q^*, \theta^*)$ and $X=\cap_{p \in A}E(p, \theta^*)$ be the region of intersection of ellipses centered at each point in $A$. By \cite{bi}, the vertices of $\partial X$ are in the set of pairwise intersections of $\{\partial E(p, \theta^*)\colon p \in A\}$. Setting $q$ as any of these vertices makes $E(q, \theta)$ have two points on its border.	
-\end{proof}
-
-%Next, we define, for an optimal solution, a set of equivalent solutions, such that any ellipse covering more than one point contains at least two points.
-
-%\begin{definition}
-%	Let $Q^*$ be an optimal solution of MCER. We define $\Pi(Q^*)$ as the set of every equivalent solution to $Q^*$, such that for any $Q \in\Pi(Q^*)$, for $j\in\{1, \dots, m\}$ with $|\Pp \cap E_j(q_j^*, \theta_j^*)|\ge2$, we have $|\Pp \cap \partial E_j(q_j', \theta_j')| \ge 2$.
-%\end{definition}
-
-Next, we introduce a notation that helps us characterize angles which given an ellipse rotated by it and two points, it is possible to find a center for the ellipse, such that it contains both points.
+Next, we define a new notation that helps us characterize angles which given an ellipse rotated by it and two points, it is possible to find a center for the ellipse, such that it contains both points.
 
 \begin{definition}\label{def:feasible_angle}
 	Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
@@ -35,14 +16,16 @@ Next, we introduce a notation that helps us characterize angles which given an e
 	%We also define $\tilde{\Phi}_j(u,v)$ as the angle which makes $E_j$'s major-axis be parallel to the line that passes through $u$ and $v$. Note that if $\Phi_j(u,v) \neq \emptyset$, then $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$ as the longest segment that crosses an ellipse is its major-axis.
 \end{definition}
 
+%%%%% TODO: TERMINEI DE REVISAR AKI.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=.22]{figures/feasible-angle2}
-	\caption{A $(E, u, v)$-feasible angle and a not $(E, u, v)$-feasible angle.}
+	\caption{The solid border ellipses are rotated by a $(E, u,v)$-feasible angle, while the ellipse with a dashed border is rotated by a not $(E, u, v)$-feasible angle.}
 	\label{fig:feasible-angle}
 \end{figure}
 
-For any $x\in\R^2$, we denote by $\angle x\in [0, \pi)$ the minimal angle between $x$ and the vector $(1, 0)$. Then, if $\Phi(u,v)\neq\emptyset$, then $\angle(u-v)\in  \Phi(u,v)$ as it is the angle that makes the ellipse's major-axis be parallel to the line that passes through $u$ and $v$. 
+For any $x\in\R^2$, we denote by $\angle x\in [0, \pi)$ the minimal angle between $x$ and the vector $(1, 0)$. If $\Phi(u,v)\neq\emptyset$, then $\angle(u-v)\in  \Phi(u,v)$ as $\angle(u-v)$ is the angle that makes the ellipse's major-axis, the longest segment crossing an ellipse, be parallel to the line that passes through $u$ and $v$.
 
 Next we open a parenthesis to discuss the problem of deciding for what angles of rotation it is possible to find a center for an ellipse, so it contains two given points. We give the result for two points that have the same $y$-coordinate, but this can be generalized.
 
@@ -98,7 +81,7 @@ It states that, for any ellipse that covers more than two points in a given opti
 \end{lem}
 
 \begin{proof}
-	According to \autoref{lema:mce_2b}, there exists $\{u, v\} \subset \Pp \cap E(q^*, \theta^*)$, such that $Q' \succ Q^*$ exists, and $\{u, v\} \subset \partial E(q', \theta^*)$. Therefore, $\theta^*\in\Phi(u,v)$.
+	According to \autoref{lema:mce}, there exists $\{u, v\} \subset \Pp \cap E(q^*, \theta^*)$, such that $Q' \succ Q^*$ exists, and $\{u, v\} \subset \partial E(q', \theta^*)$. Therefore, $\theta^*\in\Phi(u,v)$.
 	
 	Suppose that $u$ and $v$ have the same $y$-coordinate (if they do not, a rotation can be applied to make them do). Then, by \autoref{lema:l-function}, $\Phi(u,v)=[0, \alpha] \cup [\pi-\alpha, \pi)$, for some $\alpha \in [0, \pi/2]$. Then, if we rotate the coordinate system by $\pi-\alpha$, we obtain $\Phi(u,v)=[0, 2\alpha]$.
 	
@@ -206,9 +189,9 @@ In the next section, we describe some implementation details and improvements th
 		\State Let $S_j$ be the CLS for the $j$-th ellipse as defined in \autoref{def:Sj}
 		
 		\ForAll{$(q_j, \theta_j) \in S_j$}
-		%\State $Cov \gets \Pp \cap E_j(q_j, \theta_j)$
+		\State $Cov \gets \Pp \cap E_j(q_j, \theta_j)$
 		
-		\If{$j < m$}
+		\If{$j < |\Rr|$}
 		\State $(q_{j+1},\theta_{j+1}); \dots; (q_m,\theta_m) \gets  MCER_{bt}(Z\setminus Cov, \Ww, \Rr, j+1)$
 		\EndIf
 		

@@ -32,7 +32,16 @@ and similarly MCER as
 \max_{Q} w\left(\cup_{j=1}^m\Pp \cap E_j(q_j, \theta_j)\right).
 \end{equation*}
 
-Additionally, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one ellipse, we omit the index referring to the facility, and we use $\partial$ as the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ denotes an ellipse with shape parameters $(a_1, b_1)$ centered at $q_1$.
+We define an equivalence and a partial order relation between solutions of both MCE and MCER as follows.
+Two solutions $Q$ and $Q'$ of MCE (MCER), are said to be equivalent to each other if
+they both cover the same set of demand points.
+% $\cup_{j=1}^m \Pp \cap E_j(q_j) = \cup_{j=1}^m \Pp \cap E_j(q_j')$ ($ \cup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) = \cup_{j=1}^m \Pp \cap E_j(q_j', \theta_j')$). That is, two solutions are equivalent if they cover the same set of points.
+We also define a partial order: $Q' \succ Q$ if, and only if the set of demand points covered in solution $Q$ is a subset of the demand points covered in solution $Q'$.
+
+%if, and only if $\cup_{j=1}^m \Pp \cap E_j(q_j) \subset \cup_{j=1}^m \Pp \cap E_j(q_j')$ ($\Pp \cap\cup_{j=1}^m E_j(q_j, \theta_j) \subset \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$). That is, $Q' \succ Q$ if, and only if the set of points covered in solution $Q$ is a subset of the points covered in solution $Q'$.
+
+%%% esse paragrafo ainda ta estranho.
+Additionally, we denote by $\partial$ the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ represents the set of points $\{p \in \R^2\colon ||p-q_1||_{a_1,b_1,0} = 1\}$. Also, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one facility, we omit the index referring to the ellipse. 
 
 \subsection{Facility Cost}
 
