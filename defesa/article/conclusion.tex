@@ -1,6 +1,9 @@
-In this work, we studied two problems of maximum planar covering using ellipses, with most of the substantial results being for the less previously-studied problem where the ellipses can be freely rotated, which we referred to as MCER. 
-We devoted most of our work for the development of an exact algorithm for this problem, which depended on the development of an algorithm for a never-studied-before geometric subproblem, which we referred to as E3P. The algorithm proposed for this last problem involves determining the eigenvalues of a six by six complex matrix to obtain the roots of a degree-six polynomial. We believe that further properties can be discovered which would allow the development of a simpler method to obtain the roots of the polynomial whose roots are solutions of E3P.
+In this work, we developed new algorithms for two planar maximum covering by ellipses problems.
+After some improvements suggestions were given, numerical experiments were conducted showing the efficiency of both algorithms for instances from previous works and for new ones with larger demand and facility sets.
 
-An exact algorithm was also developed for the other problem where the ellipses had to be axis-parallel. We took a different approach compared to the methods proposed by \cite{canbolat, andreta}, and based our algorithm entirely on the model proposed for the Euclidean PMCLP in \cite{church:1984}.
+We devoted most of our work to the development of an exact algorithm for the version of the problem where the ellipses can be freely rotated.
+In the midst of that, a never-studied-before subproblem came up, for which we also proposed an algorithm involving determining the roots of a complex polynomial.
+Our algorithm for this version of the problem was able to obtain optimal solutions for instances which the heuristic method developed in \cite{andreta} returned non-optimal ones, and the deterministic method timed out.
 
-After giving improvement suggestions for the implementation of both algorithms, we analyzed several numerical experiments that were made using instances from \cite{canbolat, andreta}, and some new ones. Both algorithms performed really well, obtaining optimal solutions for every previously known instance, and only timing out for the really challenging ones from the set of newly constructed ones.
+We believe that the never-studied-before subproblem, which was the subject of \autoref{section:e3p}, has some properties that we were not able to explore, which could be the subject of future work. 
+We observed that the solutions, except for one case, always come in pairs; and that the generated complex polynomial whose roots provide solutions for the problem appears to be a self-inverse polynomial.
