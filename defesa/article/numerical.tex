@@ -8,24 +8,24 @@ The goal of this chapter is to show the results of the algorithms for MCE-$k$ an
 \subsection{Numerical Results for known instances}
 
 In this section, we present the results of our algorithms for MCE-$k$ and MCER-$k$ 
-for some instances proposed by \cite{canbolat, andreta}. 
-We present here the numerical results for the instances CM6-CM9, and AB097-AB120. 
-For each instance, we display the selected ellipses and the income, which is the weight of every covered point minus the cost of the selected ellipses, of the found optimal solution. 
+for the instances with more than $80$ demand points proposed in \cite{canbolat, andreta}. These instances are named CM6-CM9, and AB097-AB120.
+
+For each instance, we display the selected ellipses and the income, which is the weight of every covered point minus the cost of the selected ellipses, of the found optimal solution.
 We also display some performance metrics with the intention of giving an idea of how much computation had to be done for the algorithms to find an optimal solution. These metrics are: 
-the CLS size of every ellipse, the number of nodes in the backtracking tree, the number of leaves corresponding to a solution in the backtracking tree, the CPU time spent on constructing the CLSs, and the total CPU time.
+the CLS size of every ellipse, the number of nodes in the backtracking tree, the number of leaves corresponding to a solution in the backtracking tree, the CPU time in seconds spent on constructing the CLSs, and the total CPU time in seconds.
 For the algorithms for MCER, we also have a column for the number of E3P subproblems that were solved, not counting the triplet of points which were skipped.
 We made available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/} every instance used here, along with the graphical representation of every obtained solution.
 
-In \autoref{tab:mce-results-cm}, the results for instances CM7-CM9 are shown for MCE-$k$. 
-The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than one second for every one of the instances CM7-CM9.
+The results of MCE-$k$ are shown in \autoref{tab:mce-results-cm} and  \autoref{tab:mce-results-ab} for instances CM7-CM9 and AB097-AB120 respectively.
+
+
+The algorithm proposed here showed great results as it was able to obtain optimal solutions in less than one second for every instance.
 Even though the experiments were run in a different environment, we can still say that this is a great improvement compared with the results from \cite{andreta}. For example, to obtain an optimal solution for the instance CM9, the method proposed by \cite{andreta} took more than thirty minutes.
-In \autoref{tab:mce-results-ab}, we present the results for instances AB097-AB120.
 We can also observe here, that in practice, the bound for the CLS size of $n^2$ given by \autoref{thm:mce} seems to be very loose. The closest we got to this number was in instances CM7-CM9 where $|S_3|=174$, which is still very far from $n^2=100^2=\num{10000}$.
 
-For MCER-$k$, the numerical results obtained by our implementation are shown in \autoref{tab:mcer-results-cm} for instances CM7-CM9, and in \autoref{tab:mcer-results-ab} for instances AB097-AB120. 
+For MCER-$k$, the numerical results obtained by our implementation are shown in \autoref{tab:mcer-results-cm} for instances CM7-CM9, and in \autoref{tab:mcer-results-ab} for instances AB097-AB120.
 An optimal solution was obtained for every instance, and overall, at most six seconds of CPU time was taken.
-
-Looking at the numerical results of the heuristic method proposed in \cite{andreta}, the only non-optimal solutions it encountered were for instances AB105-AB108. For these instances, our algorithm obtained an optimal solution covering one more point. In \autoref{fig:AB108}, the optimal solution for AB108 is displayed.
+Looking at the numerical results of the heuristic method proposed in \cite{andreta} for MCER-$k$, the only non-optimal solutions it encountered were for instances AB105-AB108. For these instances, our algorithm obtained an optimal solution covering one more point. In \autoref{fig:AB108-AB120}, the optimal solution for AB108 and AB120 are displayed.
 In general, our algorithm took much lower CPU time compared to the methods developed in \cite{andreta}. For example, for instance CM9, their heuristic method took more than six hours to return a solution, and their deterministic one exceeded the predefined time limit of twelve hours, while our implementation of the MCER-$k$'s algorithm took less than five seconds of CPU time.
 
 \begin{figure}[!htb]
@@ -43,6 +43,7 @@ In general, our algorithm took much lower CPU time compared to the methods devel
 	\label{fig:AB120}
 \end{subfigure}
 	\caption{An optimal solution of MCER-$k$ for the instance AB108 (a), and for the instance AB120 (b).}
+	\label{fig:AB108-AB120}
 \end{figure}
 
 \subsection{New instances}
@@ -50,9 +51,9 @@ In general, our algorithm took much lower CPU time compared to the methods devel
 After examining the results obtained for the formerly known instances, we decided to construct new ones to analyze the algorithms proposed by our work more thoroughly.
 
 Besides increasing the size of the demand set and the number of ellipses, we also designed instances with non-unitary weights, which is something none of the previous instances had. 
-Moreover, for some instances, we used a different probability distribution, other than the uniform distribution, to generate the location of the points.
-We set a time limit of two hours of CPU time for every instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
-In total, we designed 47 new instances, which will be referred to as TA01, \dots, TA47, we made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
+Moreover, for some instances, we used a different probability distribution, other than the uniform one, to generate the points.
+We set a time limit of two hours of CPU time for solving each instance, meaning that if an algorithm did not stop in two hours, we report that it was not able to determine an optimal solution. 
+In total, we designed 47 new instances, which will be referred to as TA01, \dots, TA47, and made all of them available at \url{https://sites.icmc.usp.br/andretta/tedeschi-2020/}.
 
 The first set of instances, TA01-TA07, were constructed sampling each demand point from a bivariate normal distribution $\mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$ being the identity matrix; and setting each point's weight as its squared distance to the origin. This is expected to produce a demand set with most points located near the origin, with the most valuable ones located far away from it.
 We generated a set of $n=100$ points, with $m=7$ ellipses, making the $j$-th ellipse have shape parameters randomly taken from a uniform distribution in $[0.5, 1.5]$, and cost $c_j=10\times a_j \times b_j$. From that, we created seven instances for MCE-$k$ and MCER-$k$ taking $k \in \{1, \dots, m\}$. The results for MCE-$k$ are presented in \autoref{tab:mce-results-ta1} and the results for MCER-$k$ are displayed in \autoref{tab:mcer-results-ta1}.
@@ -64,11 +65,11 @@ We kept the number of facilities at $3$ and created five demand sets with $n\in\
 Our implementation of the algorithm for MCER-$k$ was not able to obtain a solution for the last instance TA22. Apart from instance TA13 for MCER-$k$, and instance TA22 for both algorithms, most of the CPU time was spent in constructing the CLSs.
 The graphical representation of solutions for the instance TA21 for MCE-$k$ and MCER-$k$ are shown in \autoref{fig:TA21}.
 
-The third set of instances, TA23-TA42, was constructed generating each demand point following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for instances TA01-TA23. We created instances with $m=5$, $n\in \{400, 500, 600, 700\}$, and $k\in\{1, \dots, m\}$, with a total of $20$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance TA37 with $n=500$ and $k=5$ is shown in \autoref{fig:TA37}.
+The third set of instances, TA23-TA42, was constructed generating each demand point following a uniform distribution in $[0, 10]^2$, with each point having unitary weight; and the ellipses by the same process used for instances TA01-TA23. We created instances with $m=5$, $n\in \{400, 500, 600, 700\}$, and $k\in\{1, \dots, m\}$, with a total of $20$ instances. The results for MCE-$k$ can be seen in \autoref{tab:mce-results-ta3} and the results for MCER-$k$ are presented in \autoref{tab:mcer-results-ta3}. Optimal solutions were obtained for every one of the instances in this set. It is possible to see that, compared with the first two sets of instances, TA01-TA42, the CLS sizes are smaller, mostly because of the size of the ellipses and the uniform distribution used to generate the points. The optimal solution returned by MCER-$k$'s algorithm for the instance TA37 with $n=500$ and $k=5$ is shown in \autoref{fig:TA37}.
 
 The last set of instances, TA43-TA47, were constructed using two bivariate normal distributions with distinct means $\mathcal{N}(\mu^{(1)}, \mathbb{I})$ and $\mathcal{N}(\mu^{(2)}, \mathbb{I})$, $\mu^{(1)}, \mu^{(2)} \in \R^2$. Half of the points were generated following $\mathcal{N}(\mu^{(1)}, \mathbb{I})$, and the other half $\mathcal{N}(\mu^{(2)}, \mathbb{I})$; the weight of every point was set as its squared distance to the mean of the distribution from which it was generated.
 The ellipses were also divided into two halves, taking their shape parameters from uniform distributions in the intervals $[0.5, 1.5]$, and $[3, 4]$; setting the $j$-th ellipse's weight as $c_j=a_j \times b_j$.
-The purpose of this last set of instances was to create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$. We created seven instances with $n=80$, $m=6$ and $k\in\{1, \dots, m\}$. We defined the values of $\mu^{(1)}$ and $\mu^{(2)}$ specifically to create such a counter-example. The results are shown in \autoref{tab:mce-results-ta4} for MCE-$k$ and in \autoref{tab:mce-results-ta4} for MCER-$k$.
+The purpose of this last set of instances was to create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$. We created seven instances with $n=80$, $m=6$ and $k\in\{1, \dots, m\}$. We defined the values of $\mu^{(1)}$ and $\mu^{(2)}$ as $(-3, -3)$ and $(-3, -3)$ respectively to create such a counter-example. The results are shown in \autoref{tab:mce-results-ta4} for MCE-$k$ and in \autoref{tab:mcer-results-ta4} for MCER-$k$.
 In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with $k=2$, where two of the bigger-sized ellipses are used, and $k=3$, where one of the bigger-sized ellipses is replaced by two small ones.
 
 \begin{figure}
@@ -140,6 +141,9 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 	\label{fig:TA44-45}
 \end{figure}
 
+
+
+
 %%%% TABLE CM
 
 \begin{table}
@@ -169,10 +173,42 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances CM7-CM9.}
+		\caption{Numerical results of MCE-$k$ for instances CM7-CM9.}
 		\label{tab:mce-results-cm}
 	\end{center}
 \end{table}
+%%% TABLE AB
+\begin{table}
+	\begin{center}
+		\resizebox{0.85\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{tables/table_mcek_ab.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical results of MCE-$k$ for instances AB097-AB120.}
+		\label{tab:mce-results-ab}
+	\end{center}
+\end{table}
+
 
 \begin{table}
 	\begin{center}
@@ -206,45 +242,12 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCER-$k$ for instances CM7-CM9.}
+		\caption{Numerical results of MCER-$k$ for instances CM7-CM9.}
 		\label{tab:mcer-results-cm}
 	\end{center}
 \end{table}
 
 %%% FIM TABLE CM
-
-
-%%% TABLE AB
-\begin{table}
-	\begin{center}
-		\resizebox{0.85\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|crrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
-				\hline
-				\input{tables/table_mcek_ab.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Numerical Results of MCE-$k$ for instances AB097-AB120.}
-		\label{tab:mce-results-ab}
-	\end{center}
-\end{table}
 
 \begin{table}
 	\begin{center}
@@ -279,7 +282,7 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCER-$k$ for instances AB097-AB120.}
+		\caption{Numerical results of MCER-$k$ for instances AB097-AB120.}
 		\label{tab:mcer-results-ab}
 	\end{center}
 \end{table}
@@ -323,47 +326,8 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances TA001-TA007.}
+		\caption{Numerical results of MCE-$k$ for instances TA001-TA007.}
 		\label{tab:mce-results-ta1}
-	\end{center}
-\end{table}
-
-
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\# E3P&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				
-				\hline
-				\input{tables/table_mcerk_ta_1.tex}
-				\hline
-				
-			\end{tabular}
-		}
-		\caption{Numerical Results of MCER-$k$ for instances TA001-TA007.}
-		\label{tab:mcer-results-ta1}
 	\end{center}
 \end{table}
 
@@ -404,50 +368,9 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances TA008-TA022.}
+		\caption{Numerical results of MCE-$k$ for instances TA008-TA022.}
 		
 		\label{tab:mce-results-ta2}
-	\end{center}
-\end{table}
-
-\begin{table}
-	\begin{center}
-		\resizebox{\textwidth}{!}{%
-			
-			\begin{tabular}{|cccc|cr|ccrrrr|}
-				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
-				\hline
-				
-				%%% Second line of header
-				
-				\multirow{2}{*}{Name} & 
-				\multirow{2}{*}{$n$} & 
-				\multirow{2}{*}{$m$} & 
-				\multirow{2}{*}{$k$} & 
-				Selected & 
-				\multirow{2}{*}{Income} & 
-				CLS size&
-				\# E3P&
-				\multicolumn{2}{c}{Backtracking Tree} & 
-				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				
-				\hline
-				\input{tables/table_mcerk_ta_2.tex}
-				\hline
-				%\input{tex/tables/table_mcerk_ta_3.tex}
-				%\hline
-				
-			\end{tabular}
-		}
-		\caption{Numerical Results of MCER-$k$ for instances TA008-TA022.}
-		
-		\label{tab:mcer-results-ta2}
 	\end{center}
 \end{table}
 
@@ -488,8 +411,46 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances TA023-TA042.}
+		\caption{Numerical results of MCE-$k$ for instances TA023-TA042.}
 		\label{tab:mce-results-ta3}
+	\end{center}
+\end{table}
+
+\begin{table}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
+
+				
+				
+				\hline
+				\input{tables/table_mcek_ta_5.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical results of MCE-$k$ for instances TA043-TA047.}
+		
+		\label{tab:mce-results-ta4}
 	\end{center}
 \end{table}
 
@@ -517,23 +478,17 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
 				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
-				%%%%
-				%%%%
-				
 				
 				\hline
-				\input{tables/table_mcerk_ta_4.tex}
+				\input{tables/table_mcerk_ta_1.tex}
 				\hline
-				%\input{tex/tables/table_mcerk_ta_3.tex}
-				%\hline
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCER-$k$ for instances TA023-TA042.}
-		\label{tab:mcer-results-ta3}
+		\caption{Numerical results of MCER-$k$ for instances TA001-TA007.}
+		\label{tab:mcer-results-ta1}
 	\end{center}
 \end{table}
-
 
 
 
@@ -541,9 +496,9 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 	\begin{center}
 		\resizebox{\textwidth}{!}{%
 			
-			\begin{tabular}{|cccc|cr|crrrr|}
+			\begin{tabular}{|cccc|cr|ccrrrr|}
 				\hline
-				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
 				\hline
 				
 				%%% Second line of header
@@ -555,31 +510,65 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				Selected & 
 				\multirow{2}{*}{Income} & 
 				CLS size&
+				\# E3P&
 				\multicolumn{2}{c}{Backtracking Tree} & 
 				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
-				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol leaves & CLS-MCER & Total\\
-				
-				%%%%
-				%%%%
-				
-				%%%%
-				%%%%
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
 				
 				
 				\hline
-				\input{tables/table_mcek_ta_5.tex}
+				\input{tables/table_mcerk_ta_2.tex}
 				\hline
 				%\input{tex/tables/table_mcerk_ta_3.tex}
 				%\hline
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances TA043-TA047.}
+		\caption{Numerical results of MCER-$k$ for instances TA008-TA022.}
 		
-		\label{tab:mce-results-ta4}
+		\label{tab:mcer-results-ta2}
 	\end{center}
 \end{table}
 
+
+
+
+\begin{table}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|ccrrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{6}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\# E3P&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & subproblems & \# nodes & \# sol leaves & CLS-MCER & Total\\
+				
+				
+				\hline
+				\input{tables/table_mcerk_ta_4.tex}
+				\hline
+				%\input{tex/tables/table_mcerk_ta_3.tex}
+				%\hline
+				
+			\end{tabular}
+		}
+		\caption{Numerical results of MCER-$k$ for instances TA023-TA042.}
+		\label{tab:mcer-results-ta3}
+	\end{center}
+\end{table}
 
 
 \begin{table}
@@ -611,15 +600,10 @@ In \autoref{fig:TA44-45}, we show the solutions for the instances TA44-TA45 with
 				\hline
 				\input{tables/table_mcerk_ta_5.tex}
 				\hline
-				%\input{tex/tables/table_mcerk_ta_3.tex}
-				%\hline
 				
 			\end{tabular}
 		}
-		\caption{Numerical Results of MCE-$k$ for instances TA043-TA047.}
-		
+		\caption{Numerical results of MCER-$k$ for instances TA043-TA047.}
 		\label{tab:mcer-results-ta4}
 	\end{center}
 \end{table}
-
-

@@ -2,7 +2,7 @@ The version of PMCLP where the facilities are ellipses that can be freely rotate
 
 %To make the text more clear, we introduce an equivalence relation for the set of solutions of MCER, and also a order relation making the set of solutions partially ordered.
 
-Let $(\Pp, \Ww, \{(a,b)\})$ be an instance of MCER, then given a solution $Q$ for it, with $|\Pp \cap E(q, \theta)| \ge 2$, if we rotate the coordinate system by $-\theta$, and use the result given by \autoref{lema:mce} for an axis-parallel ellipse, we can conclude that another solution $Q'$ exists, such that $Q' \succ Q$ and $|\Pp \cap \partial E(q', \theta)| \ge 2$. That is, given a solution for the one-facility MCER, we can obtain another one that covers the same points (possibly more) and the ellipse contains two demand points.
+Given an instance of the one-facility MCER, then given a solution $Q$ for it, with $|\Pp \cap E(q, \theta)| \ge 2$, if we rotate the coordinate system by $-\theta$, and use the result given by \autoref{lema:mce} for an axis-parallel ellipse, we can conclude that another solution $Q'$ exists, such that $Q' \succ Q$ and $|\Pp \cap \partial E(q', \theta)| \ge 2$. That is, given a solution for the one-facility MCER, we can obtain another one that covers the same points (possibly more) and the ellipse contains two demand points.
 
 Next, we define a new notation that helps us characterize angles which given an ellipse rotated by it and two points, it is possible to find a center for the ellipse, such that it contains both points.
 
@@ -30,7 +30,7 @@ For any $x\in\R^2$, we denote by $\angle x\in [0, \pi)$ the minimal angle betwee
 Next we open a parenthesis to discuss the problem of deciding for what angles of rotation it is possible to find a center for an ellipse, so it contains two given points. We give the result for two points that have the same $y$-coordinate, but this can be generalized.
 
 \begin{lem}\label{lema:l-function}
-	Given an instance $(\Pp, \Ww, \{(a, b)\})$ of MCER, if $u, v \in \Pp$ have the same $y$-coordinate and $||u-v||_2 \le 2a$, then $\Phi(u,v) = [0, \alpha] \cup [\pi - \alpha, \pi)$, for some $\alpha \in [0, \pi/2]$.
+	Given an instance of the one-facility MCER, if $u, v \in \Pp$ have the same $y$-coordinate and $||u-v||_2 \le 2a$, then $\Phi(u,v) = [0, \alpha] \cup [\pi - \alpha, \pi)$, for some $\alpha \in [0, \pi/2]$.
 \end{lem}
 
 \begin{proof}
@@ -76,7 +76,7 @@ It states that, for any ellipse that covers more than two points in a given opti
 
 
 \begin{lem}\label{lema:3pnts}
-	Let $Q^*$ be a solution of MCER for the instance $(\Pp, \Ww, \{(a, b)\})$, such that $|\Pp \cap E(q^*, \theta^*)|\ge2$.
+	Let $Q^*$ be a solution of the one-facility MCER, such that $|\Pp \cap E(q^*, \theta^*)|\ge2$.
 	If for all $\bar{Q} \succ Q^*$, $|\Pp \cap \partial E(\bar{q}, \bar{\theta})| < 3$, then there exists $\{u, v\} \subset \Pp \cap E(q^*, \theta^*)$, such that for all $\theta\in \Phi(u,v)$ there exists $q \in \R^2$, such that $(q, \theta)$ is equivalent to $Q^*$.
 \end{lem}
 
@@ -106,7 +106,7 @@ Consistently with \autoref{lema:3pnts}, the points in $\Pp \setminus \{u, v, w\}
 \end{figure}
 
 \begin{definition}\label{def:Sj}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER. Then, for all $j\in\{1, \dots, m\}$, we define the CLS of the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}$ with
+	Given an instance of MCER. Then, for all $j\in\{1, \dots, m\}$, we define the CLS of the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}$ with
 	\begin{align*}
 	S_j^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\}\\
 	S_j^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, \angle(u-v))\in \R^2\times[0, \pi): \{u,v\} \subset \partial E_j(q, \angle(u-v))\}\\
@@ -130,7 +130,7 @@ Following this, we introduce a theorem, which connects the results for MCER so f
 
 
 \begin{thm}\label{th:mcer}
-	Let $(\Pp, \Ww, \Rr)$ be an instance of MCER, and $\Omega$ be a set of solutions defined as 
+	Given an instance of MCER, let $\Omega$ be a set of solutions defined as 
 	\begin{equation*}\label{eq:omega}
 	\Omega = \{Q \in (\R^2\times[0, \pi))^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\},
 	\end{equation*}

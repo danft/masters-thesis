@@ -1,9 +1,6 @@
 In this work, we developed new algorithms for two planar maximum covering by ellipses problems.
-After some improvements suggestions were given, numerical experiments were conducted showing the efficiency of both algorithms for instances from previous works and for new ones with larger demand and facility sets.
+After giving improvements suggestions, and implementation details, we analyzed numerical experiments showing the efficiency of both algorithms for the instances of previous works, and for new ones with larger demand and facility sets.
 
-We devoted most of our work to the development of an exact algorithm for the version of the problem where the ellipses can be freely rotated.
-In the midst of that, a never-studied-before subproblem came up, for which we also proposed an algorithm involving determining the roots of a complex polynomial.
-Our algorithm for this version of the problem was able to obtain optimal solutions for instances which the heuristic method developed in \cite{andreta} returned non-optimal ones, and the deterministic method timed out.
-
-We believe that the never-studied-before subproblem, which was the subject of \autoref{section:e3p}, has some properties that we were not able to explore, which could be the subject of future work. 
-We observed that the solutions, except for one case, always come in pairs; and that the generated complex polynomial whose roots provide solutions for the problem appears to be a self-inverse polynomial.
+We devoted most of our work to the development of an exact algorithm for MCER.
+In the midst of that, a never-studied-before subproblem came up, for which we also proposed an algorithm, which involved determining the roots of a complex polynomial of degree six.
+We believe that further exploring this new problem could be the subject of future work as we observed that its solutions, except for one case, always come in pairs; and that this property seems to be directly connected with the complex polynomial, as its roots seem to come in conjugate pairs. These properties, if proved to be true, might be used in the development of a more efficient algorithm.

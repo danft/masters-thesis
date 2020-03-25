@@ -25,33 +25,40 @@ then, for MCE we define $E_j(q)=\{p \in \R^2 \colon ||p-q||_{a_j,b_j,0} \le 1\}$
 To make the notation more clear, we define a solution of MCE as $Q:=(q_1, \dots, q_m)$, and a solution of MCER as $Q:=((q_1, \theta_1); \dots; (q_m, \theta_m))$. 
 Let $w : A \subset \Pp \to \R$ be a function which takes a subset of the demand set and returns the sum of the weights of the points in $A$. Then, we define MCE  as the optimization problem 
 \begin{equation*}
-\max_{Q}  w\left(\cup_{j=1}^m\Pp \cap E_j(q_j)\right),
+\max_{Q}  w\left(\bigcup_{j=1}^m\Pp \cap E_j(q_j)\right),
 \end{equation*}
 and similarly MCER as
 \begin{equation*}
-\max_{Q} w\left(\cup_{j=1}^m\Pp \cap E_j(q_j, \theta_j)\right).
+\max_{Q} w\left(\bigcup_{j=1}^m\Pp \cap E_j(q_j, \theta_j)\right).
 \end{equation*}
 
-We define an equivalence and a partial order relation between solutions of both MCE and MCER as follows.
-Two solutions $Q$ and $Q'$ of MCE (MCER), are said to be equivalent to each other if
-they both cover the same set of demand points.
-% $\cup_{j=1}^m \Pp \cap E_j(q_j) = \cup_{j=1}^m \Pp \cap E_j(q_j')$ ($ \cup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) = \cup_{j=1}^m \Pp \cap E_j(q_j', \theta_j')$). That is, two solutions are equivalent if they cover the same set of points.
-We also define a partial order: $Q' \succ Q$ if, and only if the set of demand points covered in solution $Q$ is a subset of the demand points covered in solution $Q'$.
-
-%if, and only if $\cup_{j=1}^m \Pp \cap E_j(q_j) \subset \cup_{j=1}^m \Pp \cap E_j(q_j')$ ($\Pp \cap\cup_{j=1}^m E_j(q_j, \theta_j) \subset \Pp \cap\cup_{j=1}^m E_j(q_j', \theta_j')$). That is, $Q' \succ Q$ if, and only if the set of points covered in solution $Q$ is a subset of the points covered in solution $Q'$.
-
-%%% esse paragrafo ainda ta estranho.
-Additionally, we denote by $\partial$ the boundary operator, for example, given an instance of MCE, $\partial E_1(q_1)$ represents the set of points $\{p \in \R^2\colon ||p-q_1||_{a_1,b_1,0} = 1\}$. Also, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one facility, we omit the index referring to the ellipse. 
 
 \subsection{Facility Cost}
 
 In \cite{canbolat, andreta}, as a result of having costs assigned to each facility, two other parameters are present in the definition of the problem.
-These new parameters are: the list of costs $\Cc=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost; 
+These new parameters are: the list of costs $\Cc:=\{c_1, \dots, c_m\}$, with $c_j\in\R_{\ge0}$ being the $j$-th ellipse's cost; 
 and an integer $k\in\mathbb{N}$, $k\le m$, which introduces a constraint requiring that exactly $k$ facilities have to be utilized.
 Because of that, a solution also needs an additional parameter $I:=\{i_1, \dots, i_k\}\subset\{1, \dots, m\}$ to express the indexes of the utilized ellipses. We refer to this version of the problem as  MCE-$k$ and MCER-$k$.
 
 From an algorithm for MCE (MCER), we can propose an algorithm for MCE-$k$ (MCER-$k$), which just takes the best overall solution among the $\binom{m}{k}$ instances $(\Pp, \Ww, \Rr')$, such that $\Rr' \subset \Rr$ and $|\Rr'| = k$. 
 Therefore, in our work, we focus on developing algorithms for MCE and MCER, and whenever we refer to an algorithm for MCE-$k$ (MCER-$k$), we mean an algorithm as described here, which considers all the $\binom{m}{k}$ instances of MCE (MCER).
 
+\subsection{Additional Notation}
 
+%Let $Q$ and $Q'$ be two solutions of MCE or MCER, we define two relations between solutions:
+%\begin{itemize}
+	%\item $Q$ is equivalent to $Q'$ if, and only if the set of covered demand points in both solutions is the same.
+	%\item $Q' \succ Q$ if, and only if the set of demand points covered in solution $Q$ is a subset of the demand points covered in solution $Q'$.
+%\end{itemize}
+
+We define an instance of the one-facility MCE or MCER as $(\Pp, \Ww, \{(a,b)\})$ omitting the facility index in every notation. For example, a solution of MCER is denoted as $Q := (q, \theta)$.
+
+Two solutions $Q$ and $Q'$ of MCE or MCER are said to be equivalent to each other if
+the set of covered demand points in both solutions is the same.
+We also define a partial order: $Q' \succ Q$ if, and only if the set of demand points covered in solution $Q$ is a subset of the demand points covered in solution $Q'$.
+
+%%% esse paragrafo ainda ta estranho.
+We use the notation $\partial$ to denote the boundary operator. For example, let $E \colon \R^2\to\R^2$ be the coverage region of an axis-parallel ellipse, then let $q\in\R^2$, $\partial E(q)$ describes an axis-parallel ellipse centered at $q$. If $E$ has shape parameters $(a, b)$, then $\partial E(q) = \{p \in \R^2\colon ||p-q||_{a,b,0} = 1\}$.
+
+%Also, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one facility, we omit the index referring to the ellipse. 
 %Therefore, as this step can be seen as trivial, we focus on proposing algorithms for MCE and MCER, and in the section where we analyze the numerical experiments, as we use instances from \cite{andreta}, whenever we refer to an algorithm of MCE-$k$ (MCER-$k$), see it as an algorithm based on the approach described here, which uses $\binom{m}{k}$ instances of MCE (MCER) to obtain an optimal solution.

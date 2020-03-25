@@ -58,7 +58,8 @@
 \newcommand{\prpautorefname}{Proposition}
 \newcommand{\lemmaautorefname}{Lemma}
 \newcommand{\lemautorefname}{Lemma}
-
+\newcommand{\sigla}[2]{#2 (#1)}
+\newcommand{\citeonline}[1]{\cite{#1}}
 
 \begin{document}
 	
@@ -66,9 +67,9 @@
 		
 		%% Title, authors and addresses
 		
-		\title{Algorithms for Planar Maximum Covering Location by Ellipses Problems\tnoteref{t1}}
+		\title{New Exact Algorithms for Planar Maximum Covering Location by Ellipses Problems\tnoteref{t1}}
 		\tnotetext[t1]{This paper is the results of the research
-			project funded by CAPES.}
+			project funded by CAPES and FAPESP.}
 		
 		%% use the tnoteref command within \title for footnotes;
 		%% use the tnotetext command for the associated footnote;
@@ -102,7 +103,7 @@
 		\author[2]{Marina Andretta}
 		\ead{andretta@gmail.com}
 					
-		%\address{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
+		\address{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
 		%\author{John Smith}
 		
 		%address{California, United States}
@@ -116,7 +117,7 @@
 		\end{abstract}
 		
 		\begin{keyword}
-			Optimization \sep Covering \sep Combinatorial Optimization
+			Combinatorial optimization \sep planar maximal covering location problem \sep planar covering by ellipses \sep exact algorithms.
 			%% keywords here, in the form: keyword \sep keyword
 			
 			%% MSC codes here, in the form: \MSC code \sep code
@@ -134,11 +135,11 @@
 \section{Definition}\label{section:definition}
 \input{definition.tex}
 
-\section{An algorithm for MCE}\label{section:mce}
+\section{An Algorithm for MCE}\label{section:mce}
 
 \input{mce.tex}
 
-\section{Determining every center and angle of rotation of an ellipse given its shape and three points that it must contain}\label{section:e3p}
+\section{Determining Every Center and Angle of Rotation of An Ellipse Given Its Shape and Three Points that It Must Contain}\label{section:e3p}
 	
 \input{e3p.tex}
 

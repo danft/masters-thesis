@@ -1,0 +1,79 @@
+\documentclass{article}
+
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% The graphicx package provides the includegraphics command.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\sisetup{group-separator = {,}}
+
+\usepackage{multirow}
+
+%\journal{EJOR}
+
+\usepackage[mathscr]{eucal}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Co}{\mathbb{Co}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\Ww}{\mathscr{W}}
+\newcommand{\Rr}{\mathscr{R}}
+\newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
+\newcommand{\bigO}{\mathscr{O}}
+\newtheorem{thm}{Theorem}
+\newtheorem{prp}{Proposition}
+\newtheorem{lem}{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newdefinition{definition}{Definition}
+%\newproof{pf}{Proof}
+%\renewcommand\qedsymbol{$\blacksquare$}
+
+
+\RequirePackage{algorithm, algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmautorefname}{Algorithm}
+\newcommand{\definitionautorefname}{Definition}
+\newcommand{\thmautorefname}{Theorem}
+\newcommand{\prpautorefname}{Proposition}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\lemautorefname}{Lemma}
+\newcommand{\sigla}[2]{#2 (#1)}
+\newcommand{\citeonline}[1]{\cite{#1}}
+
+\begin{document}
+		\title{Cover Letter}
+		\maketitle
+
+		Dear Editor, we herewith submit the manuscript entitled New Exact Algorithms for Planar Maximum Covering Location by Ellipses Problems addressing two not-vastly-explored problems on which we could only find two published papers, with the most recent one being from seven years ago.
+		
+		We propose new algorithms for those two problems after proving that if the number of given ellipses is constant, an optimal solution is contained in a polynomial-sized set of solutions, transforming both problems in combinatorial optimization problems. 
+		
+		We show that significant advances were accomplished both in theory and in practice by our work, and we believe that our manuscript is a strong match for this journal as, besides dealing with an optimization problem that has not been vastly studied, the most recent paper on this subject is published here.
+		
+		%\section*{References}
+		%% New version of the num-names style
+		%\bibliographystyle{elsarticle-num}
+		%\bibliography{../references}
+		
+\end{document}

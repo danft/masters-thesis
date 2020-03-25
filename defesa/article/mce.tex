@@ -6,8 +6,12 @@ To construct a CLS for each ellipse, based on the approach of \cite{church:1984}
 
 We start by introducing a proposition stating that any solution of the one-facility MCE can be related to the intersection of coverage regions of ellipses centered at the points covered in that solution.
 
+%\begin{prp}\label{lema:mce-mwc}
+%	Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE, and $q\in \R^2$. If $\Pp \cap E(q) = A$, then $q \in \cap_{p\in A} E(p)$ and for any $q' \in \cap_{p\in A} E(p)$, we have $A \subset E(q')$.
+%\end{prp}
+
 \begin{prp}\label{lema:mce-mwc}
-	Let $(\Pp, \Ww, \{(a, b)\})$ be an instance of MCE, and $q\in \R^2$. If $\Pp \cap E(q) = A$, then $q \in \cap_{p\in A} E(p)$ and for any $q' \in \cap_{p\in A} E(p)$, we have $A \subset E(q')$.
+	Let $q\in \R^2$ be a solution of the one-facility MCE. If $\Pp \cap E(q) = A$, then $q \in \cap_{p\in A} E(p)$ and for any $q' \in \cap_{p\in A} E(p)$, we have $A \subset E(q')$.
 \end{prp}
 \begin{proof}
 	Let $u, v \in \R^2$, then we have the following equivalence:
@@ -27,7 +31,7 @@ To prove that this is true for ellipses, we resort to the results of \cite{bi}, 
 Following this result, we define the next lemma.
 
 \begin{lem}\label{lema:mce}
-	Let $q\in \R^2$ be a solution of MCE for the instance $(\Pp, \Ww, \{(a, b)\})$.
+	Let $q\in \R^2$ be a solution of the one-facility MCE.
 	If $|\Pp \cap E(q)|\ge 2$, then there exists $q' \in \cup_{u, v \in \Pp}\partial E(u) \cap \partial E(v)$, such that $q' \succ q$.
 \end{lem}
 \begin{proof}
