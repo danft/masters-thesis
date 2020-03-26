@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[letterpaper]{letter}
 
 
 %% Use the option review to obtain double line spacing
@@ -60,17 +60,26 @@
 \newcommand{\lemautorefname}{Lemma}
 \newcommand{\sigla}[2]{#2 (#1)}
 \newcommand{\citeonline}[1]{\cite{#1}}
+\signature{Danilo Tedeschi}
 
 \begin{document}
-		\title{Cover Letter}
-		\maketitle
+	
+		%\title{Cover Letter}
+		%\maketitle
+		
+		\begin{letter}{}
 
-		Dear Editor, we herewith submit the manuscript entitled New Exact Algorithms for Planar Maximum Covering Location by Ellipses Problems addressing two not-vastly-explored problems on which we could only find two published papers, with the most recent one being from seven years ago.
+
+			\opening{Dear Prof. Roman Slowinski\\Coordinating Editor of EJOR}
+		 
+		 We herewith submit the manuscript entitled New Exact Algorithms for Planar Maximum Covering Location by Ellipses Problems addressing two not-vastly-explored problems on which we could only find two published papers, with the most recent one being from seven years ago.
 		
 		We propose new algorithms for those two problems after proving that if the number of given ellipses is constant, an optimal solution is contained in a polynomial-sized set of solutions, transforming both problems in combinatorial optimization problems. 
 		
 		We show that significant advances were accomplished both in theory and in practice by our work, and we believe that our manuscript is a strong match for this journal as, besides dealing with an optimization problem that has not been vastly studied, the most recent paper on this subject is published here.
 		
+		\closing{On behalf of the authors and with our best regards,}
+			\end{letter}
 		%\section*{References}
 		%% New version of the num-names style
 		%\bibliographystyle{elsarticle-num}

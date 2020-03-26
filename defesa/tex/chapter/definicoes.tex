@@ -132,29 +132,31 @@ y'(t)=b\cos{t}.
 
 \subsection{The distance between points of an ellipse-line intersection}
 
-Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$, centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at least at one point. Plugging the line's equation into \autoref{equation:pellipse}, it is possible to obtain the distance between the intersection points. The final expression is given by
-\begin{equation*}\label{eq:dist_line_ellipse}
-D(m, c)=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)},
+Consider an ellipse with shape parameters $(a, b)\in\R^2_{>0}$, centered at the origin, and a line represented by the equation $y=mx+c$, with $m, c\in \R$. Suppose that this line intersects the ellipse at least at one point. Plugging the line's equation into \autoref{equation:pellipse}, we get
+\begin{align}
+\frac{x^2}{a^2}+\frac{(mx + c)^2}{b^2} -1 &= 0 \nonumber\\
+x^2\left(\frac{1}{a^2} + \frac{m^2}{b^2}\right) + \frac{2mxc}{b^2} + \frac{c^2}{b^2} - 1 &= 0\nonumber.
+\end{align}
+Let $(x_1, y_1)$, and $(x_2, y_2)$ be the ellipse-line intersection points. Then, we have that
+\begin{align}
+(x_1-x_2)^2 &= \frac{\frac{4m^2c^2}{b^4} - 4\left(\frac{1}{a^2} + \frac{m^2}{b^2}\right)\left(\frac{c^2}{b^2}-1\right)}{\left(\frac{1}{a^2} + \frac{m^2}{b^2}\right)^2}\nonumber\\
+(x_1-x_2)^2 &= \frac{4m^2c^2a^4}{(b^2+a^2m^2)^2} - \frac{4(c^2-b^2)a^2}{b^2+a^2m^2}\nonumber\\
+(x_1-x_2)^2 &= 4\frac{m^2c^2a^4 - (b^2+a^2m^2)(c^2-b^2)a^2}{(b^2+a^2m^2)^2}\nonumber\\
+(x_1-x_2)^2 &= 4\frac{a^2b^2(a^2m^2 + b^2 -c^2)}{(b^2+a^2m^2)^2}\nonumber.
+\end{align}
+Then, as $(y_1-y_2)^2 = (mx_1 - mx_2)^2 = m^2(x_1-x_2)^2$, we get the final expression for the distance between two ellipse-line intersection points
+\begin{equation*}
+\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)}.
 \end{equation*}
-with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters $(m, c)$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$. From that, we can conclude that if $m$ is fixed, the line that has the most distant intersection points with an ellipse is the one that passes through the origin; and also, that $D(m, c)$ attains every value in the range $[0, D(m, 0)]$. 
-Following that, we define a function $L:\R\mapsto\R_{>0}$ as
 
-\begin{equation}\label{eq:function-l}
-L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2},
-\end{equation}
-which describes the maximum distance between points of an ellipse-line intersection considering all lines with $m$ angular coefficient.
-
-It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $m=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty\, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
-In \autoref{fig:L-function-plot}, an example of function $L$ is shown with $(a, b) = (2, 1)$.
-
-\begin{figure}[H]
-	\centering
+%\begin{figure}[H]
+%	\centering
 	
-	\caption{Plot of function $L$ in the interval $[-7, 7]$.}
-	\includegraphics[scale=.4]{tex/figures/L-function-plot}
-	\fautor
-	\label{fig:L-function-plot}
-\end{figure}
+%	\caption{Plot of function $L$ in the interval $[-7, 7]$.}
+%	\includegraphics[scale=.4]{tex/figures/L-function-plot}
+%	\fautor
+%	\label{fig:L-function-plot}
+%\end{figure}
 
 \subsection{Non-axis-parallel ellipse}
 
