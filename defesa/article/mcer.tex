@@ -66,7 +66,7 @@ Next we open a parenthesis to discuss the problem of deciding for what angles of
 
 %%% Fim L function
 
-Following that, we introduce a lemma that is responsible for connecting the developments of this chapter with the results of \autoref{section:e3p}.
+Following that, we introduce a lemma that is responsible for connecting the developments of this chapter with the results of Section~\ref{section:e3p}.
 This lemma makes it possible to describe a type of solution which, for sure, is part of the equivalence class of any optimal solution.
 It states that, for any ellipse that covers more than two points in a given optimal solution, an equivalent solution exists with at least one of the two properties:
 \begin{itemize}
@@ -118,7 +118,7 @@ This definition breaks the construction of the CLS into three separated cases. T
 
 To compute $S_j^{(2)}$, we can observe that, given two points $u, v$, determining every $q\in\R^2$, such that $\{u,v\}\subset\partial E_j(q, \angle(u-v))$ can be transformed into the problem of determining the set $\partial E_j(u, \angle(u-v)) \cap \partial E_j(v, \angle(u-v))$, which, by \autoref{lema:e2p}, is composed of at most two points, which can be determined analytically. Therefore, we have that $S_j^{(2)}$ can be computed in $\bigO(n^2)$ operations.
 
-To compute $S_j^{(3)}$, we have to call the algorithm described in \autoref{section:e3p} to determine every solution of E3P for every triplet of points in $\Pp$. Even though that algorithm is $\bigO(1)$, it has a high constant factor, thus skipping it, in practice, is a good suggestion.
+To compute $S_j^{(3)}$, we have to call the algorithm described in Section~\ref{section:e3p} to determine every solution of E3P for every triplet of points in $\Pp$. Even though that algorithm is $\bigO(1)$, it has a high constant factor, thus skipping it, in practice, is a good suggestion.
 Given three points and an ellipse with shape parameters $(a, b)$, the following two conditions are sufficient for E3P to have no solutions, and therefore, if any of them is true, we can skip calling the algorithm to determine every solution of E3P for that instance:
 \begin{itemize}
 	\item The maximum distance between any of the points is greater than $2a$;

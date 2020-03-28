@@ -96,36 +96,35 @@
 		%% \address[label1]{<address>}
 		%% \address[label2]{<address>}
 		
-		\author[1]{Danilo Tedeschi}
+		\author[add1]{Danilo Tedeschi}
 		\ead{danilo.tedeschi@usp.br}
 
 		
-		\author[2]{Marina Andretta}
-		\ead{andretta@gmail.com}
+		\author[add1]{Marina Andretta}
+		\ead{andretta@icmc.usp.br}
 					
-		\address{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
-		%\author{John Smith}
-		
-		%address{California, United States}
-		
-		\begin{abstract}
+		\address[add1]{Department of Applied Mathematics and Statistics, Institute of Mathematical and Computer Sciences, University of São Paulo, Avenida Trabalhador São-carlense, 400, Centro, 13566-590, São Carlos, SP, Brazil.}
+\end{frontmatter}
+\clearpage
+%\begin{frontmatter}
+%		\begin{abstract}
+
+\section*{Abstract}
 			%% Text of abstract
 			Planar Maximum Covering Location by Ellipses is an optimization problem where one wants to place fixed shape ellipses on the plane to cover demand points
 			maximizing a function depending on the value of covered points.
 			We propose new exact algorithms for two versions of this problem, one where the ellipses have to be parallel to the coordinate axis, and another where they can be freely rotated. 
 			Besides finding optimal solutions for previously published instances, including the ones where no optimal solution was known, both algorithms proposed by us were able to obtain optimal solutions for some new larger instances 	with up to seven hundred demand points and five ellipses.
-		\end{abstract}
-		
-		\begin{keyword}
-			Combinatorial optimization \sep planar maximal covering location problem \sep planar covering by ellipses \sep exact algorithms.
+\subsection*{Keywords}
+			Combinatorial optimization, planar maximal covering location problem, planar covering by ellipses, exact algorithms.
 			%% keywords here, in the form: keyword \sep keyword
 			
 			%% MSC codes here, in the form: \MSC code \sep code
 			%% or \MSC[2008] code \sep code (2000 is the default)
 			
-		\end{keyword}
+%		\end{keyword}
 		
-	\end{frontmatter}
+%	\end{frontmatter}
 	
 
 \section{Introduction}\label{section:introduction}
@@ -168,7 +167,7 @@
 \clearpage
 \section*{References}
 	%% New version of the num-names style
-	\bibliographystyle{elsarticle-num}
+	\bibliographystyle{apa}
 	\bibliography{../references}
 	
 \end{document}
