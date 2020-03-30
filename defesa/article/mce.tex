@@ -81,7 +81,7 @@ By \autoref{lema:e2p}, the CLS for each ellipse can be computed in $\bigO(n^2)$,
 \end{proof}
 
 With all this in hand, we define \autoref{algoritmo:mce}, which goes through every possible combination in the CLS of each ellipse. As evaluating each solution can be done in $\bigO(nm)$, we have that \autoref{algoritmo:mce} has $\bigO(mn^{2m+1})$ runtime complexity. 
-In Section~\ref{section:improvements}, we give some suggestions of improvements that can be applied to the implementation of \autoref{algoritmo:mce}, and in Section~\ref{section:numerical}, we analyze the results obtained by Section~\ref{algoritmo:mce} for some numerical experiments.
+In Section~\ref{section:improvements}, we give some suggestions of improvements that can be applied to its implementation, and in Section~\ref{section:numerical}, we analyze the results obtained for some numerical experiments.
 
 \begin{algorithm}
 	\caption{Algorithm for MCE}\label{algoritmo:mce}
