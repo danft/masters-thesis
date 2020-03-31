@@ -1,0 +1,46 @@
+\documentclass[a4paper]{amsart}
+\usepackage{transparent}
+\usepackage{multirow}
+\usepackage{siunitx}
+\sisetup{group-separator = {,}}
+\usepackage[mathscr]{eucal}
+\usepackage{tikz}
+\usetikzlibrary{quotes, angles, intersections}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\begin{document}
+
+\section*{Results of MCE-$k$ for instances AB001-AB060}
+
+\begin{table}[!htb]
+	\begin{center}
+		\resizebox{.95\textwidth}{!}{%
+			
+			\begin{tabular}{|cccc|cr|crrrr|}
+				\hline
+				\multicolumn{4}{|c|}{Instance} & \multicolumn{2}{c|}{Optimal Solution} & \multicolumn{5}{c|}{Performance metrics}\\
+				\hline
+				
+				%%% Second line of header
+				
+				\multirow{2}{*}{Name} & 
+				\multirow{2}{*}{$n$} & 
+				\multirow{2}{*}{$m$} & 
+				\multirow{2}{*}{$k$} & 
+				Selected & 
+				\multirow{2}{*}{Income} & 
+				CLS size&
+				\multicolumn{2}{c}{Backtracking Tree} & 
+				\multicolumn{2}{c|}{\centering CPU Time (s)}\\
+				& & & & \centering Ellipses & & $|S_k|$ & \# nodes & \# sol. leaves & CLS-MCE & Total\\
+				\hline
+				\input{../tex/tables/table_mcek_ab_1.tex}
+				\hline
+				
+			\end{tabular}
+		}
+		%\caption{Numerical results of MCE-$k$ for instances CM1-CM9.}
+		%\label{tab:mce-results-cm}
+	\end{center}
+\end{table}
+\end{document}
