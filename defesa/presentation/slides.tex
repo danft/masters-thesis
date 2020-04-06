@@ -353,16 +353,142 @@ We did not find any work on E3P in the literature.
 	\end{equation*}
 \end{frame}
 
+\begin{frame}{E3P}{Transforming the problem}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=.7]{figures/inexn16}
+		\caption{A plot of $\xi$ in $[0, \pi)$ for an instance of E3P.}
+	\end{figure}
+\end{frame}
+
+
 \begin{frame}{E3P}
 	\begin{lem}\label{lema:e3p}
 		E3P has at most six solutions.
 	\end{lem}
 \begin{itemize}
 	\item $\xi$ can be written as $\sum_{0 \le j+k \le 6} c_{j,k} \cos^j\theta \sin^k\theta$,
-	\item It is a real trigonometric polynomial, 
-	\item By \cite[p.~150]{powell}, it has at most $12$ roots in $[0, 2\pi)$,
+	\item It is a real trigonometric polynomial of degree $6$, can be written as
+	\begin{equation*}
+		\sum_{k=0}^6 a_k \cos{k\theta} + \sum_{k=1}^6 b_k \sin{k\theta}
+	\end{equation*} 
+	\item A $n$-degree real trig. poly. can have up to $2n$ roots in $[0, 2\pi)$ \cite[p.~150]{powell},
 	\item As ellipses are symmetrical, we can dismiss half of the roots.
 \end{itemize}
+\end{frame}
+
+\begin{frame}{E3P}{Finding the roots of $\xi$}
+	We will convert $\xi$ into a complex polynomial on $z=e^{i\theta}$ using the identities
+	\begin{eqnarray*}
+	\cos{\theta} = \frac{e^{i\theta} + e^{-i\theta}}{2},\\
+	\sin{\theta} = \frac{e^{i\theta} - e^{-i\theta}}{2i}.
+	\end{eqnarray*}
+\end{frame}
+
+\begin{frame}{E3P}{Finding the roots of $\xi$}
+	We define a function $g \colon \mathbb{S} \to \mathbb{C}$ given by
+	
+	\begin{equation*}
+	g(z=e^{i\theta}) = \xi(\theta).
+	\end{equation*}
+	
+	Extending the domain to $\mathbb{C}$ we define a polynomial 
+	$$f(z) = z^6 g(z).$$
+	\begin{itemize}
+		\item The exponents of $g$ go from $-6$ to $6$,
+		\item The roots of $f$ that are in $\mathbb{S}$ are roots of $g$.
+		\item In practice, we used symbolic computation for this task,
+		\item No loss of accuracy \cite{weidner}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{E3P}{Finding the roots of $\xi$}
+	We can cut in half the degree of $f$ by observing that
+	\begin{equation*}
+	angle(-z)=\pi+angle(z).
+	\end{equation*}
+	
+	As an ellipse rotated by $\theta$ is identical to an ellipse rotated by $\pi + \theta$, we get that
+	
+	$$f(-z) = f(z).$$
+	
+	Therefore, every odd coefficient of $f$ is zero, and we can use another substitution $y=z^2$ to obtain a $6$-degree polynomial.
+\end{frame}
+
+\begin{frame}{E3P}{Determining the roots of a polynomial}
+	For every univariate polynomial of degree $n$, there exists a companion matrix, which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial \cite[p.~195]{horn}.
+	
+
+\end{frame}
+
+\begin{frame}{E3P}{Determining the roots of a polynomial}
+	For a degree-$4$ polynomial $\sum_{k=0}^4 a_k x^k$, a companion matrix is given by
+	
+	\begin{equation*}
+	\left[\begin{array}{ccccc}
+	0 & 1 & 0 & 0\\
+	0 & 0 & 1 & 0\\
+	0 & 0 & 0 & 1\\
+	-\dfrac{a_0}{a_4} & -\dfrac{a_1}{a_4} & -\dfrac{a_2}{a_4} & -\dfrac{a_3}{a_4}
+	\end{array}\right].
+	\end{equation*}
+	
+	\begin{itemize}
+		\item QR algorithm can determine the eigenvalues in $\bigO(n^3)$ \cite{watkins:2008}.
+		\item In practice, we use LAPACK's ZGEEV routine.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{E3P}{Choosing a precision constant}
+	We need to choose a precision constant to check if a root is in $\mathbb{S}$. 
+	
+	In practice, every eigenvalue $\hat{z}$ returned by the QR algorithm, we consider it to be in $\mathbb{S}$ if
+	
+	\begin{equation*}
+	|1 - \hat{z}| < \epsilon.
+	\end{equation*}
+	
+	\begin{itemize}
+		\item Experiments with three points $(a, 0); (-a, 0); (a, b)$ rotated by a random angle.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{E3P}{Choosing a precision constant}
+	\begin{figure}[!htb]
+		
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			
+			\includegraphics[scale=.53]{../article/figures/e3p_known_sols2}
+			\caption{}
+			\label{fig:e3p_known_sols2}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			
+			\includegraphics[scale=.53]{../article/figures/e3p_known_sols1}
+			\caption{}
+			\label{fig:e3p_known_sols1}
+		\end{subfigure}
+		\caption{(a) $|1-\hat{z}|$. (b) $|f(\hat{z})|$.}
+	\end{figure}
+
+\begin{itemize}
+	\item We define $\epsilon = 10^{-6}$.
+	\item We further check if $|f(\hat{z})| < 10^{-9}$ to consider $\hat{z}$ to be a root of $f$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{E3P}
+	These possible properties were observed in practice, and could be used in future work:
+	\begin{itemize}
+		\item Instances with $6$ solutions seem to always come from an equilateral triangle's vertices.
+		\item Instances with $4$ solutions seem to always come from an isosceles triangle's vertices.
+		\item The coefficients of $f$ seem to have the following symmetry property:
+		\begin{equation*}
+		c_k = \overline{c_{6-k}}.
+		\end{equation*}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
