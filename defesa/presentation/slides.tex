@@ -491,6 +491,205 @@ We did not find any work on E3P in the literature.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{MCER}
+	The algorithm for MCE is based on the fact that there is at most $2$ centers for an ellipse to contain two points.
+	\\~\
+	
+	For MCER, we will use a similar idea based on the results for E3P.
+	
+	\begin{itemize}
+		\item We will prove that any solution $(q,\theta)$ for the one-facility MCER can always be classified as one out of three possible types.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{MCER}
+	It covers at most one point.
+	\begin{figure}
+		\centering
+		\includegraphics[scale=.6]{figures/mcer3}
+		\caption{Example of solution for the one-facility MCER.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}
+	It covers at least three points, and there exists $\{u,v,w\}\subset E(q,\theta)$, such that their E3P's instance has at least one solution.
+	\begin{figure}
+		\centering
+		\includegraphics[scale=.6]{figures/mcer2}
+		\caption{Example of solution for the one-facility MCER.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}
+	It covers at least two points, and there is no $\{u,v,w\}\subset E(q,\theta)$, such that their E3P's instance has at least one solution.
+	\begin{figure}
+		\centering
+		\includegraphics[scale=.6]{figures/mcer1}
+		\caption{Example of solution for the one-facility MCER.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}
+Let $Q$ and $Q'$ be two solutions of MCER, then we say that $Q \succ Q'$ if, and only if
+
+\begin{equation*}
+\bigcup_{j=1}^m \Pp \cap E_j(q_j', \theta_j') \subset \bigcup_{j=1}^m \Pp \cap E_j(q_j, \theta_j).
+\end{equation*}
+
+\begin{lem}\label{lema:mce_2b}
+	Let $Q$ be a solution for the one-facility MCER, such that $|\Pp \cap E(q, \theta)| \ge 2$.
+	There exists a solution $Q'$, such that $Q' \succ Q$ and $|\Pp \cap \partial E(q', \theta')|\ge 2$.
+\end{lem}
+\end{frame}
+
+\begin{frame}{MCER}{Feasible angle}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=.22]{../article/figures/feasible-angle2}
+	\caption{The solid border ellipses are rotated by a $(E, u,v)$-feasible angle, while the ellipse with a dashed border is rotated by a not $(E, u, v)$-feasible angle.}
+	\label{fig:feasible-angle}
+\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}{Feasible angle}
+	\begin{definition}\label{def:feasible_angle}
+		Let $E$ be the coverage region of an ellipse and $u, v \in \R^2$. An angle $\theta \in [0, \pi)$ is said to be $(E, u, v)$-feasible if there is $q \in \R^2$ such that $\{u, v\} \subset \partial E(q, \theta)$.
+		In addition to that, the set of $(E, u, v)$-feasible angles is referred to as 
+		
+		\begin{equation*}
+		\Phi(u, v) := \{\theta \in [0, \pi) : \theta \textnormal{ is a } (E,u,v)\textnormal{-feasible angle}\}.
+		\end{equation*}
+		%We also define $\tilde{\Phi}_j(u,v)$ as the angle which makes $E_j$'s major-axis be parallel to the line that passes through $u$ and $v$. Note that if $\Phi_j(u,v) \neq \emptyset$, then $\tilde{\Phi}_j(u,v) \in \Phi_j(u,v)$ as the longest segment that crosses an ellipse is its major-axis.
+	\end{definition}
+	
+\end{frame}
+
+
+\begin{frame}{MCER}{Feasible angle}
+	\begin{lem}\label{lema:l-function}
+		Given an instance of the one-facility MCER, if $u, v \in \Pp$ have the same $y$-coordinate and $||u-v||_2 \le 2a$, then $\Phi(u,v) = [0, \alpha] \cup [\pi - \alpha, \pi)$, for some $\alpha \in [0, \pi/2]$.
+	\end{lem}
+\end{frame}
+
+\begin{frame}{MCER}{Feasible angle}
+	$L(m)$ is the maximum distance between the intersection of a line from the set $\{y=mx + c \colon c \in \R\}$ and an ellipse $\partial E(0, 0)$.
+	\begin{figure}[H]
+	\centering
+		\includegraphics[scale=.26]{../tex/figures/L-function-plot}
+		\caption{Plot of function $L$ in the interval $[-7, 7]$.}
+		\label{fig:L-function-plot}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}
+	The only problem now is with respect to solutions which we can find another solution covering the same points with three points on the ellipse.
+	\\~\
+	
+	Next, we prove that in this case, for any feasible angle of rotation, a solution exists covering the same set of points.
+\end{frame}
+
+\begin{frame}{MCER}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=.7]{../article/figures/lema-3-points}
+%		\caption{}
+		\label{fig:lema-3-points}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{MCER}
+	Let $Q$ and $Q'$ be two solutions of MCER, we say that they are equivalent if, and only if
+	\begin{equation*}
+	\bigcup_{j=1}^m \Pp \cap E_j(q_j, \theta_j) = 	\bigcup_{j=1}^m \Pp \cap E_j(q_j', \theta_j').
+	\end{equation*}
+\begin{lem}\label{lema:3pnts}
+	Let $Q^*$ be a solution of the one-facility MCER, such that $|\Pp \cap E(q^*, \theta^*)|\ge2$.
+	If for all $\bar{Q} \succ Q^*$, $|\Pp \cap \partial E(\bar{q}, \bar{\theta})| < 3$, then there exists $\{u, v\} \subset \Pp \cap E(q^*, \theta^*)$, such that for all $\theta\in \Phi(u,v)$ there exists $q \in \R^2$, such that $(q, \theta)$ is equivalent to $Q^*$.
+\end{lem}
+\end{frame}
+
+\begin{frame}{MCER}{Proof}
+	\begin{itemize}
+		\item Take $u, v \in E(q^*, \theta^*)$, such that there exists $Q'\succ Q$ with $\{u,v\} \subset \partial E(q', \theta')$.
+		
+		\item We can rotate the coordinate system to make $\Phi(u,v) = [0, 2\alpha]$.
+		
+		\item Define $\delta \colon \Phi(u,v) \to \R^2$, such that 
+		\begin{eqnarray*}
+		\textnormal{ for all }\theta \in \Phi(u,v)\implies \{u,v\} \subset \partial E(\delta(\theta), \theta)\\
+		\delta(\theta')=q'
+		\end{eqnarray*}
+	
+		\item That is, $\delta(\theta)$ returns the center to make the ellipse contain the two points $u$ and $v$.
+	
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{MCER}{Proof}
+	\begin{itemize}
+		\item For any $w$ covered, by continuity, we have that
+		\begin{eqnarray*}
+		\exists \theta \in \Phi(u,v)\colon||w-\delta(\theta)||_{a,b,\theta} > 1\\ 
+		\Leftrightarrow\\
+		\exists \bar{\theta} \in \Phi(u,v) \colon |w-\delta(\bar{\theta})||_{a,b,\bar{\theta}}=1.
+		\end{eqnarray*}
+		
+		\item That is, if for any feasible angle $w$ becomes uncovered, there must be another angle that puts it on the ellipse.
+		
+		\item The same argument can be used for a point that is initially uncovered.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{MCE}
+	With this lemma, we can choose any feasible angle for a pair of points or three points to put on the ellipse.
+	\\~\
+	
+	Let $u \in \R^2$, we define $\angle u$ denotes the minimal angle between the vector $u$ and the $x$-axis.
+	
+	\begin{itemize}
+		\item If $\Phi(u,v) \neq \emptyset$, then $\angle (u-v) \in \Phi(u,v)$.
+		\item The longest segment that intersects an ellipse is its major-axis.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{MCER}{CLS}
+	Following this, we define the CLS for each ellipse.
+	
+	\begin{definition}\label{def:Sj}
+		Given an instance of MCER. Then, for all $j\in\{1, \dots, m\}$, we define the CLS of the $j$-th ellipse as $S_j = S_j^{(1)} \cup S_j^{(2)} \cup S_j^{(3)}$ with
+		\begin{align*}
+		S_j^{(1)} &= \bigcup_{u \in \Pp} \{(u, 0)\}\\
+		S_j^{(2)} &= \bigcup_{\{u, v\} \subset \Pp} \{(q, \angle(u-v))\in \R^2\times[0, \pi): \{u,v\} \subset \partial E_j(q, \angle(u-v))\}\\
+		S_j^{(3)} &= \bigcup_{\{u, v, w\} \subset \Pp} \{(q, \theta)\in \R^2\times[0, \pi): \{u, v, w\} \subset \partial E_j(q, \theta)\}.
+		\end{align*}
+	\end{definition}
+\end{frame}
+
+\begin{frame}{MCER}
+	Finally, we can construct a finite set which contains an optimal solution.
+	
+	\begin{thm}\label{th:mcer}
+		Given an instance of MCER, let $\Omega$ be a set of solutions defined as 
+		\begin{equation*}\label{eq:omega}
+		\Omega = \{Q \in (\R^2\times[0, \pi))^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\},
+		\end{equation*}
+		Then there exists an optimal solution $Q^* \in \Omega$, and $|\Omega|\le n^{3m}$.
+	\end{thm}
+\end{frame}
+
+\begin{frame}{MCER}{proof}
+$$|S_j^{(2)}| \le 2 \binom{n}{2} = \frac{n(n+1)}{2} \le n^2,$$
+
+$$|S_j^{(3)}| \le 6 \binom{n}{3} = n((n-1)^2+1) \le n^3.$$
+
+\begin{itemize}
+	\item For an ellipse, if an equivalent solution is not in $S_j^{(2)}$, we can apply the previous lemma, which implies that an equivalent solution is in $S_j^{(3)}$.
+	
+	\item An $\bigO(mn^{3m+1})$ runtime algorithm can be implemented.
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}[allowframebreaks]
 	\frametitle{References}
 	\bibliographystyle{acm}
