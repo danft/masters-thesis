@@ -689,6 +689,214 @@ $$|S_j^{(3)}| \le 6 \binom{n}{3} = n((n-1)^2+1) \le n^3.$$
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Numerical Experiments}{Facility Cost}
+	We ran experiments for the version where each facility has a cost associated with it.
+	\begin{itemize}
+		\item MCE-$k$ (MCER-$k$) is the problem where exactly $k$ facilities have to be utilized.
+		\item We solve MCE-$k$ (MCER-$k$) by solving the $\binom{m}{k}$ instances of MCE (MCER). 
+	\end{itemize} 
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{Known Instances}
+	First we consider the instances that were also analyzed in \cite{andreta}.
+
+	\begin{itemize}
+		\item At most $100$ points and $5$ ellipses,
+		\item The demand points are uniformly distributed,
+		\item Points have unit weights.
+	\end{itemize}	
+	
+
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{MCE-$k$}
+	\begin{itemize}
+		\item Our algorithm took at most $0.1$s of CPU time for each instance.
+		\item The method developed in \cite{andreta} took more than $45$ minutes for some instances.
+		\item In practice, the amount of computation was much lower than the asymptotic bound.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{MCER-$k$}
+	\begin{itemize}
+	\item Our algorithm took at most $6$s of CPU time for each instance.
+	\item The deterministic method developed in \cite{andreta} timed out for some instances.
+	\item The heuristic method took more than $7$ hours of CPU time.
+	\item The heuristic method did not obtain an optimal solution for four instances.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{MCER-$k$}
+	\begin{figure}[!htb]
+		
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_AB108}
+			\caption{}
+			\label{fig:AB108}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_AB120}
+			\caption{}
+			\label{fig:AB120}
+		\end{subfigure}
+		\caption{An optimal solution of MCER-$k$ for the instance AB108 (a), and for the instance AB120 (b).}
+		\label{fig:AB108-AB120}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	To further analyze we decided to create new instances.
+	\begin{itemize}
+		\item Normally distributed demand points,
+		\item Non-unitary weights,
+		\item Up to $700$ points,
+		\item Up to $7$ ellipses.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	First set of instances TA01-TA07.
+	\begin{itemize}
+		\item $p_j \sim \mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$.
+		\item $w_j = ||p_j||_2^2$.
+		\item $a_j, b_j \sim U(0.5, 1.5)$.
+		\item The cost of the $j$-th ellipse is $c_j = 10 \times a_j \times b_j$.
+		\item Seven instances $n=100$ points, with $m=7$ ellipses and $k \in \{1,\dots, m\}$.
+		\item MCE: timed out (2h) for instance with $k=7$,
+		\item MCER: Timed out (2h) for isntance with $k=5,6,7$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	\begin{figure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCE_TA04}
+			\caption{}
+			\label{fig:MCE_TA04}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_TA04}
+			\caption{}
+			\label{fig:MCER_TA04}
+		\end{subfigure}
+		\caption{Two optimal solutions for the instance TA04: (a) for MCE-$k$, and (b) for MCER-$k$.}
+		\label{fig:TA04}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	Second set of instances TA08-TA22.
+	\begin{itemize}
+		\item $p_j \sim \mathcal{N}([0, 0]^T, \mathbb{I})$, with $\mathbb{I} \in \R^{2\times 2}$.
+		\item $w_j = ||p_j||_2^2$.
+		\item $a_j, b_j \sim U(0.5, 1.5)$.
+		\item The cost of the $j$-th ellipse is $c_j = 10 \times a_j \times b_j$.
+		\item Instances  $n\in\{200, 250, 300, 350, 400\}$ points, with $m=3$ ellipses and $k \in \{1,\dots, m\}$.
+		\item MCE: Obtained optimal solutions for every instance,
+		\item MCER: Timed out (2h) for the instance with $n=400$ and $k=3$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	
+	\begin{figure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCE_TA21}
+			\caption{}
+			\label{fig:MCE_TA21}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_TA21}
+			\caption{}
+			\label{fig:MCER_TA21}
+		\end{subfigure}
+		\caption{Two optimal solutions for the instance TA21 with $400$ points: (a) for MCE-$k$, and (b) for MCER-$k$.}
+		\label{fig:TA21}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	Third set of instances TA23-TA42.
+	\begin{itemize}
+		\item $p_j \sim U[0, 10]^2$.
+		\item $w_j = 1$.
+		\item $a_j, b_j \sim U(0.5, 1.5)$.
+		\item The cost of the $j$-th ellipse is $c_j = 10 \times a_j \times b_j$.
+		\item Instances  $n\in\{400, 500, 600, 700\}$ points, with $m=5$ ellipses and $k \in \{1,\dots, m\}$.
+		\item We Obtained optimal solutions for every instance,
+		\item The CLSs are much smaller compared to the previous set of instances.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	\begin{figure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCE_TA37}
+			\caption{}
+			\label{fig:MCE_TA37}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_TA37}
+			\caption{}
+			\label{fig:MCER_TA37}
+		\end{subfigure}
+		\caption{Two optimal solutions for the instance TA37: (a) for MCE-$k$, and (b) for MCER-$k$.}
+		\label{fig:TA37}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	Last set of instances TA43-TA47.
+	\begin{itemize}
+		\item Half of the points follow $\mathcal{N}(\mu^{(1)}, \mathbb{I})$, and the other half follow $\mathcal{N}(\mu^{(2)}, \mathbb{I})$.
+		\item $\mu^{(1)} = (-3, -3)$ and $\mu^{(2)} = (-3, -3)$,
+		\item $w_j$ is set to its distance to the mean that from the distribution it was generated from.
+		\item For the one half: $a_j, b_j \sim U(0.5, 1.5)$; for the other half $a_j, b_j \sim U(3, 4)$.
+		\item The cost of the $j$-th ellipse is $c_j = a_j \times b_j$.
+		%\item Create an example where the chosen ellipses in the solution of an instance of MCER-$k$ is not a subset of the chosen ellipses in an optimal solution of that same instance for MCER-$(k+1)$.
+		\item Instances  $n=80$ points, with $m=5$ ellipses and $k \in \{1,\dots, m\}$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Numerical Experiments}{New instances}
+	\begin{figure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_TA44}
+			\caption{}
+			\label{fig:MCER_TA44}
+		\end{subfigure}
+		\begin{subfigure}{.44\textwidth}
+			\centering
+			\includegraphics[scale=.6]{../article/figures/MCER_TA45}
+			\caption{}
+			\label{fig:MCER_TA45}
+		\end{subfigure}
+		\caption{Two optimal solutions for the instance TA44: (a) for MCE-$k$, and (b) for MCER-$k$.}
+		\label{fig:TA44-45}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Conclusion}
+	We conclude by leaving some directions for future works.
+	\begin{itemize}
+		\item There is a lot of room to further study E3P.
+		\begin{itemize}
+			\item We showed some possible properties.
+			\item Perhaps, these properties can be used to decrease the degree of the complex polynomial.
+		\end{itemize}
+		\item Use a Integer Linear Programming Model instead of backtracking the solution.
+		\item Adapt the approximation scheme developed in \cite{cabello:2006} for MCE and MCER.
+	\end{itemize}
+\end{frame}
 
 \begin{frame}[allowframebreaks]
 	\frametitle{References}
