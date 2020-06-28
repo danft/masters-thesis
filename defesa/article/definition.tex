@@ -7,7 +7,7 @@ An instance of MCE and MCER is given by $n$ distinct demand points $\Pp=\{p_1, \
 
 For MCE, the shape parameters describe axis-parallel ellipses, and the problem is to determine a center for each ellipse to maximize the weight of covered demand points. For MCER, besides the center, because the ellipses are not necessarily axis-parallel, for each facility, an angle of rotation is also part of the solution, and the problem is to maximize the weight of covered demand points as well.
 
-Let $\E=\{E_1, \dots, E_m\}$ be a list of functions representing the coverage area of each facility, with $E_j \colon \R^2 \to \R^2$ for MCE, and $E_j \colon \R^2\times [0, \pi)\to \R^2$. Let $||\cdot||_{a,b, \theta} \colon \R^2 \to \R_{\ge0}$ denote the elliptical norm given by
+Let $\E=\{E_1, \dots, E_m\}$ be a list of functions representing the coverage area of each facility, with $E_j \colon \R^2 \to {\color{blue}\mathcal{P}(\R^2)}$ for MCE, and $E_j \colon \R^2\times [0, \pi)\to {\color{blue}\mathcal{P}(\R^2)}$. Let $||\cdot||_{a,b, \theta} \colon \R^2 \to \R_{\ge0}$ denote the elliptical norm given by
 \begin{equation*}
 ||x||_{a,b, \theta}=\left|\left|
 \left(\begin{array}{rr}
@@ -58,7 +58,7 @@ the set of covered demand points in both solutions is the same.
 We also define a partial order: $Q' \succ Q$ if, and only if the set of demand points covered in solution $Q$ is a subset of the demand points covered in solution $Q'$.
 
 %%% esse paragrafo ainda ta estranho.
-We use the notation $\partial$ to denote the boundary operator. For example, let $E \colon \R^2\to\R^2$ be the coverage region of an axis-parallel ellipse, then let $q\in\R^2$, $\partial E(q)$ describes an axis-parallel ellipse centered at $q$. If $E$ has shape parameters $(a, b)$, then $\partial E(q) = \{p \in \R^2\colon ||p-q||_{a,b,0} = 1\}$.
+We use the notation $\partial$ to denote the boundary operator. For example, let $E \colon \R^2\to{\color{blue} \mathcal{P}(\R^2)}$ be the coverage region of an axis-parallel ellipse, then let $q\in\R^2$, $\partial E(q)$ describes an axis-parallel ellipse centered at $q$. If $E$ has shape parameters $(a, b)$, then $\partial E(q) = \{p \in \R^2\colon ||p-q||_{a,b,0} = 1\}$.
 
 %Also, whenever we have an instance $(\Pp, \Ww, \{(a, b)\})$ with only one facility, we omit the index referring to the ellipse. 
 %Therefore, as this step can be seen as trivial, we focus on proposing algorithms for MCE and MCER, and in the section where we analyze the numerical experiments, as we use instances from \cite{andreta}, whenever we refer to an algorithm of MCE-$k$ (MCER-$k$), see it as an algorithm based on the approach described here, which uses $\binom{m}{k}$ instances of MCE (MCER) to obtain an optimal solution.

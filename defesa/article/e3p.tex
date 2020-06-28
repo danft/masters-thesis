@@ -5,7 +5,7 @@ We propose an algorithm for it that involves determining the eigenvalues of a $6
 
 \subsection{Problem definition}
 
-Given the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, $a > b$, and three points $u, v, w \in \R^2$, let $E\colon \R^2\times [0, \pi)\to\R^2$ be the coverage region of an ellipse with shape parameters $(a, b)$, we refer to the problem of obtaining $(q, \theta) \in \R^2\times [0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$ as Ellipse by Three Points Problem (E3P).
+Given the shape parameters of an ellipse $(a, b) \in \R^2_{>0}$, $a > b$, and three points $u, v, w \in \R^2$, let $E\colon \R^2\times [0, \pi)\to{\color{blue}\mathcal{P}(\R^2)}$ be the coverage region of an ellipse with shape parameters $(a, b)$, we refer to the problem of obtaining $(q, \theta) \in \R^2\times [0, \pi)$, such that $\{u, v, w\} \subset \partial E(q, \theta)$ as Ellipse by Three Points Problem (E3P).
 Because of its application here in our work, we are only interested in a method that can obtain every solution of E3P.
 
 \subsection{Transforming E3P into a circle problem}
@@ -15,10 +15,11 @@ Let us assume that point $u$ is at the origin. If it is not, a simple translatio
 Assume as well that $(q, \theta)$ is a solution of E3P. 
 
 Applying a rotation of $-\theta$ to the coordinate system makes the ellipse in the original solution become axis-parallel.
-Then, that ellipse can be transformed into a circle of radius $b$ by squeezing the $x$-axis by $b/a$. This two-step transformation can be written as a function $\varphi\colon \R^2 \to \R^2$ defined as
+Then, that ellipse can be transformed into a circle of radius $b$ by squeezing the $x$-axis by $b/a$. This two-step transformation can be written as a function ${\color{blue}\varphi_\theta\colon \R^2 \to \R^2}$ defined as
 
+\color{blue}
 \begin{equation*}%\label{eq:trpnts}
-\varphi(p, \theta)=\left[\begin{array}{cc}
+\varphi_\theta(p)=\left[\begin{array}{cc}
 \frac{b}{a}&0\\
 0&1
 \end{array}\right]
@@ -30,8 +31,9 @@ p_x\\
 p_y
 \end{array}\right].
 \end{equation*}
+\color{black}
 
-An example of this transformation can be seen in \autoref{fig:circumscribed-circle}. As $\varphi^{-1}$ is well-defined, instead of solving E3P, we can work with the univariate problem of determining an angle of rotation $\theta \in [0, \pi)$ that makes the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$ be circumscribed in a circle of radius $b$. To make the notation less cluttered, we denote by $\Lambda(\theta)$ the triangle with vertices $\varphi(u, \theta), \varphi(v, \theta), \varphi(w, \theta)$.
+An example of this transformation can be seen in \autoref{fig:circumscribed-circle}. As {\color{blue} $\varphi_\theta^{-1}$} is well-defined, instead of solving E3P, we can work with the univariate problem of determining an angle of rotation $\theta \in [0, \pi)$ that makes the triangle with vertices {\color{blue}$\varphi_\theta(u), \varphi_\theta(v), \varphi_\theta(w)$} be circumscribed in a circle of radius $b$. To make the notation less cluttered, we denote by $\Lambda(\theta)$ the triangle with vertices {\color{blue}$\varphi_\theta(u), \varphi_\theta(v), \varphi_\theta(w)$}.
 
 \begin{figure}[!htb]
 	\centering
@@ -44,10 +46,10 @@ An example of this transformation can be seen in \autoref{fig:circumscribed-circ
 As circles are uniquely defined by three non-collinear points, the circumcircle of $\Lambda(\theta)$ is unique, and its radius and center can be determined analytically \cite{weisstein}.
 Let $|\Lambda(\theta)|$ denote the area of $\Lambda(\theta)$, using the formula from \cite[p.~189]{johnson1960} for the radius of a circumcircle of a triangle, and imposing that radius to be equal $b$, we define a function $\xi \colon [0, \pi) \to \R$ as
 \begin{equation}\label{eq:xi}
-\xi(\theta) = 16b^2|\Lambda(\theta)|^2 - \norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2,
+\xi(\theta) = 16b^2|\Lambda(\theta)|^2 - \norm{{\color{blue}\varphi_\theta(v)}}^2\norm{{\color{blue}\varphi_\theta(w)}}^2\norm{{\color{blue}\varphi_\theta(v)}-{\color{blue}\varphi_\theta(w)}}^2,
 \end{equation}
-whose roots are angles of rotation which determine solutions of E3P through the inverse transformation $\varphi^{-1}$.
-From a root $\hat{\theta}$ of $\xi$, let $\hat{q}$ be the center of the circumcircle of $\Lambda(\hat{\theta})$, the solution $(\varphi^{-1}(\hat{q}), \hat{\theta})$ of E3P is obtained. 
+whose roots are angles of rotation which determine solutions of E3P through the inverse transformation {\color{blue}$\varphi_\theta^{-1}$}.
+From a root $\hat{\theta}$ of $\xi$, let $\hat{q}$ be the center of the circumcircle of $\Lambda(\hat{\theta})$, the solution $({\color{blue}\varphi_{\hat{\theta}}^{-1}}(\hat{q}), \hat{\theta})$ of E3P is obtained. 
 
 The algorithm for MCER described in the next section, of which E3P is a subproblem, goes through every solution of several instances of E3P. This is only possible if the number of solutions of E3P is finite, and it is only viable if that number is small. Next we introduce a lemma regarding that matter.
 
@@ -57,13 +59,13 @@ The algorithm for MCER described in the next section, of which E3P is a subprobl
 
 \begin{proof}
 	The first thing to notice is that $\xi$ is a real trigonometric polynomial of degree $6$. 
-	Its term of highest degree is the multiplication of the norms $\norm{\varphi(v, \theta)}^2\norm{\varphi(w, \theta)}^2\norm{\varphi(v, \theta)-\varphi(w, \theta)}^2$. In \cite[p.~150]{powell}, where a definition of real trigonometric polynomial is also given, it is stated that a $n$-degree real trigonometric polynomial can have up to $2n$ roots in $[0, 2\pi)$. Therefore, E3P has at most $12$ solutions in $[0, 2\pi]$.
+	Its term of highest degree is the multiplication of the norms $\norm{{\color{blue}\varphi_\theta(v)}}^2\norm{{\color{blue}\varphi_\theta(w)}}^2\norm{{\color{blue}\varphi_\theta(v)}-{\color{blue}\varphi_\theta(w)}}^2$. In \cite[p.~150]{powell}, where a definition of real trigonometric polynomial is also given, it is stated that a $n$-degree real trigonometric polynomial can have up to $2n$ roots in $[0, 2\pi)$. Therefore, E3P has at most $12$ solutions in $[0, 2\pi]$.
 	Half of these solutions, though, are duplicated as ellipses are symmetric to their axis.
 \end{proof}
 
 \subsection{Converting $\xi$ into a polynomial}
 
-In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate polynomial of degree $n$, there exists a companion matrix, which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial. Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory (a very complete introduction to it can be found in \cite{watkins:2008}). For example, for a degree-$4$ polynomial $\sum_{k=0}^4 a_k x^4$, a possible companion matrix is given by
+In \cite[p.~195]{horn}, a theorem is presented stating that for every univariate polynomial of degree $n$, there exists a companion matrix, which is a $n\times n$ matrix, such that its eigenvalues are the zeros of that polynomial. Finding every eigenvalue of a matrix can be done using the QR algorithm, which runs in $\bigO(n^3)$ and uses $\bigO(n^2)$ memory (a very complete introduction to it can be found in \cite{watkins:2008}). For example, for a {\color{blue} $4$-degree} polynomial $\sum_{k=0}^4 a_k x^4$, a possible companion matrix is given by
 
  \begin{equation*}
 \left[\begin{array}{ccccc}
@@ -92,7 +94,7 @@ Therefore, using the QR algorithm to obtain the eigenvalues of a companion matri
 
 In this section, we describe an experiment we made to choose a precision constant for comparing if a root of $f$ returned as an eigenvalue of its companion matrix is in the unit circle. The implementation was coded in C++, and LAPACK's ZGEEV was utilized to obtain the eigenvalues of the companion matrix of $f$ (more information about the implementation is given in Section~\ref{section:implementation}). For the experiment, we defined $K\in\R$, $K>0$, and considered instances with the ellipse's shape parameters $(K, \frac{K}{2})$, for $K\in\{10^j\colon j=0,\dots,10\}$.
 
-The experiment considered instances of E3P where the three points are the vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected.
+The experiment considered instances of E3P where the three points are vertices of an ellipse rotated by $\theta\in[0, \pi)$. Such instances only have one solution, and therefore, roots with multiplicity greater than one are expected.
 For each value of $K$, we ran the algorithm for $100$ instances generated randomly by sampling $\theta$ according to a uniform distribution. For each instance, we took the root $\hat{z}$ which produced the closest solution to the known one. Then, for each $K$, as it can be seen in \autoref{fig:e3p_known_sols2}, we considered the maximum and the average distance to the unit circle $|1-|\hat{z}||$; and, as it presented in \autoref{fig:e3p_known_sols1}, the maximum and average error $|f(\hat{z})|$.
 
 From this experiment, we decided to adopt a precision constant of $10^{-6}$ to consider a root of $f$ to be in the unit circle, and as an additional check, we adopted a precision constant of $10^{-9}$ to consider a root to be a solution of E3P.

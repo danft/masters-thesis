@@ -14,8 +14,12 @@
 %% \documentclass[final,5p,times,twocolumn]{elsarticle}
 
 %% The graphicx package provides the includegraphics command.
+
+%\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -27,6 +31,8 @@
 \usepackage{multirow}
 
 \journal{EJOR}
+
+\usepackage{xcolor}
 
 \usepackage[mathscr]{eucal}
 \newcommand{\R}{\mathbb{R}}
@@ -47,6 +53,9 @@
 \newdefinition{definition}{Definition}
 %\newproof{pf}{Proof}
 %\renewcommand\qedsymbol{$\blacksquare$}
+
+\bibliographystyle{plainnat}
+
 
 
 \RequirePackage{algorithm, algpseudocode}
@@ -70,31 +79,6 @@
 		\title{New Exact Algorithms for Planar Maximum Covering Location by Ellipses Problems\tnoteref{t1}}
 		\tnotetext[t1]{This paper is the results of the research
 			project funded by CAPES and FAPESP.}
-		
-		%% use the tnoteref command within \title for footnotes;
-		%% use the tnotetext command for the associated footnote;
-		%% use the fnref command within \author or \address for footnotes;
-		%% use the fntext command for the associated footnote;
-		%% use the corref command within \author for corresponding author footnotes;
-		%% use the cortext command for the associated footnote;
-		%% use the ead command for the email address,
-		%% and the form \ead[url] for the home page:
-		%%
-		%% \title{Title\tnoteref{label1}}
-		%% \tnotetext[label1]{}
-		%% \author{Name\corref{cor1}\fnref{label2}}
-		%% \ead{email address}
-		%% \ead[url]{home page}
-		%% \fntext[label2]{}
-		%% \cortext[cor1]{}
-		%% \address{Address\fnref{label3}}
-		%% \fntext[label3]{}
-		
-		
-		%% use optional labels to link authors explicitly to addresses:
-		%% \author[label1,label2]{<author name>}
-		%% \address[label1]{<address>}
-		%% \address[label2]{<address>}
 		
 		\author[add1]{Danilo Tedeschi\corref{cor1}}
 		\ead{danilo.tedeschi@usp.br}
@@ -150,7 +134,6 @@
 
 \section{Improvements}\label{section:improvements}
 \input{improvements.tex}
-
 %\section{Reducing the CLS size}\label{section:reducing_cls}
 %\input{reducing_cls.tex}
 
@@ -167,12 +150,9 @@
 \input{conclusion.tex}
 
 \clearpage
-\section*{References}
+%\section*{References}
 	%% New version of the num-names style
-	\bibliographystyle{apa}
+	%\bibliographystyle{natdin}
 	\bibliography{../references}
 	
 \end{document}
-
-%%
-%% End of file `elsarticle-template-1-num.tex'.

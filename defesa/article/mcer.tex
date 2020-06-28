@@ -40,15 +40,15 @@ Next we open a parenthesis to discuss the problem of deciding for what angles of
 	D(m, c)=\dfrac{\sqrt{(a^2m^2+b^2-c^2)(4a^2b^2(1+m^2))}}{(a^2m^2+b^2)},
 	\end{equation*}
 	with $D : \R^2 \mapsto \R_{\ge0}$ being a function of the line parameters $(m, c)$.
-	If $D(m, c) = ||u-v||_2$, then there exists $q_1, q_2 \in \R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$ and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$.  
+	If $D(m, c) = ||u-v||_2$, then there exist $q_1, q_2 \in \R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$ and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$. It is also possible to see that, when $m$ is fixed, $D(m, c)^2$ is a parabola, and that $D(m, c)$ is maximized at $c=0$.  
 	Following that, we define a function $L:\R\mapsto\R$ as
 	
 	\begin{equation*}
 	L(m):= D(m, 0)^2 = \dfrac{(a^2m^2+b^2)(4a^2b^2(1+m^2))}{(a^2m^2+b^2)^2},
 	\end{equation*}
-	which describes the maximum distance between points of an ellipse-line intersection considering all lines with $m$ angular coefficient. From that, if $L(m) \ge ||v-u||_2^2$, then there exists $q_1, q_2\in\R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$, and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$.
+	which describes the maximum distance between points of an ellipse-line intersection considering all lines with $m$ angular coefficient. From that, if $L(m) \ge ||v-u||_2^2$, then there exist $q_1, q_2\in\R^2$, such that $\{u, v\} \subset \partial E(q_1, \tan{m})$, and $\{u, v\} \subset \partial E(q_2, \pi-\tan{m})$.
 	
-	It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $m=0$, is increasing in $[0, \infty)$, is decreasing in $(-\infty, 0]$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
+	It is possible, by calculating the derivatives, to conclude that $L$ has its maximum at $m=0$, is increasing in $(-\infty, 0]$, is decreasing in $[0, \infty)$, and attains every value in the interval $(4b^2, 4a^2]$. Notice that $L$ never hits $4b^2$ because that is the distance between the intersection of the ellipse with a vertical line.
 	%In \autoref{fig:L-function-plot}, an example of function $L$ is shown with $(a, b) = (2, 1)$.
 	
 	If $\inf{L} \ge ||u-v||_2^2$, then $\Phi(u,v) = [0, \pi)$.
@@ -91,7 +91,7 @@ It states that, for any ellipse that covers more than two points in a given opti
 	Let $w\in \Pp \setminus \{u,v\}$, then we define $f_w  : [0, \pi) \mapsto \R_{\ge0}$ to be a function that takes an angle of rotation $\theta$ and returns the elliptical distance $||\cdot||_{a,b,\theta}$ to the center $\delta(\theta)$; that is $f_w(\theta)=||w-\delta(\theta)||_{a,b,\theta}$.
 	We have that if $w \in \Pp \cap E(q^*, \theta^*)$, then $f_w(\theta^*) \le 1$; and if $w \not\in \Pp \cap E(q^*, \theta^*)$, then $f_w(\theta^*) > 1$.
 	
-	Therefore, if there exists $\theta\in\Phi(u,v)$, such that for all $q\in\R^2$, $(q, \theta)$ is not equivalent to $Q^*$, then there exists either $w \in \Pp \cap E(q^*, \theta^*)$, with $f_w(\theta)>1$, or $w \not\in \Pp \cap E(q^*, \theta^*)$, with $f_w(\theta)\le 1$. Because $f_w$ is continuous, there exists $\bar{\theta}\in\Phi(u,v)$, such that $f_w(\theta)=1$, implying that $|\Pp \cap \partial E(\delta(\bar{\theta}), \bar{\theta})| \ge 3$.
+	Therefore, if there exists $\theta\in\Phi(u,v)$, such that for all $q\in\R^2$, $(q, \theta)$ is not equivalent to $Q^*$, then there exists either $w \in \Pp \cap E(q^*, \theta^*)$, with $f_w(\theta)>1$, or $w \not\in \Pp \cap E(q^*, \theta^*)$, with $f_w(\theta)\le 1$. Because $f_w$ is continuous, there exists $\bar{\theta}\in\Phi(u,v)$, such that $f_w(\bar{\theta})=1$, implying that $|\Pp \cap \partial E(\delta(\bar{\theta}), \bar{\theta})| \ge 3$.
 \end{proof}
 
 In \autoref{fig:lema-3-points}, a visualization of \autoref{lema:3pnts} is presented.
@@ -132,19 +132,19 @@ Following this, we introduce a theorem, which connects the results for MCER so f
 \begin{thm}\label{th:mcer}
 	Given an instance of MCER, let $\Omega$ be a set of solutions defined as 
 	\begin{equation*}\label{eq:omega}
-	\Omega = \{Q \in (\R^2\times[0, \pi))^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\},
+	\Omega = \{Q \in (\R^2\times[0, \pi))^m \colon (q_j, \theta_j) \in S_j \textnormal{ for all } j\in\{1, \dots, m\}\}.
 	\end{equation*}
 	Then there exists an optimal solution $Q^* \in \Omega$, and $|\Omega|\le n^{3m}$.
 \end{thm}
 \begin{proof}
 	The first thing to notice is that $\Omega$ is defined as the combination of every possible solution from each CLS. To prove that it contains an optimal solution $Q^*$, we only need to prove that for all $j\in\{1, \dots, m\}$, there exists $(q_j, \theta_j)\in S_j$, such that $\Pp \cap E_j(q_j^*, \theta_j^*) \subset \Pp \cap E_j(q_j, \theta_j)$. To do that, we use \autoref{lema:3pnts} and break the possible optimal solutions into three cases.
 	
-	In the first case, we consider solutions where the $j$-th ellipse covers less than one point, that is, $|\Pp \cap E_j(q_j^*, \theta_j^*)|\le1$. It is possible to see that $S_j^{(1)}$ takes this possibility into account as it includes in $\Omega$ every solution that has an ellipse centered at a point from $\Pp$. From that, we can also conclude that $|S_j^{(1)}| \le n$.
+	In the first case, we consider solutions where the $j$-th ellipse covers at most one point, that is, $|\Pp \cap E_j(q_j^*, \theta_j^*)|\le1$. It is possible to see that $S_j^{(1)}$ takes this possibility into account as it includes in $\Omega$ every solution that has an ellipse centered at a point from $\Pp$. From that, we can also conclude that $|S_j^{(1)}| = n$.
 	
 	In the second case, we consider solutions where the $j$-th ellipse covers at least two points, and there is no $Q' \succ Q^*$, such that $|\Pp \cap \partial E_j(q_j', \theta_j')| \ge 3$.
 	This case is addressed by \autoref{lema:3pnts}, which states that there are equivalent solutions to $Q^*$ with two points $u, v \in \Pp \cap E_j(q_j^*, \theta_j^*)$ on the $j$-th ellipse for every $(E_j, u, v)$-feasible angle.
 	As $\angle(u-v)$ is a $(E_j, u, v)$-feasible angle, we have that there exists $(q_j, \theta_j) \in S_j^{(2)}$, such that $\Pp \cap E_j(q_j, \theta_j) = \Pp \cap E_j(q_j^*, \theta_j^*)$.
-	Also, by \autoref{lema:e2p}, we have that $|S_j^{(2)}| \le 2\binom{n}{2}$.
+	{\color{blue}Also from \autoref{lema:e2p}, we can arrive at the conclusion that $|S_j^{(2)}| \le 2\binom{n}{2}$.}
 	
 %	Moreover, as determining every $q\in\R^2$, such that $\{u,v\}\subset \partial E_j(q, \angle(u-v))$ can be transformed into the problem of determining the set $\partial E_j(u, \angle(u-v)) \cap \partial E_j(v, \angle(u-v))$, which, as discussed in \autoref{section:mce}, contains at most two points, we can conclude that $|S_j^{(2)}| \le 2 \binom{n}{2}$.
 	
