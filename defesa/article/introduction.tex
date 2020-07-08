@@ -16,14 +16,25 @@ We study two versions of PMCLP with elliptical coverage facilities in this work.
 In the first version, introduced in \cite{canbolat}, all the ellipses are restricted to be axis-parallel, while in the second version, introduced in \cite{andreta}, this constraint is dropped, and all the ellipses can be freely rotated.
 The first version will be referred to as \sigla{MCE}{Planar Maximum Covering Location by Ellipses Problem} and the second one as  \sigla{MCER}{Planar Maximum Covering Location by Ellipses with Rotation Problem}.
 
-It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \citeonline{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to MCE. For some instances, the method took too long and did not find an optimal solution.
-Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
+%New paragraph
+{\color{Green}
+	In the real world, this problem comes up when a telecommunications company has to buy and place antennas over a region to distribute a signal to a population, not necessarily everyone, aiming profit maximization. 
+	More details about the applications of PMCLP can be found in \cite{canbolat}, which also ponders about the practical importance of considering the PMCLP with elliptical coverage.
+	
+	As a first approach to solving MCE, a mixed-integer non-linear programming method was proposed in \cite{canbolat}. 
+	Its performance was measured using a constructed set of instances. The results were considered unsatisfactory, as, for some instances, the method could not find an optimal solution within an hour. 
+	For this reason, a second method using a heuristic technique called Simulated Annealing was developed. For the same set of instances, the heuristic was able to obtain solutions within the predefined time limit, and for some of them, it was even able to find optimal solutions.
+}
+
+{\color{Red}
+It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \citeonline{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to MCE. For some instances, the method took too long and did not find an optimal solution. Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
+}
 
 The problem was further explored in \citeonline{andreta}, where exact methods were developed for both MCE and MCER, and a heuristic method was developed for MCER.
 All the methods proposed in \cite{andreta} were based on the enumerative approach of solving optimization subproblems to determine whether an ellipse could cover a subset of demand points or not. To avoid having to solve subproblems for every subset of demand points, a tree-like data structure was designed to skip non-maximal sets of demand points.
 The only difference in their methods for MCE and MCER was the subproblem.
 As the subproblem for MCE was a convenient convex optimization model, the method for it performed well and  was able to obtain optimal solutions for instances the method from \cite{canbolat} could not.
-The subproblem for MCER, on the other hand, was more challenging, and ended up making the method time out for large instances. For this reason, a heuristic method was developed treating the optimization subproblem as a convex problem. The method was able to obtain solutions for every instance, and for the ones the exact method did not time out, it could be verified that the heuristic method returned optimal solution as well.
+The subproblem for MCER, on the other hand, was more challenging, and ended up making the method time out for large instances. For this reason, a heuristic method was developed treating the optimization subproblem as a convex problem. The method was able to obtain solutions for every instance, and for the ones the exact method did not time out, it could be verified that the heuristic method returned optimal {\color{blue}solutions} as well.
 
 Based on the developments of \cite{church:1984} for the Euclidean PMCLP, we define a finite set of solutions for each one of the problems, MCE and MCER, which we prove to contain at least one optimal solution, and that, if the number of facilities is assumed to be constant, its size is bounded by a polynomial.
 We propose algorithms for both problems based on the computation of this set of solutions to determine an optimal one.
