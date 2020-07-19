@@ -26,10 +26,6 @@ The first version will be referred to as \sigla{MCE}{Planar Maximum Covering Loc
 	For this reason, a second method using a heuristic technique called Simulated Annealing was developed. For the same set of instances, the heuristic was able to obtain solutions within the predefined time limit, and for some of them, it was even able to find optimal solutions.
 }
 
-{\color{Red}
-It is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it. In \citeonline{canbolat}, a mixed-integer non-linear programming method was proposed as a first approach to MCE. For some instances, the method took too long and did not find an optimal solution. Because of that, a heuristic method was developed using a technique called Simulated Annealing, which was able to obtain solutions for the instances proposed in that study.
-}
-
 The problem was further explored in \citeonline{andreta}, where exact methods were developed for both MCE and MCER, and a heuristic method was developed for MCER.
 All the methods proposed in \cite{andreta} were based on the enumerative approach of solving optimization subproblems to determine whether an ellipse could cover a subset of demand points or not. To avoid having to solve subproblems for every subset of demand points, a tree-like data structure was designed to skip non-maximal sets of demand points.
 The only difference in their methods for MCE and MCER was the subproblem.
@@ -40,4 +36,8 @@ Based on the developments of \cite{church:1984} for the Euclidean PMCLP, we defi
 We propose algorithms for both problems based on the computation of this set of solutions to determine an optimal one.
 For MCER, computing this set of solutions involves solving a subproblem, on which we could not find any prior study, thus, a whole section is devoted to the development of an algorithm for it.
 Besides all that, we give implementation details for both algorithms, and also improvement suggestions which, in practice, can significantly lower the number of solutions evaluated to return an optimal one.
-In the end, we analyze numerical experiments for instances proposed in \cite{canbolat, andreta} and compare the results with the results obtained by the methods proposed in \cite{andreta}. Also, to further analyze our algorithms, we also analyzed numerical experiments for new instances with larger demand and facility sets.
+In the end, we analyze numerical experiments for instances proposed in \cite{canbolat, andreta} and compare the results with the results obtained by the methods proposed in \cite{andreta}. Also, to further {\color{blue}evaluate} our algorithms, we analyzed numerical experiments for new instances with larger demand and facility sets.
+
+{\color{Red}
+This paper is organized as follows. Section~\ref{section:definition} presents the definitions of both problems as well as introduces some notations used throughout the rest of the work. The algorithm for MCE is developed in Section~\ref{section:mce}, and the algorithm for MCER in Section~\ref{section:mcer} with the observation that its development depends on a subproblem whose algorithm is developed in Section~\ref{section:e3p}. Improvements suggestions to the implementations are given in Section~\ref{section:improvements} while the implementation details are given in Section~\ref{section:implementation}. Numerical results are presented and analyzed in Section~\ref{section:numerical}. Finally, a conclusion is given in Section~\ref{section:conclusion}.
+}
