@@ -4,15 +4,16 @@ MCLP was introduced motivated by the practical observation that covering one hun
 
 A continuous extension of MCLP, where the facility and demand sets are located on the plane and coverage is determined by a norm function, was introduced in \cite{church:1984} and named \sigla{PMCLP}{Planar Maximal Covering Location Problem} following the advances on covering location problems on the plane that were being made at the time.
 
-PMCLP can be seen as a class of problems, as, in general, facilities can have their coverage defined by any norm function, and the demand set, although initially defined as points, could have a more generic definition; in \cite{bansal}, for example, they are defined as rectangles.
-In \cite{church:1984}, a method was proposed for the version of PMCLP, where the facilities have Euclidean norm coverage. This method consisted of obtaining a discrete set of solutions for each facility, which was proved to contain at least one optimal solution, and then using the model developed for MCLP in \cite{church:1974} to determine an optimal solution.
+{\color{Red}PMCLP can be seen as a class of problems, as, in general, facilities can have their coverage defined by any norm function, and the demand set, although initially defined as points, could have a more generic definition; in \cite{bansal}, for example, the demand set is defined as a set of rectangles; and in \cite{younies}, a version of PMCLP where coverage is determined using block norms is studied. For a more comprehensive review on PMCLP and MCLP, please see \cite{murray}.}
+
+{\color{Red}In our work, because of the similarities with the problems studied by us, we are particularly interested in the Euclidean PMCLP defined with coverage being determined by the Euclidean norm. In \cite{church:1984}, a method for this version of PMCLP was developed following the demonstration of a theorem, which showed that a finite set of locations could be constructed to contain at least one optimal solution transforming PMCLP into a combinatorial optimization problem.} 
 
 The Euclidean PMCLP is also found in the literature in an algorithmic context as the \sigla{MCD}{Maximum Covering by Disks Problem}.
 In \citeonline{chazelle:1986}, a $\bigO(n^2)$ algorithm for the one-disk version of MCD was proposed, beating the prior $\bigO(n^2\log{n})$ algorithm created in \citeonline{drezner} for the same problem.
 A version with multiple unit disks was studied in \citeonline{cabello:2006}, which had as its most important result a $(1-\epsilon)$-approximation algorithm which runs in $\bigO(n\log{n})$. To achieve its main goal, they developed a deterministic $\bigO(n^{2m-1}\log{n})$ algorithm which gets employed into their approximation scheme.
 Additionally, in \citeonline{aronov:2008}, one-disk MCD is proven to be 3SUM-HARD. This means that maximizing the number of points covered by a disk is as hard as finding three real numbers that sum to zero among $n$ given real numbers.
 
-We study two versions of PMCLP with elliptical coverage facilities in this work. For both of them, each ellipse is defined to have a fixed shape and an undefined location, which is part of the solution.
+We study two versions of PMCLP with elliptical coverage facilities in this work. For both of them, each ellipse is defined to have {\color{Red}fixed major and minor axis} and an undefined location, which is part of the solution.
 In the first version, introduced in \cite{canbolat}, all the ellipses are restricted to be axis-parallel, while in the second version, introduced in \cite{andreta}, this constraint is dropped, and all the ellipses can be freely rotated.
 The first version will be referred to as \sigla{MCE}{Planar Maximum Covering Location by Ellipses Problem} and the second one as  \sigla{MCER}{Planar Maximum Covering Location by Ellipses with Rotation Problem}.
 
