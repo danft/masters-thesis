@@ -1,0 +1,104 @@
+\documentclass[letterpaper]{letter}
+
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% The graphicx package provides the includegraphics command.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\sisetup{group-separator = {,}}
+
+\usepackage{multirow}
+
+%\journal{EJOR}
+
+\usepackage[mathscr]{eucal}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Co}{\mathbb{Co}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\Ww}{\mathscr{W}}
+\newcommand{\Rr}{\mathscr{R}}
+\newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
+\newcommand{\bigO}{\mathscr{O}}
+\newtheorem{thm}{Theorem}
+\newtheorem{prp}{Proposition}
+\newtheorem{lem}{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newdefinition{definition}{Definition}
+%\newproof{pf}{Proof}
+%\renewcommand\qedsymbol{$\blacksquare$}
+\usepackage[dvipsnames]{xcolor}
+
+\RequirePackage{algorithm, algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmautorefname}{Algorithm}
+\newcommand{\definitionautorefname}{Definition}
+\newcommand{\thmautorefname}{Theorem}
+\newcommand{\prpautorefname}{Proposition}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\lemautorefname}{Lemma}
+\newcommand{\sigla}[2]{#2 (#1)}
+\newcommand{\citeonline}[1]{\cite{#1}}
+\signature{Danilo Tedeschi}
+
+\begin{document}
+	
+		%\title{Answer to Reviewer #1}
+		%\maketitle
+		
+		\begin{letter}{}
+
+		\opening{Answer to Reviewer \#1}
+		%	\opening{Dear Prof. Roman Slowinski\\Coordinating Editor of EJOR}
+		
+		First, thanks for dedicating your time to revise our work. We found every one of the points made of great importance for us to achieve a top quality paper.
+		
+		The changes we have made to the text are highlighted by different colors. 
+		\begin{itemize}
+			\item The {\color{blue} blue} highlights are small corrections that were pointed out by the board that revised the dissertation from which this paper derived.
+			
+			\item The {\color{Red} red} highlights are corrections concerning the points made by reviwer \#1.
+			
+			\item The {\color{Green} green} highlights are corrections concerning the points made by reviwer \#2.
+		\end{itemize}
+		 
+		Following we provide answers to each one of your comments:
+		
+		\textbf{Comment \#1:} ``(...) In particular, addressing under which real-world conditions the elliptical shape is the ideal shape to model coverage (...)".
+		
+		We address this issued by re-writing a piece of our introduction. The changes are in the ``Introduction" section (page 3). We decided to make a brief comment about the real-world applications of the problem and cite another work that explores this with greater detail. Also, because of the changes made to fit this comment, we ended up rewriting the next paragraph.
+		
+		\textbf{Comment \#2:} ``(...) Given fixed coverage areas, is it possible to allow minor and major axes to be decision variables to determine with shapes cover a particular space better? The aspect ratio and how elongated or circular the ellipses are at the final solution given different space densities might be an interesting issue to explore, rather than fixing the shape of the ellipses from the onset."
+		
+		We thought about this extension for a while, but it does not seem to be trivial to adapt the current method to make it work for this version of the problem, at least we could not figure out a way to do it. Also, we did not find any evidence that this particular extension has a real-world motivation behind it, so we decided not to further explore it in the main text, and just added a paragraph to the ``Conclusion" section (page 29) elaborating on some possible extensions (including this one) that could be the theme of future research.
+		
+		
+		\closing{On behalf of the authors and with our best regards,}
+			\end{letter}
+		%\section*{References}
+		%% New version of the num-names style
+		%\bibliographystyle{elsarticle-num}
+		%\bibliography{../references}
+		
+\end{document}
