@@ -1,0 +1,90 @@
+\documentclass[letterpaper]{letter}
+
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% The graphicx package provides the includegraphics command.
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\sisetup{group-separator = {,}}
+
+\usepackage{multirow}
+
+%\journal{EJOR}
+
+\usepackage[mathscr]{eucal}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Co}{\mathbb{Co}}
+\newcommand{\D}{\mathscr{D}}
+\newcommand{\Pp}{\mathscr{P}}
+\newcommand{\Cc}{\mathscr{C}}
+\newcommand{\E}{\mathscr{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\Ww}{\mathscr{W}}
+\newcommand{\Rr}{\mathscr{R}}
+\newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
+\newcommand{\bigO}{\mathscr{O}}
+\newtheorem{thm}{Theorem}
+\newtheorem{prp}{Proposition}
+\newtheorem{lem}{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newdefinition{definition}{Definition}
+%\newproof{pf}{Proof}
+%\renewcommand\qedsymbol{$\blacksquare$}
+\usepackage[dvipsnames]{xcolor}
+
+\RequirePackage{algorithm, algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmautorefname}{Algorithm}
+\newcommand{\definitionautorefname}{Definition}
+\newcommand{\thmautorefname}{Theorem}
+\newcommand{\prpautorefname}{Proposition}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\lemautorefname}{Lemma}
+\newcommand{\sigla}[2]{#2 (#1)}
+\newcommand{\citeonline}[1]{\cite{#1}}
+\signature{Danilo Tedeschi}
+
+\begin{document}
+\begin{letter}{Comments to reviewers}
+			\opening{Dear Steffen Rebennack\\Editor of EJOR}
+			
+			Thanks for the great opportunity of having our work reviewed by EJOR's editorial board, which provided great comments and suggestions that surely enhanced the quality of our work. 
+			
+			Besides the modifications in the text to address the issues raised by the reviewers, we have also made some small corrections and changes of notation on our own. These modifications were mostly suggestions given by the board that reviewed the dissertation from which this paper derived. In the text, we annoted these changes with the color {\color{blue}blue}.
+			
+			The other modifications were made to address the issues raised by the reviewers, and we highlighted them as follows:
+			
+			\begin{itemize}
+				\item The {\color{Red} red} highlights are corrections concerning the points made by reviwer \#1.
+				
+				\item The {\color{Green} green} highlights are corrections concerning the points made by reviwer \#2.
+				
+				\item The {\color{Orange} orange} highlights are corrections concerning points made by both reviewers.
+			\end{itemize}
+			
+			Please see in the next pages the answers to both reviewers.
+			
+			\closing{On behalf of the authors and with our best regards,}
+\end{letter}
+	\input{answer_rev_1.tex}
+	\input{answer_rev_2.tex}
+	
+\end{document}

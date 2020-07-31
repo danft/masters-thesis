@@ -1,68 +1,4 @@
-\documentclass[letterpaper]{letter}
 
-
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% The graphicx package provides the includegraphics command.
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{subcaption}
-\usepackage{siunitx}
-\sisetup{group-separator = {,}}
-
-\usepackage{multirow}
-
-%\journal{EJOR}
-
-\usepackage[mathscr]{eucal}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Co}{\mathbb{Co}}
-\newcommand{\D}{\mathscr{D}}
-\newcommand{\Pp}{\mathscr{P}}
-\newcommand{\Cc}{\mathscr{C}}
-\newcommand{\E}{\mathscr{E}}
-\newcommand{\F}{\mathscr{F}}
-\newcommand{\Ww}{\mathscr{W}}
-\newcommand{\Rr}{\mathscr{R}}
-\newcommand{\norm}[2][2]{\left\lVert#2\right\rVert_{#1}}
-\newcommand{\bigO}{\mathscr{O}}
-\newtheorem{thm}{Theorem}
-\newtheorem{prp}{Proposition}
-\newtheorem{lem}{Lemma}
-%\newdefinition{rmk}{Remark}
-%\newdefinition{definition}{Definition}
-%\newproof{pf}{Proof}
-%\renewcommand\qedsymbol{$\blacksquare$}
-\usepackage[dvipsnames]{xcolor}
-
-\RequirePackage{algorithm, algpseudocode}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\newcommand{\algorithmautorefname}{Algorithm}
-\newcommand{\definitionautorefname}{Definition}
-\newcommand{\thmautorefname}{Theorem}
-\newcommand{\prpautorefname}{Proposition}
-\newcommand{\lemmaautorefname}{Lemma}
-\newcommand{\lemautorefname}{Lemma}
-\newcommand{\sigla}[2]{#2 (#1)}
-\newcommand{\citeonline}[1]{\cite{#1}}
-\signature{Danilo Tedeschi}
-
-\begin{document}
 	
 		%\title{Answer to Reviewer #1}
 		%\maketitle
@@ -81,6 +17,8 @@
 			\item The {\color{Red} red} highlights are corrections concerning the points made by reviwer \#1.
 			
 			\item The {\color{Green} green} highlights are corrections concerning the points made by reviwer \#2.
+			
+			\item The {\color{Orange} orange} highlights are corrections concerning points made by both reviewers.
 		\end{itemize}
 		 
 		Following we provide answers to each one of your comments:
@@ -96,9 +34,3 @@
 		
 		\closing{On behalf of the authors and with our best regards,}
 			\end{letter}
-		%\section*{References}
-		%% New version of the num-names style
-		%\bibliographystyle{elsarticle-num}
-		%\bibliography{../references}
-		
-\end{document}
