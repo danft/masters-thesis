@@ -3,34 +3,40 @@
 		%\title{Answer to Reviewer #1}
 		%\maketitle
 		
-		\begin{letter}{}
-
-		\opening{Answer to Reviewer \#1}
+\section*{Answer to reviewer \# 1}
+		%\opening{Answer to Reviewer \#1}
+		
 		%	\opening{Dear Prof. Roman Slowinski\\Coordinating Editor of EJOR}
 		
-		First, thanks for dedicating your time to revise our work. We found every one of the points made of great importance for us to achieve a top quality paper.
+		First, thanks for dedicating your time to revise our work, it is a great honor for us to continue to improve our work with your help.
+			 
+		Following we provide answers to each one of the comments you have given us:
 		
-		The changes we have made to the text are highlighted by different colors. 
-		\begin{itemize}
-			\item The {\color{blue} blue} highlights are small corrections that were pointed out by the board that revised the dissertation from which this paper derived.
-			
-			\item The {\color{Red} red} highlights are corrections concerning the points made by reviwer \#1.
-			
-			\item The {\color{Green} green} highlights are corrections concerning the points made by reviwer \#2.
-			
-			\item The {\color{Orange} orange} highlights are corrections concerning points made by both reviewers.
-		\end{itemize}
-		 
-		Following we provide answers to each one of your comments:
+		\textbf{Comment \#1:} ``The authors indicate that `it is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it.' I would like the authors to expand on this. In particular, addressing under which real-world conditions the elliptical shape is the ideal shape to model coverage. The paper is technically correct, and it was interesting to follow the development of the model; however, the authors did not really intent to connect to a real-world application where elliptical coverage is needed or desired. Maybe there's little research because there's no interest on the particular problem? In the absence of a practical application motivating the extension to ellipses, this paper has limited interest."
 		
-		\textbf{Comment \#1:} ``(...) In particular, addressing under which real-world conditions the elliptical shape is the ideal shape to model coverage (...)".
+		We agree with that a real-world application connection was missing in our work. We believe that after the changes we made to address this issue, it is clear that the problems explored in our paper is not of limited interested.
+
+		We address this issued by adding a new paragraph to our Introduction citing the work ``\textit{Mustafa S. Canbolat and Michael von Massow. Planar maximal covering with ellipses.}", which covers with great detail the practical applications of the problems studied in our work:
 		
-		We address this issued by re-writing a piece of our introduction. The changes are in the ``Introduction" section (page 3). We decided to make a brief comment about the real-world applications of the problem and cite another work that explores this with greater detail. Also, because of the changes made to fit this comment, we ended up rewriting the next paragraph.
+		``In the real world, this problem comes up when a telecommunications company has to buy and
+		place antennas over a region to distribute a signal to a population, not necessarily everyone, aiming
+		profit maximization. More details about the applications of PMCLP can be found in [5], which also
+		ponders about the practical importance of considering the PMCLP with elliptical coverage."
 		
-		\textbf{Comment \#2:} ``(...) Given fixed coverage areas, is it possible to allow minor and major axes to be decision variables to determine with shapes cover a particular space better? The aspect ratio and how elongated or circular the ellipses are at the final solution given different space densities might be an interesting issue to explore, rather than fixing the shape of the ellipses from the onset."
+		This change can be found in page 3 of the manuscript. Also, to better fit this addition, we had to modify the paragraph after the added one; we do not display it here because it is not relevant to this comment.
 		
-		We thought about this extension for a while, but it does not seem to be trivial to adapt the current method to make it work for this version of the problem, at least we could not figure out a way to do it. Also, we did not find any evidence that this particular extension has a real-world motivation behind it, so we decided not to further explore it in the main text, and just added a paragraph to the ``Conclusion" section (page 29) elaborating on some possible extensions (including this one) that could be the theme of future research.
+		\textbf{Comment \#2:} ``I also would like the authors to discuss potential extensions, specially if there's evidence that the elliptical shape is indeed useful to model facility coverage. Given fixed coverage areas, is it possible to allow minor and major axes to be decision variables to determine with shapes cover a particular space better? The aspect ratio and how elongated or circular the ellipses are at the final solution given different space densities might be an interesting issue to explore, rather than fixing the shape of the ellipses from the onset."
+		
+		Thanks for this idea of extension to our problem, we think it is very interesting, and we did devote some time to think about it.
+		We believe that there is not a trivial adaptation to any of methods that would make it possible to work for this variation of the problem; at least for us it seems like it would require extensive work. 
+		We added a paragraph to the conclusion to pass this idea on, giving it as a suggestion for future works on the subject:
+		
+		``We believe
+		that fixing only the area of each ellipse, instead of its shape, can be an interesting extension of
+		MCE and MCER; having only one additional decision variable –the major or minor axis– might
+		still allow a similar model to be employed, even though extensive work would be necessary to
+		adapt, somehow, the theory developed for this version, especially of MCER."
 		
 		
-		\closing{On behalf of the authors and with our best regards,}
-			\end{letter}
+	%	\closing{On behalf of the authors and with our best regards,}
+			%\end{letter}
