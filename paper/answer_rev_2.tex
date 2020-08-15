@@ -13,11 +13,11 @@
 		Following we provide replies to each one of the comments you have given us:
 		
 		\textbf{Comment \#1:} ``The highlights (contributions of the paper) and organization of the remaining sections should be presented at the end of Section 1."
+		\\
 		
 		We addressed this issued by adding a paragraph to the end of our Introduction:
 		
-		``This paper is organized as follows. Section 2 presents the definitions of both problems and
-		3introduces some notations used throughout the rest of the work. An algorithm for MCE is developed
+		``This paper is organized as follows. Section 2 presents the definitions of both problems and introduces some notations used throughout the rest of the work. An algorithm for MCE is developed
 		in Section 3, and an algorithm for MCER in Section 5 with the observation that its development
 		depends on a subproblem whose algorithm is developed in Section 4. Improvements suggestions to
 		the implementations are given in Section 6 while the implementation details are given in Section 7.
@@ -27,8 +27,9 @@
 		\\
 		
 		\textbf{Comment \#2:} ``In my opinion `fixed shape' ellipses should be replaced by `fixed shape parameters' ellipses, or ellipses with the given semi-major and semi-minor axes. Alternately the term `fixed shape' ellipses should be explained."
+		\\
 		
-		Thanks for the great observation; we agree that it is not very clear what the term 'fixed shape' ellipses means, and decided to rewrite the text everywhere it appeared. Please find below the changes we have made:
+		Thanks for the great observation; we agree that it is not very clear what the term `fixed shape' ellipses means, and decided to rewrite the text everywhere it appeared. Please find below the changes we have made:
 		\begin{itemize}
 			\item In the first paragraph of the abstract (page 2), we used the term ``given their major and minor axis" to better convey the same idea.
 			
@@ -40,6 +41,7 @@
 		\textbf{Comment \#3:} ``Please, extend the description of practical applications."
 		
 		Thanks for the comment, we addressed this issued by adding a new paragraph to our Introduction citing the work ``\textit{Mustafa S. Canbolat and Michael von Massow. Planar maximal covering with ellipses.}", which covers with great detail the practical applications of the problems studied in our work:
+		\\
 		
 		``In the real world, this problem comes up when a telecommunications company has to buy and
 		place antennas over a region to distribute a signal to a population, not necessarily everyone, aiming
@@ -51,17 +53,18 @@
 		
 		\textbf{Comment \#4:} ``The literature review in Introduction is a bit limited and should to be extended analyzing more approaches and references on the subject. It can be expected that beginning from the first publication [8] in 1984 a reasonable number of references on the subject have been published. See, e.g. papers:
 		
-		'A Combinatorial Maximum Cover Approach to 2D Translational Geometric Covering' by K. Daniels A. Mathur R. Grinde
+		`A Combinatorial Maximum Cover Approach to 2D Translational Geometric Covering' by K. Daniels A. Mathur R. Grinde
 		
-		'Covering a polygonal region by rectangles' by G. Scheithauer, Y. Stoyan, T. Romanova, A. Krivulya
+		`Covering a polygonal region by rectangles' by G. Scheithauer, Y. Stoyan, T. Romanova, A. Krivulya
 		
-		'Translational polygon containment and minimal enclosure' using mathematical programming
+		`Translational polygon containment and minimal enclosure' using mathematical programming
 		by V.J. Milenkovic , K. Daniels
 		
 		and references in 2007 PhD thesis of Daoqin Tong from the Ohio State University."
+		\\
 		
-		Thanks for all the great suggestions, after pondering about it, we agree that our literature review needed work, thanks for pointing it out.
-		We spent some time on trying to improve it, in summary, those are the changes we have made to our introduction:
+		Thanks for all the great suggestions, after pondering about it, we agree that our literature review needed work, it is great that you pointed it out.
+		We spent some time on trying to improve it, and in summary, those are the changes we have made to our Introduction:
 
 		\begin{itemize}
 			\item We added a citation to ``H Younies and G O Wesolowsky. Planar maximal covering location problem under block norm distance measure". This shows another example of versions of PMCLP other than the classical one using Euclidean norm.
@@ -77,22 +80,26 @@
 	
 	In our work, because of the similarities with the problems studied by us, we are particularly interested in the Euclidean PMCLP defined with coverage being determined by the Euclidean norm.	In [8], a method for this version of PMCLP was developed following the demonstration of a theorem,	which showed that a finite set of locations could be constructed to contain at least one optimal	solution transforming PMCLP into a combinatorial optimization problem."
 	
-	We did consider the list of works you gave us as suggestions, however, even though we think they are great papers, we decided to cite two works we were more familiar with. It is worth mentioning though, that some works of Daoqin Tong are cited in the survey paper we are using.
+	We did consider the list of works you gave us as suggestions, however, even though we think they are great papers, we decided to cite works that we judged to be closer to the problems we are studying. We also had the goal to not extend the literature review too much, as the field of geometric covering is too vast, we tried to keep it concise by only citing works that study very specific problems, and a survey paper.
+	It is worth mentioning though, that some works of Daoqin Tong are cited in the survey paper we are using. If after reading this, you still feel like our literature review is not satisfactory, we can change it to include your suggestions.
 \\
 	
 		\textbf{Comment \#5:} ``Please, clarify what is the critical parameter for your algorithm: the number of ellipses or the number of demand points?"
+		\\
 		
-		We addressed this issue in section 8.2 ``New instances" (page 19):
+		We addressed this issue in Section 8.2 ``New instances" (page 19):
 		
 		``We were able to run experiments with up to 700 demand points; however, it is clear that the number of ellipses is the critical parameter of both algorithms, as even for small demand sets, we could not go over 7 ellipses."
 		\\
 		
 		\textbf{Comment \#6:} ``In the paper overlapping of covering ellipses is allowed, i.e. a demand point can be covered by more than one ellipse. However, it seems natural that the weight of the demand point covered by various ellipses can differ from the weight of the same point covered by only one ellipse."
+		\\
 		
 		Thanks for this comment, we, too, think that depending on the viewpoint, considering the weight of each point to be a function which depends on the set of ellipses covering it is more natural. We believe that our methods could be trivially adapted to work with this different definition, however, we also think that we have to ponder about doing this change because this is not the traditional definition of any other PMCLP we have based our developments on; meaning that we would have to have a strong motive for this not to look like an arbitrary change.
 		\\	
 		
 		\textbf{Comment \#7:} ``What happens if no overlapping between covering ellipses is allowed. Please, comment on this."
+		\\
 		
 		Thanks for the great question, we thought a lot about this, and we came up with some arguments to show you what happens if we add this constraint to our problem.
 		
@@ -107,7 +114,7 @@
 
 		\includegraphics[scale=.6]{figures/answer-to-reviewer-2}
 
-		The solution shown is non-overlapping -- actually there are an infinite number of non-overlapping equivalent solutions --, however, our algorithm would fail to find any equivalent solution. Notice that moving the ellipse with no points on its coverage region's border in order to put at least two points on it would cause overlap.
+		The solution shown is non-overlapping -- actually there are an infinite number of non-overlapping equivalent solutions --. However, our algorithm would fail to find any equivalent solution. Notice that moving the ellipse with no points on its coverage region's border in order to put at least two points on it would cause overlap.
 		We believe methods for the problems with this additional constraint would have to come from a different basis.
 		
 		

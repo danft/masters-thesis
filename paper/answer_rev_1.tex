@@ -12,6 +12,7 @@
 		\\
 		
 		\textbf{Comment \#1:} ``The authors indicate that `it is fair to say that PMCLP with elliptical coverage has not been vastly studied as only two articles have been found on it.' I would like the authors to expand on this. In particular, addressing under which real-world conditions the elliptical shape is the ideal shape to model coverage. The paper is technically correct, and it was interesting to follow the development of the model; however, the authors did not really intent to connect to a real-world application where elliptical coverage is needed or desired. Maybe there's little research because there's no interest on the particular problem? In the absence of a practical application motivating the extension to ellipses, this paper has limited interest."
+		\\
 		
 		Thanks a lot for this great detailed feedback. 
 		Upon receiving your input, we did question ourselves about the interest there is on our work, and we ended up coming to an agreement that a real-world connection is fundamental to making a case this problem is worth being published.
@@ -26,10 +27,11 @@
 		\\
 		
 		\textbf{Comment \#2:} ``I also would like the authors to discuss potential extensions, specially if there's evidence that the elliptical shape is indeed useful to model facility coverage. Given fixed coverage areas, is it possible to allow minor and major axes to be decision variables to determine with shapes cover a particular space better? The aspect ratio and how elongated or circular the ellipses are at the final solution given different space densities might be an interesting issue to explore, rather than fixing the shape of the ellipses from the onset."
+		\\
 		
 		Thanks for this idea of an extension to our problem, we think it is very interesting, and we did devote some time to think about it.
 		We believe that there is not a trivial adaptation to any of our methods that would make it possible to work for this variation of the problem; at least for us, it seems like it would require extensive work. 
-		We hypothesized that with this addition of a new variable (the ellipse's semi-major or semi-minor), we could have a similar result for MCER: there is a constant number of let's call locations (center, angle of rotation, and the new parameter), which makes four points be on the ellipse with a fixed area. Although, We could not prove it nor disprove it.
+		We hypothesized that with this addition of a new variable (the ellipse's semi-major or semi-minor), we could have a similar result for MCER: there is a constant number of let's call locations (center, angle of rotation, and the new parameter), which makes four points be on the ellipse with a fixed area. Although, we could not prove it nor disprove it.
 		We also thought about the possibility of having an optimization method on top of our current algorithm to decide the new parameter, but we could not think of a way we could make a model like that work.
 		Even though we could not make too much out of the suggestion, we still believe that it could be a good idea for future works on the subject. Therefore, we added a paragraph to the conclusion to pass this idea on:
 		
